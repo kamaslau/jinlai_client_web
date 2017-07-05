@@ -96,55 +96,48 @@
 				'class' => $this->class_name.' login',
 			);
 
-			$this->form_validation->set_rules('mobile', '手机号', 'trim|required|is_natural_no_zero|exact_length[11]');
+			$this->form_validation->set_rules('mobile', '手机号', 'trim|required|exact_length[11]|is_natural_no_zero');
 			$this->form_validation->set_rules('password', '密码', 'trim|required|min_length[6]|max_length[20]');
 
 			if ($this->form_validation->run() === FALSE):
-				$this->load->view('templates/header', $data);
-				$this->load->view($this->view_root.'/login', $data);
-				$this->load->view('templates/footer', $data);
+				$data['error'] = validation_errors();
 
 			else:
 				$data_to_search = array(
 					'mobile' => $this->input->post('mobile'),
-					'password' => sha1($this->input->post('password'))
+					'password' => $this->input->post('password'),
 				);
-				$result = $this->basic_model->match($data_to_search); // 使用密码登录
 
-				// 成功登录
-				if ( ! empty($result)):
+				// 从API服务器获取相应详情信息
+				$params = $data_to_search;
+				$url = api_url($this->class_name. '/login');
+				$result = $this->curl->go($url, $params, 'array');
+
+				if ($result['status'] !== 200):
+					$data['error'] = $result['content']['error']['message'];
+
+				else:
 					// 获取用户信息
-					$data['user'] = $result;
-
+					$data['item'] = $result['content'];
 					// 将信息键值对写入session
-					foreach ($data['user'] as $key => $value):
+					foreach ($data['item'] as $key => $value):
 						$user_data[$key] = $value;
 					endforeach;
-					$user_data['logged_in'] = TRUE; // 标记登录状态，便于快速判断是否已登录
+					$user_data['time_expire_login'] = time() + 60*60*24 * 90; // 默认登录状态保持90天
 					$this->session->set_userdata($user_data);
 
 					// 将管理员手机号写入cookie并保存1个月
-					$this->input->set_cookie('mobile', $data['user']['mobile'], 60*60*24*30, COOKIE_DOMAIN);
+					$this->input->set_cookie('mobile', $data['item']['mobile'], 60*60*24*30, COOKIE_DOMAIN);
 					// 转到首页
-					redirect(base_url());
-
-				// 若用户不存在
-				$if_exsit = $this->basic_model->find('mobile', $this->input->post('mobile'));
-				elseif ( empty($if_exsit) ):
-					$data['error'] = '<p>此手机号未注册为用户，请<a title="注册" href="'. base_url('register') .'">注册</a>。</p>';
-					$this->load->view('templates/header', $data);
-					$this->load->view($this->view_root.'/login', $data);
-					$this->load->view('templates/footer', $data);
-
-				// 若密码错误
-				else:
-					$data['error'] = '<p>密码不正确，请确认后重试。</p>';
-					$this->load->view('templates/header', $data);
-					$this->load->view($this->view_root.'/login', $data);
-					$this->load->view('templates/footer', $data);
+					redirect( base_url() );
 
 				endif;
+
 			endif;
+
+			$this->load->view('templates/header', $data);
+			$this->load->view($this->view_root.'/login', $data);
+			$this->load->view('templates/footer', $data);
 		}
 
 		/**
@@ -167,8 +160,8 @@
 				'class' => $this->class_name.' register',
 			);
 
-			$this->form_validation->set_rules('mobile', '手机号', 'trim|required|is_natural|exact_length[11]');
-			$this->form_validation->set_rules('password', '密码', 'trim|required|is_natural|exact_length[6]');
+			$this->form_validation->set_rules('mobile', '手机号', 'trim|required|exact_length[11]|is_natural_no_zero');
+			$this->form_validation->set_rules('password', '密码', 'trim|required|min_length[6]|max_length[20]');
 			$this->form_validation->set_rules('password2', '确认密码', 'trim|required|matches[password]');
 
 			if ($this->form_validation->run() === FALSE):
@@ -247,9 +240,9 @@
 			var_dump($data1);
 
 			// 待验证的表单项
-			$this->form_validation->set_rules('old_password', '原密码', 'trim|required|is_natural|exact_length[6]');
-			$this->form_validation->set_rules('password', '新密码', 'trim|required|is_natural|exact_length[6]');
-			$this->form_validation->set_rules('password2', '确认密码', 'trim|required|matches[password_new]');
+			$this->form_validation->set_rules('old_password', '原密码', 'trim|required|min_length[6]|max_length[20]');
+			$this->form_validation->set_rules('password', '新密码', 'trim|required|min_length[6]|max_length[20]');
+			$this->form_validation->set_rules('password2', '确认密码', 'trim|required|matches[password]');
 
 			if ($this->input->post('old_password') === $this->input->post('password')):
 				$data['error'] = '新密码需要不同于原密码';
