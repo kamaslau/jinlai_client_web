@@ -14,22 +14,25 @@
 	</div>
 
 	<?php
-		if ( isset($error) ) echo '<div class="alert alert-warning" role=alert>'.$error.'</div>'; // 若有错误提示信息则显示
-		$attributes = array('class' => 'form-login-sms', 'role' => 'form');
+		if ( !empty($error) ) echo '<div class="alert alert-warning" role=alert>'.$error.'</div>'; // 若有错误提示信息则显示
+		$attributes = array('class' => 'form-login-sms col-xs-12 col-md-6 col-md-offset-3', 'role' => 'form');
 		echo form_open('login_sms', $attributes);
 	?>
 		<fieldset>
 			<div class=form-group>
 				<label for=mobile>手机号</label>
-				<input class=form-control name=mobile type=tel value="<?php echo $this->input->post('mobile')? set_value('mobile'): $this->input->cookie('mobile') ?>" size=11 pattern="\d{11}" placeholder="手机号" required>
-				<?php echo form_error('mobile') ?>
+				<div class=input-group>
+					<span class="input-group-addon"><i class="fa fa-mobile fa-fw" aria-hidden=true></i></span>
+					<input class=form-control name=mobile type=tel value="<?php echo $this->input->post('mobile')? set_value('mobile'): $this->input->cookie('mobile') ?>" size=11 pattern="\d{11}" placeholder="手机号" required>
+				</div>
 			</div>
 
 			<div class=form-group>
 				<label for=captcha_verify>图片验证码</label>
+				<div class=input-group>
 					<input id=captcha-verify class=form-control name=captcha_verify type=number max=9999 min=0001 step=1 size=4 placeholder="请输入图片验证码" required>
 					<img id=captcha-image src="<?php echo base_url('captcha') ?>">
-				<?php echo form_error('captcha_verify') ?>
+				</div>
 			</div>
 
 			<div class=form-group>
@@ -40,7 +43,6 @@
 						<a id=sms-send class=append href="#">获取验证码</a>
 					</span>
 				</div>
-				<?php echo form_error('captcha') ?>
 			</div>
 		</fieldset>
 

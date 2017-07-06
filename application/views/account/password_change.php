@@ -21,34 +21,34 @@
 	}
 </style>
 
-<div id=content class=container>
+<div id=content>
 	<?php
-		if ( isset($error) ) echo '<div class="alert alert-warning" role=alert>'.$error.'</div>'; // 若有错误提示信息则显示
-		$attributes = array('class' => 'form-password-change form-horizontal', 'role' => 'form');
+		if ( !empty($error) ) echo '<div class="alert alert-warning" role=alert>'.$error.'</div>'; // 若有错误提示信息则显示
+		$attributes = array('class' => 'form-password-change col-xs-12 col-md-6 col-md-offset-3', 'role' => 'form');
 		echo form_open('password_change', $attributes);
 	?>
 		<fieldset>
 			<div class=form-group>
 				<label for=password_old class="col-sm-2 control-label">现密码</label>
-				<div class=col-sm-10>
-					<input class=form-control name=password_old type=password placeholder="现密码" required>
-					<?php echo form_error('password_old') ?>
+				<div class=input-group>
+					<span class="input-group-addon"><i class="fa fa-lock fa-fw" aria-hidden=true></i></span>
+					<input class=form-control name=password_old type=password placeholder="现密码" autofocus required>
 				</div>
 			</div>
 
 			<div class=form-group>
 				<label for=password class="col-sm-2 control-label">新密码</label>
-				<div class=col-sm-10>
+				<div class=input-group>
+					<span class="input-group-addon"><i class="fa fa-lock fa-fw" aria-hidden=true></i></span>
 					<input class=form-control name=password type=password placeholder="新密码" required>
-					<?php echo form_error('password') ?>
 				</div>
 			</div>
 
 			<div class=form-group>
 				<label for=password2 class="col-sm-2 control-label">确认新密码</label>
-				<div class=col-sm-10>
+				<div class=input-group>
+					<span class="input-group-addon"><i class="fa fa-lock fa-fw" aria-hidden=true></i></span>
 					<input class=form-control name=password2 type=password placeholder="确认新密码" required>
-					<?php echo form_error('password2') ?>
 				</div>
 			</div>
 		</fieldset>
@@ -58,5 +58,7 @@
 				<button class="btn btn-primary btn-lg btn-block" type=submit>确定</button>
 		    </div>
 		</div>
+
 	</form>
+
 </div>

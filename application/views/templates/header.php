@@ -23,7 +23,7 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20170704">
+		<meta name=version content="revision20170706">
 		<meta name=author content="刘亚杰Kamas">
 		<meta name=copyright content="青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
@@ -60,6 +60,7 @@
 			<p>您的浏览器功能加载出现问题，请刷新浏览器重试；如果仍然出现此提示，请考虑更换浏览器。</p>
 		</noscript>
 
+		<header id=header role=banner>
 <?php
 	/**
 	 * APP中调用webview时配合URL按需显示相应部分
@@ -67,7 +68,6 @@
 	 */
 	if ($is_wechat === FALSE):
 ?>
-		<header id=header role=banner>
 			<div class=container>
 				<h1>
 					<a id=logo title="<?php echo SITE_NAME ?>" href="<?php echo base_url() ?>"><?php echo SITE_NAME ?></a>
@@ -109,7 +109,7 @@
 				</nav>
 				<div id=user-panel>
 					<ul id=user-actions class=horizontal>
-						<?php if ($this->session->logged_in != TRUE): ?>
+						<?php if ( !isset($this->session->time_expire_login) ): ?>
 						<li><a title="登录" href="<?php echo base_url('login') ?>">登录</a></li>
 						<?php else: ?>
 						<li><a title="个人中心" href="<?php echo base_url('mine') ?>">我的</a></li>
@@ -121,7 +121,7 @@
 					</p>
 				</div>
 			</div>
-		</header>
 <?php endif ?>
+		</header>
 
 		<main id=maincontainer role=main>

@@ -25,18 +25,18 @@
 		<?php $username = !empty($this->session->nickname)? $this->session->nickname: $this->session->mobile; ?>
 		<h2><?php echo $username ?></h2>
 	</section>
-	
+
 	<section id=record-info>
 		<ul id=list-record class="row list">
 			<li class=col-xs-3>
-				<a title="商品收藏" href="<?php echo base_url('label_item') ?>">
-					<span><?php echo $count['label_item'] ?></span>
+				<a title="商品收藏" href="<?php echo base_url('fav_item') ?>">
+					<span><?php echo $count['fav_item'] ?></span>
 					收藏夹
 				</a>
 			</li>
 			<li class=col-xs-3>
-				<a title="商家收藏" href="<?php echo base_url('label_biz') ?>">
-					<span><?php echo $count['label_biz'] ?></span>
+				<a title="商家收藏" href="<?php echo base_url('fav_biz') ?>">
+					<span><?php echo $count['fav_biz'] ?></span>
 					关注商家
 				</a>
 			</li>
@@ -83,8 +83,8 @@
 			</li>
 		</ul>
 	</section>
-	
+
 	<a title="设置" class="btn btn-block btn-default" href="<?php echo base_url('setup') ?>">设置</a>
-	
+
 	<a title="退出账户" class="btn btn-block btn-danger" href="<?php echo base_url('logout') ?>">退出账户</a>
 </div>

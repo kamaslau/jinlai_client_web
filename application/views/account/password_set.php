@@ -21,10 +21,10 @@
 	}
 </style>
 
-<div id=content class=container>
+<div id=content>
 	<?php
-		if ( isset($error) ) echo '<div class="alert alert-warning" role=alert>'.$error.'</div>'; // 若有错误提示信息则显示
-		$attributes = array('class' => 'form-password-set', 'role' => 'form');
+		if ( !empty($error) ) echo '<div class="alert alert-warning" role=alert>'.$error.'</div>'; // 若有错误提示信息则显示
+		$attributes = array('class' => 'form-password-set col-xs-12 col-md-6 col-md-offset-3', 'role' => 'form');
 		echo form_open('password_set', $attributes);
 	?>
 		<fieldset>
@@ -32,9 +32,8 @@
 				<label for=password>密码</label>
 				<div class=input-group>
 					<span class="input-group-addon"><i class="fa fa-lock fa-fw" aria-hidden=true></i></span>
-					<input class=form-control name=password type=password placeholder="密码" required>
+					<input class=form-control name=password type=password placeholder="密码" autofocus required>
 				</div>
-				<?php echo form_error('password') ?>
 			</div>
 			
 			<div class=form-group>
@@ -43,7 +42,6 @@
 					<span class="input-group-addon"><i class="fa fa-lock fa-fw" aria-hidden=true></i></span>
 					<input class=form-control name=password2 type=password placeholder="确认新密码" required>
 				</div>
-				<?php echo form_error('password2') ?>
 			</div>
 		</fieldset>
 

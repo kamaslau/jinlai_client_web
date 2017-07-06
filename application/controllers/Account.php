@@ -44,6 +44,9 @@
 		 */
 		public function mine()
 		{
+			// 若未登录，转到密码登录页
+			($this->session->time_expire_login > time()) OR redirect( base_url('login') );
+
 			// 页面信息
 			$data = array(
 				'title' => '我的', // 页面标题
@@ -64,11 +67,8 @@
 			if ($result['status'] === 200):
 				$data['items'] = $result['content'];
 			else:
-				redirect( base_url('error/code_404') ); // 若未成功获取信息，则转到错误页
+				//TODO redirect( base_url('error/code_404') ); // 若未成功获取信息，则转到错误页
 			endif;
-
-			// 将需要显示的数据传到视图以备使用
-			$data['data_to_display'] = $this->data_to_display;
 
 			// 输出视图
 			$this->load->view('templates/header', $data);
@@ -88,7 +88,8 @@
 		 */
 		public function login()
 		{
-			if ($this->session->logged_in === TRUE) redirect(base_url());
+			// 若已登录，转到首页
+			!isset($this->session->time_expire_login) OR redirect( base_url() );
 
 			// 页面信息
 			$data = array(
@@ -145,71 +146,75 @@
 		 *
 		 * 使用邮箱及密码进行注册
 		 *
-		 * @param string $_POST['mobile']
+		 * @param string $_POST['email']
 		 * @param string $_POST['password']
 		 * @param string $_POST['password2']
 		 * @return void
 		 */
 		public function register()
 		{
-			if ($this->session->logged_in === TRUE) redirect(base_url());
+			// 若已登录，转到首页
+			!isset($this->session->time_expire_login) OR redirect( base_url() );
 
 			// 页面信息
 			$data = array(
-				'title' => '密码注册',
+				'title' => '邮箱注册',
 				'class' => $this->class_name.' register',
 			);
 
-			$this->form_validation->set_rules('mobile', '手机号', 'trim|required|exact_length[11]|is_natural_no_zero');
+			$this->form_validation->set_rules('email', 'Email', 'trim|required|max_length[50]|valid_email');
 			$this->form_validation->set_rules('password', '密码', 'trim|required|min_length[6]|max_length[20]');
 			$this->form_validation->set_rules('password2', '确认密码', 'trim|required|matches[password]');
 
 			if ($this->form_validation->run() === FALSE):
-				$this->load->view('templates/header', $data);
-				$this->load->view($this->view_root.'/register', $data);
-				$this->load->view('templates/footer', $data);
-
-			elseif ( ! empty($this->basic_model->find('mobile', $this->input->post('mobile')))):
-				// 若用户已存在
-				$data['error'] = '<p>该手机号已注册过账户，请<a title="登录" href="'. base_url('login') .'">登录</a>。</p>';
-				$this->load->view('templates/header', $data);
-				$this->load->view($this->view_root.'/register', $data);
-				$this->load->view('templates/footer', $data);
+				$data['error'] = validation_errors();
 
 			else:
-
 				$data_to_create = array(
 					'mobile' => $this->input->post('mobile'),
 					'password' => sha1($this->input->post('password')),
 				);
-				$result = $this->basic_model->create($data_to_create, TRUE); // 尝试创建用户
 
-				// 成功创建
-				if ( ! empty($result)):
-					// 获取用户信息
-					$data['user'] = $this->basic_model->select_by_id($result);
+				// 从API服务器获取相应详情信息
+				$params = $data_to_search;
+				$url = api_url($this->class_name. '/register');
+				$result = $this->curl->go($url, $params, 'array');
 
-					// 将信息键值对写入session
-					foreach ($data['user'] as $key => $value):
-						$user_data[$key] = $value;
-					endforeach;
-					$user_data['logged_in'] = TRUE; // 标记登录状态，便于快速判断是否已登录
-					$this->session->set_userdata($user_data);
-
-					// 将管理员手机号写入cookie并保存1个月
-					$this->input->set_cookie('mobile', $data['user']['mobile'], 60*60*24*30, COOKIE_DOMAIN);
-					// 转到首页
-					redirect(base_url());
-
-				// 若密码错误
+				if ($result['status'] !== 200):
+					$data['error'] = $result['content']['error']['message'];
 				else:
-					$data['error'] = '<p>注册失败，请确认后重试。</p>';
-					$this->load->view('templates/header', $data);
-					$this->load->view($this->view_root.'/register', $data);
-					$this->load->view('templates/footer', $data);
-
 				endif;
+
 			endif;
+		}
+
+		public function login_sms()
+		{
+			// 若已登录，转到首页
+			!isset($this->session->time_expire_login) OR redirect( base_url() );
+
+			// 页面信息
+			$data = array(
+				'title' => '短信登录/注册',
+				'class' => $this->class_name.' login-sms',
+			);
+
+			$this->load->view('templates/header', $data);
+			$this->load->view($this->view_root.'/login_sms', $data);
+			$this->load->view('templates/footer', $data);
+		}
+		
+		public function password_set()
+		{
+			// 页面信息
+			$data = array(
+				'title' => '密码设置',
+				'class' => $this->class_name.' password-set',
+			);
+
+			$this->load->view('templates/header', $data);
+			$this->load->view($this->view_root.'/password_set', $data);
+			$this->load->view('templates/footer', $data);
 		}
 
 		/**
@@ -224,8 +229,8 @@
 		 */
 		public function password_change()
 		{
-			// 若用户未登录，转到密码重置页
-			if ($this->session->logged_in !== TRUE) redirect(base_url('password_reset'));
+			// 若未登录，转到密码重置页
+			($this->session->time_expire_login > time()) OR redirect( base_url('password_reset') );
 
 			// 页面信息
 			$data = array(
@@ -258,8 +263,9 @@
 				'password' => sha1($this->input->post('password'))
 			);
 
-			// Go Basic!
-			$this->basic->edit($data, $data_to_edit, 'password_change');
+			$this->load->view('templates/header', $data);
+			$this->load->view($this->view_root.'/password_change', $data);
+			$this->load->view('templates/footer', $data);
 		}
 
 		/**
@@ -274,14 +280,18 @@
 		 */
 		public function password_reset()
 		{
-			// 若用户已登录，转到密码修改页
-			if ($this->session->logged_in === TRUE) redirect(base_url('password_change'));
+			// 若已登录，转到密码修改页
+			!isset($this->session->time_expire_login) OR redirect( base_url('password_change') );
 
 			// 页面信息
 			$data = array(
 				'title' => '密码重置',
 				'class' => $this->class_name.' password-reset',
 			);
+			
+			$this->load->view('templates/header', $data);
+			$this->load->view($this->view_root.'/password_reset', $data);
+			$this->load->view('templates/footer', $data);
 		}
 
 		/**
@@ -295,7 +305,7 @@
 			// 清除当前SESSION
 			$this->session->sess_destroy();
 
-			// 转到登录页
+			// 转到密码登录页
 			redirect( base_url('login') );
 		}
 	}

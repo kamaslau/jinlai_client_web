@@ -27,9 +27,6 @@
         /* 视图文件所在目录名 */
         public $view_root;
         
-        /* 需要显示的字段 */
-        public $data_to_display;
-        
         public function __construct()
         {
             parent::__construct();
@@ -47,20 +44,9 @@
                'id_name' => $this->id_name,
                'view_root' => $this->view_root,
             );
-            // 设置需要显示的字段
-            $this->data_to_display = array(
-               'name' => '名称',
-               'description' => '描述',
-            );
             
             // 载入Basic库
             $this->load->library('basic', $basic_configs);
-            
-            // （可选）某些用于此类的自定义函数
-            function function_name($parameter)
-            {
-                //...
-            }
         }
 
 		// 首页
@@ -69,12 +55,13 @@
 			// 页面信息
 			$data = array(
 				'title' => NULL, // 直接使用默认标题
-				'class' => $this->class_name.' '. $this->class_name.'-index', // 页面body标签的class属性值
+				'class' => $this->class_name, // 页面body标签的class属性值
 			);
 			
 			// 载入视图
 			$this->load->view('templates/header', $data);
 			$this->load->view('home', $data);
+			$this->load->view('templates/nav-main', $data);
 			$this->load->view('templates/footer', $data);
 		}
 	}
