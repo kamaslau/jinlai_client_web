@@ -23,7 +23,7 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20170707">
+		<meta name=version content="revision20170708">
 		<meta name=author content="刘亚杰Kamas">
 		<meta name=copyright content="青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
@@ -60,14 +60,15 @@
 			<p>您的浏览器功能加载出现问题，请刷新浏览器重试；如果仍然出现此提示，请考虑更换浏览器。</p>
 		</noscript>
 
-		<header id=header role=banner>
 <?php
 	/**
 	 * APP中调用webview时配合URL按需显示相应部分
 	 * 此处以在APP中以WebView打开页面时不显示页面header部分为例
 	 */
-	if ($is_wechat === FALSE):
+	//if ($is_wechat === FALSE):
 ?>
+<?php //endif ?>
+		<header id=header role=banner>
 			<div class=container>
 				<h1>
 					<a id=logo title="<?php echo SITE_NAME ?>" href="<?php echo base_url() ?>"><?php echo SITE_NAME ?></a>
@@ -76,11 +77,8 @@
 				<a id=nav-switch class=nav-icon href="#header">
 					<i class="fa fa-bars" aria-hidden=true></i>
 				</a>
-				<a class=nav-icon href="<?php echo base_url('mine') ?>">
-					<span class="fa-stack fa-lg">
-					  <i class="fa fa-circle-thin fa-stack-2x"></i>
-					  <i class="fa fa-user fa-stack-1x"></i>
-					</span>
+				<a id=to-mine class=nav-icon href="<?php echo base_url('mine') ?>">
+					<i class="fa fa-user" aria-hidden=true></i>
 				</a>
 				<script>
 				// 手机版菜单的显示和隐藏
@@ -88,8 +86,9 @@
 					$('#nav-switch').click(
 						function(){
 							var nav_icon = $(this).children('i');
-							if (nav_icon.attr('class') == 'fa fa-bars'){
-								nav_icon.attr('class', 'fa fa-chevron-up');
+							var current_class = nav_icon.attr('class');
+							if (current_class == 'fa fa-bars'){
+								nav_icon.attr('class', 'fa fa-minus');
 							} else {
 								nav_icon.attr('class', 'fa fa-bars');
 							}
@@ -99,7 +98,6 @@
 					);
 				});
 				</script>
-<?php else: ?>
 
 				<nav id=nav-header role=navigation>
 					<ul id=main-nav class=horizontal>
@@ -107,6 +105,7 @@
 						<li<?php if (strpos($class, 'article') !== FALSE) echo ' class=active' ?>><a title="文章" href="<?php echo base_url('article') ?>">文章</a></li>
 					</ul>
 				</nav>
+				<!--
 				<div id=user-panel>
 					<ul id=user-actions class=horizontal>
 						<?php if ( !isset($this->session->time_expire_login) ): ?>
@@ -120,8 +119,8 @@
 						<i class="fa fa-phone" aria-hidden=true></i> 400-882-0532
 					</p>
 				</div>
+				-->
 			</div>
-<?php endif ?>
 		</header>
 
 		<main id=maincontainer role=main>

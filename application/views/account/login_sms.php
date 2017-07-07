@@ -8,7 +8,7 @@
 
 <script src="/js/form.js"></script>
 
-<div id=content>
+<div id=content class=container>
 	<div class="btn-group btn-group-justified" role=group>
 		<a class="btn btn-default" href="<?php echo base_url('login') ?>">密码登录</a>
 		<span class="btn btn-primary">短信登录</span>
@@ -51,7 +51,7 @@
 
 		<p class="text-center">点击“确定”，即表示您已完整阅读并同意<a title="查看用户协议详细内容" href="<?php echo base_url('article/user-agreement') ?>" target=_blank>《用户协议》</a>。</p>
 		
-		<div class=form-group>
+		<div class=row>
 		    <div class="col-xs-12 col-sm-offset-2 col-sm-2">
 				<button class="btn btn-primary btn-lg btn-block" type=submit role=button>确定</button>
 		    </div>

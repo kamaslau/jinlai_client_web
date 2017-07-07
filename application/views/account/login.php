@@ -2,6 +2,9 @@
 	#content {padding-top:2rem;}
 	form {padding-top:2rem;}
 	
+	#captcha-image {padding:0;min-width:100px;}
+		#captcha-image img {width:100%;height:100%;}
+	
 	#actions {margin-top:4rem;}
 		#actions>li {margin-bottom:2rem;}
 
@@ -26,7 +29,7 @@
 
 <script src="/js/form.js"></script>
 
-<div id=content>
+<div id=content class=container>
 	<div class="btn-group btn-group-justified" role=group>
 		<span class="btn btn-primary">密码登录</span>
 		<a class="btn btn-default" href="<?php echo base_url('login_sms') ?>">短信登录</a>
@@ -64,14 +67,14 @@
 				</div>
 			</div>
 		</fieldset>
-		
-		<div class=form-group>
+
+		<div class=row>
 		    <div class="col-xs-12 col-sm-offset-2 col-sm-2">
 				<button class="btn btn-primary btn-lg btn-block" type=submit role=button>确定</button>
 		    </div>
 		</div>
 	</form>
-	
+
 	<ul id=actions class="col-xs-12 col-sm-offset-2 col-sm-2">
 		<li><a title="注册" class="btn btn-default btn-block" href="<?php echo base_url('login_sms') ?>">短信登录/注册</a></li>
 		<li><a title="忘记密码" class="btn btn-default btn-block" href="<?php echo base_url('password_reset') ?>">忘记密码</a></li>

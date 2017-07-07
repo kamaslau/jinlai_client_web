@@ -1,6 +1,9 @@
 <style>
 	#content {padding-top:2rem;}
 	form {padding-top:2rem;}
+	
+	#captcha-image {padding:0;min-width:100px;}
+		#captcha-image img {width:100%;height:100%;}
 
 	/* 宽度在768像素以上的设备 */
 	@media only screen and (min-width:769px)
@@ -21,7 +24,7 @@
 	}
 </style>
 
-<div id=content>
+<div id=content class=container>
 	<?php
 		if ( !empty($error) ) echo '<div class="alert alert-warning" role=alert>'.$error.'</div>'; // 若有错误提示信息则显示
 		$attributes = array('class' => 'form-password-reset col-xs-12 col-md-6 col-md-offset-3', 'role' => 'form');
@@ -40,7 +43,9 @@
 				<label for=captcha_verify>图片验证码</label>
 				<div class=input-group>
 					<input id=captcha-verify class=form-control name=captcha_verify type=number max=9999 min=0001 step=1 size=4 placeholder="请输入图片验证码" required>
-					<img id=captcha-image src="<?php echo base_url('captcha') ?>">
+					<span id=captcha-image class="input-group-addon">
+						<img src="<?php echo base_url('captcha') ?>">
+					</span>
 				</div>
 			</div>
 
@@ -73,7 +78,7 @@
 			</div>
 		</fieldset>
 
-		<div class=form-group>
+		<div class=row>
 		    <div class="col-xs-12 col-sm-offset-2 col-sm-2">
 				<button class="btn btn-primary btn-block btn-lg" type=submit>确定</button>
 		    </div>

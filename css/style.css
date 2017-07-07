@@ -7,6 +7,8 @@
 @viewport{width:device-width;}
 
 /* Flat-UI清理 */
+h1,h2,h3 {margin:0;}
+h1 {font-size:42px;}
 .login {color:#111;background:none;padding:0;margin-bottom:0;}
 
 body {color:#333;background-color:#fff;z-index:100;margin-bottom:8rem;}
@@ -27,6 +29,13 @@ a {color:#333;text-decoration:none;/* 清理BootStrap样式 */}
 noscript {color:#032f62;background-color:#dbedff;padding:16px;border:1px solid rgba(27,31,35,0.15);}
 
 #header {background:linear-gradient(to right, #ff484c, #ff713e);}
+	#header>.container {font-size:22px;text-align:center;height:44px;line-height:44px;}
+		#header h1 {font-size:22px;line-height:44px;}
+			#header h1>a {color:#fff;display:block;width:100%;height:100%;}
+		#header>.container>a {color:#fff;position:absolute;top:0;height:100%;display:block;}
+		#nav-switch {left:0;}
+		#to-mine {right:0;}
+		#nav-header {display:none;} /*窄屏下默认不显示主导航栏*/
 
 #nav-main {text-align:center;background-color:#fff;position:fixed;bottom:0;left:0;right:0;height:6rem;z-index:101;}
 #nav-main ul {height:100%;}
@@ -40,6 +49,8 @@ noscript {color:#032f62;background-color:#dbedff;padding:16px;border:1px solid r
 @media only screen and (min-width:751px)
 {
 	body {margin-bottom:0}
+	#header>.container>a {display:none;}
+	#nav-header {display:block;}
 
 	#nav-main {display:none;}
 }
