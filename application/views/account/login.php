@@ -24,9 +24,11 @@
 	}
 </style>
 
+<script src="/js/form.js"></script>
+
 <div id=content>
 	<div class="btn-group btn-group-justified" role=group>
-		<a class="btn btn-primary" href="#">密码登录</a>
+		<span class="btn btn-primary">密码登录</span>
 		<a class="btn btn-default" href="<?php echo base_url('login_sms') ?>">短信登录</a>
 	</div>
 
@@ -41,6 +43,16 @@
 				<div class=input-group>
 					<span class="input-group-addon"><i class="fa fa-mobile fa-fw" aria-hidden=true></i></span>
 					<input class=form-control name=mobile type=tel value="<?php echo $this->input->post('mobile')? set_value('mobile'): $this->input->cookie('mobile') ?>" size=11 pattern="\d{11}" placeholder="手机号" required>
+				</div>
+			</div>
+
+			<div class=form-group>
+				<label for=captcha_verify>图片验证码</label>
+				<div class=input-group>
+					<input id=captcha-verify class=form-control name=captcha_verify type=number max=9999 min=0001 step=1 size=4 placeholder="请输入图片验证码" required>
+					<span id=captcha-image class="input-group-addon">
+						<img src="<?php echo base_url('captcha') ?>">
+					</span>
 				</div>
 			</div>
 

@@ -2,15 +2,16 @@
 	#content {padding-top:2rem;}
 	form {padding-top:2rem;}
 
-	#captcha-image {width:80px;height:34px;position:relative;top:-34px;float:right}
+	#captcha-image {padding:0;min-width:100px;}
+		#captcha-image img {width:100%;height:100%;}
 </style>
 
-<script src="/js/main.js"></script>
+<script src="/js/form.js"></script>
 
 <div id=content>
 	<div class="btn-group btn-group-justified" role=group>
 		<a class="btn btn-default" href="<?php echo base_url('login') ?>">密码登录</a>
-		<a class="btn btn-primary" href="#">短信登录</a>
+		<span class="btn btn-primary">短信登录</span>
 	</div>
 
 	<?php
@@ -31,7 +32,9 @@
 				<label for=captcha_verify>图片验证码</label>
 				<div class=input-group>
 					<input id=captcha-verify class=form-control name=captcha_verify type=number max=9999 min=0001 step=1 size=4 placeholder="请输入图片验证码" required>
-					<img id=captcha-image src="<?php echo base_url('captcha') ?>">
+					<span id=captcha-image class="input-group-addon">
+						<img src="<?php echo base_url('captcha') ?>">
+					</span>
 				</div>
 			</div>
 
@@ -46,7 +49,7 @@
 			</div>
 		</fieldset>
 
-		<p>点击“确定”，即表示您已完整阅读并同意<a title="查看用户协议详细内容" href="<?php echo base_url('article/user-agreement') ?>" target=_blank>用户协议</a>。</p>
+		<p class="text-center">点击“确定”，即表示您已完整阅读并同意<a title="查看用户协议详细内容" href="<?php echo base_url('article/user-agreement') ?>" target=_blank>《用户协议》</a>。</p>
 		
 		<div class=form-group>
 		    <div class="col-xs-12 col-sm-offset-2 col-sm-2">
