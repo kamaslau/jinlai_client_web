@@ -124,13 +124,18 @@
 					foreach ($data['item'] as $key => $value):
 						$user_data[$key] = $value;
 					endforeach;
-					$user_data['time_expire_login'] = time() + 60*60*24 * 90; // 默认登录状态保持90天
+					$user_data['time_expire_login'] = time() + 60*60*24 *30; // 默认登录状态保持30天
 					$this->session->set_userdata($user_data);
 
-					// 将管理员手机号写入cookie并保存1个月
-					$this->input->set_cookie('mobile', $data['item']['mobile'], 60*60*24*30, COOKIE_DOMAIN);
-					// 转到首页
-					redirect( base_url() );
+					// 将用户手机号写入cookie并保存30天
+					$this->input->set_cookie('mobile', $data['item']['mobile'], 60*60*24 *30, COOKIE_DOMAIN);
+					
+					// 若用户已设置密码则转到首页，否则转到密码设置页
+					if ( !empty($data['item']['password']) ):
+						redirect( base_url() );
+					else:
+						redirect( base_url('password_set') );
+					endif;
 
 				endif;
 
@@ -198,6 +203,52 @@
 				'title' => '短信登录/注册',
 				'class' => $this->class_name.' login-sms',
 			);
+			
+			$this->form_validation->set_rules('mobile', '手机号', 'trim|required|exact_length[11]');
+			$this->form_validation->set_rules('sms_id', '短信ID', 'trim|required|is_natural_no_zero');
+			$this->form_validation->set_rules('captcha', '短信验证码', 'trim|required|exact_length[6]|is_natural_no_zero');
+
+			if ($this->form_validation->run() === FALSE):
+				$data['error'] = validation_errors();
+
+			else:
+				$data_to_search = array(
+					'mobile' => $this->input->post('mobile'),
+					'sms_id' => $this->input->post('sms_id'),
+					'captcha' => $this->input->post('captcha'),
+				);
+
+				// 从API服务器获取相应详情信息
+				$params = $data_to_search;
+				$url = api_url($this->class_name. '/login_sms');
+				$result = $this->curl->go($url, $params, 'array');
+
+				if ($result['status'] !== 200):
+					$data['error'] = $result['content']['error']['message'];
+
+				else:
+					// 获取用户信息
+					$data['item'] = $result['content'];
+					// 将信息键值对写入session
+					foreach ($data['item'] as $key => $value):
+						$user_data[$key] = $value;
+					endforeach;
+					$user_data['time_expire_login'] = time() + 60*60*24 *30; // 默认登录状态保持30天
+					$this->session->set_userdata($user_data);
+
+					// 将用户手机号写入cookie并保存30天
+					$this->input->set_cookie('mobile', $data['item']['mobile'], 60*60*24 *30, COOKIE_DOMAIN);
+
+					// 若用户已设置密码则转到首页，否则转到密码设置页
+					if ( !empty($data['item']['password']) ):
+						redirect( base_url() );
+					else:
+						redirect( base_url('password_set') );
+					endif;
+
+				endif;
+
+			endif;
 
 			$this->load->view('templates/header', $data);
 			$this->load->view($this->view_root.'/login_sms', $data);

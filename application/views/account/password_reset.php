@@ -2,11 +2,11 @@
 	#content {padding-top:2rem;}
 	form {padding-top:2rem;}
 	
-	#captcha-image {padding:0;min-width:100px;}
+	#captcha-image,#sms-send {padding:0;min-width:100px;}
 		#captcha-image img {width:100%;height:100%;}
 
-	/* 宽度在768像素以上的设备 */
-	@media only screen and (min-width:769px)
+	/* 宽度在750像素以上的设备 */
+	@media only screen and (min-width:751px)
 	{
 
 	}
@@ -24,6 +24,8 @@
 	}
 </style>
 
+<script src="/js/form.js"></script>
+
 <div id=content class=container>
 	<?php
 		if ( !empty($error) ) echo '<div class="alert alert-warning" role=alert>'.$error.'</div>'; // 若有错误提示信息则显示
@@ -31,6 +33,8 @@
 		echo form_open('password_reset', $attributes);
 	?>
 		<fieldset>
+			<input name=sms_id type=hidden>
+
 			<div class=form-group>
 				<label for=mobile>手机号</label>
 				<div class=input-group>

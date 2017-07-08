@@ -2,9 +2,26 @@
 	#content {padding-top:2rem;}
 	form {padding-top:2rem;}
 
-	#captcha-image {padding:0;min-width:100px;}
+	#captcha-image,#sms-send {padding:0;min-width:100px;}
 		#captcha-image img {width:100%;height:100%;}
-</style>
+		/* 宽度在750像素以上的设备 */
+		@media only screen and (min-width:751px)
+		{
+
+		}
+	
+		/* 宽度在960像素以上的设备 */
+		@media only screen and (min-width:961px)
+		{
+
+		}
+
+		/* 宽度在1280像素以上的设备 */
+		@media only screen and (min-width:1281px)
+		{
+
+		}
+	</style>
 
 <script src="/js/form.js"></script>
 
@@ -20,6 +37,8 @@
 		echo form_open('login_sms', $attributes);
 	?>
 		<fieldset>
+			<input name=sms_id type=hidden>
+			
 			<div class=form-group>
 				<label for=mobile>手机号</label>
 				<div class=input-group>

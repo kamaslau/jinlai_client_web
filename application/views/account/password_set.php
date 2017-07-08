@@ -22,6 +22,8 @@
 </style>
 
 <div id=content class=container>
+	<p class="bg-info text-center">请设置您的账户密码</p>
+	
 	<?php
 		if ( !empty($error) ) echo '<div class="alert alert-warning" role=alert>'.$error.'</div>'; // 若有错误提示信息则显示
 		$attributes = array('class' => 'form-password-set col-xs-12 col-md-6 col-md-offset-3', 'role' => 'form');

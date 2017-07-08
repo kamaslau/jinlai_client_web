@@ -6,8 +6,7 @@ $(function(){
 	var url_sms = 'https://api.517ybang.com/sms/create';
 
 	// 清空cookie中的sms_id记录
-	//$.cookie('sms_id', '', {expires:-1});
-	//Cookies.remove('sms_id');
+	Cookies.remove('sms_id');
 
 	// 更新图片验证码
 	$('#captcha-image img').click(function(){
@@ -17,6 +16,7 @@ $(function(){
 	});
 
 	/**
+	 * 检查手机号格式
 	 * @param string mobile 需要接收短信的手机号
 	 * @param boolean check_length 是否需要检查字符串长度
 	 */
@@ -42,8 +42,8 @@ $(function(){
 		}
 	}
 
-	// 发送验证码短信
-	$('a#sms-send').click(function(){
+	// 点击短信发送按钮后的业务流程
+	var handler = function(){
 		// 检查图片验证码是否已填写
 		var captcha_verify = $('[name=captcha_verify]').val();
 		if ( isNaN(captcha_verify) )
@@ -58,16 +58,16 @@ $(function(){
 		var today = new Date();
 		today = today.getDate();
 		// 检查当日是否已发送超过5条短信
-		// if (Cookies.get('sms_today') == today && Cookies.get('sms_today_sent') === 5)
-// 		{
-// 			alert('今天短信获取过多，请明天再试');
-// 			return false;
-// 		}
-// 		if ((timestamp - Cookies.get('sms_last_sent')) < 59)
-// 		{
-// 			alert('短信发送过于频繁，请稍候再试');
-// 			return false;
-// 		}
+		if (Cookies.get('sms_today') == today && Cookies.get('sms_today_sent') === 5)
+ 		{
+ 			alert('今天短信获取过多，请明天再试');
+ 			return false;
+ 		}
+ 		if ((timestamp - Cookies.get('sms_last_sent')) < 59)
+ 		{
+ 			alert('短信发送过于频繁，请稍候再试');
+ 			return false;
+ 		}
 
 		// 获取mobile字段值，验证该字段是否已被输入11位数字，设置sms_send按钮为不可用状态
 		var mobile = $.trim( $('[name=mobile]').val() );
@@ -93,7 +93,10 @@ $(function(){
 			"json" // 对返回数据以JSON格式进行解析
 		); 
 		return false;
-	});
+	}
+	
+	// 发送验证码短信
+	$('a#sms-send').click(handler);
 
 	// 对API返回数据进行处理
 	function api_callback(data)
@@ -102,9 +105,10 @@ $(function(){
 		{
 			alert(data.content.message);
 
-			// 记录短信ID
+			// 记录短信ID并赋值到相应字段
 			Cookies.set('sms_id', data.content.sms_id);
-			
+			$('[name=sms_id]').val(data.content.sms_id);
+
 			var timestamp = Date.parse(new Date()) / 1000;
 			// 记录最后成功发送短信时间、本日日期，以及本日已发短信数
 			Cookies.set('sms_last_sent', timestamp);
@@ -118,30 +122,31 @@ $(function(){
 				Cookies.set('sms_today_sent', Cookies.get('sms_today_sent') + 1);
 			}
 
-			$('a#sms-send').text('60').attr('disabled', 'disabled');
-			var current_time = 60;
-			var t;
-			countdown();
+			// 倒计时60秒后重新激活发送按钮
+			$('a#sms-send').unbind('click').text('60');
+		    var interval_id = setInterval(countdown, 1000);
+			// 倒计时并更新短信发送按钮HTML
+			function countdown()
+			{
+				var current_second = $('a#sms-send').text();
+				console.log('from '+current_second+' to');
+				if (current_second < 1)
+				{
+					clearInterval(interval_id);
+					$('a#sms-send').text('获取验证码').bind('click', handler);
+				} else {
+					current_second = current_second - 1;
+					$('a#sms-send').text(current_second);
+				}
+			}
 
-			$('[name=captcha],button').removeAttr('disabled');
+			$('[name=captcha],button[type=submit]').removeAttr('disabled');
 			$('[name=captcha]').focus();
 		}
-		else // 若失败，提示并激活sms-send按钮
+		else // 若失败，提示
 		{
 			alert(data.content.error.message);
-			$('a#sms-send').text('获取验证码').removeAttr('disabled');
 		}
-	}
-
-	// 倒计时并更新短信发送按钮HTML
-	function countdown()
-	{
-		$('a#sms-send').text() = current_time;
-
-		current_time = current_time - 1;
-		t = setTimeout("countdown()", 1000);
-
-		console.log(current_time);
 	}
 
 });
