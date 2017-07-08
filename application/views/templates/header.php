@@ -32,6 +32,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 		<script src="https://cdn.key2all.com/js/jquery/new.js"></script>
+		<script defer src="https://cdn.key2all.com/js/jquery/jquery.cookie.js"></script>
 		<!--<script defer src="/js/xx.js"></script>-->
 		<!--<script asnyc src="/js/xx.js"></script>-->
 
@@ -80,47 +81,60 @@
 				<a id=to-mine class=nav-icon href="<?php echo base_url('mine') ?>">
 					<i class="fa fa-user" aria-hidden=true></i>
 				</a>
-				<script>
-				// 手机版菜单的显示和隐藏
-				$(function(){
-					$('#nav-switch').click(
-						function(){
-							var nav_icon = $(this).children('i');
-							var current_class = nav_icon.attr('class');
-							if (current_class == 'fa fa-bars'){
-								nav_icon.attr('class', 'fa fa-minus');
-							} else {
-								nav_icon.attr('class', 'fa fa-bars');
-							}
-							$('#nav-header').toggle();
-							return false;
-						}
-					);
-				});
-				</script>
-
-				<nav id=nav-header role=navigation>
-					<ul id=main-nav class=horizontal>
-						<li<?php if (strpos($class, 'home') !== FALSE) echo ' class=active' ?>><a title="首页" href="<?php echo base_url() ?>">首页</a></li>
-						<li<?php if (strpos($class, 'article') !== FALSE) echo ' class=active' ?>><a title="文章" href="<?php echo base_url('article') ?>">文章</a></li>
-					</ul>
-				</nav>
-				<!--
-				<div id=user-panel>
-					<ul id=user-actions class=horizontal>
-						<?php if ( !isset($this->session->time_expire_login) ): ?>
-						<li><a title="登录" href="<?php echo base_url('login') ?>">登录</a></li>
-						<?php else: ?>
-						<li><a title="个人中心" href="<?php echo base_url('mine') ?>">我的</a></li>
-						<li><a title="退出" href="<?php echo base_url('logout') ?>">退出</a></li>
-						<?php endif ?>
-					</ul>
-					<p id=tel-header>
-						<i class="fa fa-phone" aria-hidden=true></i> 400-882-0532
-					</p>
-				</div>
-				-->
 			</div>
 		</header>
+
+		<nav id=nav-header role=navigation>
+			<ul id=main-nav class=horizontal>
+				<li<?php if (strpos($class, 'home') !== FALSE) echo ' class=active' ?>><a title="首页" href="<?php echo base_url() ?>">首页</a></li>
+				<li<?php if (strpos($class, 'article') !== FALSE) echo ' class=active' ?>><a title="文章" href="<?php echo base_url('article') ?>">文章</a></li>
+			</ul>
+			<div id=user-panel>
+				<ul id=user-actions class=horizontal>
+					<?php if ( !isset($this->session->time_expire_login) ): ?>
+					<li><a title="登录" href="<?php echo base_url('login') ?>">登录</a></li>
+					<?php else: ?>
+					<li><a title="个人中心" href="<?php echo base_url('mine') ?>">我的</a></li>
+					<li><a title="退出" href="<?php echo base_url('logout') ?>">退出</a></li>
+					<?php endif ?>
+				</ul>
+				<p id=tel-header>
+					<i class="fa fa-phone" aria-hidden=true></i> 400-882-0532
+				</p>
+			</div>
+		</nav>
+
+		<script>
+		// 手机版菜单的显示和隐藏
+		$(function(){
+			var nav_icon = $('#nav-switch>i');
+			$('#nav-switch').click(
+				function(){
+					var current_class = nav_icon.attr('class');
+					if (current_class == 'fa fa-bars'){
+						// 展开页首导航栏
+						nav_icon.attr('class', 'fa fa-minus');
+						$('#nav-header').stop().fadeIn(400);
+						$('#main-nav').animate({width:"85%"}, 300);
+					} else {
+						hide_nav_header();
+					}
+					return false;
+				}
+			);
+			
+			$('#nav-header').click(function(){
+				hide_nav_header();
+			});
+			
+			function hide_nav_header()
+			{
+				// 收起页首导航栏
+				nav_icon.attr('class', 'fa fa-bars');
+				$('#main-nav').stop().animate({width:"0"}, 300);
+				$('#nav-header').fadeOut(200);
+			}
+		});
+		</script>
 
 		<main id=maincontainer role=main>
