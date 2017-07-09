@@ -38,9 +38,17 @@ noscript {color:#032f62;background-color:#dbedff;padding:16px;border:1px solid r
 
 /* 页首导航栏 */
 #nav-header {background-color:rgba(0,0,0,0.5);position:fixed;top:0;bottom:0;left:0;right:0;z-index:102;overflow:hidden;display:none;} /*窄屏下默认不显示页首导航栏*/
-	#main-nav {color:#fff;background-color:#ff484c;width:0;/* to width:85% */;height:100%;padding-top:44px;overflow-y:scroll;}
-		#main-nav li {text-align:center;width:100%;height:44px;line-height:44px;display:inline-block;}
-			#main-nav a {color:#fff;width:100%;height:100%;display:block;}
+	#nav-header>.container {color:#fff;background-color:#fff;width:0;/* to width:85% */;height:100%;padding-top:44px;overflow-y:scroll;margin:0;}
+		#nav-header>.container>* {width:100%;padding:0 2rem;display:block;overflow:hidden;}
+
+		#user-info {background-color:#eee;}
+
+		#user-records {text-align:center;}
+
+		#main-nav {background-color:#ff484c;}
+			#main-nav li {width:100%;height:44px;line-height:44px;display:inline-block;}
+				#main-nav a {color:#fff;width:100%;height:100%;display:block;}
+		#tel-flatform-public {color:#999;text-align:right;height:44px;line-height:44px;position:absolute;top:0;}
 
 /* 主导航栏 */
 #nav-main {text-align:center;background-color:#fff;position:fixed;bottom:0;left:0;right:0;height:6rem;z-index:101;}

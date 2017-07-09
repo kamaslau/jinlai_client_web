@@ -2,7 +2,7 @@
 	#content {padding-top:2rem;}
 	form {padding-top:2rem;}
 
-	#captcha-image,#sms-send {padding:0;min-width:100px;}
+	#captcha-image {padding:0;min-width:100px;}
 		#captcha-image img {width:100%;height:100%;}
 		/* 宽度在750像素以上的设备 */
 		@media only screen and (min-width:751px)
@@ -62,7 +62,7 @@
 				<div class=input-group>
 					<input id=captcha-input class=form-control name=captcha type=number max=999999 step=1 size=6 pattern="\d{6}" placeholder="请输入短信验证码" disabled required>
 					<span class="input-group-addon">
-						<a id=sms-send class=append href="#">获取验证码</a>
+						<a id=sms-send href="#">获取验证码</a>
 					</span>
 				</div>
 			</div>

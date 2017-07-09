@@ -25,13 +25,13 @@
 		public function __construct()
 		{
 			parent::__construct();
-			
+
 			// 向类属性赋值
 			$this->class_name = strtolower(__CLASS__);
 			$this->class_name_cn = '图片验证码'; // 改这里……
 			$this->table_name = 'captcha'; // 和这里……
 			$this->id_name = 'captcha_id';  // 还有这里，OK，这就可以了
-			
+
 			// 初始化模型
 			$this->basic_model->table_name = $this->table_name;
 			$this->basic_model->id_name = $this->id_name;
@@ -47,9 +47,12 @@
 		        $code .= rand(0, 9); 
 		    }
 
-			// 将验证码信息存入数据库
+			// 将验证码信息存入数据库及SESSION
+			$time_expire = time() + 60*5; // 5分钟有效
+			$this->session->captcha = $code;
+			$this->session->captcha_time_expire = $time_expire;
 			$data_to_create = array(
-			    'time_expire' => time() + 60*3, // 3分钟内有效
+			    'time_expire' => $time_expire,
 			    'user_ip' => $this->input->ip_address(),
 			    'captcha' => $code,
 			);

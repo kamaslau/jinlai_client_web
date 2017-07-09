@@ -31,25 +31,25 @@
 			<li class=col-xs-3>
 				<a title="商品收藏" href="<?php echo base_url('fav_item') ?>">
 					<span><?php echo $count['fav_item'] ?></span>
-					收藏夹
+					收藏宝贝
 				</a>
 			</li>
 			<li class=col-xs-3>
 				<a title="商家收藏" href="<?php echo base_url('fav_biz') ?>">
 					<span><?php echo $count['fav_biz'] ?></span>
-					关注商家
+					关注店铺
 				</a>
 			</li>
 			<li class=col-xs-3>
-				<a title="优惠券" href="<?php echo base_url('coupon') ?>">
+				<a title="卡券" href="<?php echo base_url('coupon') ?>">
 					<span><?php echo $count['coupon'] ?></span>
-					优惠券
+					卡券
 				</a>
 			</li>
 			<li class=col-xs-3>
 				<a title="浏览记录" href="<?php echo base_url('footprint') ?>">
 					<span><?php echo $count['footprint'] ?></span>
-					浏览记录
+					我的足迹
 				</a>
 			</li>
 		</ul>
@@ -81,6 +81,12 @@
 				<i class="fa fa-undo" aria-hidden="true"></i>
 				<a title="退款订单" href="<?php echo base_url('order?status=refund') ?>">退款/售后</a>
 			</li>
+		</ul>
+	</section>
+	
+	<section id=address-info>
+		<ul id=list-order class="row list">
+			<li><a title="我的地址" href="<?php echo base_url('address/mine') ?>">我的地址</a></li>
 		</ul>
 	</section>
 

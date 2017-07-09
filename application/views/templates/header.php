@@ -85,22 +85,55 @@
 		</header>
 
 		<nav id=nav-header role=navigation>
-			<ul id=main-nav class=horizontal>
-				<li<?php if (strpos($class, 'home') !== FALSE) echo ' class=active' ?>><a title="首页" href="<?php echo base_url() ?>">首页</a></li>
-				<li<?php if (strpos($class, 'article') !== FALSE) echo ' class=active' ?>><a title="文章" href="<?php echo base_url('article') ?>">文章</a></li>
-			</ul>
-			<div id=user-panel>
-				<ul id=user-actions class=horizontal>
-					<?php if ( !isset($this->session->time_expire_login) ): ?>
-					<li><a title="登录" href="<?php echo base_url('login') ?>">登录</a></li>
-					<?php else: ?>
-					<li><a title="个人中心" href="<?php echo base_url('mine') ?>">我的</a></li>
-					<li><a title="退出" href="<?php echo base_url('logout') ?>">退出</a></li>
-					<?php endif ?>
+			<div class=container>
+				<div id=user-info class=row>
+					<?php
+						// 用户名
+						$username = !empty($this->session->nickname)? $this->session->nickname: $this->session->mobile;
+						// 用户头像
+						$avatar = !empty($this->session->avatar)? $this->session->avatar: NULL;
+					?>
+					<figure class=col-xs-4>
+						<a title="<?php echo $username ?>" href="<?php echo base_url('mine') ?>">
+							<img class="img-circle" alt="<?php echo $username ?>" src="<?php echo $avatar ?>">
+						</a>
+					</figure>
+					<div class=col-xs-8>
+						<a title="<?php echo $username ?>" href="<?php echo base_url('mine') ?>">
+							<h1><?php echo $username ?> <i class="fa fa-angle-right pull-right" aria-hidden=true></i></h1>
+						</a>
+					</div>
+				</div>
+				
+				<ul id=user-records class=horizontal>
+					<li class=col-xs-4><a title="收藏宝贝" href="<?php echo base_url('fav_item') ?>">收藏宝贝</a></li>
+					<li class=col-xs-4><a title="关注店铺" href="<?php echo base_url('fav_biz') ?>">关注店铺</a></li>
+					<li class=col-xs-4><a title="我的足迹" href="<?php echo base_url('footprint') ?>">我的足迹</a></li>
 				</ul>
-				<p id=tel-header>
+
+				<ul id=main-nav>
+					<li><a title="我的钱包" href="<?php echo base_url('balance/mine') ?>">我的钱包</a></li>
+					<li><a title="我的卡券" href="<?php echo base_url('coupon/mine') ?>">我的卡券</a></li>
+					<li><a title="我的订单" href="<?php echo base_url('order/mine') ?>">我的订单</a></li>
+					<li><a title="我的地址" href="<?php echo base_url('address/mine') ?>">我的地址</a></li>
+					<li><a title="邀请好友" href="<?php echo base_url('invite/mine') ?>">邀请好友</a></li>
+				</ul>
+
+				<div id=user-panel>
+					<ul id=user-actions class=horizontal>
+						<?php if ( !isset($this->session->time_expire_login) ): ?>
+						<li><a title="登录" href="<?php echo base_url('login') ?>">登录</a></li>
+						<?php else: ?>
+						<li><a title="设置" href="<?php echo base_url('setup') ?>">设置</a></li>
+						<li><a title="退出" href="<?php echo base_url('logout') ?>">退出</a></li>
+						<?php endif ?>
+					</ul>
+				</div>
+
+				<a id=tel-flatform-public href="tel:4008820532">
 					<i class="fa fa-phone" aria-hidden=true></i> 400-882-0532
-				</p>
+				</a>
+
 			</div>
 		</nav>
 
@@ -115,24 +148,27 @@
 						// 展开页首导航栏
 						nav_icon.attr('class', 'fa fa-minus');
 						$('#nav-header').stop().fadeIn(400);
-						$('#main-nav').animate({width:"85%"}, 300);
+						$('#nav-header>.container').animate({width:"85%"}, 300);
+						nav_icon.css('color', '#ff484c');
 					} else {
 						hide_nav_header();
 					}
 					return false;
 				}
 			);
-			
+
+			// 点击展开的菜单可将其隐藏
 			$('#nav-header').click(function(){
 				hide_nav_header();
 			});
-			
+
+			// 收起页首导航栏
 			function hide_nav_header()
 			{
-				// 收起页首导航栏
 				nav_icon.attr('class', 'fa fa-bars');
-				$('#main-nav').stop().animate({width:"0"}, 300);
+				$('#nav-header>.container').stop().animate({width:"0"}, 300);
 				$('#nav-header').fadeOut(200);
+				nav_icon.css('color', '#fff');
 			}
 		});
 		</script>

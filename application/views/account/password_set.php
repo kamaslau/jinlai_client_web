@@ -37,12 +37,12 @@
 					<input class=form-control name=password type=password placeholder="密码" autofocus required>
 				</div>
 			</div>
-			
+
 			<div class=form-group>
-				<label for=password2>确认密码</label>
+				<label for=password_confirm>确认密码</label>
 				<div class=input-group>
 					<span class="input-group-addon"><i class="fa fa-lock fa-fw" aria-hidden=true></i></span>
-					<input class=form-control name=password2 type=password placeholder="确认新密码" required>
+					<input class=form-control name=password_confirm type=password placeholder="确认新密码" required>
 				</div>
 			</div>
 		</fieldset>

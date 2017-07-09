@@ -36,7 +36,7 @@
 			$this->id_name = 'user_id';  // 还有这里，OK，这就可以了
 			$this->view_root = $this->class_name;
 		}
-		
+
 		/**
 		 * 我的
 		 *
@@ -46,6 +46,10 @@
 		{
 			// 若未登录，转到密码登录页
 			($this->session->time_expire_login > time()) OR redirect( base_url('login') );
+
+			// 若当前用户未设置密码，转到密码设置页
+			if ( empty($this->session->password) )
+				redirect( base_url('password_set') );
 
 			// 页面信息
 			$data = array(
@@ -96,7 +100,8 @@
 				'title' => '密码登录',
 				'class' => $this->class_name.' login',
 			);
-
+			
+			$this->form_validation->set_rules('captcha_verify', '图片验证码', 'trim|required|exact_length[4]|callback_verify_captcha');
 			$this->form_validation->set_rules('mobile', '手机号', 'trim|required|exact_length[11]|is_natural_no_zero');
 			$this->form_validation->set_rules('password', '密码', 'trim|required|min_length[6]|max_length[20]');
 
@@ -141,58 +146,15 @@
 
 			endif;
 
+			// 载入视图
 			$this->load->view('templates/header', $data);
 			$this->load->view($this->view_root.'/login', $data);
 			$this->load->view('templates/footer', $data);
-		}
+		} // end login
 
 		/**
-		 * 邮箱注册
-		 *
-		 * 使用邮箱及密码进行注册
-		 *
-		 * @param string $_POST['email']
-		 * @param string $_POST['password']
-		 * @param string $_POST['password2']
-		 * @return void
+		 * 短信登录/注册
 		 */
-		public function register()
-		{
-			// 若已登录，转到首页
-			!isset($this->session->time_expire_login) OR redirect( base_url() );
-
-			// 页面信息
-			$data = array(
-				'title' => '邮箱注册',
-				'class' => $this->class_name.' register',
-			);
-
-			$this->form_validation->set_rules('email', 'Email', 'trim|required|max_length[50]|valid_email');
-			$this->form_validation->set_rules('password', '密码', 'trim|required|min_length[6]|max_length[20]');
-			$this->form_validation->set_rules('password2', '确认密码', 'trim|required|matches[password]');
-
-			if ($this->form_validation->run() === FALSE):
-				$data['error'] = validation_errors();
-
-			else:
-				$data_to_create = array(
-					'mobile' => $this->input->post('mobile'),
-					'password' => sha1($this->input->post('password')),
-				);
-
-				// 从API服务器获取相应详情信息
-				$params = $data_to_search;
-				$url = api_url($this->class_name. '/register');
-				$result = $this->curl->go($url, $params, 'array');
-
-				if ($result['status'] !== 200):
-					$data['error'] = $result['content']['error']['message'];
-				else:
-				endif;
-
-			endif;
-		}
-
 		public function login_sms()
 		{
 			// 若已登录，转到首页
@@ -203,7 +165,8 @@
 				'title' => '短信登录/注册',
 				'class' => $this->class_name.' login-sms',
 			);
-			
+
+			$this->form_validation->set_rules('captcha_verify', '图片验证码', 'trim|required|exact_length[4]|callback_verify_captcha');
 			$this->form_validation->set_rules('mobile', '手机号', 'trim|required|exact_length[11]');
 			$this->form_validation->set_rules('sms_id', '短信ID', 'trim|required|is_natural_no_zero');
 			$this->form_validation->set_rules('captcha', '短信验证码', 'trim|required|exact_length[6]|is_natural_no_zero');
@@ -250,30 +213,82 @@
 
 			endif;
 
+			// 载入视图
 			$this->load->view('templates/header', $data);
 			$this->load->view($this->view_root.'/login_sms', $data);
 			$this->load->view('templates/footer', $data);
-		}
-		
+		} // end login_sms
+
+		/**
+		 * 密码设置
+		 *
+		 * 未设置密码的用户可以设置密码
+		 */
 		public function password_set()
 		{
+			// 若未登录，转到密码重置页
+			( $this->session->time_expire_login > time() ) OR redirect( base_url('password_reset') );
+
+			// 若当前用户已设置密码，转到密码修改页
+			if ( !empty($this->session->password) )
+				redirect( base_url('password_change') );
+
 			// 页面信息
 			$data = array(
 				'title' => '密码设置',
 				'class' => $this->class_name.' password-set',
 			);
 
-			$this->load->view('templates/header', $data);
-			$this->load->view($this->view_root.'/password_set', $data);
-			$this->load->view('templates/footer', $data);
-		}
+			$this->form_validation->set_rules('password', '密码', 'trim|required|min_length[6]|max_length[20]');
+			$this->form_validation->set_rules('password_confirm', '确认密码', 'trim|required|matches[password]');
+
+			if ($this->form_validation->run() === FALSE):
+				$data['error'] = validation_errors();
+				$this->load->view('templates/header', $data);
+				$this->load->view($this->view_root.'/password_set', $data);
+				$this->load->view('templates/footer', $data);
+
+			else:
+				$data_to_search = array(
+					'user_id' => $this->session->user_id,
+					'password' => $this->input->post('password'),
+					'password_confirm' => $this->input->post('password_confirm'),
+				);
+
+				// 从API服务器获取相应详情信息
+				$params = $data_to_search;
+				$url = api_url($this->class_name. '/password_set');
+				$result = $this->curl->go($url, $params, 'array');
+
+				if ($result['status'] !== 200):
+					$data['error'] = $result['content']['error']['message'];
+					$this->load->view('templates/header', $data);
+					$this->load->view($this->view_root.'/password_set', $data);
+					$this->load->view('templates/footer', $data);
+
+				else:
+					// 更新本地用户密码字段
+					$this->session->password = 'set';
+
+					$data['title'] = '密码操作结果';
+					$data['class'] = 'success';
+					$data['content'] = '成功设置密码';
+					
+					$this->load->view('templates/header', $data);
+					$this->load->view($this->view_root.'/result', $data);
+					$this->load->view('templates/footer', $data);
+
+				endif;
+
+			endif;
+		} // end password_set
 
 		/**
 		 * 密码修改
 		 *
 		 * 用户登录后可修改密码
 		 *
-		 * @param string $_POST['old_password']
+		 * @param string $_POST['password_current']
 		 * @param string $_POST['password']
 		 * @param string $_POST['password2']
 		 * @return void
@@ -283,46 +298,74 @@
 			// 若未登录，转到密码重置页
 			($this->session->time_expire_login > time()) OR redirect( base_url('password_reset') );
 
+			// 若当前用户未设置密码，转到密码设置页
+			if ( empty($this->session->password) )
+				redirect( base_url('password_set') );
+
 			// 页面信息
 			$data = array(
 				'title' => '修改密码',
 				'class' => $this->class_name.' password-change',
 				'id' => $this->session->user_id,
 			);
-			$data1 = array(
-				'user_id' => $this->session->user_id,
-				'password' => sha1($this->input->post('password'))
-			);
-			var_dump($data1);
 
 			// 待验证的表单项
-			$this->form_validation->set_rules('old_password', '原密码', 'trim|required|min_length[6]|max_length[20]');
+			$this->form_validation->set_rules('password_current', '原密码', 'trim|required|min_length[6]|max_length[20]');
 			$this->form_validation->set_rules('password', '新密码', 'trim|required|min_length[6]|max_length[20]');
-			$this->form_validation->set_rules('password2', '确认密码', 'trim|required|matches[password]');
+			$this->form_validation->set_rules('password_confirm', '确认密码', 'trim|required|matches[password]');
+			
+			if ($this->form_validation->run() === FALSE):
+				$data['error'] = validation_errors();
+				$this->load->view('templates/header', $data);
+				$this->load->view($this->view_root.'/password_change', $data);
+				$this->load->view('templates/footer', $data);
 
-			if ($this->input->post('old_password') === $this->input->post('password')):
-				$data['error'] = '新密码需要不同于原密码';
+			// 新密码需要不同于原密码
+			elseif ($this->input->post('password_current') === $this->input->post('password')):
+				$data['error'] = '请设置不同于原密码的新密码';
 
 				$this->load->view('templates/header', $data);
 				$this->load->view($this->view_root.'/password_change', $data);
 				$this->load->view('templates/footer', $data);
-				exit();
+
+			else:
+				// 需要存入数据库的信息
+				$data_to_edit = array(
+					'user_id' => $this->session->user_id,
+					'password_current' => $this->input->post('password_current'),
+					'password' => $this->input->post('password'),
+					'password_confirm' => $this->input->post('password_confirm'),
+				);
+
+				// 从API服务器获取相应详情信息
+				$params = $data_to_edit;
+				$url = api_url($this->class_name. '/password_change');
+				$result = $this->curl->go($url, $params, 'array');
+
+				if ($result['status'] !== 200):
+					$data['error'] = $result['content']['error']['message'];
+					$this->load->view('templates/header', $data);
+					$this->load->view($this->view_root.'/password_change', $data);
+					$this->load->view('templates/footer', $data);
+
+				else:
+					$data['title'] = '密码操作结果';
+					$data['class'] = 'success';
+					$data['content'] = '成功修改密码';
+					
+					$this->load->view('templates/header', $data);
+					$this->load->view($this->view_root.'/result', $data);
+					$this->load->view('templates/footer', $data);
+
+				endif;
+
 			endif;
-
-			// 需要存入数据库的信息
-			$data_to_edit = array(
-				'password' => sha1($this->input->post('password'))
-			);
-
-			$this->load->view('templates/header', $data);
-			$this->load->view($this->view_root.'/password_change', $data);
-			$this->load->view('templates/footer', $data);
-		}
+		} // end password_change
 
 		/**
-		 * TODO 密码重置
+		 * 密码重置
 		 *
-		 * 用户未登录时可重置密码
+		 * 用户使用短信验证码重置密码
 		 *
 		 * @param string $_POST['password']
 		 * @param string $_POST['password_new']
@@ -331,19 +374,62 @@
 		 */
 		public function password_reset()
 		{
-			// 若已登录，转到密码修改页
-			!isset($this->session->time_expire_login) OR redirect( base_url('password_change') );
+			//DECREPTAED 若已登录，转到密码修改页
+			//!isset($this->session->time_expire_login) OR redirect( base_url('password_change') );
+
+			// 清除当前SESSION
+			$this->session->sess_destroy();
 
 			// 页面信息
 			$data = array(
 				'title' => '密码重置',
 				'class' => $this->class_name.' password-reset',
 			);
-			
-			$this->load->view('templates/header', $data);
-			$this->load->view($this->view_root.'/password_reset', $data);
-			$this->load->view('templates/footer', $data);
-		}
+
+			// 待验证的表单项
+			$this->form_validation->set_rules('captcha_verify', '图片验证码', 'trim|required|exact_length[4]|callback_verify_captcha');
+			$this->form_validation->set_rules('mobile', '手机号', 'trim|required|exact_length[11]');
+			$this->form_validation->set_rules('sms_id', '短信ID', 'trim|required|is_natural_no_zero');
+			$this->form_validation->set_rules('captcha', '短信验证码', 'trim|required|exact_length[6]|is_natural_no_zero');
+			$this->form_validation->set_rules('password', '密码', 'trim|required|min_length[6]|max_length[20]');
+			$this->form_validation->set_rules('password_confirm', '确认密码', 'trim|required|matches[password]');
+
+			if ($this->form_validation->run() === FALSE):
+				$data['error'] = validation_errors();
+				$this->load->view('templates/header', $data);
+				$this->load->view($this->view_root.'/password_reset', $data);
+				$this->load->view('templates/footer', $data);
+
+			else:
+				$data_to_edit = array(
+					'user_id' => $this->session->user_id,
+					'mobile' => $this->input->post('mobile'),
+					'sms_id' => $this->input->post('sms_id'),
+					'captcha' => $this->input->post('captcha'),
+					'password' => $this->input->post('password'),
+					'password_confirm' => $this->input->post('password_confirm'),
+				);
+
+				// 从API服务器获取相应详情信息
+				$params = $data_to_edit;
+				$url = api_url($this->class_name. '/password_reset');
+				$result = $this->curl->go($url, $params, 'array');
+
+				if ($result['status'] !== 200):
+					$data['error'] = $result['content']['error']['message'];
+					$this->load->view('templates/header', $data);
+					$this->load->view($this->view_root.'/password_reset', $data);
+					$this->load->view('templates/footer', $data);
+
+				else:
+					// 转到密码登录页
+					redirect( base_url('login') );
+
+				endif;
+
+			endif;
+
+		} // end password_reset
 
 		/**
 		 * 退出账户
@@ -358,7 +444,73 @@
 
 			// 转到密码登录页
 			redirect( base_url('login') );
+		} // end logout
+
+		/**
+		 * 验证图片验证码是否有效
+		 *
+		 * @params $captcha string 图片验证码内容
+		 */
+		public function verify_captcha($captcha)
+		{
+			// 依次验证是否存在有效期之内的图片验证码、验证码是否正确
+			if (time() > $this->session->captcha_time_expire):
+				$this->form_validation->set_message('verify_captcha', '验证码已失效');
+				return FALSE;
+			elseif ($captcha !== $this->session->captcha):
+				$this->form_validation->set_message('verify_captcha', '验证码错误');
+				return FALSE;
+			else:
+				return TRUE;
+			endif;
 		}
+
+		/**
+		 * TODO 邮箱注册；暂不开放此功能
+		 *
+		 * 使用邮箱及密码进行注册
+		 *
+		 * @param string $_POST['email']
+		 * @param string $_POST['password']
+		 * @param string $_POST['password2']
+		 * @return void
+		 */
+		public function register()
+		{
+			// 若已登录，转到首页
+			!isset($this->session->time_expire_login) OR redirect( base_url() );
+
+			// 页面信息
+			$data = array(
+				'title' => '邮箱注册',
+				'class' => $this->class_name.' register',
+			);
+
+			$this->form_validation->set_rules('email', 'Email', 'trim|required|max_length[50]|valid_email');
+			$this->form_validation->set_rules('password', '密码', 'trim|required|min_length[6]|max_length[20]');
+			$this->form_validation->set_rules('password2', '确认密码', 'trim|required|matches[password]');
+
+			if ($this->form_validation->run() === FALSE):
+				$data['error'] = validation_errors();
+
+			else:
+				$data_to_create = array(
+					'mobile' => $this->input->post('mobile'),
+					'password' => sha1($this->input->post('password')),
+				);
+
+				// 从API服务器获取相应详情信息
+				$params = $data_to_search;
+				$url = api_url($this->class_name. '/register');
+				$result = $this->curl->go($url, $params, 'array');
+
+				if ($result['status'] !== 200):
+					$data['error'] = $result['content']['error']['message'];
+				else:
+				endif;
+
+			endif;
+		} // end register
 	}
 
 /* End of file Account.php */

@@ -29,10 +29,10 @@
 	?>
 		<fieldset>
 			<div class=form-group>
-				<label for=password_old class="col-sm-2 control-label">现密码</label>
+				<label for=password_current class="col-sm-2 control-label">原密码</label>
 				<div class=input-group>
 					<span class="input-group-addon"><i class="fa fa-lock fa-fw" aria-hidden=true></i></span>
-					<input class=form-control name=password_old type=password placeholder="现密码" autofocus required>
+					<input class=form-control name=password_current type=password placeholder="原密码" autofocus required>
 				</div>
 			</div>
 
@@ -40,15 +40,15 @@
 				<label for=password class="col-sm-2 control-label">新密码</label>
 				<div class=input-group>
 					<span class="input-group-addon"><i class="fa fa-lock fa-fw" aria-hidden=true></i></span>
-					<input class=form-control name=password type=password placeholder="新密码" required>
+					<input class=form-control name=password type=password placeholder="需与原密码不同" required>
 				</div>
 			</div>
 
 			<div class=form-group>
-				<label for=password2 class="col-sm-2 control-label">确认新密码</label>
+				<label for=password_confirm>确认密码</label>
 				<div class=input-group>
 					<span class="input-group-addon"><i class="fa fa-lock fa-fw" aria-hidden=true></i></span>
-					<input class=form-control name=password2 type=password placeholder="确认新密码" required>
+					<input class=form-control name=password_confirm type=password placeholder="确认新密码" required>
 				</div>
 			</div>
 		</fieldset>
@@ -60,5 +60,8 @@
 		</div>
 
 	</form>
-
+	
+	<ul id=actions class="col-xs-12 col-sm-offset-2 col-sm-2">
+		<li><a title="忘记密码" class="btn btn-default btn-block" href="<?php echo base_url('password_reset') ?>">忘记密码</a></li>
+	</ul>
 </div>
