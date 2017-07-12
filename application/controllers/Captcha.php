@@ -47,16 +47,10 @@
 		        $code .= rand(0, 9); 
 		    }
 
-			// 将验证码信息存入数据库及SESSION
+			// 将验证码信息存入SESSION
 			$time_expire = time() + 60*5; // 5分钟有效
 			$this->session->captcha = $code;
 			$this->session->captcha_time_expire = $time_expire;
-			$data_to_create = array(
-			    'time_expire' => $time_expire,
-			    'user_ip' => $this->input->ip_address(),
-			    'captcha' => $code,
-			);
-			@$result = $this->basic_model->create($data_to_create);
 
 		    // 创建图片，定义颜色值 
 		    header("Content-type:image/PNG");
