@@ -38,7 +38,7 @@
 		}
 
 		/**
-		 * 我的
+		 * TODO 我的
 		 *
 		 * 个人中心页
 		 */
@@ -86,8 +86,6 @@
 		 *
 		 * 使用手机号及密码进行账户登录
 		 *
-		 * @param string $_POST['mobile']
-		 * @param string $_POST['password']
 		 * @return void
 		 */
 		public function login()
@@ -154,6 +152,8 @@
 
 		/**
 		 * 短信登录/注册
+         *
+         * @return void
 		 */
 		public function login_sms()
 		{
@@ -223,6 +223,8 @@
 		 * 密码设置
 		 *
 		 * 未设置密码的用户可以设置密码
+         *
+         * @return void
 		 */
 		public function password_set()
 		{
@@ -288,9 +290,6 @@
 		 *
 		 * 用户登录后可修改密码
 		 *
-		 * @param string $_POST['password_current']
-		 * @param string $_POST['password']
-		 * @param string $_POST['password2']
 		 * @return void
 		 */
 		public function password_change()
@@ -367,9 +366,6 @@
 		 *
 		 * 用户使用短信验证码重置密码
 		 *
-		 * @param string $_POST['password']
-		 * @param string $_POST['password_new']
-		 * @param string $_POST['password2']
 		 * @return void
 		 */
 		public function password_reset()
@@ -449,7 +445,8 @@
 		/**
 		 * 验证图片验证码是否有效
 		 *
-		 * @params $captcha string 图片验证码内容
+		 * @params string $captcha 图片验证码内容
+         * @return boolean
 		 */
 		public function verify_captcha($captcha)
 		{
@@ -470,9 +467,6 @@
 		 *
 		 * 使用邮箱及密码进行注册
 		 *
-		 * @param string $_POST['email']
-		 * @param string $_POST['password']
-		 * @param string $_POST['password2']
 		 * @return void
 		 */
 		public function register()
@@ -500,7 +494,7 @@
 				);
 
 				// 从API服务器获取相应详情信息
-				$params = $data_to_search;
+				$params = $data_to_create;
 				$url = api_url($this->class_name. '/register');
 				$result = $this->curl->go($url, $params, 'array');
 

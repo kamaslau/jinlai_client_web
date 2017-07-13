@@ -23,7 +23,7 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20170712">
+		<meta name=version content="revision20170713">
 		<meta name=author content="刘亚杰Kamas">
 		<meta name=copyright content="青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
@@ -78,8 +78,13 @@
 				<a id=nav-switch class=nav-icon href="#header">
 					<i class="fa fa-bars" aria-hidden=true></i>
 				</a>
+				<!--
 				<a id=to-mine class=nav-icon href="<?php echo base_url('mine') ?>">
 					<i class="fa fa-user" aria-hidden=true></i>
+				</a>
+				-->
+				<a id=tel-public class=nav-icon href="tel:4008820532">
+					<i class="fa fa-phone" aria-hidden=true></i>
 				</a>
 			</div>
 		</header>
