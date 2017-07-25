@@ -2,8 +2,8 @@
 	#content {padding-top:2rem;}
 	form {padding-top:2rem;}
 
-	/* 宽度在768像素以上的设备 */
-	@media only screen and (min-width:769px)
+	/* 宽度在750像素以上的设备 */
+	@media only screen and (min-width:751px)
 	{
 
 	}
@@ -42,7 +42,7 @@
 				<label for=password_confirm>确认密码</label>
 				<div class=input-group>
 					<span class="input-group-addon"><i class="fa fa-lock fa-fw" aria-hidden=true></i></span>
-					<input class=form-control name=password_confirm type=password placeholder="确认新密码" required>
+					<input class=form-control name=password_confirm type=password placeholder="确认密码" required>
 				</div>
 			</div>
 		</fieldset>
