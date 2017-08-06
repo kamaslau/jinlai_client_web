@@ -1,13 +1,27 @@
-<html>
-<head>
-    <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1" /> 
-    <title>微信支付样例-退款</title>
-</head>
+<!doctype html>
+<html lang=zh-cn>
+	<head>
+		<meta charset=utf-8>
+		<meta http-equiv=x-dns-prefetch-control content=on>
+		<link rel=dns-prefetch href="https://cdn.key2all.com">
+		<link rel=dns-prefetch href="https://images.bandaodian.com">
+	    <title>微信支付 - 退款</title>
+		<meta name=robots content="noindex, nofollow">
+		<meta name=version content="revision20170807">
+		<meta name=author content="刘亚杰">
+		<meta name=copyright content="刘亚杰">
+		<meta name=contact content="kamaslau@outlook.com, http://weibo.com/kamaslau">
+		<meta name=viewport content="width=device-width, user-scalable=0">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+		<link rel=stylesheet media=all href="//cdn.key2all.com/css/reset.css">
+		<link rel=stylesheet media=all href="//cdn.key2all.com/font-awesome/css/font-awesome.min.css">
+	
+	<!--<link rel="shortcut icon" href="//images.guangchecheng.com/logos/logo_32x32.png">-->
+	<!--<link rel="apple-touch-icon" href="//images.guangchecheng.com/logos/logo_120x120.png">-->
+	</head>
 <?php
-ini_set('date.timezone','Asia/Shanghai');
-error_reporting(E_ERROR);
-require_once "../lib/WxPay.Api.php";
+require_once '../lib/WxPay.Api.php';
 require_once 'log.php';
 
 //初始化日志
@@ -21,7 +35,7 @@ function printf_info($data)
     }
 }
 
-if(isset($_REQUEST["transaction_id"]) && $_REQUEST["transaction_id"] != ""){
+if ( isset($_REQUEST["transaction_id"]) && $_REQUEST["transaction_id"] != '' ):
 	$transaction_id = $_REQUEST["transaction_id"];
 	$total_fee = $_REQUEST["total_fee"];
 	$refund_fee = $_REQUEST["refund_fee"];
@@ -32,13 +46,14 @@ if(isset($_REQUEST["transaction_id"]) && $_REQUEST["transaction_id"] != ""){
     $input->SetOut_refund_no(WxPayConfig::MCHID.date("YmdHis"));
     $input->SetOp_user_id(WxPayConfig::MCHID);
 	printf_info(WxPayApi::refund($input));
+
 	exit();
-}
+endif;
 
 //$_REQUEST["out_trade_no"]= "122531270220150304194108";
 ///$_REQUEST["total_fee"]= "1";
 //$_REQUEST["refund_fee"] = "1";
-if(isset($_REQUEST["out_trade_no"]) && $_REQUEST["out_trade_no"] != ""){
+if ( isset($_REQUEST["out_trade_no"]) && $_REQUEST["out_trade_no"] != '' ):
 	$out_trade_no = $_REQUEST["out_trade_no"];
 	$total_fee = $_REQUEST["total_fee"];
 	$refund_fee = $_REQUEST["refund_fee"];
@@ -49,23 +64,29 @@ if(isset($_REQUEST["out_trade_no"]) && $_REQUEST["out_trade_no"] != ""){
     $input->SetOut_refund_no(WxPayConfig::MCHID.date("YmdHis"));
     $input->SetOp_user_id(WxPayConfig::MCHID);
 	printf_info(WxPayApi::refund($input));
+
 	exit();
-}
+endif;
 ?>
-<body>  
-	<form action="#" method="post">
-        <div style="margin-left:2%;color:#f00">微信订单号和商户订单号选少填一个，微信订单号优先：</div><br/>
-        <div style="margin-left:2%;">微信订单号：</div><br/>
-        <input type="text" style="width:96%;height:35px;margin-left:2%;" name="transaction_id" /><br /><br />
-        <div style="margin-left:2%;">商户订单号：</div><br/>
-        <input type="text" style="width:96%;height:35px;margin-left:2%;" name="out_trade_no" /><br /><br />
-        <div style="margin-left:2%;">订单总金额(分)：</div><br/>
-        <input type="text" style="width:96%;height:35px;margin-left:2%;" name="total_fee" /><br /><br />
-        <div style="margin-left:2%;">退款金额(分)：</div><br/>
-        <input type="text" style="width:96%;height:35px;margin-left:2%;" name="refund_fee" /><br /><br />
-		<div align="center">
-			<input type="submit" value="提交退款" style="width:210px; height:50px; border-radius: 15px;background-color:#FE6714; border:0px #FE6714 solid; cursor: pointer;  color:white;  font-size:16px;" type="button" onclick="callpay()" />
+	<body>
+		<div id=content class=container>
+
+			<form action="#" method=post>
+		        <div style="margin-left:2%;color:#f00">微信订单号和商户订单号选少填一个，微信订单号优先：</div><br/>
+		        <div style="margin-left:2%;">微信订单号</div><br/>
+		        <input type="text" style="width:96%;height:35px;margin-left:2%;" name="transaction_id" /><br /><br />
+		        <div style="margin-left:2%;">商户订单号</div><br/>
+		        <input type="text" style="width:96%;height:35px;margin-left:2%;" name="out_trade_no" /><br /><br />
+		        <div style="margin-left:2%;">订单总金额(分)</div><br/>
+		        <input type="text" style="width:96%;height:35px;margin-left:2%;" name="total_fee" /><br /><br />
+		        <div style="margin-left:2%;">退款金额(分)</div><br/>
+		        <input type="text" style="width:96%;height:35px;margin-left:2%;" name="refund_fee" /><br /><br />
+				<div align="center">
+					<input type="submit" value="提交退款" style="width:210px; height:50px; border-radius: 15px;background-color:#FE6714; border:0px #FE6714 solid; cursor: pointer;  color:white;  font-size:16px;" type="button" onclick="callpay()" />
+				</div>
+			</form>
+		
 		</div>
-	</form>
-</body>
+	</body>
+
 </html>
