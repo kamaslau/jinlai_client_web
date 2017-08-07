@@ -46,10 +46,10 @@ $url2 = $result['code_url'];
 	<body class=wepay>
 		<div id=content class=container>
 			<h2>扫描支付模式一</h2>
-			<img alt="模式一扫码支付" src="http://paysdk.weixin.qq.com/example/qrcode.php?data=<?php echo urlencode($url1) ?>" style="width:200px;height:200px;">
+			<img alt="模式一扫码支付" src="<?php echo WxPayConfig::CLIENT_URL ?>payment/wepay/example/qrcode.php?data=<?php echo urlencode($url1) ?>" style="width:200px;height:200px;">
 
 			<h2>扫描支付模式二</h2>
-			<img alt="模式二扫码支付" src="http://paysdk.weixin.qq.com/example/qrcode.php?data=<?php echo urlencode($url2) ?>" style="width:200px;height:200px;">
+			<img alt="模式二扫码支付" src="<?php echo WxPayConfig::CLIENT_URL ?>payment/wepay/example/qrcode.php?data=<?php echo urlencode($url2) ?>" style="width:200px;height:200px;">
 		</div>
 	
 	</body>

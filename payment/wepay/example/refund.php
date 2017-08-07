@@ -13,7 +13,7 @@ function printf_info($data)
 {
     foreach($data as $key => $value)
 	{
-        echo "<font color='#f00;'>$key</font> : $value <br/>";
+        echo "<font color='#f00;'>$key</font>: $value <br>";
     }
 }
 
