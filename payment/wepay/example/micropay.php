@@ -1,37 +1,7 @@
-<!doctype html>
-<html lang=zh-cn>
-	<head>
-		<meta charset=utf-8>
-		<meta http-equiv=x-dns-prefetch-control content=on>
-		<link rel=dns-prefetch href="https://cdn.key2all.com">
-		<link rel=dns-prefetch href="https://images.guangchecheng.com">
-	    <title>微信支付 - 刷卡支付</title>
-		<meta name=robots content="noindex, nofollow">
-		<meta name=version content="revision20170807">
-		<meta name=author content="刘亚杰">
-		<meta name=copyright content="刘亚杰">
-		<meta name=contact content="kamaslau@outlook.com, http://weibo.com/kamaslau">
-		<meta name=viewport content="width=device-width, user-scalable=0">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-		<link rel=stylesheet media=all href="//cdn.key2all.com/css/reset.css">
-		<link rel=stylesheet media=all href="//cdn.key2all.com/font-awesome/css/font-awesome.min.css">
-		<style>
-			* {box-sizing:border-box;}
-			body {color:#333;background-color:#d4d5d7;}
-				.container {background-color:#fff;width:95%;margin:0 auto;position:relative;padding:0 5% 5%;}
-
-		label {margin-bottom:1.4rem;}
-		input {width:100%;border:2px solid #1aad19;padding:.8rem 1.2rem;margin-bottom:1.6rem;}
-		button {color:#fff;font-size:18px;text-align:center;background-color:#1aad19;display:block;width:100%;height:48px;line-height:48px;border-radius:1rem;margin-top:15px;}
-
-		#status-order {color:#fff;background-color:#1aad19;}
-		</style>
-
-		<!--<link rel="shortcut icon" href="//images.guangchecheng.com/logos/logo_32x32.png">-->
-		<!--<link rel="apple-touch-icon" href="//images.guangchecheng.com/logos/logo_120x120.png">-->
-	</head>
 <?php
+	$page_title = '微信支付 - 刷卡支付';
+	require_once 'header.php';
+
 	require_once '../lib/WxPay.Api.php';
 	require_once 'WxPay.MicroPay.php';
 	require_once 'log.php';
@@ -53,6 +23,7 @@
 		$auth_code = $_POST['auth_code'];  // 授权码（即微信支付码）
 		$body = $_POST['body']; // 商品描述
 		$total_fee = $_POST['total_fee'] * 100; // 待支付金额，数字单位为分
+
 		$input = new WxPayMicroPay();
 		$input->SetAuth_code($auth_code);
 		$input->SetBody( $body );
@@ -71,7 +42,11 @@
 	 * 2、多次（一般10次）确认都未明确成功时需要调用撤单接口撤单，防止用户重复支付
 	 */
 ?>
-	<body>
+	<body class=wepay>
+		<style>
+		#status-order {color:#fff;background-color:#1aad19;}
+		</style>
+
 		<div id=content class=container>
 			<?php if ( isset($result) ): ?>
 			<div id=status-order>
@@ -84,7 +59,7 @@
 				<dl>
 					<dt>已支付金额（元）</dt>
 					<dd><strong>￥ <?php echo $result['total_fee'] / 100 ?></strong></dd>
-					<dt>商户交易订单号</dt>
+					<dt>商户订单号</dt>
 					<dd><?php echo $result['out_trade_no'] ?></dd>
 					<dt>微信支付流水号</dt>
 					<dd><?php echo $result['transaction_id'] ?></dd>
@@ -104,16 +79,19 @@
 			<form action="#" method=post>
 				<fieldset>
 					<label for=auth_code>商品描述</label>
-					<input type=text name=body value="扫码付款订单" required>
+					<input name=body class=form-control type=text value="扫码付款订单" required>
 
 					<label for=auth_code>待支付金额（元）</label>
-					<input type=number min=0.01 step=0.01 max=9999.99 name=total_fee value="<?php echo $_GET['total'] ?>" required autofocus>
+					<input name=total_fee class=form-control type=number min=0.01 step=0.01 max=9999.99 value="<?php echo $_GET['total'] ?>" required autofocus>
 
 					<label for=auth_code>授权码（即微信付款码，通过微信客户端的“我”→“钱包”→“收付款”页面扫码，或直接在此处完整输入该页面条形码上方的数字编码）</label>
-					<input type=text name=auth_code value="<?php echo $_GET['auth_code'] ?>" required>
+					<div class=input-group>
+						<span class="input-group-addon"><i class="fa fa-barcode" aria-hidden=true></i></span>
+						<input name=auth_code class=form-control type=number step=1 value="<?php echo $_GET['auth_code'] ?>" required>
+					</div>
 				</fieldset>
 
-				<button type=submit>确定</button>
+				<button type=submit class="btn btn-primary btn-lg">确定</button>
 			</form>
 			
 			<?php endif ?>

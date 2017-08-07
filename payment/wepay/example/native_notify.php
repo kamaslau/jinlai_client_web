@@ -1,8 +1,5 @@
 <?php
-ini_set('date.timezone','Asia/Shanghai');
-error_reporting(E_ERROR);
-
-require_once "../lib/WxPay.Api.php";
+require_once '../lib/WxPay.Api.php';
 require_once '../lib/WxPay.Notify.php';
 require_once 'log.php';
 
@@ -43,20 +40,20 @@ class NativeNotifyCallBack extends WxPayNotify
 			$msg = "回调数据异常";
 			return false;
 		}
-		 
+
 		$openid = $data["openid"];
 		$product_id = $data["product_id"];
-		
+
 		//统一下单
 		$result = $this->unifiedorder($openid, $product_id);
 		if(!array_key_exists("appid", $result) ||
 			 !array_key_exists("mch_id", $result) ||
 			 !array_key_exists("prepay_id", $result))
 		{
-		 	$msg = "统一下单失败";
+		 	$msg = '统一下单失败';
 		 	return false;
 		 }
-		
+
 		$this->SetData("appid", $result["appid"]);
 		$this->SetData("mch_id", $result["mch_id"]);
 		$this->SetData("nonce_str", WxPayApi::getNonceStr());
@@ -67,6 +64,6 @@ class NativeNotifyCallBack extends WxPayNotify
 	}
 }
 
-Log::DEBUG("begin notify!");
+Log::DEBUG('begin notify');
 $notify = new NativeNotifyCallBack();
 $notify->Handle(true);

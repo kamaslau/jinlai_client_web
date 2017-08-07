@@ -1,4 +1,7 @@
 <?php
+ini_set('date.timezone','Asia/Shanghai');
+error_reporting(E_ERROR);
+
 /**
 * 	配置账号信息
 */

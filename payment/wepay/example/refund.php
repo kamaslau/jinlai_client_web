@@ -1,44 +1,27 @@
-<!doctype html>
-<html lang=zh-cn>
-	<head>
-		<meta charset=utf-8>
-		<meta http-equiv=x-dns-prefetch-control content=on>
-		<link rel=dns-prefetch href="https://cdn.key2all.com">
-		<link rel=dns-prefetch href="https://images.bandaodian.com">
-	    <title>微信支付 - 退款</title>
-		<meta name=robots content="noindex, nofollow">
-		<meta name=version content="revision20170807">
-		<meta name=author content="刘亚杰">
-		<meta name=copyright content="刘亚杰">
-		<meta name=contact content="kamaslau@outlook.com, http://weibo.com/kamaslau">
-		<meta name=viewport content="width=device-width, user-scalable=0">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-		<link rel=stylesheet media=all href="//cdn.key2all.com/css/reset.css">
-		<link rel=stylesheet media=all href="//cdn.key2all.com/font-awesome/css/font-awesome.min.css">
-	
-	<!--<link rel="shortcut icon" href="//images.guangchecheng.com/logos/logo_32x32.png">-->
-	<!--<link rel="apple-touch-icon" href="//images.guangchecheng.com/logos/logo_120x120.png">-->
-	</head>
 <?php
+$page_title = '微信支付 - 申请退款';
+require_once 'header.php';
+
 require_once '../lib/WxPay.Api.php';
 require_once 'log.php';
 
-//初始化日志
+// 初始化日志
 $logHandler= new CLogFileHandler("../logs/".date('Y-m-d').'.log');
 $log = Log::Init($logHandler, 15);
 
 function printf_info($data)
 {
-    foreach($data as $key=>$value){
+    foreach($data as $key => $value)
+	{
         echo "<font color='#f00;'>$key</font> : $value <br/>";
     }
 }
 
-if ( isset($_REQUEST["transaction_id"]) && $_REQUEST["transaction_id"] != '' ):
-	$transaction_id = $_REQUEST["transaction_id"];
-	$total_fee = $_REQUEST["total_fee"];
-	$refund_fee = $_REQUEST["refund_fee"];
+if ( isset($_REQUEST['transaction_id']) && $_REQUEST['transaction_id'] != '' ):
+	$transaction_id = $_REQUEST['transaction_id'];
+	$total_fee = $_REQUEST['total_fee'] * 100;
+	$refund_fee = $_REQUEST['refund_fee'] * 100;
+
 	$input = new WxPayRefund();
 	$input->SetTransaction_id($transaction_id);
 	$input->SetTotal_fee($total_fee);
@@ -50,13 +33,11 @@ if ( isset($_REQUEST["transaction_id"]) && $_REQUEST["transaction_id"] != '' ):
 	exit();
 endif;
 
-//$_REQUEST["out_trade_no"]= "122531270220150304194108";
-///$_REQUEST["total_fee"]= "1";
-//$_REQUEST["refund_fee"] = "1";
-if ( isset($_REQUEST["out_trade_no"]) && $_REQUEST["out_trade_no"] != '' ):
-	$out_trade_no = $_REQUEST["out_trade_no"];
-	$total_fee = $_REQUEST["total_fee"];
-	$refund_fee = $_REQUEST["refund_fee"];
+if ( isset($_REQUEST['out_trade_no']) && $_REQUEST['out_trade_no'] != '' ):
+	$out_trade_no = $_REQUEST['out_trade_no'];
+	$total_fee = $_REQUEST['total_fee'] * 100;
+	$refund_fee = $_REQUEST['refund_fee'] * 100;
+
 	$input = new WxPayRefund();
 	$input->SetOut_trade_no($out_trade_no);
 	$input->SetTotal_fee($total_fee);
@@ -68,22 +49,27 @@ if ( isset($_REQUEST["out_trade_no"]) && $_REQUEST["out_trade_no"] != '' ):
 	exit();
 endif;
 ?>
-	<body>
+	<body class=wepay>
 		<div id=content class=container>
 
 			<form action="#" method=post>
-		        <div style="margin-left:2%;color:#f00">微信订单号和商户订单号选少填一个，微信订单号优先：</div><br/>
-		        <div style="margin-left:2%;">微信订单号</div><br/>
-		        <input type="text" style="width:96%;height:35px;margin-left:2%;" name="transaction_id" /><br /><br />
-		        <div style="margin-left:2%;">商户订单号</div><br/>
-		        <input type="text" style="width:96%;height:35px;margin-left:2%;" name="out_trade_no" /><br /><br />
-		        <div style="margin-left:2%;">订单总金额(分)</div><br/>
-		        <input type="text" style="width:96%;height:35px;margin-left:2%;" name="total_fee" /><br /><br />
-		        <div style="margin-left:2%;">退款金额(分)</div><br/>
-		        <input type="text" style="width:96%;height:35px;margin-left:2%;" name="refund_fee" /><br /><br />
-				<div align="center">
-					<input type="submit" value="提交退款" style="width:210px; height:50px; border-radius: 15px;background-color:#FE6714; border:0px #FE6714 solid; cursor: pointer;  color:white;  font-size:16px;" type="button" onclick="callpay()" />
-				</div>
+		        <p class=help-block>微信支付流水号和商户订单号至少需填一个，微信支付流水号优先</p>
+
+		        <fieldset>
+					<label for=transaction_id>微信支付流水号</label>
+			        <input name=transaction_id class=form-control type=text>
+
+					<label for=out_trade_no>商户订单号</label>
+			        <input name=out_trade_no class=form-control type=text>
+
+			        <label for=total_fee>订单总金额（元）</label>
+					<input name=total_fee class=form-control type=number step=0.01>
+
+			        <label for=refund_fee>退款金额（元）</label>
+					<input name=refund_fee class=form-control type=number step=0.01>
+				</fieldset>
+
+				<button type=submit class="btn btn-primary btn-lg">申请退款</button>
 			</form>
 		
 		</div>
