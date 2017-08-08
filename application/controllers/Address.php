@@ -118,38 +118,6 @@
 		} // end index
 
 		/**
-		 * 详情页
-		 */
-		public function detail()
-		{
-			// 检查是否已传入必要参数
-			$id = $this->input->get_post('id')? $this->input->get_post('id'): NULL;
-			if ( !empty($id) ):
-				$params['id'] = $id;
-			else:
-				redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
-			endif;
-
-			// 从API服务器获取相应详情信息
-			$url = api_url($this->class_name. '/detail');
-			$result = $this->curl->go($url, $params, 'array');
-			if ($result['status'] === 200):
-				$data['item'] = $result['content'];
-			else:
-				$data['error'] = $result['content']['error']['message'];
-			endif;
-
-			// 页面信息
-			$data['title'] = empty($data['item']['brief'])? $data['item']['brief']: $data['item']['brief'];
-			$data['class'] = $this->class_name.' detail';
-
-			// 输出视图
-			$this->load->view('templates/header', $data);
-			$this->load->view($this->view_root.'/detail', $data);
-			$this->load->view('templates/footer', $data);
-		} // end detail
-
-		/**
 		 * 创建
 		 */
 		public function create()
@@ -230,11 +198,6 @@
 		 */
 		public function edit()
 		{
-			// 操作可能需要检查操作权限
-			// $role_allowed = array('管理员', '经理'); // 角色要求
-// 			$min_level = 30; // 级别要求
-// 			$this->basic->permission_check($role_allowed, $min_level);
-
 			// 页面信息
 			$data = array(
 				'title' => '修改'.$this->class_name_cn,
@@ -323,11 +286,6 @@
 		 */
 		public function delete()
 		{
-			// 操作可能需要检查操作权限
-			// $role_allowed = array('管理员', '经理'); // 角色要求
-// 			$min_level = 30; // 级别要求
-// 			$this->basic->permission_check($role_allowed, $min_level);
-
 			$op_name = '删除'; // 操作的名称
 			$op_view = 'delete'; // 视图文件名
 
@@ -437,23 +395,62 @@
 			endif;
 		} // end delete
 
-		// TODO 设置特定地址为特定用户的默认地址
+		// 设置特定地址为特定用户的默认地址
 		public function default_this()
 		{
-			// 操作可能需要检查客户端及设备信息
-			$type_allowed = array('client'); // 客户端类型
-			$this->client_check($type_allowed);
-			
 			// 检查必要参数是否已传入
-			$required_params = array('user_id', 'address_id');
+			$required_params = array('id');
 			foreach ($required_params as $param):
-				${$param} = $this->input->post($param);
+				${$param} = $this->input->post_get($param);
 				if ( empty( ${$param} ) ):
 					$this->result['status'] = 400;
 					$this->result['content']['error']['message'] = '必要的请求参数未全部传入';
 					exit();
 				endif;
 			endforeach;
+
+			// 页面信息
+			$data = array(
+				'title' => '修改默认'.$this->class_name_cn,
+				'class' => $this->class_name.' default-this',
+				'error' => '',
+			);
+			
+			// 需要编辑的数据
+			$data_to_edit = array(
+				'user_id' => $this->session->user_id,
+				'id' => $this->session->user_id,
+				'name' => 'address_id',
+				'value' => $id,
+			);
+
+			// 向API服务器发送待创建数据
+			$params = $data_to_edit;
+			$url = api_url('user/edit_certain');
+			$result = $this->curl->go($url, $params, 'array');
+			if ($result['status'] === 200):
+				$data['title'] = $this->class_name_cn. '修改成功';
+				$data['class'] = 'success';
+				$data['content'] = $result['content']['message'];
+				$data['operation'] = 'edit_certain';
+				$data['id'] = $id;
+				
+				// 更新本地session默认地址ID
+				$this->session->address_id = $id;
+
+				$this->load->view('templates/header', $data);
+				$this->load->view($this->view_root.'/result', $data);
+				$this->load->view('templates/footer', $data);
+
+			else:
+				// 若创建失败，则进行提示
+				$data['error'] .= $result['content']['error']['message'];
+
+				$this->load->view('templates/header', $data);
+				$this->load->view($this->view_root.'/result', $data);
+				$this->load->view('templates/footer', $data);
+
+			endif;
 
 		} // end default_this
 

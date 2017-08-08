@@ -23,7 +23,7 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20170808">
+		<meta name=version content="revision20170809">
 		<meta name=author content="刘亚杰Kamas">
 		<meta name=copyright content="青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
@@ -119,10 +119,10 @@
 				</ul>
 
 				<ul id=main-nav>
-					<li><a title="我的钱包" href="<?php echo base_url('balance/mine') ?>">我的钱包</a></li>
-					<li><a title="我的卡券" href="<?php echo base_url('coupon/mine') ?>">我的卡券</a></li>
 					<li><a title="我的订单" href="<?php echo base_url('order/mine') ?>">我的订单</a></li>
-					<li><a title="我的地址" href="<?php echo base_url('address/mine') ?>">我的地址</a></li>
+					<li><a title="我的钱包" href="<?php echo base_url('balance/mine') ?>">我的钱包</a></li>
+					<li><a title="我的卡券" href="<?php echo base_url('coupon') ?>">我的卡券</a></li>
+					<li><a title="我的地址" href="<?php echo base_url('address') ?>">我的地址</a></li>
 					<li><a title="邀请好友" href="<?php echo base_url('invite/mine') ?>">邀请好友</a></li>
 				</ul>
 

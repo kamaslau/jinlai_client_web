@@ -13,6 +13,7 @@ if ( in_array($origin, $allow_origin) ):
 endif;
 
 // 需要自定义的常量
+define('DEVELOPER_MOBILES', ',17664073966,13668865673,13698673572,' ); // 开发者手机号组，用于特定位置输出调试信息
 define('SITE_NAME', '进来'); // 站点名称
 define('SITE_SLOGAN', '进来，是你想要的'); // 站点广告语
 define('SITE_KEYWORDS', '进来,进来商城,品控,网购,网购平台,网上商城'); // 站点关键词
