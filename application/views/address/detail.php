@@ -1,10 +1,10 @@
 <style>
 
 
-	/* 宽度在768像素以上的设备 */
-	@media only screen and (min-width:769px)
+	/* 宽度在750像素以上的设备 */
+	@media only screen and (min-width:751px)
 	{
-
+		
 	}
 	
 	/* 宽度在960像素以上的设备 */
@@ -22,6 +22,7 @@
 
 <div id=breadcrumb>
 	<ol class="breadcrumb container">
+		<li><a href="<?php echo base_url() ?>">首页</a></li>
 		<li><a href="<?php echo base_url($this->class_name) ?>"><?php echo $this->class_name_cn ?></a></li>
 		<li class=active><?php echo $title ?></li>
 	</ol>
@@ -53,16 +54,56 @@
 	</ul>
 
 	<dl id=list-info class=dl-horizontal>
-		<dt><?php echo $this->class_name_cn ?>ID</dt>
-		<dd><?php echo $item[$this->id_name] ?></dd>
-		
-		<?php
-			foreach ($data_to_display as $name => $name_cn):
-				$html = '<dt>'. $name_cn. '</dt>';
-				$html .= '<dd>'. $item[$name]. '</dd>';
-				echo $html;
-			endforeach;
-		?>
+		<dt>简称</dt>
+		<dd><?php echo empty($item['brief'])? '未设置': $item['brief'] ?></dd>
+		<dt>姓名</dt>
+		<dd><?php echo $item['fullname'] ?></dd>
+		<dt>手机号</dt>
+		<dd><?php echo $item['mobile'] ?></dd>
+
+		<dt>邮政编码</dt>
+		<dd><?php echo $item['zipcode'] ?></dd>
+		<dt>地址</dt>
+		<dd>
+			<p>
+				<?php echo $item['nation'] ?> <?php echo $item['province'] ?>省 <?php echo $item['city'] ?>市 <?php echo $item['county'] ?>区/县<br>
+				<?php echo $item['street'] ?>
+			</p>
+			
+			<?php if ( !empty($item['longitude']) && !empty($item['latitude']) ): ?>
+			<figure class="row">
+				<figcaption>
+					<p class=help-block>经纬度 <?php echo $item['longitude'] ?>, <?php echo $item['latitude'] ?></p>
+				</figcaption>
+				<div id=map style="height:300px;background-color:#aaa"></div>
+			</figure>
+			
+			<script src="https://webapi.amap.com/maps?v=1.3&key=d698fd0ab2d88ad11f4c6a2c0e83f6a8"></script>
+			<script src="https://webapi.amap.com/ui/1.0/main.js"></script>
+			<script>
+				var lnglat = [<?php echo $item['longitude'] ?>, <?php echo $item['latitude'] ?>];
+			    var map = new AMap.Map('map',{
+					center: lnglat,
+			        zoom: 16,
+		            scrollWheel: false,
+					mapStyle: 'amap://styles/2daddd87cfd0fa58d0bc932eed31b9d8', // 自定义样式
+			    });
+				marker = new AMap.Marker({
+		            position: lnglat,
+		        });
+		        marker.setMap(map);
+
+				// 为BasicControl设置DomLibrary，jQuery
+				AMapUI.setDomLibrary($);
+				AMapUI.loadUI(['control/BasicControl'], function(BasicControl) {
+					// 缩放控件
+				    map.addControl(new BasicControl.Zoom({
+				        position: 'rb', // 右下角
+				    }));
+				});
+			</script>
+			<?php endif ?>
+		</dd>
 	</dl>
 
 	<dl id=list-record class=dl-horizontal>

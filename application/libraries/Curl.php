@@ -30,12 +30,16 @@
 
 			// 需要通过POST方式发送的数据
 			if ($method === 'post'):
+				$params['app_type'] = 'client'; // 应用类型默认为client
 				curl_setopt($curl, CURLOPT_POST, count($params));
 				curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
 			endif;
 
 		    // 运行cURL，请求API
 			$result = curl_exec($curl);
+			
+			// 输出CURL请求头以便调试
+			//var_dump(curl_getinfo($curl));
 
 			// 关闭URL请求
 		    curl_close($curl);

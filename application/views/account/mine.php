@@ -72,15 +72,17 @@
 	<section id=assets-records>
 		<ul class="row">
 			<li class=col-xs-3><a title="我的钱包" href="<?php echo base_url('balance/mine') ?>">我的钱包</a></li>
-			<li class=col-xs-3><a title="我的卡券" href="<?php echo base_url('coupon/mine') ?>">我的卡券</a></li>
 			<li class=col-xs-3><a title="我的积分" href="<?php echo base_url('credit/mine') ?>">我的积分</a></li>
-			<li class=col-xs-3><a title="我的地址" href="<?php echo base_url('address/mine') ?>">我的地址</a></li>
+			<li class=col-xs-3><a title="我的卡券" href="<?php echo base_url('coupon') ?>">我的卡券</a></li>
+			<li class=col-xs-3><a title="我的地址" href="<?php echo base_url('address') ?>">我的地址</a></li>
 		</ul>
 	</section>
 
 	<section id=general-actions>
 		<ul>
+			<!--
 			<li><a title="邀请好友" href="<?php echo base_url('invite/mine') ?>">邀请好友</a></li>
+			-->
 			<li><a title="关于我们" href="<?php echo base_url('article/about-us') ?>">关于我们</a></li>
 			<li><a title="设置" href="<?php echo base_url('setup') ?>">设置</a></li>
 			<li><a title="退出账户" id=logout class="btn btn-block btn-danger" href="<?php echo base_url('logout') ?>">退出</a></li>
