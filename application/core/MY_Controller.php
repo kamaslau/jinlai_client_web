@@ -231,4 +231,198 @@
 				redirect( base_url('error/permission_level') );
 			endif;
 		}
+		
+		// 获取特定商品信息
+		protected function get_item($id)
+		{
+			// 从API服务器获取相应列表信息
+			$params['id'] = $id;
+			$url = api_url('item/detail');
+			$result = $this->curl->go($url, $params, 'array');
+			if ($result['status'] === 200):
+				$data['item'] = $result['content'];
+			else:
+				$data['item'] = NULL;
+			endif;
+			
+			return $data['item'];
+		}
+		
+		// 获取商品列表
+		protected function list_sku($item_id = NULL)
+		{	
+			if ( !empty($item_id) ):
+				$params['item_id'] = $item_id;
+			endif;
+
+			// 从API服务器获取相应列表信息
+			$url = api_url('sku/index');
+			$result = $this->curl->go($url, $params, 'array');
+			if ($result['status'] === 200):
+				$data['items'] = $result['content'];
+			else:
+				$data['items'] = NULL;
+			endif;
+			
+			return $data['items'];
+		}
+
+		// 获取特定商品信息
+		protected function get_sku($id)
+		{
+			// 从API服务器获取相应列表信息
+			$params['id'] = $id;
+			$url = api_url('sku/detail');
+			$result = $this->curl->go($url, $params, 'array');
+			if ($result['status'] === 200):
+				$data['item'] = $result['content'];
+			else:
+				$data['item'] = NULL;
+			endif;
+			
+			return $data['item'];
+		}
+		
+		// 获取品牌列表
+		protected function list_brand()
+		{
+			// 从API服务器获取相应列表信息
+			$params = NULL;
+			$url = api_url('brand/index');
+			$result = $this->curl->go($url, $params, 'array');
+			if ($result['status'] === 200):
+				$data['items'] = $result['content'];
+			else:
+				$data['items'] = NULL;
+			endif;
+
+			return $data['items'];
+		}
+		
+		// 获取特定品牌信息
+		protected function get_brand($id)
+		{
+			// 从API服务器获取相应列表信息
+			$params['id'] = $id;
+			$url = api_url('brand/detail');
+			$result = $this->curl->go($url, $params, 'array');
+			if ($result['status'] === 200):
+				$data['item'] = $result['content'];
+			else:
+				$data['item'] = NULL;
+			endif;
+			
+			return $data['item'];
+		}
+
+		// 获取系统分类列表
+		protected function list_category()
+		{
+			// 从API服务器获取相应列表信息
+			$params = NULL;
+			$url = api_url('item_category/index');
+			$result = $this->curl->go($url, $params, 'array');
+			if ($result['status'] === 200):
+				$data['items'] = $result['content'];
+			else:
+				$data['items'] = NULL;
+			endif;
+			
+			return $data['items'];
+		}
+		
+		// 获取特定系统分类信息
+		protected function get_category($id)
+		{
+			// 从API服务器获取相应列表信息
+			$params['id'] = $id;
+			$url = api_url('item_category/detail');
+			$result = $this->curl->go($url, $params, 'array');
+			if ($result['status'] === 200):
+				$data['item'] = $result['content'];
+			else:
+				$data['item'] = NULL;
+			endif;
+			
+			return $data['item'];
+		}
+		
+		// 获取商家分类列表
+		protected function list_category_biz($id = NULL)
+		{
+			if ( !empty($this->session->biz_id) ):
+				$params['biz_id'] = $this->session->biz_id;
+			else:
+				$params['biz_id'] = $id;
+			endif;
+
+			// 从API服务器获取相应列表信息
+			$url = api_url('item_category_biz/index');
+			$result = $this->curl->go($url, $params, 'array');
+			if ($result['status'] === 200):
+				$data['items'] = $result['content'];
+			else:
+				$data['items'] = NULL;
+			endif;
+			
+			return $data['items'];
+		}
+		
+		// 获取特定商家分类信息
+		protected function get_category_biz($id)
+		{
+			// 从API服务器获取相应列表信息
+			$params['id'] = $id;
+			$url = api_url('item_category_biz/detail');
+			$result = $this->curl->go($url, $params, 'array');
+			if ($result['status'] === 200):
+				$data['item'] = $result['content'];
+			else:
+				$data['item'] = NULL;
+			endif;
+			
+			return $data['item'];
+		}
+		
+		// 获取特定商家运费模板详情
+		protected function get_freight_template_biz($id)
+		{
+			// 从API服务器获取相应列表信息
+			$params['id'] = $id;
+			$url = api_url('freight_template_biz/detail');
+			$result = $this->curl->go($url, $params, 'array');
+			if ($result['status'] === 200):
+				$data['item'] = $result['content'];
+			else:
+				$data['item'] = NULL;
+			endif;
+			
+			return $data['item'];
+		}
+		
+		/**
+		 * count_table
+		 *
+		 * @params string $table_name 需要计数的表名
+		 * @params array $conditions 筛选条件
+		 * @return int/boolean
+		 **/
+		protected function count_table($table_name, $conditions = NULL)
+		{
+			// 获取筛选条件
+			if ( !empty($conditions) ):
+				$params = $conditions;
+			endif;
+
+			// 从API服务器获取相应列表信息
+			$url = api_url($table_name. '/count');
+			$result = $this->curl->go($url, $params, 'array');
+			if ($result['status'] === 200):
+				$count = $result['content']['count'];
+			else:
+				$count = 0; // 若获取失败则返回“0”
+			endif;
+
+			return $count;
+		}
 	}
