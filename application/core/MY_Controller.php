@@ -384,6 +384,22 @@
 			return $data['item'];
 		}
 		
+		// 获取店内活动详情
+		protected function get_promotion_biz($id)
+		{
+			// 从API服务器获取相应列表信息
+			$params['id'] = $id;
+			$url = api_url('promotion_biz/detail');
+			$result = $this->curl->go($url, $params, 'array');
+			if ($result['status'] === 200):
+				$data['item'] = $result['content'];
+			else:
+				$data['item'] = NULL;
+			endif;
+			
+			return $data['item'];
+		}
+		
 		// 获取特定商家运费模板详情
 		protected function get_freight_template_biz($id)
 		{

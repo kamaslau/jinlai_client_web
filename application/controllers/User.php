@@ -89,7 +89,7 @@
 			// 检查是否已传入必要参数
 			$id = $this->session->user_id? $this->session->user_id: NULL;
 			if ( !empty($id) ):
-				$params['id'] = $id;
+				$params['id'] = $this->session->user_id; // 仅可获取本人的数据
 			else:
 				redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
 			endif;

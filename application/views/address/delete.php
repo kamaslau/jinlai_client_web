@@ -22,34 +22,6 @@
 
 <div id=content class=container>
 
-	<table class="table table-striped table-condensed table-responsive">
-		<thead>
-			<tr>
-				<th><?php echo $this->class_name_cn ?>ID</th>
-				<?php
-					$thead = array_values($data_to_display);
-					foreach ($thead as $th):
-						echo '<th>' .$th. '</th>';
-					endforeach;
-				?>
-			</tr>
-		</thead>
-
-		<tbody>
-			<?php foreach ($items as $item): ?>
-			<tr>
-				<td><?php echo $item[$this->id_name] ?></td>
-				<?php
-					$tr = array_keys($data_to_display);
-					foreach ($tr as $td):
-						echo '<td>' .$item[$td]. '</td>';
-					endforeach;
-				?>
-			</tr>
-			<?php endforeach ?>
-		</tbody>
-	</table>
-
 	<div class="alert alert-warning" role=alert>
 		<p>确定要<?php echo $title ?>？</p>
 	</div>

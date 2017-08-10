@@ -62,14 +62,8 @@
 			$this->table_name = 'address'; // 和这里……
 			$this->id_name = 'address_id'; // 还有这里，OK，这就可以了
 			$this->view_root = $this->class_name;
-
-			// 设置需要自动在视图文件中生成显示的字段
-			$this->data_to_display = array(
-				'fullname' => '姓名',
-				'mobile' => '手机号',
-			);
 		}
-		
+
 		/**
 		 * 截止3.1.3为止，CI_Controller类无析构函数，所以无需继承相应方法
 		 */
@@ -92,7 +86,7 @@
 
 			// 筛选条件
 			$condition['time_delete'] = 'NULL';
-			$condition['user_id'] = $this->session->user_id;
+			$condition['user_id'] = $this->session->user_id; // 仅可获取本人的数据
 
 			// 排序条件
 			$order_by = NULL;
@@ -107,9 +101,6 @@
 			else:
 				$data['error'] = $result['content']['error']['message'];
 			endif;
-
-			// 将需要显示的数据传到视图以备使用
-			$data['data_to_display'] = $this->data_to_display;
 
 			// 输出视图
 			$this->load->view('templates/header', $data);
@@ -156,7 +147,6 @@
 				// 需要创建的数据；逐一赋值需特别处理的字段
 				$data_to_create = array(
 					'user_id' => $this->session->user_id,
-					'biz_id' => $this->session->biz_id,
 				);
 				// 自动生成无需特别处理的数据
 				$data_need_no_prepare = array(
@@ -175,6 +165,10 @@
 					$data['content'] = $result['content']['message'];
 					$data['operation'] = 'create';
 					$data['id'] = $result['content']['id']; // 创建后的信息ID
+					
+					// 检查是否需要更新本地默认地址
+					if ( isset($result['content']['address_id']) )
+						$this->session->address_id = $result['content']['address_id'];
 
 					$this->load->view('templates/header', $data);
 					$this->load->view($this->view_root.'/result', $data);
@@ -204,15 +198,16 @@
 				'class' => $this->class_name.' edit',
 				'error' => '', // 预设错误提示
 			);
-			
+
 			// 从API服务器获取相应详情信息
 			$params['id'] = $this->input->get_post('id');
+			$params['user_id'] = $this->session->user_id; // 仅可修改本人的数据
 			$url = api_url($this->class_name. '/detail');
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
 				$data['item'] = $result['content'];
 			else:
-				$data['error'] .= $result['content']['error']['message']; // 若未成功获取信息，则转到错误页
+				redirect( base_url('error/code_404') );
 			endif;
 
 			// 待验证的表单项
@@ -261,6 +256,10 @@
 					$data['content'] = $result['content']['message'];
 					$data['operation'] = 'edit';
 					$data['id'] = $this->input->post('id');
+					
+					// 检查是否需要更新本地默认地址
+					if ( isset($result['content']['address_id']) )
+						$this->session->address_id = $result['content']['address_id'];
 
 					$this->load->view('templates/header', $data);
 					$this->load->view($this->view_root.'/result', $data);
@@ -319,14 +318,27 @@
 			// 获取待操作项数据
 			$data['items'] = array();
 			foreach ($ids as $id):
-				// 从API服务器获取相应详情信息
-				$params['id'] = $id;
-				$url = api_url($this->class_name. '/detail');
-				$result = $this->curl->go($url, $params, 'array');
-				if ($result['status'] === 200):
-					$data['items'][] = $result['content'];
+				// 不可删除默认地址
+				if ($id == $this->session->address_id):
+					$data['title'] = $this->class_name_cn.$op_name. '失败';
+					$data['class'] = 'fail';
+					$data['content'] = '不可删除默认地址';
+
+					$this->load->view('templates/header', $data);
+					$this->load->view($this->view_root.'/result', $data);
+					$this->load->view('templates/footer', $data);
+					exit();
+					
 				else:
-					$data['error'] .= 'ID'.$id.'项不可操作，“'.$result['content']['error']['message'].'”';
+					// 从API服务器获取相应详情信息
+					$params['id'] = $id;
+					$url = api_url($this->class_name. '/detail');
+					$result = $this->curl->go($url, $params, 'array');
+					if ($result['status'] === 200):
+						$data['items'][] = $result['content'];
+					else:
+						$data['error'] .= 'ID'.$id.'项不可操作，“'.$result['content']['error']['message'].'”';
+					endif;
 				endif;
 			endforeach;
 
@@ -384,7 +396,7 @@
 					$this->load->view('templates/footer', $data);
 
 				else:
-					// 若创建失败，则进行提示
+					// 若修改失败，则进行提示
 					$data['error'] .= $result['content']['error']['message'];
 
 					$this->load->view('templates/header', $data);
@@ -415,7 +427,7 @@
 				'class' => $this->class_name.' default-this',
 				'error' => '',
 			);
-			
+
 			// 需要编辑的数据
 			$data_to_edit = array(
 				'user_id' => $this->session->user_id,
@@ -434,7 +446,7 @@
 				$data['content'] = $result['content']['message'];
 				$data['operation'] = 'edit_certain';
 				$data['id'] = $id;
-				
+
 				// 更新本地session默认地址ID
 				$this->session->address_id = $id;
 
@@ -443,7 +455,7 @@
 				$this->load->view('templates/footer', $data);
 
 			else:
-				// 若创建失败，则进行提示
+				// 若修改失败，则进行提示
 				$data['error'] .= $result['content']['error']['message'];
 
 				$this->load->view('templates/header', $data);

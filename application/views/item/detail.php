@@ -31,28 +31,7 @@
 </div>
 
 <div id=content class=container>
-	<div class=btn-group role=group>
-		<a class="btn btn-default" title="所有<?php echo $this->class_name_cn ?>" href="<?php echo base_url($this->class_name) ?>"><i class="fa fa-list fa-fw" aria-hidden=true></i> 所有<?php echo $this->class_name_cn ?></a>
-	</div>
-
-	<h2><?php echo $item['name'] ?></h2>
-	<ul class=row>
-		<?php echo !empty($item['slogan'])? '<li>'.$item['slogan'].'</li>': NULL ?>
-
-		<?php $unit_name = !empty($item['unit_name'])? $item['unit_name']: '份' ?>
-		<li id=stocks>
-			库存 <?php echo $item['stocks'].' '. $unit_name ?>
-			<?php echo $item['quantity_min'] > 1? ' '.$item['quantity_min'].$unit_name. '起售': NULL; ?>
-			<?php echo !empty($item['quantity_max'])? ' 限购 '.$item['quantity_max'].$unit_name: NULL ?>
-		</li>
-
-		<li id=prices>
-			<strong>￥ <?php echo $item['price'] ?></strong>
-			<?php echo ($item['tag_price'] !== '0.00')? ' <del>￥'. $item['tag_price']. '</del>': NULL ?>
-		</li>
-	</ul>
-
-	<dl id=list-info class=dl-horizontal>
+	<div id=item-figure classs="col-xs-12 col-sm-6">
 		<div class=row>
 			<figure id=image_main class="col-xs-12 col-sm-6 col-md-4">
 				<img title="<?php echo $item['name'] ?>" src="<?php echo $item['url_image_main'] ?>">
@@ -65,7 +44,7 @@
 				$figure_image_urls = explode(',', $item['figure_image_urls']);
 				foreach($figure_image_urls as $url):
 			?>
-			<li class="col-xs-6 col-sm-4 col-md-3">
+			<li class="col-xs-3">
 				<img src="<?php echo $url ?>">
 			</li>
 			<?php endforeach ?>
@@ -86,7 +65,28 @@
 		</ul>
 		<?php endif ?>
 		-->
+	</div>
+	
+	<div id=item-bried class="col-xs-12 col-sm-6">
+		<h2 id=item-name><?php echo $item['name'] ?></h2>
+		<ul class=row>
+			<?php echo !empty($item['slogan'])? '<li>'.$item['slogan'].'</li>': NULL ?>
 
+			<?php $unit_name = !empty($item['unit_name'])? $item['unit_name']: '份' ?>
+			<li id=stocks>
+				库存 <?php echo $item['stocks'].' '. $unit_name ?>
+				<?php echo $item['quantity_min'] > 1? ' '.$item['quantity_min'].$unit_name. '起售': NULL; ?>
+				<?php echo !empty($item['quantity_max'])? ' 限购 '.$item['quantity_max'].$unit_name: NULL ?>
+			</li>
+
+			<li id=prices>
+				<strong>￥ <?php echo $item['price'] ?></strong>
+				<?php echo ($item['tag_price'] !== '0.00')? ' <del>￥'. $item['tag_price']. '</del>': NULL ?>
+			</li>
+		</ul>
+	</div>
+
+	<dl id=list-info class=dl-horizontal>
 		<dt>商品ID</dt>
 		<dd><?php echo $item['item_id'] ?></dd>
 		<dt>系统分类</dt>

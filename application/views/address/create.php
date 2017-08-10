@@ -44,11 +44,11 @@
 			<div class=form-group>
 				<label for=mobile class="col-sm-2 control-label">手机号※</label>
 				<div class=col-sm-10>
-					<input class=form-control name=mobile type=tel size=11 value="<?php echo set_value('mobile') ?>" placeholder="手机号" required>
+					<input class=form-control name=mobile type=tel size=11 pattern="\d{11}" value="<?php echo $this->input->post('mobile')? set_value('mobile'): $this->input->cookie('mobile') ?>" placeholder="手机号" required>
 				</div>
 			</div>
 		</fieldset>	
-			
+
 		<fieldset>
 			<div class=form-group>
 				<label for=zipcode class="col-sm-2 control-label">邮政编码</label>

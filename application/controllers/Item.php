@@ -101,21 +101,29 @@
 
 				$data['skus'] = $this->list_sku($data['item']['item_id']);
 
-				// 获取系统商品分类信息
+				// 获取系统分类信息
 				$data['category'] = $this->get_category($data['item']['category_id']);
 
-				// 获取商家商品分类信息
+				// 获取商家分类信息
 				if ( !empty($data['item']['category_biz_id']) ):
 					$data['category_biz'] = $this->get_category_biz($data['item']['category_biz_id']);
 				endif;
+
+				//TODO 获取品牌信息
+				//if ( !empty($data['brand']) ):
+				//	$data['brand'] = $this->get_brand('');
+				//endif;
 
 				// 若参与店内活动，获取店内活动详情
 				if ( !empty($data['item']['promotion_id']) ):
 					$data['promotion'] = $this->get_promotion_biz($data['item']['promotion_id']);
 				endif;
 
-				// 获取商家运费模板详情
-				$data['freight_template'] = $this->get_freight_template_biz($data['item']['freight_template_id']);
+				// 运费计算
+				if ( !empty($data['item']['freight_template_id']) ):
+					// 获取商家运费模板详情
+					$data['freight_template'] = $this->get_freight_template_biz($data['item']['freight_template_id']);
+				endif;
 
 			else:
 				$data['error'] = $result['content']['error']['message'];
