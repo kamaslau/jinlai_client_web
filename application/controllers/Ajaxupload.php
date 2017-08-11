@@ -41,7 +41,8 @@
 			($this->input->is_ajax_request() === TRUE) OR (redirect( base_url('error/code_404') ));
 
 			// 获取并设置类属性信息
-			$this->top_directory = '/'. $this->input->post_get('target').'/';
+			$dir_until = strpos($this->input->post_get('target'), '/'); // 获取一级目录名结束位置（含斜杠）
+			$this->top_directory = '/'.substr( $this->input->post_get('target'), 0, $dir_until ).'/';
 			$this->path_to_file = $this->input->post_get('target').'/'. date('Ym').'/'. date('md').'/'. date('Hi').'/'; // 按上传时间进行分组，最小分组单位为分
 			$this->target_directory = 'uploads/'. $this->path_to_file;
 
@@ -169,7 +170,7 @@
 
 				// 上传到CDN
 				$upload_data = $this->upload->data();
-				$this->upload_to_cdn($upload_data);
+				@$this->upload_to_cdn($upload_data);
 
 			else:
 				$data['status'] = 400;
@@ -179,29 +180,33 @@
 
 			return $data;
 		}
-		
+
 		//TODO 上传到CDN；目前采用的是又拍云
 		private function upload_to_cdn($upload_data)
 		{
 			// 所属子目录名（及待上传到又拍云的子目录名）
-			//$folder_name = '/brands/';
 			$folder_name = $this->top_directory;
-
-			// TODO 待上传到的又拍云URL
-			$target_path = $folder_name. $upload_data['file_name'];
+ 
+			// 待上传到的又拍云URL
+			$target_path =  $this->path_to_file. $this->upload->data('file_name');
 
 			// 待上传文件的本地相对路径 注意，只能是相对路径！！！
-			$source_file_url = './uploads'.$folder_name. $upload_data['file_name'];
+			$source_file_url = './uploads/'.$this->path_to_file. $this->upload->data('file_name');
 
 			// 载入又拍云相关类
-			$this->load->library('upyun');
+			require_once './sdk/upyun/vendor/autoload.php';
 
 			// 上传文件
-			$fh = fopen($source_file_url, 'rb'); // 打开文件流
-			@$upyun_result = $this->upyun->writeFile($target_path, $fh, TRUE); // 若目标目录不存在则自动创建
-			fclose($fh); // 关闭文件流
+			use Upyun\Upyun;
+			use Upyun\Config;
+			$bucketConfig = new Config('jinlaisandbox-images', 'jinlaisandbox', 'jinlaisandbox');
+			$client = new Upyun($bucketConfig);
+
+			$file = fopen($source_file_url, 'rb'); // 打开文件流
+			$client->write($target_path, $fh);
+			fclose($file); // 关闭文件流
 		}
-		
+
 		// TODO 预处理照片
 		private function prepare_image()
 		{
