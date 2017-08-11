@@ -21,7 +21,12 @@ define('SITE_DESCRIPTION', '「进来」是首款需要严苛标准认证的品�
 define('ICP_NUMBER', NULL); // ICP备案号码，没有请留空
 
 define('BASE_URL', 'https://'. $_SERVER['SERVER_NAME']); // 可对外使用的站点URL；在本地测试时须替换为类似“localhost/BasicCodeigniter”形式
-define('IMAGES_URL', 'https://images.517ybang.com/'); // （可选）非样式图片存储的根目录所在URL，可用于配合又拍云等第三方存储
+
+ // （可选）媒体文件，即非样式图片、视频、音频存储的根目录所在URL，可用于配合又拍云等第三方存储
+//define('MEDIA_URL', 'https://medias.517ybang.com/'); // 生产环境
+define('MEDIA_URL', 'https://jinlaisandbox-images.b0.upaiyun.com/'); // 测试环境
+
+// COOKIE & SESSION相关
 define('COOKIE_DOMAIN', '.517ybang.com'); // cookie存储路径；方便起见可让所有子域共享，若需分离可自行配置
 define('SESSION_COOKIE_NAME', 'ci_sessions_web'); // 用于cookie存储的session名（设置此值后，前后台session互不影响）
 define('SESSION_TABLE', 'ci_sessions_web'); // 用于session存储的数据库表名

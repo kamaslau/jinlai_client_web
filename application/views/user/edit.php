@@ -1,6 +1,5 @@
 <style>
 
-
 	/* 宽度在750像素以上的设备 */
 	@media only screen and (min-width:751px)
 	{
@@ -41,7 +40,8 @@
 </script>
 <?php endif ?>
 
-<base href="<?php echo base_url('uploads/') ?>">
+<script defer src="/js/file-upload.js"></script>
+<base href="<?php echo $this->media_root ?>">
 
 <div id=breadcrumb>
 	<ol class="breadcrumb container">
@@ -75,7 +75,7 @@
 
 					<div>
 						<?php $name_to_upload = 'avatar' ?>
-					
+
 						<input id=<?php echo $name_to_upload ?> class=form-control type=file>
 						<input name=<?php echo $name_to_upload ?> type=hidden value="<?php echo $item[$name_to_upload] ?>">
 
@@ -125,7 +125,7 @@
 
 					<div>
 						<?php $name_to_upload = 'url_image_id' ?>
-					
+
 						<input id=<?php echo $name_to_upload ?> class=form-control type=file>
 						<input name=<?php echo $name_to_upload ?> type=hidden value="<?php echo $item[$name_to_upload] ?>">
 

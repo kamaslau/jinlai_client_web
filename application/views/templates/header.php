@@ -23,7 +23,7 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20170809">
+		<meta name=version content="revision20170811">
 		<meta name=author content="刘亚杰Kamas">
 		<meta name=copyright content="青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
@@ -101,17 +101,17 @@
 						$avatar = !empty($this->session->avatar)? $this->session->avatar: NULL;
 					?>
 					<figure class=col-xs-4>
-						<a title="<?php echo $username ?>" href="<?php echo base_url('mine') ?>">
+						<a title="<?php echo $username ?>" href="<?php echo base_url('user/mine') ?>">
 							<img class="img-circle" alt="<?php echo $username ?>" src="<?php echo $avatar ?>">
 						</a>
 					</figure>
 					<div class=col-xs-8>
-						<a title="<?php echo $username ?>" href="<?php echo base_url('mine') ?>">
+						<a title="<?php echo $username ?>" href="<?php echo base_url('user/mine') ?>">
 							<h1><?php echo $username ?> <i class="fa fa-angle-right pull-right" aria-hidden=true></i></h1>
 						</a>
 					</div>
 				</div>
-				
+
 				<ul id=user-records class=horizontal>
 					<li class=col-xs-4><a title="收藏宝贝" href="<?php echo base_url('fav_item') ?>">收藏宝贝</a></li>
 					<li class=col-xs-4><a title="关注店铺" href="<?php echo base_url('fav_biz') ?>">关注店铺</a></li>
@@ -123,7 +123,7 @@
 					<li><a title="我的钱包" href="<?php echo base_url('balance/mine') ?>">我的钱包</a></li>
 					<li><a title="我的卡券" href="<?php echo base_url('coupon') ?>">我的卡券</a></li>
 					<li><a title="我的地址" href="<?php echo base_url('address') ?>">我的地址</a></li>
-					<li><a title="邀请好友" href="<?php echo base_url('invite/mine') ?>">邀请好友</a></li>
+					<!--<li><a title="邀请好友" href="<?php echo base_url('invite/mine') ?>">邀请好友</a></li>-->
 				</ul>
 
 				<div id=user-panel>

@@ -32,9 +32,9 @@
 	/*}}}*/
 
 		// 以下为需要手动填写的又拍云空间名、操作员名、操作员密码
-	    public $_bucketname = '空间名';
-	    private $_username = '操作员名';
-	    private $_password = '操作员密码';
+	    public $_bucketname = 'jinlaisandbox-images';
+	    private $_username = 'jinlaisandbox';
+	    private $_password = 'jinlaisandbox';
 		
 	    private $_timeout = 30;
 	    protected $endpoint;
