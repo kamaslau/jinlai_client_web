@@ -25,15 +25,13 @@
 		{
 			parent::__construct();
 
-			// 未登录用户转到登录页
-			//($this->session->time_expire_login > time()) OR redirect( base_url('login') );
-
 			// 向类属性赋值
 			$this->class_name = strtolower(__CLASS__);
 			$this->class_name_cn = '商品'; // 改这里……
 			$this->table_name = 'item'; // 和这里……
 			$this->id_name = 'item_id'; // 还有这里，OK，这就可以了
-			$this->view_root = $this->class_name;
+			$this->view_root = $this->class_name; // 视图文件所在目录
+			$this->media_root = MEDIA_URL. $this->class_name.'/'; // 媒体文件所在目录
 		}
 
 		/**

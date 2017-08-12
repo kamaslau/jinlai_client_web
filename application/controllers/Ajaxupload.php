@@ -1,5 +1,12 @@
 <?php
 	defined('BASEPATH') OR exit('此文件不可被直接访问');
+	
+	// 载入又拍云相关类
+	require_once './sdk/upyun/vendor/autoload.php';
+
+	// 填写又拍云类的基础配置
+	use Upyun\Upyun;
+	use Upyun\Config;
 
 	/**
 	 * Ajaxupload类
@@ -184,26 +191,30 @@
 		//TODO 上传到CDN；目前采用的是又拍云
 		private function upload_to_cdn($upload_data)
 		{
+			$upyun_config = new Config('jinlaisandbox-images', 'jinlaisandbox', 'jinlaisandbox');
+			$upyun = new Upyun($upyun_config);
+			
 			// 所属子目录名（及待上传到又拍云的子目录名）
 			$folder_name = $this->top_directory;
+			//echo $folder_name;
  
 			// 待上传到的又拍云URL
 			$target_path =  $this->path_to_file. $this->upload->data('file_name');
+			//echo $target_path;
 
 			// 待上传文件的本地相对路径 注意，只能是相对路径！！！
 			$source_file_url = './uploads/'.$this->path_to_file. $this->upload->data('file_name');
+			//echo $source_file_url;
 
-			// 载入又拍云相关类
-			require_once './sdk/upyun/vendor/autoload.php';
-
-			// 上传文件
-			use Upyun\Upyun;
-			use Upyun\Config;
-			$bucketConfig = new Config('jinlaisandbox-images', 'jinlaisandbox', 'jinlaisandbox');
-			$client = new Upyun($bucketConfig);
-
+			// 获取待上传文件
 			$file = fopen($source_file_url, 'rb'); // 打开文件流
-			$client->write($target_path, $fh);
+
+			// 添加作图参数
+			// 最长边2048px，短边自适应
+			$tasks = array('x-gmkerl-thumb' => '/max/2048');
+
+			// 进行上传
+			$result_upyun = $upyun->write($target_path, $file, $tasks);
 			fclose($file); // 关闭文件流
 		}
 

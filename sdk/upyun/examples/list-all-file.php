@@ -4,8 +4,8 @@ require __DIR__. '/../tests/bootstrap.php';
 use Upyun\Config;
 use Upyun\Upyun;
 
-//$config = new Config(BUCKET, USER_NAME, PWD);
-$config = new Config('jinlaisandbox-images', 'jinlaisandbox', 'jinlaisandbox');
+$config = new Config(BUCKET, USER_NAME, PWD);
+//$config = new Config('jinlaisandbox-images', 'jinlaisandbox', 'jinlaisandbox');
 $upyun = new Upyun($config);
 
 $start = null;

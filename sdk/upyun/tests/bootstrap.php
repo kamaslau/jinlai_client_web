@@ -1,9 +1,10 @@
 <?php
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-define('USER_NAME', 'tester');
-define('PWD', 'grjxv2mxELR3');
-define('BUCKET', 'sdkimg');
+define('BUCKET', 'jinlaisandbox-images');
+define('USER_NAME', 'jinlaisandbox');
+define('PWD', 'jinlaisandbox');
+
 define('PIC_PATH', dirname(__FILE__) . '/assets/sample.jpeg');
 define('PIC_SIZE', filesize(PIC_PATH));
 
