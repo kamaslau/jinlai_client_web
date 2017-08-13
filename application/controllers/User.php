@@ -195,6 +195,14 @@
 		 */
 		public function edit()
 		{
+			// 检查是否已传入必要参数
+			$id = $this->input->get_post('id')? $this->input->get_post('id'): NULL;
+			if ( !empty($id) ):
+				$params['id'] = $id;
+			else:
+				redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
+			endif;
+
 			// 页面信息
 			$data = array(
 				'title' => '修改'.$this->class_name_cn,
