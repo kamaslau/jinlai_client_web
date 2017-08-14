@@ -92,8 +92,10 @@
 		<dt>系统分类</dt>
 		<dd><?php echo $category['name'] ?></dd>
 
+		<?php if ( isset($brand) ): ?>
 		<dt>品牌</dt>
 		<dd><?php echo !empty($item['brand_id'])? $brand['name']: '未设置'; ?></dd>
+		<?php endif ?>
 
 		<?php if ( !empty($item['code_biz']) ): ?>
 		<dt>商家自定义货号</dt>
@@ -184,7 +186,7 @@
 <nav id=nav-main>
 	<ul class=row>
 		<li class="col-xs-2"><a title="客服" href="<?php echo base_url('dialog/detail?biz_id='.$item['biz_id']) ?>">客服</a></li>
-		<li class="col-xs-2"><a title="发现" href="<?php echo base_url('biz/detail?id='.$item['biz_id']) ?>">店铺</a></li>
+		<li class="col-xs-2"><a title="店铺" href="<?php echo base_url('biz/detail?id='.$item['biz_id']) ?>">店铺</a></li>
 		<li class="col-xs-2"><a title="收藏" href="<?php echo base_url('fav_item/create?item_id='.$item['item_id']) ?>">收藏</a></li>
 		<li class="col-xs-3"><a title="加入购物车" href="<?php echo base_url('cart/create?item_id='.$item['item_id']) ?>">加入购物车</a></li>
 		<li class="col-xs-3"><a title="立即购买" href="<?php echo base_url('order?item_id='.$item['item_id']) ?>">立即购买</a></li>
