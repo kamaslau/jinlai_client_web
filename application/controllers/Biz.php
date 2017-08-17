@@ -94,6 +94,21 @@
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
 				$data['item'] = $result['content'];
+
+				// 获取该商家商品
+				// 筛选条件
+				$condition['time_delete'] = 'NULL';
+				$condition['biz_id'] = $id;
+
+				// 从API服务器获取相应列表信息
+				$params = $condition;
+				$url = api_url('item/index');
+				$result = $this->curl->go($url, $params, 'array');
+				if ($result['status'] === 200):
+					$data['items'] = $result['content'];
+				else:
+					$data['error'] = $result['content']['error']['message'];
+				endif;
 			else:
 				$data['error'] = $result['content']['error']['message'];
 			endif;

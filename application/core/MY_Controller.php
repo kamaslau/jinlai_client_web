@@ -243,11 +243,31 @@
 			endif;
 		}
 		
+		// 获取特定商家信息
+		protected function get_biz($id)
+		{
+			// 从API服务器获取相应列表信息
+			$params['id'] = $id;
+			$params['time_delete'] = 'NULL';
+
+			$url = api_url('biz/detail');
+			$result = $this->curl->go($url, $params, 'array');
+			if ($result['status'] === 200):
+				$data['item'] = $result['content'];
+			else:
+				$data['item'] = NULL;
+			endif;
+
+			return $data['item'];
+		}
+
 		// 获取特定商品信息
 		protected function get_item($id)
 		{
 			// 从API服务器获取相应列表信息
 			$params['id'] = $id;
+			$params['time_delete'] = 'NULL';
+
 			$url = api_url('item/detail');
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
@@ -265,6 +285,7 @@
 			if ( !empty($item_id) ):
 				$params['item_id'] = $item_id;
 			endif;
+			$params['time_delete'] = 'NULL';
 
 			// 从API服务器获取相应列表信息
 			$url = api_url('sku/index');
@@ -283,6 +304,8 @@
 		{
 			// 从API服务器获取相应列表信息
 			$params['id'] = $id;
+			$params['time_delete'] = 'NULL';
+
 			$url = api_url('sku/detail');
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
@@ -298,7 +321,8 @@
 		protected function list_brand()
 		{
 			// 从API服务器获取相应列表信息
-			$params = NULL;
+			$params['time_delete'] = 'NULL';
+
 			$url = api_url('brand/index');
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
@@ -315,6 +339,8 @@
 		{
 			// 从API服务器获取相应列表信息
 			$params['id'] = $id;
+			$params['time_delete'] = 'NULL';
+
 			$url = api_url('brand/detail');
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
@@ -330,7 +356,8 @@
 		protected function list_category()
 		{
 			// 从API服务器获取相应列表信息
-			$params = NULL;
+			$params['time_delete'] = 'NULL';
+
 			$url = api_url('item_category/index');
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
@@ -347,6 +374,8 @@
 		{
 			// 从API服务器获取相应列表信息
 			$params['id'] = $id;
+			$params['time_delete'] = 'NULL';
+			
 			$url = api_url('item_category/detail');
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
@@ -366,6 +395,8 @@
 			else:
 				$params['biz_id'] = $id;
 			endif;
+			
+			$params['time_delete'] = 'NULL';
 
 			// 从API服务器获取相应列表信息
 			$url = api_url('item_category_biz/index');
@@ -384,6 +415,8 @@
 		{
 			// 从API服务器获取相应列表信息
 			$params['id'] = $id;
+			$params['time_delete'] = 'NULL';
+
 			$url = api_url('item_category_biz/detail');
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
@@ -400,6 +433,8 @@
 		{
 			// 从API服务器获取相应列表信息
 			$params['id'] = $id;
+			$params['time_delete'] = 'NULL';
+
 			$url = api_url('promotion_biz/detail');
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
@@ -416,6 +451,8 @@
 		{
 			// 从API服务器获取相应列表信息
 			$params['id'] = $id;
+			$params['time_delete'] = 'NULL';
+
 			$url = api_url('freight_template_biz/detail');
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
@@ -440,6 +477,8 @@
 			if ( !empty($conditions) ):
 				$params = $conditions;
 			endif;
+			
+			$params['time_delete'] = 'NULL';
 
 			// 从API服务器获取相应列表信息
 			$url = api_url($table_name. '/count');

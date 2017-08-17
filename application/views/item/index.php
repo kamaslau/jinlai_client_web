@@ -1,5 +1,4 @@
 <style>
-	.digits>span, .digits del {color:#eee;font-size:smaller;}
 
 	/* 宽度在750像素以上的设备 */
 	@media only screen and (min-width:751px)
@@ -50,7 +49,7 @@
 						<img title="<?php echo $item['name'] ?>" src="<?php echo $item['url_image_main'] ?>">
 					</figure>
 
-					<h2 class=name><?php echo $item['name'] ?></h2>
+					<h2 class=item-name><?php echo $item['name'] ?></h2>
 
 					<div class=digits>
 						<span>￥</span><strong><?php echo $item['price'] ?></strong>

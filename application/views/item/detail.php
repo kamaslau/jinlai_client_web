@@ -1,12 +1,27 @@
 <style>
+	#header, #breadcrumb {display:none;}
+	
+	#content {width:100%;}
+	
+	#item-figure {padding:0;}
 
+	#item-name {color:#000;font-size:16px;font-weight:700;line-height:1;padding-bottom:.2em;}
+	
+	/* SKU */
+	#skus li {line-height:28px;padding:1px;margin-bottom:4px;margin-right:4px;}
+		#skus a {height:38px;line-height:38px;border:1px solid #b8b7bd;text-align:center;overflow:hidden;}
+			#skus a>* {float:left;display:inline;}
+			#skus figure {width:28px;height:28px;}
+			#skus h3 {font-size:12px;max-width:97px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;text-indent: 0;padding-left:1px;}
+
+	#description p, #description img {line-height:1;}
 
 	/* 宽度在750像素以上的设备 */
 	@media only screen and (min-width:751px)
 	{
-		
+		#header, #breadcrumb {display:block;}
 	}
-	
+
 	/* 宽度在960像素以上的设备 */
 	@media only screen and (min-width:961px)
 	{
@@ -25,12 +40,52 @@
 <div id=breadcrumb>
 	<ol class="breadcrumb container">
 		<li><a href="<?php echo base_url() ?>">首页</a></li>
-		<li><a href="<?php echo base_url($this->class_name) ?>"><?php echo $this->class_name_cn ?></a></li>
+		<li><a href="<?php echo base_url('item?category_id='.$item['category_id']) ?>"><?php echo $category['name'] ?></a></li>
 		<li class=active><?php echo $title ?></li>
 	</ol>
 </div>
 
 <div id=content class=container>
+	<div id=item-figure class="col-xs-12 col-sm-6 swiper-container">
+		<?php
+			// 判断是否有形象图，若有，则将形象图与主图拼装为轮播内容进行显示
+			if ( empty($item['figure_image_urls']) ):
+		?>
+		<div class=row>
+			<figure id=image_main class="col-xs-12 col-sm-6 col-md-4">
+				<img title="<?php echo $item['name'] ?>" src="<?php echo $item['url_image_main'] ?>">
+			</figure>
+		</div>
+
+		<?php else: ?>
+		<ul id=figure-images class="swiper-wrapper">
+			<li class="swiper-slide">
+				<img alt="<?php echo $item['name'] ?>" src="<?php echo $item['url_image_main'] ?>">
+			</li>
+
+			<?php
+				$figure_image_urls = explode(',', $item['figure_image_urls']);
+				foreach($figure_image_urls as $url):
+			?>
+			<li class="swiper-slide">
+				<img alt="<?php echo $item['name'] ?>" src="<?php echo $url ?>">
+			</li>
+			<?php endforeach ?>
+		</ul>
+		<!-- 页码提示 -->
+	    <div class="swiper-pagination"></div>
+		
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/css/swiper.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
+		<script>
+			var swiper = new Swiper('.swiper-container',{
+	            pagination: '.swiper-pagination'
+	        });
+	    </script>
+		<?php endif ?>
+	</div>
+
+	<!--
 	<div id=item-figure classs="col-xs-12 col-sm-6">
 		<div class=row>
 			<figure id=image_main class="col-xs-12 col-sm-6 col-md-4">
@@ -38,20 +93,6 @@
 			</figure>
 		</div>
 
-		<?php if ( !empty($item['figure_image_urls']) ): ?>
-		<ul id=figure-images class=row>
-			<?php
-				$figure_image_urls = explode(',', $item['figure_image_urls']);
-				foreach($figure_image_urls as $url):
-			?>
-			<li class="col-xs-3">
-				<img src="<?php echo $url ?>">
-			</li>
-			<?php endforeach ?>
-		</ul>
-		<?php endif ?>
-		
-		<!--
 		<?php if ( !empty($item['figure_video_urls']) ): ?>
 		<ul id=figure-videos class=row>
 			<?php
@@ -64,41 +105,36 @@
 			<?php endforeach ?>
 		</ul>
 		<?php endif ?>
-		-->
 	</div>
-	
+	-->
+
 	<div id=item-bried class="col-xs-12 col-sm-6">
 		<h2 id=item-name><?php echo $item['name'] ?></h2>
 		<ul class=row>
-			<?php echo !empty($item['slogan'])? '<li>'.$item['slogan'].'</li>': NULL ?>
+			<?php echo !empty($item['slogan'])? '<li class=slogan>'.$item['slogan'].'</li>': NULL ?>
+			
+			<li id=prices>
+				<strong>￥ <?php echo substr($item['price'], 0, -3).'<small>'.substr($item['price'], -3).'</small>' ?></strong>
+				<?php echo ($item['tag_price'] !== '0.00')? ' <del>￥'. $item['tag_price']. '</del>': NULL ?>
+			</li>
 
 			<?php $unit_name = !empty($item['unit_name'])? $item['unit_name']: '份' ?>
 			<li id=stocks>
-				库存 <?php echo $item['stocks'].' '. $unit_name ?>
+				库存 <?php echo $item['stocks']. $unit_name ?>
 				<?php echo $item['quantity_min'] > 1? ' '.$item['quantity_min'].$unit_name. '起售': NULL; ?>
-				<?php echo !empty($item['quantity_max'])? ' 限购 '.$item['quantity_max'].$unit_name: NULL ?>
-			</li>
-
-			<li id=prices>
-				<strong>￥ <?php echo $item['price'] ?></strong>
-				<?php echo ($item['tag_price'] !== '0.00')? ' <del>￥'. $item['tag_price']. '</del>': NULL ?>
+				<?php echo $item['quantity_min'] > 0? ' 限购 '.$item['quantity_max'].$unit_name: NULL ?>
 			</li>
 		</ul>
 	</div>
 
 	<dl id=list-info class=dl-horizontal>
-		<dt>商品ID</dt>
-		<dd><?php echo $item['item_id'] ?></dd>
-		<dt>系统分类</dt>
-		<dd><?php echo $category['name'] ?></dd>
-
 		<?php if ( isset($brand) ): ?>
 		<dt>品牌</dt>
 		<dd><?php echo !empty($item['brand_id'])? $brand['name']: '未设置'; ?></dd>
 		<?php endif ?>
 
 		<?php if ( !empty($item['code_biz']) ): ?>
-		<dt>商家自定义货号</dt>
+		<dt>货号</dt>
 		<dd><?php echo $item['code_biz'] ?></dd>
 		<?php endif ?>
 
@@ -148,18 +184,17 @@
 
 	<?php if ( !empty($skus) ): ?>
 	<section id=skus>
-		
-		<ul class=row>
+
+		<ul class="horizontal">
 			<?php foreach ($skus as $sku): ?>
-			<li class="col-xs-6 col-sm-4 col-md-3">
-				<a href="<?php echo base_url('sku/detail?id='.$sku['sku_id']) ?>">
-					<h3><?php echo $sku['name_first'].$sku['name_second'].$sku['name_third'] ?></h3>
-					<small>￥<?php echo $sku['price'] ?> / 库存<?php echo $sku['stocks'] ?></small>
+			<li>
+				<a data-item-id="<?php echo $item['item_id'] ?>" data-sku-id="<?php echo $sku['sku_id'] ?>" data-stocks="<?php echo $sku['stocks'] ?>" href="<?php echo base_url('sku/detail?id='.$sku['sku_id']) ?>">
 					<?php if ( !empty($sku['url_image']) ): ?>
 					<figure>
-						<img src="<?php echo $sku['url_image'] ?>">
+						<img src="<?php echo MEDIA_URL.'/sku/'.$sku['url_image'] ?>">
 					</figure>
 					<?php endif ?>
+					<h3><?php echo $sku['name_first'].$sku['name_second'].$sku['name_third'] ?></h3>
 				</a>
 			</li>
 			<?php endforeach ?>
@@ -173,7 +208,7 @@
 		<?php if ( !empty($item['description']) ): ?>
 		<div id=description-content>
 			<h3>商家内容</h3>
-			<?php echo $item['description'] ?>
+			<?php //echo $item['description'] ?>
 		</div>
 		<?php endif ?>
 		
@@ -185,10 +220,52 @@
 
 <nav id=nav-main>
 	<ul class=row>
-		<li class="col-xs-2"><a title="客服" href="<?php echo base_url('dialog/detail?biz_id='.$item['biz_id']) ?>">客服</a></li>
-		<li class="col-xs-2"><a title="店铺" href="<?php echo base_url('biz/detail?id='.$item['biz_id']) ?>">店铺</a></li>
-		<li class="col-xs-2"><a title="收藏" href="<?php echo base_url('fav_item/create?item_id='.$item['item_id']) ?>">收藏</a></li>
-		<li class="col-xs-3"><a title="加入购物车" href="<?php echo base_url('cart/create?item_id='.$item['item_id']) ?>">加入购物车</a></li>
-		<li class="col-xs-3"><a title="立即购买" href="<?php echo base_url('order?item_id='.$item['item_id']) ?>">立即购买</a></li>
+		<li class="col-xs-2">
+			<a title="客服" href="<?php echo base_url('dialog/detail?biz_id='.$item['biz_id']) ?>">
+				<i class="fa fa-comments" aria-hidden="true"></i>
+				客服
+			</a>
+		</li>
+		<li class="col-xs-2">
+			<a title="店铺" href="<?php echo base_url('biz/detail?id='.$item['biz_id']) ?>">
+				<i class="fa fa-home" aria-hidden="true"></i>
+				店铺
+			</a>
+		</li>
+		<li class="col-xs-2">
+			<a title="收藏" href="<?php echo base_url('fav_item/create?item_id='.$item['item_id']) ?>">
+				<i class="fa fa-star" aria-hidden="true"></i>
+				收藏
+			</a>
+		</li>
+		<li class="col-xs-3">
+			<a id=cart-add title="加入购物车" href="<?php echo base_url('cart/add?biz_id='.$item['biz_id'].'&item_id='.$item['item_id']) ?>">加入购物车</a>
+		</li>
+		<li class="col-xs-3">
+			<a id=order-create title="立即购买" href="<?php echo base_url('order?biz_id='.$item['biz_id'].'&item_id='.$item['item_id']) ?>">立即购买</a>
+		</li>
 	</ul>
 </nav>
+
+<script>
+	// 点击SKU时获取SKU信息
+	$('#skus a').click(function(){
+		item_id = $(this).attr('data-item-id');
+		sku_id = $(this).attr('data-sku-id');
+		stocks = $(this).attr('data-stocks');
+		
+		if (stocks == 0)
+		{
+			alert('卖光了');
+		}
+		else
+		{
+			alert(item_id + ':' + sku_id + '库存 ' + stocks);
+		}
+
+		return false;
+	});
+	
+	// 商品信息
+	var item = <?php echo $item_in_json ?>
+</script>
