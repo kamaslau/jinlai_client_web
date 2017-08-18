@@ -45,7 +45,9 @@
 	<div class="jumbotron row">
 		<dl id=core-info class=dl-horizontal>
 			<dt>商家全称</dt>
-			<dd><?php echo $item['name'] ?></dd>
+			<dd>
+				<h2 class=biz-name><?php echo $item['name'] ?></h2>
+			</dd>
 			<dt>简称</dt>
 			<dd><?php echo $item['brief_name'] ?></dd>
 			<dt>客服电话</dt>

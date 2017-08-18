@@ -2,7 +2,7 @@
 	defined('BASEPATH') OR exit('此文件不可被直接访问');
 
 	/**
-	 * Cart 类
+	 * Cart 购物车类
 	 *
 	 * @version 1.0.0
 	 * @author Kamas 'Iceberg' Lau <kamaslau@outlook.com>
@@ -32,14 +32,14 @@
 			// 载入Basic库
 			$this->load->library('basic', $basic_configs);
 		}
-		
+
 		/**
 		 * 截止3.1.3为止，CI_Controller类无析构函数，所以无需继承相应方法
 		 */
 		public function __destruct()
 		{
 			// 调试信息输出开关
-			$this->output->enable_profiler(TRUE);
+			//$this->output->enable_profiler(TRUE);
 		}
 
 		/**
@@ -52,7 +52,7 @@
 				'title' => $this->class_name_cn,
 				'class' => $this->class_name.' '. $this->class_name.'-index',
 			);
-			
+
 			// 初始化商家及购物车项数组
 			$data['bizs'] = $data['items'] = array();
 
@@ -87,9 +87,9 @@
 		} // end index
 
 		/**
-		 * TODO 放入购物车
+		 * 加量
 		 *
-		 * 将商品ID和数量成对写入session->cart，或加量
+		 * 增加数量或加入购物车
 		 */
 		public function add()
 		{
@@ -136,20 +136,21 @@
 
 					$this->session->cart = implode(' ', $new_cart);
 				endif;
-				
+
 			endif;
 
+			// 转到购物车页
 			redirect( base_url('cart') );
 		} // end add
-		
+
 		/**
-		 * TODO 移出购物车
+		 * 减量
 		 *
-		 * 将商品ID和数量成对移出session->cart，或减量
+		 * 减少数量，减少为0后移出购物车
 		 */
-		public function remove()
+		public function reduce()
 		{
-			// 获取待加入购物车的biz_id、item_id、sku_id
+			// 获取待减量购物车的biz_id、item_id、sku_id
 			$biz_id = $this->input->get_post('biz_id')? $this->input->get_post('biz_id'): NULL;
 			$item_id = $this->input->get_post('item_id')? $this->input->get_post('item_id'): NULL;
 			$sku_id = $this->input->get_post('sku_id')? $this->input->get_post('sku_id'): '0';
@@ -157,14 +158,14 @@
 			// 需要减量的购物车项
 			$item_to_check = $biz_id.'|'.$item_id.'|'.$sku_id.'|';
 
-			//拆分session->cart，检查是否有当前商品ID，若无则追加，若有则修改份数；
+			// 获取购物车数据
 			$current_cart = $this->session->cart;
 
 			// 检查购物车是否为空，或购物车中是否有此商品；进行相应提示
 			if ( (isset($current_cart) === FALSE) OR (strpos($current_cart, $item_to_check) === FALSE) ):
 				$data = array(
-					'title' => '移出'.$this->class_name_cn,
-					'class' => $this->class_name.' '. $this->class_name.'-remove',
+					'title' => '购物车',
+					'class' => $this->class_name.' '. $this->class_name.'-reduce',
 				);
 				$data['content'] = '<p>购物车中无此商品，请确认。</p>';
 
@@ -198,10 +199,63 @@
 
 				$this->session->cart = implode(',', $new_cart);
 				
+				// 转到购物车页
+				redirect( base_url('cart') );
+			endif;
+		} // end reduce
+
+		/**
+		 * 移除购物车
+		 *
+		 * 直接将相应项移除出购物车
+		 */
+		public function remove()
+		{
+			// 获取待移出购物车的biz_id、item_id、sku_id
+			$biz_id = $this->input->get_post('biz_id')? $this->input->get_post('biz_id'): NULL;
+			$item_id = $this->input->get_post('item_id')? $this->input->get_post('item_id'): NULL;
+			$sku_id = $this->input->get_post('sku_id')? $this->input->get_post('sku_id'): '0';
+
+			// 需要移除的购物车项
+			$item_to_check = $biz_id.'|'.$item_id.'|'.$sku_id.'|';
+
+			// 获取购物车数据
+			$current_cart = $this->session->cart;
+
+			// 检查购物车是否为空，或购物车中是否有此商品；进行相应提示
+			if ( (isset($current_cart) === FALSE) OR (strpos($current_cart, $item_to_check) === FALSE) ):
+				$data = array(
+					'title' => '购物车',
+					'class' => $this->class_name.' '. $this->class_name.'-remove',
+				);
+				$data['content'] = '<p>购物车中无此商品，请确认。</p>';
+
+				$this->load->view('templates/header', $data);
+				$this->load->view($this->class_name. '/index', $data);
+				$this->load->view('templates/footer', $data);
+
+			else:
+				// 拆分现购物车数组中各项，并在重新拼合购物车信息时跳过待移除项
+				$current_cart = $this->explode_it($this->session->cart);
+
+				// 创建新购物车数组
+				$new_cart = array();
+
+				// 获取待减量项
+				foreach ($current_cart as $cart_item):
+					// 将待减量项减量
+					if ( strpos($cart_item, $item_to_check) === FALSE ):
+						$new_cart[] = ','.$cart_item; // 不相关项保持原状
+					endif;
+				endforeach;
+
+				$this->session->cart = implode(',', $new_cart);
+
+				// 转到购物车页
 				redirect( base_url('cart') );
 			endif;
 		} // end remove
-		
+
 		/**
 		 * 清空购物车
 		 */

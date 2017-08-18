@@ -13,11 +13,11 @@
 		.price strong {color:#1aad19;}
 
 	.actions {border-top:1px solid #9ed99d;padding:0;margin:0;margin-top:0.5em;overflow:hidden;}
-		.actions>li {width:50%;height:36px;line-height:36px;padding:0;}
+		.actions>li {height:44px;line-height:44px;padding:0;}
 			.actions>li:first-of-type {border-right:1px solid #9ed99d;}
-			.actions>li a {text-align:center;display:block;width:100%;height:100%;}
-			a.add {color:#fff;font-size:20px;background-color:#9ed99d;}
-			a.remove {color:rgba(0, 0, 0, 0.3);font-size:18px;}
+			.actions>li a {font-size:20px;text-align:center;display:block;width:100%;height:100%;}
+			a.add {color:#fff;background-color:#9ed99d;}
+			a.reduce {color:rgba(0, 0, 0, 0.3);}
 </style>
 
 <base href="<?php echo $this->media_root ?>">
@@ -32,6 +32,16 @@
 			// 将所有该biz_id对应的购物车项装入同一容器
 			$('.item[data-biz-id='+ biz_id +']').wrapAll('ul.cart-items').appendTo('section[data-biz-id='+ biz_id +']');
 
+		});
+
+		// 移除购物车项前要求用户确定
+		$('a.remove').click(function(){
+			var is_confirm = confirm('确定要删除这个宝贝吗');
+			
+			if (is_confirm == false)
+			{
+				return false;
+			}
 		});
 	});
 </script>
@@ -55,26 +65,42 @@
 		</h2>
 	</section>
 	<?php endforeach ?>
-	
-	<ul id=list-cart>
+
+	<ul>
 	<?php
 		foreach ($items as $item):
 
 		// 生成操作参数
 		$url_param = '?';
-		// 初始化有效性
-		$is_valid = TRUE;
-		
-		// TODO 判断店铺状态是否正产，若正常则获取biz_id
+		// 初始化有效性、库存充足度、可减量、可加量性
+		$is_valid = $is_enough = $can_add = $can_reduce = TRUE;
+
+		// TODO 判断店铺状态是否正常，若正常则获取biz_id
 		if ( TRUE ):
 			$url_param .= 'biz_id='.$item['biz_id'];
 		else:
 			$is_valid = FALSE;
 		endif;
 
-		// 判断商品是否在售，库存是否足够，若正常则获取item_id
-		if ( $item['time_publish'] !== NULL && $item['stocks'] > $item['count'] ):
+		// 判断商品是否在售，若正常则获取item_id
+		if ( !empty($item['time_publish']) ):
 			$url_param .= '&item_id='.$item['item_id'];
+
+			// 判断库存是否充足
+			if ( $item['stocks'] < $item['count'] ):
+				$is_enough = FALSE;
+			endif;
+
+			// 判断是否可减量
+			if ( $item['quantity_min'] >= $item['count'] ):
+				$can_reduce = FALSE;
+			endif;
+
+			// 判断是否可加量
+			if ( $item['stocks'] == $item['count'] || $item['quantity_max'] <= $item['count']):
+				$can_add = FALSE;
+			endif;
+
 		else:
 			$is_valid = FALSE;
 		endif;
@@ -82,15 +108,19 @@
 		// 判断是否存在SKU
 		if ( isset($item['sku']) ):
 			// 判断SKU库存是否足够，若正常则获取sku_id
-			if ( $item['sku']['stocks'] > $item['count'] ):
+			if ( $item['sku']['stocks'] >= $item['count'] ):
 				$url_param .= '&sku_id='.$item['sku']['sku_id'];
+
+				// 判断是否可加量
+				if ( $item['sku']['stocks'] == $item['count']):
+					$can_add = FALSE;
+				endif;
 			else:
-				$is_valid = FALSE;
+				$is_enough = FALSE;
 			endif;
-			
+
 		endif;
 	?>
-
 		<li class="item row" data-biz-id="<?php echo $item['biz_id'] ?>">
 			<div class="main-images col-xs-2">
 				<a href="<?php echo base_url('item/detail?id='.$item['item_id']) ?>">
@@ -99,17 +129,19 @@
 			</div>
 
 			<section class="col-xs-6">
-				<?php if ($is_valid === TRUE): ?>
 				<h2 class=item-name>
-					<a href="<?php echo base_url('item/detail?id='.$item['item_id']) ?>">
+					<a title="<?php echo $item['name'] ?>" href="<?php echo base_url('item/detail?id='.$item['item_id']) ?>">
+						<?php if ($is_valid === FALSE): ?>
+							<span class="label label-danger">已失效</span>
+						<?php else: ?>
+							<?php if ($is_enough === FALSE): ?>
+							<span class="label label-warning">库存不足</span>
+							<?php endif ?>
+						<?php endif ?>
+
 						<?php echo $item['name'] ?>
 					</a>
 				</h2>
-				<?php else: ?>
-				<h2>
-					<span class="label label-default">已失效</span> <?php echo $item['name'] ?>
-				</h2>
-				<?php endif ?>
 			</section>
 
 			<!-- 价格相关 -->
@@ -119,14 +151,22 @@
 
 			<!-- 数量调整 -->
 			<?php if ($is_valid === TRUE): ?>
-			<ul class="actions list-unstyled list-inline col-xs-12 row">
-				<li class="col-xs-6">
-					<a class=remove href="<?php echo base_url('cart/remove'.$url_param) ?>"><i class="fa fa-minus-circle" aria-hidden=true></i></a>
+			<ul class="actions col-xs-12 row">
+				<?php if ($can_reduce === TRUE): ?>
+				<li class="col-xs-4">
+					<a class=reduce href="<?php echo base_url('cart/reduce'.$url_param) ?>"><i class="fa fa-minus-circle" aria-hidden=true></i></a>
+				</li>
+				<?php endif ?>
+
+				<li class="col-xs-4">
+					<a class=remove href="<?php echo base_url('cart/remove'.$url_param) ?>"><i class="fa fa-trash" aria-hidden=true></i></a>
 				</li>
 
-				<li class="col-xs-6">
+				<?php if ($can_add === TRUE): ?>
+				<li class="col-xs-4">
 					<a class=add href="<?php echo base_url('cart/add'.$url_param) ?>"><i class="fa fa-plus-circle" aria-hidden=true></i></a>
 				</li>
+				<?php endif ?>
 			</ul>
 			<?php endif ?>
 		</li>

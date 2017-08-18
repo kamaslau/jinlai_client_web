@@ -4,49 +4,21 @@
 	/**
 	 * Home 类
 	 *
-	 * 首页的示例代码示例代码
+	 * 首页
 	 *
 	 * @version 1.0.0
 	 * @author Kamas 'Iceberg' Lau <kamaslau@outlook.com>
 	 * @copyright ICBG <www.bingshankeji.com>
 	 */
-	class Home extends CI_Controller
+	class Home extends MY_Controller
 	{
-        /* 类名称小写，应用于多处动态生成内容 */
-        public $class_name;
-        
-        /* 类名称中文，应用于多处动态生成内容 */
-        public $class_name_cn;
-        
-        /* 主要相关表名 */
-        public $table_name;
-        
-        /* 主要相关表的主键名*/
-        public $id_name;
-        
-        /* 视图文件所在目录名 */
-        public $view_root;
-        
         public function __construct()
         {
             parent::__construct();
             
             // 向类属性赋值
             $this->class_name = strtolower(__CLASS__);
-            $this->class_name_cn = '类名'; // 改这里……
-            $this->table_name = 'table'; // 和这里……
-            $this->id_name = 'table_id';  // 还有这里，OK，这就可以了
-            $this->view_root = $this->class_name;
-            
-            // 设置并调用Basic核心库
-            $basic_configs = array(
-               'table_name' => $this->table_name,
-               'id_name' => $this->id_name,
-               'view_root' => $this->view_root,
-            );
-            
-            // 载入Basic库
-            $this->load->library('basic', $basic_configs);
+            $this->class_name_cn = '首页'; // 改这里……
         }
 
 		// 首页
@@ -58,13 +30,17 @@
 				'class' => $this->class_name, // 页面body标签的class属性值
 			);
 			
+			// 获取商家列表
+			$data['bizs'] = $this->list_biz();
+			
 			// 载入视图
 			$this->load->view('templates/header', $data);
 			$this->load->view('home', $data);
 			$this->load->view('templates/nav-main', $data);
 			$this->load->view('templates/footer', $data);
-		}
-	}
+		} // end index
+
+	} // end class Home
 
 /* End of file Home.php */
 /* Location: ./application/controllers/Home.php */

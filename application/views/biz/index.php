@@ -43,9 +43,9 @@
 
 	<ul id=item-list class=row>
 		<?php foreach ($items as $item): ?>
-		<li class="item col-xs-16">
-			<a href="<?php echo base_url($this->class_name. '/detail?id='.$item[$this->id_name]) ?>">
-				<figure class="image-main col-xs-6 col-sm-4 col-md-3">
+		<li class="item col-xs-12">
+			<a title="<?php echo $item['name'] ?>" href="<?php echo base_url($this->class_name. '/detail?id='.$item[$this->id_name]) ?>">
+				<figure class="image-main col-xs-12 col-sm-6 col-md-3">
 					<img title="<?php echo $item['name'] ?>" src="<?php echo $item['url_logo'] ?>">
 					<figcaption>
 						<ul class=row>
@@ -54,8 +54,8 @@
 					</figcaption>
 				</figure>
 
-				<section>
-					<h2 class=name><?php echo $item['name'] ?></h2>
+				<section class="col-xs-12 col-sm-6 col-md-3">
+					<h2 class=biz-name><?php echo $item['name'] ?></h2>
 				</section>
 			</a>
 		</li>

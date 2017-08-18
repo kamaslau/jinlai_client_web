@@ -122,7 +122,7 @@
 			<li id=stocks>
 				库存 <?php echo $item['stocks']. $unit_name ?>
 				<?php echo $item['quantity_min'] > 1? ' '.$item['quantity_min'].$unit_name. '起售': NULL; ?>
-				<?php echo $item['quantity_min'] > 0? ' 限购 '.$item['quantity_max'].$unit_name: NULL ?>
+				<?php echo $item['quantity_max'] > 0? ' 限购 '.$item['quantity_max'].$unit_name: NULL ?>
 			</li>
 		</ul>
 	</div>
@@ -239,10 +239,14 @@
 			</a>
 		</li>
 		<li class="col-xs-3">
-			<a id=cart-add title="加入购物车" href="<?php echo base_url('cart/add?biz_id='.$item['biz_id'].'&item_id='.$item['item_id']) ?>">加入购物车</a>
+			<a id=cart-add title="加入购物车" href="<?php echo base_url('cart/add?biz_id='.$item['biz_id'].'&item_id='.$item['item_id']) ?>">
+				加入<wbr>购物车
+			</a>
 		</li>
 		<li class="col-xs-3">
-			<a id=order-create title="立即购买" href="<?php echo base_url('order?biz_id='.$item['biz_id'].'&item_id='.$item['item_id']) ?>">立即购买</a>
+			<a id=order-create title="立即购买" href="<?php echo base_url('order/create?biz_id='.$item['biz_id'].'&item_id='.$item['item_id']) ?>">
+				立即购买
+			</a>
 		</li>
 	</ul>
 </nav>

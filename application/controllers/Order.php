@@ -2,81 +2,79 @@
 	defined('BASEPATH') OR exit('此文件不可被直接访问');
 
 	/**
-	 * Order 类
+	 * Order 商品订单类
 	 *
 	 * @version 1.0.0
 	 * @author Kamas 'Iceberg' Lau <kamaslau@outlook.com>
 	 * @copyright ICBG <www.bingshankeji.com>
 	 */
-	class Order extends CI_Controller
-	{
-		/* 类名称小写，应用于多处动态生成内容 */
-		public $class_name;
+	class Order extends MY_Controller
+	{	
+		/**
+		 * 可作为列表筛选条件的字段名；可在具体方法中根据需要删除不需要的字段并转换为字符串进行应用，下同
+		 */
+		protected $names_to_sort = array(
+			'order_id', 'biz_id', 'user_id', 'user_ip', 'subtotal', 'promotion_id', 'discount_promotion', 'coupon_id', 'discount_coupon', 'credit_id', 'discount_credit', 'freight', 'discount_reprice', 'repricer_id', 'total', 'total_payed', 'total_refund', 'fullname', 'mobile', 'province', 'city', 'county', 'street', 'longitude', 'latitude', 'payment_type', 'payment_account', 'payment_id', 'note_user', 'note_stuff', 'commission', 'promoter_id', 'time_create', 'time_cancel', 'time_expire', 'time_pay', 'time_refuse', 'time_accept', 'time_deliver', 'time_confirm', 'time_confirm_auto', 'time_comment', 'time_refund', 'time_delete', 'time_edit', 'operator_id', 'status', 'refund_status', 'invoice_status',
+		);
 
-		/* 类名称中文，应用于多处动态生成内容 */
-		public $class_name_cn;
+		/**
+		 * 可被编辑的字段名
+		 */
+		protected $names_edit_allowed = array(
+			'order_id', 'biz_id', 'user_id', 'user_ip', 'subtotal', 'promotion_id', 'discount_promotion', 'coupon_id', 'discount_coupon', 'credit_id', 'discount_credit', 'freight', 'discount_reprice', 'repricer_id', 'total', 'total_payed', 'total_refund', 'fullname', 'mobile', 'province', 'city', 'county', 'street', 'longitude', 'latitude', 'payment_type', 'payment_account', 'payment_id', 'note_user', 'note_stuff', 'commission', 'promoter_id', 'time_create', 'time_cancel', 'time_expire', 'time_pay', 'time_refuse', 'time_accept', 'time_deliver', 'time_confirm', 'time_confirm_auto', 'time_comment', 'time_refund', 'time_delete', 'time_edit', 'operator_id', 'status', 'refund_status', 'invoice_status',
+		);
 
-		/* 主要相关表名 */
-		public $table_name;
+		/**
+		 * 完整编辑单行时必要的字段名
+		 */
+		protected $names_edit_required = array(
+			'id',
+			'order_id', 'biz_id', 'user_id', 'user_ip', 'subtotal', 'promotion_id', 'discount_promotion', 'coupon_id', 'discount_coupon', 'credit_id', 'discount_credit', 'freight', 'discount_reprice', 'repricer_id', 'total', 'total_payed', 'total_refund', 'fullname', 'mobile', 'province', 'city', 'county', 'street', 'longitude', 'latitude', 'payment_type', 'payment_account', 'payment_id', 'note_user', 'note_stuff', 'commission', 'promoter_id', 'time_create', 'time_cancel', 'time_expire', 'time_pay', 'time_refuse', 'time_accept', 'time_deliver', 'time_confirm', 'time_confirm_auto', 'time_comment', 'time_refund', 'time_delete', 'time_edit', 'operator_id', 'status', 'refund_status', 'invoice_status',
+		);
+		
+		/**
+		 * 编辑单行特定字段时必要的字段名
+		 */
+		protected $names_edit_certain_required = array(
+			'id', 'name', 'value',
+		);
 
-		/* 主要相关表的主键名*/
-		public $id_name;
-
-		/* 视图文件所在目录名 */
-		public $view_root;
+		/**
+		 * 编辑多行特定字段时必要的字段名
+		 */
+		protected $names_edit_bulk_required = array(
+			'ids', 'password',
+		);
 
 		public function __construct()
 		{
 			parent::__construct();
 
+			// （可选）未登录用户转到登录页
+			($this->session->time_expire_login > time()) OR redirect( base_url('login') );
+
 			// 向类属性赋值
 			$this->class_name = strtolower(__CLASS__);
 			$this->class_name_cn = '订单'; // 改这里……
 			$this->table_name = 'order'; // 和这里……
-			$this->id_name = 'order_id';  // 还有这里，OK，这就可以了
-			$this->view_root = $this->class_name;
+			$this->id_name = 'order_id'; // 还有这里，OK，这就可以了
+			$this->view_root = $this->class_name; // 视图文件所在目录
+			$this->media_root = MEDIA_URL. $this->class_name.'/'; // 媒体文件所在目录
 
-			// 设置并调用Basic核心库
-			$basic_configs = array(
-				'table_name' => $this->table_name,
-				'id_name' => $this->id_name,
-				'view_root' => $this->view_root,
-			);
-
-			// 载入Basic库
-			$this->load->library('basic', $basic_configs);
-
-			/**
-			 * 订单状态判断
-			 *
-			 * 以最后变更记录为准
-			 */
-		    function order_status($order)
+			// （可选）某些用于此类的自定义函数
+		    function function_name($parameter)
 			{
-				if ($order['time_delete'] !== NULL):
-					$status = '已删除';
-				elseif ($order['time_refund'] !== NULL):
-					$status = '已退款';
-				elseif ($order['time_comment'] !== NULL):
-					$status = '已评价';
-				elseif ($order['time_finish'] !== NULL):
-					$status = '待评价';
-				elseif ($order['time_deliver'] !== NULL):
-					$status = '待收货';
-				elseif ($order['time_refuse'] !== NULL):
-					$status = '已拒绝';
-				elseif ($order['time_pay'] !== NULL):
-					$status = '待发货';
-				elseif ($order['time_expire'] !== NULL):
-					$status = '已过期';
-				elseif ($order['time_cancel'] !== NULL):
-					$status = '已取消';
-				else:
-					$status = '待付款';
-				endif;
-				
-				return $status;
+				//...
 		    }
+		}
+		
+		/**
+		 * 截止3.1.3为止，CI_Controller类无析构函数，所以无需继承相应方法
+		 */
+		public function __destruct()
+		{
+			// 调试信息输出开关
+			$this->output->enable_profiler(TRUE);
 		}
 
 		/**
@@ -84,665 +82,752 @@
 		 */
 		public function index()
 		{
-			($this->session->logged_in === TRUE) OR redirect( base_url('login') );
-
-			// 从API服务器获取相应数据
-			$url = api_url($this->class_name);
-			$params = array(
-				'user_id' => $this->session->user_id,
-				'status' => $this->input->get('status'),
-			);
-			$result = $this->curl->go($url, $params, 'array');
-
-			// 设置页面
+			// 页面信息
 			$data = array(
-				'title' => '我的'. $this->class_name_cn,
-				'class' => $this->class_name.' '. $this->class_name.'-index',
+				'title' => $this->class_name_cn. '列表',
+				'class' => $this->class_name.' index',
 			);
 
-			// 页面数据
-			$data['items'] = $result['content'];
+			// 筛选条件
+			$condition['user_id'] = $this->session->user_id;
+			$condition['time_delete'] = 'NULL';
+			//$condition['name'] = 'value';
+			// （可选）遍历筛选条件
+			foreach ($this->names_to_sort as $sorter):
+				if ( !empty($this->input->post($sorter)) )
+					$condition[$sorter] = $this->input->post($sorter);
+			endforeach;
 
-			// 输出页面
-			$this->load->view('templates/header', $data); // 载入视图文件，下同
+			// 排序条件
+			$order_by = NULL;
+			//$order_by['name'] = 'value';
+
+			// 从API服务器获取相应列表信息
+			$params = $condition;
+			$url = api_url($this->class_name. '/index');
+			$result = $this->curl->go($url, $params, 'array');
+			if ($result['status'] === 200):
+				$data['items'] = $result['content'];
+			else:
+				$data['error'] = $result['content']['error']['message'];
+			endif;
+
+			// 输出视图
+			$this->load->view('templates/header', $data);
 			$this->load->view($this->view_root.'/index', $data);
 			$this->load->view('templates/footer', $data);
-		}
+		} // end index
 
 		/**
 		 * 详情页
 		 */
 		public function detail()
 		{
-			($this->session->logged_in === TRUE) OR redirect( base_url('login') );
-			
 			// 检查是否已传入必要参数
 			$id = $this->input->get_post('id')? $this->input->get_post('id'): NULL;
-			if ( empty($id) )
-				redirect(base_url('error/code_404'));
-
-			// 从API服务器获取相应数据
-			$url = api_url($this->class_name. '/detail');
-			$params = array(
-				'user_id' => $this->session->user_id,
-				'id' => $id,
-			);
-			$result = $this->curl->go($url, $params, 'array');
-
-			// 页面信息
-			$data = array(
-				'title' => $this->class_name_cn. '详情',
-				'class' => $this->class_name.' '. $this->class_name.'-detail',
-			);
-
-			// 获取订单信息并传递到视图
-			$order = $result['content'];
-			$data['order'] = $order;
-
-			// 判断订单类型（快捷订单、购物车订单），并获取订单相关商品信息
-			$this->basic_model->table_name = 'item';
-			$this->basic_model->id_name = 'item_id';
-			if ($order['item'] === NULL):
-				// 拆分现购物车数组中各项，并获取商品信息
-				$order_items = array_filter( explode(' ', $order['items']) );
-
-				// 创建商品信息数组
-				$items = array();
-
-				// 获取各商品信息
-				foreach ($order_items as $item):
-					$this_item = explode('|', $item);
-					$this_id = $this_item[0];
-					$this_count = $this_item[1];
-					$item = $this->basic_model->select_by_id($this_id);
-					$item['unit'] = $this_count;
-					$items[] = $item;
-				endforeach;
-				$data['items'] = $items; // 将商品信息传入视图
-
+			if ( !empty($id) ):
+				$params['id'] = $id;
+				$params['user_id'] = $this->session->user_id;
 			else:
-				$this_item = explode('|', $order['item']);
-				$this_id = $this_item[0];
-				$this_count = $this_item[1];
-				$item = $this->basic_model->select_by_id($this_id);
-				$item['unit'] = $this_count;
-				$data['items'][] = $item; // 将商品信息传入视图
-
+				redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
 			endif;
 
+			// 从API服务器获取相应详情信息
+			$url = api_url($this->class_name. '/detail');
+			$result = $this->curl->go($url, $params, 'array');
+			if ($result['status'] === 200):
+				$data['item'] = $result['content'];
+			else:
+				$data['error'] = $result['content']['error']['message'];
+			endif;
+
+			// 页面信息
+			$data['title'] = $this->class_name_cn. '详情';
+			$data['class'] = $this->class_name.' detail';
+
+			// 输出视图
 			$this->load->view('templates/header', $data);
 			$this->load->view($this->view_root.'/detail', $data);
 			$this->load->view('templates/footer', $data);
-		}
-
-		// 生成快捷订单信息（单品订单）
-		// 如果不可使用优惠券，进行标记
-		private function generate_quick_order($item)
-		{
-			// 计算1份该商品的订单小计、运费、折扣金额，及实际支付金额
-			$subtotal = $item['price'] * $item['unit'];
-			$freight = $item['freight'] * $item['unit'];
-			$discount = (empty($item['discount']) || $item['discount'] === '0.00')? '0.00': (1 - $item['discount']) * $subtotal;
-			$discount_credit = (empty($item['discount_credit']) || $item['discount_credit'] === '0.00')? '0.00': (1 - $item['discount_credit']) * $subtotal;
-			$total = ($subtotal + $freight - $discount);
-			
-			// 若不允许使用优惠券
-			if ($item['coupon_allowed'] === '0') $coupon_banned = TRUE;
-			
-			//TODO 检测是否参与折扣（预备功能，如全店折扣等）
-
-			// 生成并返回订单信息数组
-			$order_data = array(
-				'item' => $item['item_id'].'|'.$item['unit'],
-				'subtotal' => round($subtotal, 2),
-				'freight' => round($freight, 2),
-				'discount' => round($discount, 2),
-				'discount_credit' => round($discount_credit), // 保留整数
-				'total' => round($total, 2),
-				'coupon_allowed' => (isset($coupon_banned))? '0': '1',
-			);
-			return $order_data;
-		}
-
-		// 生成购物车订单信息
-		// 如果不可使用优惠券，进行标记
-		private function generate_cart_order($items)
-		{
-			// 计算购物车中所有商品的订单小计、运费、折扣金额，及实际支付金额
-			$subtotal = $freight = $discount = $discount_credit = $total = 0.00;
-
-			foreach ($items as $item):
-				$subtotal += $item['price'] * $item['unit'];
-				$freight += $item['freight'] * $item['unit'];
-				$discount += (empty($item['discount']) || $item['discount'] === '0.00')? '0.00': (1 - $item['discount']) * $subtotal;
-				$discount_credit += (empty($item['discount_credit']) || $item['discount_credit'] === '0.00')? '0.00': (1 - $item['discount_credit']) * $subtotal;
-				// 若不允许使用优惠券
-				if ($item['coupon_allowed'] === '0') $coupon_banned = TRUE;
-			endforeach;
-
-			$total = ($subtotal + $freight - $discount - $discount_credit);
-
-			// 生成并返回订单信息数组
-			$order_data = array(
-				'items' => $this->valid_items_string($items),
-				'subtotal' => round($subtotal, 2),
-				'freight' => round($freight, 2),
-				'discount' => round($discount, 2),
-				'discount_credit' => round($discount_credit), // 保留整数
-				'total' => round($total, 2),
-				'coupon_allowed' => (isset($coupon_banned))? '0': '1',
-			);
-			return $order_data;
-		}
-		
-		// 生成有效商品的 id|数量 字符串
-		private function valid_items_string($items)
-		{
-			$items_string = '';
-			
-			foreach ($items as $item):
-				$items_string .= ' '.$item['item_id'].'|'.$item['unit'];
-			endforeach;
-			
-			return $items_string;
-		}
+		} // end detail
 
 		/**
-		 * 创建订单
-		 *
-		 * 获取商品信息
-		 * 获取商家信息
-		 * 获取优惠券信息
-		 * 获取积分信息
-		 * 计算运费
-		 * 生成最终订单信息
-		 * 将订单信息写入数据库
+		 * 回收站
+		 */
+		public function trash()
+		{
+			// 操作可能需要检查操作权限
+			$role_allowed = array('管理员', '经理'); // 角色要求
+			$min_level = 30; // 级别要求
+			$this->permission_check($role_allowed, $min_level);
+
+			// 页面信息
+			$data = array(
+				'title' => $this->class_name_cn. '回收站',
+				'class' => $this->class_name.' trash',
+			);
+
+			// 筛选条件
+			$condition['user_id'] = $this->session->user_id;
+			$condition['time_delete'] = 'IS NOT NULL';
+			// （可选）遍历筛选条件
+			foreach ($this->names_to_sort as $sorter):
+				if ( !empty($this->input->post($sorter)) )
+					$condition[$sorter] = $this->input->post($sorter);
+			endforeach;
+
+			// 排序条件
+			$order_by['time_delete'] = 'DESC';
+			//$order_by['name'] = 'value';
+
+			// 从API服务器获取相应列表信息
+			$params = $condition;
+			$url = api_url($this->class_name. '/index');
+			$result = $this->curl->go($url, $params, 'array');
+			if ($result['status'] === 200):
+				$data['items'] = $result['content'];
+			else:
+				$data['error'] = $result['content']['error']['message'];
+			endif;
+
+			// 将需要显示的数据传到视图以备使用
+			$data['data_to_display'] = $this->data_to_display;
+
+			// 输出视图
+			$this->load->view('templates/header', $data);
+			$this->load->view($this->view_root.'/trash', $data);
+			$this->load->view('templates/footer', $data);
+		} // end trash
+
+		/**
+		 * 创建
 		 */
 		public function create()
 		{
-			($this->session->logged_in === TRUE) OR redirect( base_url('login') );
+			// 操作可能需要检查操作权限
+			// $role_allowed = array('管理员', '经理'); // 角色要求
+// 			$min_level = 30; // 级别要求
+// 			$this->basic->permission_check($role_allowed, $min_level);
 
 			// 页面信息
 			$data = array(
 				'title' => '创建'.$this->class_name_cn,
-				'class' => $this->class_name.' '. $this->class_name.'-create',
+				'class' => $this->class_name.' create',
+				'error' => '', // 预设错误提示
 			);
 
-			// 若传入id请求参数，则为仅购买1项商品的快捷订单
-			// 若不传入id请求参数，则为从购物车创建订单的购物车订单
-			$id = $this->input->get_post('id')? $this->input->get_post('id'): NULL;
-			
-			// 若id和session中商品信息均为空，则转到购物车
-			if (empty($id) && empty($this->session->cart))
-				redirect( base_url('cart') );
+			// 待验证的表单项
+			$this->form_validation->set_error_delimiters('', '；');
+			// 验证规则 https://www.codeigniter.com/user_guide/libraries/form_validation.html#rule-reference
+			$this->form_validation->set_rules('order_id', '订单ID', 'trim|required');
+			$this->form_validation->set_rules('biz_id', '商户ID', 'trim|required');
+			$this->form_validation->set_rules('user_id', '用户ID', 'trim|required');
+			$this->form_validation->set_rules('user_ip', '用户下单IP地址', 'trim|');
+			$this->form_validation->set_rules('subtotal', '小计（元）', 'trim|required');
+			$this->form_validation->set_rules('promotion_id', '营销活动ID', 'trim|');
+			$this->form_validation->set_rules('discount_promotion', '营销活动折抵金额（元）', 'trim|');
+			$this->form_validation->set_rules('coupon_id', '优惠券ID', 'trim|');
+			$this->form_validation->set_rules('discount_coupon', '优惠券折抵金额（元）', 'trim|');
+			$this->form_validation->set_rules('credit_id', '积分流水ID', 'trim|');
+			$this->form_validation->set_rules('discount_credit', '积分折抵金额（元）', 'trim|');
+			$this->form_validation->set_rules('freight', '运费（元）', 'trim|');
+			$this->form_validation->set_rules('discount_reprice', '改价折抵金额（元）', 'trim|');
+			$this->form_validation->set_rules('repricer_id', '改价操作者ID', 'trim|');
+			$this->form_validation->set_rules('total', '应支付金额（元）', 'trim|required');
+			$this->form_validation->set_rules('total_payed', '实际支付金额（元）', 'trim|');
+			$this->form_validation->set_rules('total_refund', '实际退款金额（元）', 'trim|');
+			$this->form_validation->set_rules('fullname', '收件人全名', 'trim|required');
+			$this->form_validation->set_rules('mobile', '收件人手机号', 'trim|required');
+			$this->form_validation->set_rules('province', '收件人省份', 'trim|required');
+			$this->form_validation->set_rules('city', '收件人城市', 'trim|required');
+			$this->form_validation->set_rules('county', '收件人区/县', 'trim|required');
+			$this->form_validation->set_rules('street', '收件人具体地址', 'trim|required');
+			$this->form_validation->set_rules('longitude', '经度', 'trim|');
+			$this->form_validation->set_rules('latitude', '纬度', 'trim|');
+			$this->form_validation->set_rules('payment_type', '付款方式', 'trim|');
+			$this->form_validation->set_rules('payment_account', '付款账号', 'trim|');
+			$this->form_validation->set_rules('payment_id', '付款流水号', 'trim|');
+			$this->form_validation->set_rules('note_user', '用户留言', 'trim|');
+			$this->form_validation->set_rules('note_stuff', '员工留言', 'trim|');
+			$this->form_validation->set_rules('佣金比例/提成率', 'trim|');
+			$this->form_validation->set_rules('commission', '佣金（元）', 'trim|');
+			$this->form_validation->set_rules('promoter_id', '推广者ID', 'trim|');
+			$this->form_validation->set_rules('time_create', '用户下单时间', 'trim|required');
+			$this->form_validation->set_rules('time_cancel', '用户取消时间', 'trim|');
+			$this->form_validation->set_rules('time_expire', '自动过期时间', 'trim|');
+			$this->form_validation->set_rules('time_pay', '用户付款时间', 'trim|');
+			$this->form_validation->set_rules('time_refuse', '商家拒绝时间', 'trim|');
+			$this->form_validation->set_rules('time_accept', '商家接单时间', 'trim|');
+			$this->form_validation->set_rules('time_deliver', '商家发货时间', 'trim|');
+			$this->form_validation->set_rules('time_confirm', '用户确认时间', 'trim|');
+			$this->form_validation->set_rules('time_confirm_auto', '系统确认时间', 'trim|');
+			$this->form_validation->set_rules('time_comment', '用户评价时间', 'trim|');
+			$this->form_validation->set_rules('time_refund', '商家退款时间', 'trim|');
+			$this->form_validation->set_rules('time_delete', '用户删除时间', 'trim|');
+			$this->form_validation->set_rules('time_edit', '最后操作时间', 'trim|required');
+			$this->form_validation->set_rules('operator_id', '最后操作者ID', 'trim|');
+			$this->form_validation->set_rules('status', '订单状态', 'trim|required');
+			$this->form_validation->set_rules('refund_status', '退款状态', 'trim|required');
+			$this->form_validation->set_rules('invoice_status', '发票状态', 'trim|required');
 
-			// 获取订单相关商品信息并生成订单信息
-			$this->basic_model->table_name = 'item';
-			$this->basic_model->id_name = 'item_id';
+			// 若表单提交不成功
+			if ($this->form_validation->run() === FALSE):
+				$data['error'] = validation_errors();
 
-			// 从购物车创建订单
-			if ($id === NULL):
-				// 拆分现购物车数组中各项，并获取商品信息
-				$current_cart = array_filter( explode(' ', $this->session->cart) );
-
-				// 创建有效商品信息及失效产品信息数组
-				$items = array();
-				$items_invalid = array();
-
-				// 获取各商品信息
-				foreach ($current_cart as $cart_item):
-					$this_item = explode('|', $cart_item);
-					$this_id = $this_item[0];
-					$this_count = $this_item[1];
-					$item = $this->basic_model->select_by_id($this_id);
-
-					// 若商品已经下架/删除，不加入订单
-					if ($item['time_delete'] === NULL):
-						$item['unit'] = $this_count;
-						$items[] = $item;
-					else:
-						$items_invalid[] = $item;
-					endif;
-				endforeach;
-
-				$order = $this->generate_cart_order($items);
-				$order['biz_id'] = $this->session->biz_id; // 订单相关商家biz_id（在biz/detail方法中已赋值）
-
-				// 如果所有商品都已失效，返回购物车页面
-				if ( empty($items) && !empty($items_invalid) )
-					redirect('cart');
-
-				// 将有效商品信息及失效产品信息（若有）传入视图
-				$data['items'] = $items;
-				$data['items_invalid'] = $items_invalid;
-
-			// 从商品详情页创建订单
-			else:
-				$item = $this->basic_model->select_by_id($id);
-				
-				// 如果所有商品都已失效，返回购物车页面
-				if ($item['time_delete'] === NULL)
-					redirect('cart');
-
-				// 获取购买数量
-				$unit = $this->input->get_post('unit')? $this->input->get_post('unit'): 1;
-				$item['unit'] = $unit;
-				$order = $this->generate_quick_order($item);
-				
-				$data['items'][] = $item; // 将商品信息传入视图
-
-			endif;
-
-			// 获取商家信息
-			// 从API服务器获取相应商家信息
-			$url = api_url('biz/detail');
-			$params['id'] = $this->session->biz_id;
-			$result = $this->curl->go($url, $params, 'array');
-			$biz = $result['content'];
-
-			// 检查是否达到最低订单金额
-			$difference_to_total = $order['total'] - $biz['min_order_subtotal'];
-			if ($difference_to_total < 0):
-				$data['content'] = '<p class="alert alert-warning">订单金额需多于'.$min_total_required.'元，目前订单金额为'.$order['total'].'元，还差'.abs($difference_to_total).'元，您可继续选购后下单。</p>';
 				$this->load->view('templates/header', $data);
-				$this->load->view($this->view_root.'/result', $data);
+				$this->load->view($this->view_root.'/create', $data);
 				$this->load->view('templates/footer', $data);
 
 			else:
-				// 若不含不准使用优惠券的商品，则使用优惠券
-				if ($order['coupon_allowed'] === '1'):
-					// 准备获取优惠券相关数据
-					$this->basic_model->table_name = 'coupon';
-					$this->basic_model->id_name = 'coupon_id';
+				// 需要创建的数据；逐一赋值需特别处理的字段
+				$data_to_create = array(
+					'user_id' => $this->session->user_id,
+				);
+				// 自动生成无需特别处理的数据
+				$data_need_no_prepare = array(
+					'order_id', 'biz_id', 'user_id', 'user_ip', 'subtotal', 'promotion_id', 'discount_promotion', 'coupon_id', 'discount_coupon', 'credit_id', 'discount_credit', 'freight', 'discount_reprice', 'repricer_id', 'total', 'total_payed', 'total_refund', 'fullname', 'mobile', 'province', 'city', 'county', 'street', 'longitude', 'latitude', 'payment_type', 'payment_account', 'payment_id', 'note_user', 'note_stuff', 'commission', 'promoter_id', 'time_create', 'time_cancel', 'time_expire', 'time_pay', 'time_refuse', 'time_accept', 'time_deliver', 'time_confirm', 'time_confirm_auto', 'time_comment', 'time_refund', 'time_delete', 'time_edit', 'operator_id', 'status', 'refund_status', 'invoice_status',
+				);
+				foreach ($data_need_no_prepare as $name)
+					$data_to_create[$name] = $this->input->post($name);
 
-					// 根据订单金额获取适用的可抵扣金额最高的优惠券
-					$coupon_condition = array(
-						'user_id' => $this->session->user_id,
-						'biz_id' => $order['biz_id'],
-						'time_expire >' => date('Y-m-d H:i:s'), 
-						'time_used' => NULL,
-						'status' => '正常',
-						'min_order_subtotal <=' => $order['total'],
-					);
-					// 优先获取可抵扣金额最高的优惠券
-					$coupon_order['amount'] = 'DESC';
+				// 向API服务器发送待创建数据
+				$params = $data_to_create;
+				$url = api_url($this->class_name. '/create');
+				$result = $this->curl->go($url, $params, 'array');
+				if ($result['status'] === 200):
+					$data['title'] = $this->class_name_cn. '创建成功';
+					$data['class'] = 'success';
+					$data['content'] = $result['content']['message'];
+					$data['operation'] = 'create';
+					$data['id'] = $result['content']['id']; // 创建后的信息ID
 
-					// 获取优惠券
-					$coupons = $this->basic_model->select($coupon_condition, $coupon_order);
-					if ( !empty($coupons) ):
-						$data['coupon'] = $coupon = $coupons[0];
-				
-						// 更新订单相关信息
-						$order['coupon_id'] = $coupon['coupon_id']; // 记录订单使用的优惠券ID
-						$order['discount'] += $coupon['amount']; // 更新订单折扣/减免金额
-						$order['total'] -= $coupon['amount']; // 更新订单实际支付金额
-					endif;
-				endif;
-				// 删除无需写入订单数据的信息
-				unset($order['coupon_allowed']);
+					$this->load->view('templates/header', $data);
+					$this->load->view($this->view_root.'/result', $data);
+					$this->load->view('templates/footer', $data);
 
-				// 如订单含可用积分抵扣金额的商品
-				if ( !empty($order['discount_credit']) ):
-					// 获取当前用户积分
-					$this->basic_model->table_name = 'credit';
-					$this->basic_model->id_name = 'credit_id';
-
-					// 获取积分总收入
-					$this->db->select_sum('amount');
-					$credit_condition = array(
-						'user_id' => $this->session->user_id,
-						'type' => 'income',
-					);
-					$credit_income = $this->basic_model->select($credit_condition, NULL)[0]['amount'];
-
-					// 获取积分总支出并计算总积分余额
-					if ( !empty($credit_income) ):
-						$this->db->select_sum('amount');
-						$credit_condition = array(
-							'user_id' => $this->session->user_id,
-							'type' => 'outgo',
-						);
-						$credit_outgo = $this->basic_model->select($credit_condition, NULL)[0]['amount'];
-
-						// 计算总积分余额
-						$credit_balance = $credit_income - $credit_outgo;
-
-						// 计算当前用户积分是否大于可抵扣金额
-						if ($credit_balance >= $order['discount_credit']):
-							$credit_to_discount = $order['discount_credit'];
-						else:
-							$credit_to_discount = 0;
-						endif;
-
-					else:
-						$credit_to_discount = 0;
-
-					endif; //end 获取积分总支出并计算总积分余额
-
-					// 若不足够，将可用积分支付的金额重新计入应付金额，并清零可用积分支付的金额
-					if ($credit_to_discount === 0):
-						$order['total'] += $order['discount_credit'];
-						$order['discount_credit'] = 0;
-
-					// 若足够，创建相应积分流水记录并将相应订单流水记录ID记入订单信息
-					else:
-						$data_to_create = array(
-							'user_id' => $this->session->user_id,
-							'type' => 'outgo',
-							'amount' => $order['discount_credit'],
-						);
-						$credit_id = $this->basic_model->create($data_to_create, TRUE);
-
-					endif; //end 检查积分余额是否足以支付可用积分支付的金额部分
-
-					if ($this->session->mobile === '13668865673'):
-						var_dump($order);
-						
-						$this->output->enable_profiler(TRUE);
-					endif;
-
-				endif; //end 如订单含可用积分抵扣金额的商品
-
-				// 检查是否满足免运费条件
-				if ( $order['total'] >= $biz['freight_free_subtotal'] ):
-					$order['freight'] += 0; // 如果有单品设置了运费，则不免运费
-				// 若不符合免邮费条件，则计算运费
 				else:
-					$order['freight'] = $biz['freight'];
-					$order['total'] += $biz['freight'];
-				endif; //end 检查是否满足免运费条件
+					// 若创建失败，则进行提示
+					$data['error'] = $result['content']['error']['message'];
 
-
-				// 将订单信息、商家信息传入视图
-				$data['order'] = $order;
-				$data['biz'] = $biz;
-
-				// 待验证的表单项
-				$this->form_validation->set_rules('address', '地址', 'trim|required');
-				$this->form_validation->set_rules('note_user', '留言', 'trim');
-
-
-				// 若表单提交不成功
-				if ($this->form_validation->run() === FALSE):
 					$this->load->view('templates/header', $data);
 					$this->load->view($this->view_root.'/create', $data);
 					$this->load->view('templates/footer', $data);
 
-				// 尝试存入数据库
-				else:
-					// 需要存入数据库的信息
-					$data_to_create = array(
-						'user_id' => $this->session->user_id,
-						'user_ip' => $this->input->ip_address(),
-						'address' => $this->input->post('address'),
-						'note_user' => $this->input->post('note_user'),
-					);
-					$data_to_create = array_merge($data_to_create, $order);
-
-					// 将上述信息存入商品订单信息表
-					$this->basic_model->table_name = 'order';
-					$this->basic_model->id_name = 'order_id';
-					$order_id = $this->basic_model->create($data_to_create, TRUE);
-
-					// 检查订单是否创建成功
-					if ($order_id !== FALSE):
-						// 若为购物车订单，则清空购物车
-						if ($id === NULL):
-							unset($_SESSION['cart']);
-						endif;
-
-						// 若订单使用了优惠券，更新优惠券数据
-						if ( !empty($coupon_id) ):
-							$data_to_edit = array(
-								'order_id' => $order_id,
-								'time_used' => date('Y-m-d H:i:s'),
-							);
-
-							$this->basic_model->table_name = 'coupon';
-							$this->basic_model->id_name = 'coupon_id';
-							$coupon_update = $this->basic_model->edit($coupon_id, $data_to_edit);
-						endif;
-
-						// 转到订单支付页面
-						$this->pay($order_id);
-
-					else:
-						$data['content'] = '<p class="alert alert-warning">下单失败，请重试。</p>';
-						$this->load->view('templates/header', $data);
-						$this->load->view($this->view_root.'/result', $data);
-						$this->load->view('templates/footer', $data);
-
-					endif; //end 检查订单是否创建成功
-
-				endif; //end 尝试存入数据库
-
-			endif; //end 检查是否达到最低订单金额
-		}
-
-		/**
-		 * 订单支付
-		 *
-		 * @param int $id 需要支付的订单ID
-		 */
-		public function pay($id = NULL)
-		{
-			($this->session->logged_in === TRUE) OR redirect( base_url('login') );
-			
-			// 页面信息
-			$data = array(
-				'title' => '商品订单支付',
-				'class' => $this->class_name.' '. $this->class_name.'-pay',
-			);
-
-			// 获取订单ID，并获取订单信息
-			$id = isset($id)? $id: $this->input->get_post('id');
-			$data['order'] = $this->basic_model->select_by_id($id);
-
-			// 如订单有优惠券，则获取优惠券信息
-			if ( !empty($data['order']['coupon_id']) ):
-				$this->basic_model->table_name = 'coupon';
-				$this->basic_model->id_name = 'coupon_id';
+				endif;
 				
-				$data['coupon'] = $this->basic_model->select_by_id($data['order']['coupon_id']);
 			endif;
-
-			$this->load->view('templates/header', $data);
-			$this->load->view($this->view_root.'/pay', $data);
-			$this->load->view('templates/footer', $data);
-		}
+		} // end create
 
 		/**
-		 * 确认收货
-		 *
-		 * 修改time_finish为当前时间，并根据实付金额创建积分流水
+		 * 编辑单行
 		 */
-		public function finish()
+		public function edit()
 		{
-			($this->session->logged_in === TRUE) OR redirect( base_url('login') );
-
 			// 检查是否已传入必要参数
 			$id = $this->input->get_post('id')? $this->input->get_post('id'): NULL;
-			if ( empty($id) ):
-				$this->basic->error(404, '网址不完整');
-				exit;
+			if ( !empty($id) ):
+				$params['id'] = $id;
+				$params['user_id'] = $this->session->user_id;
+			else:
+				redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
 			endif;
+
+			// 操作可能需要检查操作权限
+			// $role_allowed = array('管理员', '经理'); // 角色要求
+// 			$min_level = 30; // 级别要求
+// 			$this->basic->permission_check($role_allowed, $min_level);
 
 			// 页面信息
 			$data = array(
-				'title' => '确认收货',
-				'class' => $this->class_name.' '. $this->class_name.'-finish',
+				'title' => '修改'.$this->class_name_cn,
+				'class' => $this->class_name.' edit',
+				'error' => '', // 预设错误提示
 			);
 
-			// 从API服务器获取相应数据
+			// 从API服务器获取相应详情信息
 			$url = api_url($this->class_name. '/detail');
-			$params = array(
-				'user_id' => $this->session->user_id,
-				'id' => $id,
-			);
 			$result = $this->curl->go($url, $params, 'array');
-			$data['order'] = $result['content'];
+			if ($result['status'] === 200):
+				$data['item'] = $result['content'];
+			else:
+				redirect( base_url('error/code_404') ); // 若未成功获取信息，则转到错误页
+			endif;
 
 			// 待验证的表单项
-			$this->form_validation->set_rules('id', '订单ID', 'trim|required|is_natural_no_zero');
+			$this->form_validation->set_error_delimiters('', '；');
+			$this->form_validation->set_rules('order_id', '订单ID', 'trim|required');
+			$this->form_validation->set_rules('biz_id', '商户ID', 'trim|required');
+			$this->form_validation->set_rules('user_id', '用户ID', 'trim|required');
+			$this->form_validation->set_rules('user_ip', '用户下单IP地址', 'trim|');
+			$this->form_validation->set_rules('subtotal', '小计（元）', 'trim|required');
+			$this->form_validation->set_rules('promotion_id', '营销活动ID', 'trim|');
+			$this->form_validation->set_rules('discount_promotion', '营销活动折抵金额（元）', 'trim|');
+			$this->form_validation->set_rules('coupon_id', '优惠券ID', 'trim|');
+			$this->form_validation->set_rules('discount_coupon', '优惠券折抵金额（元）', 'trim|');
+			$this->form_validation->set_rules('credit_id', '积分流水ID', 'trim|');
+			$this->form_validation->set_rules('discount_credit', '积分折抵金额（元）', 'trim|');
+			$this->form_validation->set_rules('freight', '运费（元）', 'trim|');
+			$this->form_validation->set_rules('discount_reprice', '改价折抵金额（元）', 'trim|');
+			$this->form_validation->set_rules('repricer_id', '改价操作者ID', 'trim|');
+			$this->form_validation->set_rules('total', '应支付金额（元）', 'trim|required');
+			$this->form_validation->set_rules('total_payed', '实际支付金额（元）', 'trim|');
+			$this->form_validation->set_rules('total_refund', '实际退款金额（元）', 'trim|');
+			$this->form_validation->set_rules('fullname', '收件人全名', 'trim|required');
+			$this->form_validation->set_rules('mobile', '收件人手机号', 'trim|required');
+			$this->form_validation->set_rules('province', '收件人省份', 'trim|required');
+			$this->form_validation->set_rules('city', '收件人城市', 'trim|required');
+			$this->form_validation->set_rules('county', '收件人区/县', 'trim|required');
+			$this->form_validation->set_rules('street', '收件人具体地址', 'trim|required');
+			$this->form_validation->set_rules('longitude', '经度', 'trim|');
+			$this->form_validation->set_rules('latitude', '纬度', 'trim|');
+			$this->form_validation->set_rules('payment_type', '付款方式', 'trim|');
+			$this->form_validation->set_rules('payment_account', '付款账号', 'trim|');
+			$this->form_validation->set_rules('payment_id', '付款流水号', 'trim|');
+			$this->form_validation->set_rules('note_user', '用户留言', 'trim|');
+			$this->form_validation->set_rules('note_stuff', '员工留言', 'trim|');
+			$this->form_validation->set_rules('佣金比例/提成率', 'trim|');
+			$this->form_validation->set_rules('commission', '佣金（元）', 'trim|');
+			$this->form_validation->set_rules('promoter_id', '推广者ID', 'trim|');
+			$this->form_validation->set_rules('time_create', '用户下单时间', 'trim|required');
+			$this->form_validation->set_rules('time_cancel', '用户取消时间', 'trim|');
+			$this->form_validation->set_rules('time_expire', '自动过期时间', 'trim|');
+			$this->form_validation->set_rules('time_pay', '用户付款时间', 'trim|');
+			$this->form_validation->set_rules('time_refuse', '商家拒绝时间', 'trim|');
+			$this->form_validation->set_rules('time_accept', '商家接单时间', 'trim|');
+			$this->form_validation->set_rules('time_deliver', '商家发货时间', 'trim|');
+			$this->form_validation->set_rules('time_confirm', '用户确认时间', 'trim|');
+			$this->form_validation->set_rules('time_confirm_auto', '系统确认时间', 'trim|');
+			$this->form_validation->set_rules('time_comment', '用户评价时间', 'trim|');
+			$this->form_validation->set_rules('time_refund', '商家退款时间', 'trim|');
+			$this->form_validation->set_rules('time_delete', '用户删除时间', 'trim|');
+			$this->form_validation->set_rules('time_edit', '最后操作时间', 'trim|required');
+			$this->form_validation->set_rules('operator_id', '最后操作者ID', 'trim|');
+			$this->form_validation->set_rules('status', '订单状态', 'trim|required');
+			$this->form_validation->set_rules('refund_status', '退款状态', 'trim|required');
+			$this->form_validation->set_rules('invoice_status', '发票状态', 'trim|required');
 
-			// 验证表单值格式
+			// 若表单提交不成功
 			if ($this->form_validation->run() === FALSE):
+				$data['error'] .= validation_errors();
+
 				$this->load->view('templates/header', $data);
-				$this->load->view($this->view_root.'/finish', $data);
+				$this->load->view($this->view_root.'/edit', $data);
 				$this->load->view('templates/footer', $data);
 
 			else:
-				// 创建积分流水
-				$data_to_create = array(
+				// 需要编辑的数据；逐一赋值需特别处理的字段
+				$data_to_edit = array(
 					'user_id' => $this->session->user_id,
-					'order_id' => $id,
-					'type' => 'income',
-					'amount' => round($data['order']),
+					'id' => $id,
+					//'name' => $this->input->post('name')),
 				);
-				// 创建后返回积分流水ID
-				$credit_id = $this->basic_model->create($data_to_create, TRUE);
+				// 自动生成无需特别处理的数据
+				$data_need_no_prepare = array(
+					'order_id', 'biz_id', 'user_id', 'user_ip', 'subtotal', 'promotion_id', 'discount_promotion', 'coupon_id', 'discount_coupon', 'credit_id', 'discount_credit', 'freight', 'discount_reprice', 'repricer_id', 'total', 'total_payed', 'total_refund', 'fullname', 'mobile', 'province', 'city', 'county', 'street', 'longitude', 'latitude', 'payment_type', 'payment_account', 'payment_id', 'note_user', 'note_stuff', 'commission', 'promoter_id', 'time_create', 'time_cancel', 'time_expire', 'time_pay', 'time_refuse', 'time_accept', 'time_deliver', 'time_confirm', 'time_confirm_auto', 'time_comment', 'time_refund', 'time_delete', 'time_edit', 'operator_id', 'status', 'refund_status', 'invoice_status',
+				);
+				foreach ($data_need_no_prepare as $name)
+					$data_to_edit[$name] = $this->input->post($name);
 
-				// 修改订单信息
-				$data_to_edit['time_finish'] = date('Y-m-d H:i:s');
-				if ( !empty($credit_id) ) $data_to_edit['credit_id'] = $credit_id;
-				$result = $this->basic_model->edit($id, $data_to_edit);
-				if ($result !== FALSE):
-					$data['content'] = '<p class="alert alert-success">保存成功。</p>';
+				// 向API服务器发送待创建数据
+				$params = $data_to_edit;
+				$url = api_url($this->class_name. '/edit');
+				$result = $this->curl->go($url, $params, 'array');
+				if ($result['status'] === 200):
+					$data['title'] = $this->class_name_cn. '修改成功';
+					$data['class'] = 'success';
+					$data['content'] = $result['content']['message'];
+					$data['operation'] = 'edit';
+					$data['id'] = $id;
+
+					$this->load->view('templates/header', $data);
+					$this->load->view($this->view_root.'/result', $data);
+					$this->load->view('templates/footer', $data);
+
 				else:
-					$data['content'] = '<p class="alert alert-warning">保存失败。</p>';
+					// 若修改失败，则进行提示
+					$data['error'] = $result['content']['error']['message'];
+
+					$this->load->view('templates/header', $data);
+					$this->load->view($this->view_root.'/edit', $data);
+					$this->load->view('templates/footer', $data);
+
 				endif;
 
-				$this->load->view('templates/header', $data);
-				$this->load->view($this->view_root.'/result', $data);
-				$this->load->view('templates/footer', $data);
-
 			endif;
-		}
+		} // end edit
 
 		/**
-		 * 删除
-		 *
-		 * 一般用于存为草稿、上架、下架、删除、恢复等状态变化，请根据需要修改方法名，例如delete、restore、draft等
+		 * 修改单项
+		 */
+		public function edit_certain()
+		{
+			// 检查必要参数是否已传入
+			$required_params = $this->names_edit_certain_required;
+			foreach ($required_params as $param):
+				${$param} = $this->input->post($param);
+				if ( $param !== 'value' && empty( ${$param} ) ): // value 可以为空；必要字段会在字段验证中另行检查
+					$data['error'] = '必要的请求参数未全部传入';
+					$this->load->view('templates/header', $data);
+					$this->load->view($this->view_root.'/'.$op_view, $data);
+					$this->load->view('templates/footer', $data);
+					exit();
+				endif;
+			endforeach;
+
+			// 操作可能需要检查操作权限
+			// $role_allowed = array('管理员', '经理'); // 角色要求
+// 			$min_level = 30; // 级别要求
+// 			$this->basic->permission_check($role_allowed, $min_level);
+
+			// 页面信息
+			$data = array(
+				'title' => '修改'.$this->class_name_cn. $name,
+				'class' => $this->class_name.' edit-certain',
+				'error' => '', // 预设错误提示
+			);
+			
+			// 从API服务器获取相应详情信息
+			$params['id'] = $id;
+			$params['user_id'] = $this->session->user_id;
+			$url = api_url($this->class_name. '/detail');
+			$result = $this->curl->go($url, $params, 'array');
+			if ($result['status'] === 200):
+				$data['item'] = $result['content'];
+			else:
+				redirect( base_url('error/code_404') ); // 若未成功获取信息，则转到错误页
+			endif;
+
+			// 待验证的表单项
+			$this->form_validation->set_error_delimiters('', '；');
+			// 动态设置待验证字段名及字段值
+			$data_to_validate["{$name}"] = $value;
+			$this->form_validation->set_data($data_to_validate);
+			$this->form_validation->set_rules('id', '待修改项ID', 'trim|required|is_natural_no_zero');
+			$this->form_validation->set_rules('order_id', '订单ID', 'trim|required');
+			$this->form_validation->set_rules('biz_id', '商户ID', 'trim|required');
+			$this->form_validation->set_rules('user_id', '用户ID', 'trim|required');
+			$this->form_validation->set_rules('user_ip', '用户下单IP地址', 'trim|');
+			$this->form_validation->set_rules('subtotal', '小计（元）', 'trim|required');
+			$this->form_validation->set_rules('promotion_id', '营销活动ID', 'trim|');
+			$this->form_validation->set_rules('discount_promotion', '营销活动折抵金额（元）', 'trim|');
+			$this->form_validation->set_rules('coupon_id', '优惠券ID', 'trim|');
+			$this->form_validation->set_rules('discount_coupon', '优惠券折抵金额（元）', 'trim|');
+			$this->form_validation->set_rules('credit_id', '积分流水ID', 'trim|');
+			$this->form_validation->set_rules('discount_credit', '积分折抵金额（元）', 'trim|');
+			$this->form_validation->set_rules('freight', '运费（元）', 'trim|');
+			$this->form_validation->set_rules('discount_reprice', '改价折抵金额（元）', 'trim|');
+			$this->form_validation->set_rules('repricer_id', '改价操作者ID', 'trim|');
+			$this->form_validation->set_rules('total', '应支付金额（元）', 'trim|required');
+			$this->form_validation->set_rules('total_payed', '实际支付金额（元）', 'trim|');
+			$this->form_validation->set_rules('total_refund', '实际退款金额（元）', 'trim|');
+			$this->form_validation->set_rules('fullname', '收件人全名', 'trim|required');
+			$this->form_validation->set_rules('mobile', '收件人手机号', 'trim|required');
+			$this->form_validation->set_rules('province', '收件人省份', 'trim|required');
+			$this->form_validation->set_rules('city', '收件人城市', 'trim|required');
+			$this->form_validation->set_rules('county', '收件人区/县', 'trim|required');
+			$this->form_validation->set_rules('street', '收件人具体地址', 'trim|required');
+			$this->form_validation->set_rules('longitude', '经度', 'trim|');
+			$this->form_validation->set_rules('latitude', '纬度', 'trim|');
+			$this->form_validation->set_rules('payment_type', '付款方式', 'trim|');
+			$this->form_validation->set_rules('payment_account', '付款账号', 'trim|');
+			$this->form_validation->set_rules('payment_id', '付款流水号', 'trim|');
+			$this->form_validation->set_rules('note_user', '用户留言', 'trim|');
+			$this->form_validation->set_rules('note_stuff', '员工留言', 'trim|');
+			$this->form_validation->set_rules('佣金比例/提成率', 'trim|');
+			$this->form_validation->set_rules('commission', '佣金（元）', 'trim|');
+			$this->form_validation->set_rules('promoter_id', '推广者ID', 'trim|');
+			$this->form_validation->set_rules('time_create', '用户下单时间', 'trim|required');
+			$this->form_validation->set_rules('time_cancel', '用户取消时间', 'trim|');
+			$this->form_validation->set_rules('time_expire', '自动过期时间', 'trim|');
+			$this->form_validation->set_rules('time_pay', '用户付款时间', 'trim|');
+			$this->form_validation->set_rules('time_refuse', '商家拒绝时间', 'trim|');
+			$this->form_validation->set_rules('time_accept', '商家接单时间', 'trim|');
+			$this->form_validation->set_rules('time_deliver', '商家发货时间', 'trim|');
+			$this->form_validation->set_rules('time_confirm', '用户确认时间', 'trim|');
+			$this->form_validation->set_rules('time_confirm_auto', '系统确认时间', 'trim|');
+			$this->form_validation->set_rules('time_comment', '用户评价时间', 'trim|');
+			$this->form_validation->set_rules('time_refund', '商家退款时间', 'trim|');
+			$this->form_validation->set_rules('time_delete', '用户删除时间', 'trim|');
+			$this->form_validation->set_rules('time_edit', '最后操作时间', 'trim|required');
+			$this->form_validation->set_rules('operator_id', '最后操作者ID', 'trim|');
+			$this->form_validation->set_rules('status', '订单状态', 'trim|required');
+			$this->form_validation->set_rules('refund_status', '退款状态', 'trim|required');
+			$this->form_validation->set_rules('invoice_status', '发票状态', 'trim|required');
+
+			// 若表单提交不成功
+			if ($this->form_validation->run() === FALSE):
+				$data['error'] .= validation_errors();
+
+				$this->load->view('templates/header', $data);
+				$this->load->view($this->view_root.'/edit_certain', $data);
+				$this->load->view('templates/footer', $data);
+
+			else:
+				// 需要编辑的信息
+				$data_to_edit = array(
+					'user_id' => $this->session->user_id,
+					'id' => $id,
+					'name' => $name,
+					'value' => $value,
+				);
+
+				// 向API服务器发送待创建数据
+				$params = $data_to_edit;
+				$url = api_url($this->class_name. '/edit_certain');
+				$result = $this->curl->go($url, $params, 'array');
+				if ($result['status'] === 200):
+					$data['title'] = $this->class_name_cn. '修改成功';
+					$data['class'] = 'success';
+					$data['content'] = $result['content']['message'];
+					$data['operation'] = 'edit_certain';
+					$data['id'] = $id;
+
+					$this->load->view('templates/header', $data);
+					$this->load->view($this->view_root.'/result', $data);
+					$this->load->view('templates/footer', $data);
+
+				else:
+					// 若修改失败，则进行提示
+					$data['error'] = $result['content']['error']['message'];
+
+					$this->load->view('templates/header', $data);
+					$this->load->view($this->view_root.'/edit_certain', $data);
+					$this->load->view('templates/footer', $data);
+
+				endif;
+
+			endif;
+		} // end edit_certain
+
+		/**
+		 * 删除单行或多行项目
 		 */
 		public function delete()
 		{
-			($this->session->logged_in === TRUE) OR redirect( base_url('login') );
-			
 			$op_name = '删除'; // 操作的名称
 			$op_view = 'delete'; // 视图文件名
 
 			// 页面信息
 			$data = array(
 				'title' => $op_name. $this->class_name_cn,
-				'class' => $this->class_name.' '. $this->class_name.'-'. $op_view,
+				'class' => $this->class_name. ' '. $op_view,
+				'error' => '', // 预设错误提示
 			);
+
+			// 检查是否已传入必要参数
+			if ( !empty($this->input->get_post('ids')) ):
+				$ids = $this->input->get_post('ids');
+
+				// 将字符串格式转换为数组格式
+				if ( !is_array($ids) ):
+					$ids = explode(',', $ids);
+				endif;
+
+			elseif ( !empty($this->input->post('ids[]')) ):
+				$ids = $this->input->post('ids[]');
+
+			else:
+				redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
+
+			endif;
+			
+			// 赋值视图中需要用到的待操作项数据
+			$data['ids'] = $ids;
+			
+			// 获取待操作项数据
+			$data['items'] = array();
+			foreach ($ids as $id):
+				// 从API服务器获取相应详情信息
+				$params['id'] = $id;
+				$params['user_id'] = $this->session->user_id;
+				$url = api_url($this->class_name. '/detail');
+				$result = $this->curl->go($url, $params, 'array');
+				if ($result['status'] === 200):
+					$data['items'][] = $result['content'];
+				else:
+					$data['error'] .= 'ID'.$id.'项不可操作，“'.$result['content']['error']['message'].'”';
+				endif;
+			endforeach;
+
 			// 将需要显示的数据传到视图以备使用
 			$data['data_to_display'] = $this->data_to_display;
 
 			// 待验证的表单项
-			$this->form_validation->set_rules('password', '密码', 'trim|required|is_natural|exact_length[6]');
+			$this->form_validation->set_error_delimiters('', '；');
+			$this->form_validation->set_rules('ids', '待操作数据ID们', 'trim|required|regex_match[/^(\d|\d,?)+$/]'); // 仅允许非零整数和半角逗号
+			$this->form_validation->set_rules('password', '密码', 'trim|required|min_length[6]|max_length[20]');
 
-			// 需要存入数据库的信息
-			$data_to_edit = array(
-				'time_delete' => date('y-m-d H:i:s'), // 批量删除
-			);
+			// 若表单提交不成功
+			if ($this->form_validation->run() === FALSE):
+				$data['error'] .= validation_errors();
 
-			// Go Basic!
-			$this->basic->bulk($data, $data_to_edit, $op_name, $op_view);
-		}
-
-		// 修改订单状态（比如付款后接收通知等）
-		public function status()
-		{
-			// 验证token
-			$token = $this->input->post('token');
-			if ($token !== TOKEN_PAY):
-				exit('TOKEN未传入或不正确');
-			endif;
-
-			$order_id = $this->input->post('order_id');
-			$payment_type = $this->input->post('payment_type')? $this->input->post('payment_type'): NULL; // 付款方式
-			$payment_account = $this->input->post('payment_account')? $this->input->post('payment_account'): NULL; // 付款账号
-			$payment_id = $this->input->post('payment_id')? $this->input->post('payment_id'): NULL; // 支付流水号
-			$total = $this->input->post('total')? $this->input->post('total'): NULL; // 实际支付金额
-			$data_to_edit = array(
-				'payment_type' => $payment_type,
-				'payment_account' => $payment_account,
-				'payment_id' => $payment_id,
-				'total' => $total,
-			);
-
-			// 检查是否已处理过当前订单
-			$result = $this->basic_model->match($data_to_edit);
-			if ( ! empty($result) ):
-				// 若当前订单已经处理过，则终止订单状态更改（及后续的短信通知）
-				$output['status'] = 400;
-				$output['content'] = 'success';
+				$this->load->view('templates/header', $data);
+				$this->load->view($this->view_root.'/'.$op_view, $data);
+				$this->load->view('templates/footer', $data);
 
 			else:
-				// 添加支付通知完成时间
-				$data_to_edit['time_pay'] = date('Y-m-d H:i:s');
+				// 检查必要参数是否已传入
+				$required_params = $this->names_edit_bulk_required;
+				foreach ($required_params as $param):
+					${$param} = $this->input->post($param);
+					if ( empty( ${$param} ) ):
+						$data['error'] = '必要的请求参数未全部传入';
+						$this->load->view('templates/header', $data);
+						$this->load->view($this->view_root.'/'.$op_view, $data);
+						$this->load->view('templates/footer', $data);
+						exit();
+					endif;
+				endforeach;
 
-				// 更新订单数据
-				$result = $this->basic_model->edit($order_id, $data_to_edit);
-				if ($result !== FALSE):
-					$output['status'] = 200;
-					$output['content'] = 'success';
+				// 需要存入数据库的信息
+				$data_to_edit = array(
+					'user_id' => $this->session->user_id,
+					'ids' => $ids,
+					'password' => $password,
+					'operation' => $op_view, // 操作名称
+				);
+
+				// 向API服务器发送待创建数据
+				$params = $data_to_edit;
+				$url = api_url($this->class_name. '/edit_bulk');
+				$result = $this->curl->go($url, $params, 'array');
+				if ($result['status'] === 200):
+					$data['title'] = $this->class_name_cn.$op_name. '成功';
+					$data['class'] = 'success';
+					$data['content'] = $result['content']['message'];
+					$data['operation'] = 'bulk';
+					$data['ids'] = $ids;
+
+					$this->load->view('templates/header', $data);
+					$this->load->view($this->view_root.'/result', $data);
+					$this->load->view('templates/footer', $data);
+
 				else:
-					$output['status'] = 400;
-					$output['content'] = 'fail';
+					// 若修改失败，则进行提示
+					$data['error'] .= $result['content']['error']['message'];
+
+					$this->load->view('templates/header', $data);
+					$this->load->view($this->view_root.'/'.$op_view, $data);
+					$this->load->view('templates/footer', $data);
 				endif;
-				
-				// 发送短信通知
-				@$this->send_sms($order_id);
+
 			endif;
+		} // end delete
 
-			header("Content-type:application/json;charset=utf-8");
-			$output_json = json_encode($output);
-			echo $output_json;
-		}
-		
-		// 发送短信通知
-		public function send_sms($order_id)
+		/**
+		 * 恢复单行或多行项目
+		 */
+		public function restore()
 		{
-			// 获取订单信息
-			$url = api_url($this->class_name. '/detail');
-			$params['id'] = $order_id;
-			$order = $this->curl->go($url, $params, 'array');
-			$payment_type = $order['content']['payment_type'];
-			$user_id = $order['content']['user_id'];
-			$biz_id = $order['content']['biz_id'];
+			$op_name = '恢复'; // 操作的名称
+			$op_view = 'restore'; // 视图文件名
 
-			// 获取商家信息
-			$url = api_url('biz/detail');
-			$params['id'] = $biz_id;
-			$biz = $this->curl->go($url, $params, 'array');
-			$biz_mobile = $biz['content']['tel_protected_order'];
+			// 页面信息
+			$data = array(
+				'title' => $op_name. $this->class_name_cn,
+				'class' => $this->class_name. ' '. $op_view,
+				'error' => '', // 预设错误提示
+			);
 
-			// 获取用户信息
-			$url = api_url('user/detail');
-			$params['id'] = $user_id;
-			$user = $this->curl->go($url, $params, 'array');
-			$user_mobile = $user['content']['mobile'];
+			// 检查是否已传入必要参数
+			if ( !empty($this->input->get_post('ids')) ):
+				$ids = $this->input->get_post('ids');
 
-			// 清空无关请求参数
-			$params = NULL;
+				// 将字符串格式转换为数组格式
+				if ( !is_array($ids) ):
+					$ids = explode(',', $ids);
+				endif;
 
-			// 发送短信到用户
-			$message_to_user = '您的商品订单（编号%s）已成功付款，我们将尽快为您处理，敬请期待！';
-			$params['content'] = sprintf($message_to_user, $order_id);
-			$params['mobile'] = $user_mobile;
-			$url = api_url('sms/send');
-			$this->curl->go($url, $params, 'array');
+			elseif ( !empty($this->input->post('ids[]')) ):
+				$ids = $this->input->post('ids[]');
 
-			// 发送短信到管理员
-			$message_to_manager = '用户（编号%s）的商品订单（编号%s）已成功通过%s完成付款，请尽快处理！';
-			$params['content'] = sprintf($message_to_manager, $user_id, $order_id, $payment_type);
-			$params['mobile'] = $biz_mobile;
-			$url = api_url('sms/send');
-			$this->curl->go($url, $params, 'array');
-		}
-	}
+			else:
+				redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
+
+			endif;
+			
+			// 赋值视图中需要用到的待操作项数据
+			$data['ids'] = $ids;
+			
+			// 获取待操作项数据
+			$data['items'] = array();
+			foreach ($ids as $id):
+				// 从API服务器获取相应详情信息
+				$params['id'] = $id;
+				$params['user_id'] = $this->session->user_id;
+				$url = api_url($this->class_name. '/detail');
+				$result = $this->curl->go($url, $params, 'array');
+				if ($result['status'] === 200):
+					$data['items'][] = $result['content'];
+				else:
+					$data['error'] .= 'ID'.$id.'项不可操作，“'.$result['content']['error']['message'].'”';
+				endif;
+			endforeach;
+
+			// 将需要显示的数据传到视图以备使用
+			$data['data_to_display'] = $this->data_to_display;
+
+			// 待验证的表单项
+			$this->form_validation->set_error_delimiters('', '；');
+			$this->form_validation->set_rules('ids', '待操作数据ID们', 'trim|required|regex_match[/^(\d|\d,?)+$/]'); // 仅允许非零整数和半角逗号
+			$this->form_validation->set_rules('password', '密码', 'trim|required|min_length[6]|max_length[20]');
+
+			// 若表单提交不成功
+			if ($this->form_validation->run() === FALSE):
+				$data['error'] .= validation_errors();
+
+				$this->load->view('templates/header', $data);
+				$this->load->view($this->view_root.'/'.$op_view, $data);
+				$this->load->view('templates/footer', $data);
+
+			else:
+				// 检查必要参数是否已传入
+				$required_params = $this->names_edit_bulk_required;
+				foreach ($required_params as $param):
+					${$param} = $this->input->post($param);
+					if ( empty( ${$param} ) ):
+						$data['error'] = '必要的请求参数未全部传入';
+						$this->load->view('templates/header', $data);
+						$this->load->view($this->view_root.'/'.$op_view, $data);
+						$this->load->view('templates/footer', $data);
+						exit();
+					endif;
+				endforeach;
+
+				// 需要存入数据库的信息
+				$data_to_edit = array(
+					'user_id' => $this->session->user_id,
+					'ids' => $ids,
+					'password' => $password,
+					'operation' => $op_view, // 操作名称
+				);
+
+				// 向API服务器发送待创建数据
+				$params = $data_to_edit;
+				$url = api_url($this->class_name. '/edit_bulk');
+				$result = $this->curl->go($url, $params, 'array');
+				if ($result['status'] === 200):
+					$data['title'] = $this->class_name_cn.$op_name. '成功';
+					$data['class'] = 'success';
+					$data['content'] = $result['content']['message'];
+
+					$this->load->view('templates/header', $data);
+					$this->load->view($this->view_root.'/result', $data);
+					$this->load->view('templates/footer', $data);
+
+				else:
+					// 若修改失败，则进行提示
+					$data['error'] .= $result['content']['error']['message'];
+
+					$this->load->view('templates/header', $data);
+					$this->load->view($this->view_root.'/'.$op_view, $data);
+					$this->load->view('templates/footer', $data);
+				endif;
+
+			endif;
+		} // end restore
+
+	} // end class Order
 
 /* End of file Order.php */
 /* Location: ./application/controllers/Order.php */

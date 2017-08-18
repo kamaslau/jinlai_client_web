@@ -51,7 +51,7 @@
 				'title' => $this->class_name_cn. '列表',
 				'class' => $this->class_name.' index',
 			);
-			
+
 			// 筛选条件
 			$condition['time_delete'] = 'NULL';
 			// （可选）遍历筛选条件

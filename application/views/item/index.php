@@ -52,8 +52,8 @@
 					<h2 class=item-name><?php echo $item['name'] ?></h2>
 
 					<div class=digits>
-						<span>￥</span><strong><?php echo $item['price'] ?></strong>
-						<?php echo ($item['tag_price'] !== '0.00')? '<del>￥'. $item['tag_price']. '</del>': NULL ?>
+						<span>￥</span><strong><?php echo substr($item['price'], 0, -3).'<small>'.substr($item['price'], -3).'</small>' ?></strong>
+						<?php echo ($item['tag_price'] !== '0.00')? ' <del>￥'. $item['tag_price']. '</del>': NULL ?>
 					</div>
 
 					<?php if ( !empty($skus) ): ?>

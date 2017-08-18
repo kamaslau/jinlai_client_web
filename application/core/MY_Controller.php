@@ -243,6 +243,23 @@
 			endif;
 		}
 		
+		// 获取商家列表
+		protected function list_biz()
+		{
+			// 从API服务器获取相应列表信息
+			$params['time_delete'] = 'NULL';
+
+			$url = api_url('biz/index');
+			$result = $this->curl->go($url, $params, 'array');
+			if ($result['status'] === 200):
+				$data['items'] = $result['content'];
+			else:
+				$data['items'] = NULL;
+			endif;
+
+			return $data['items'];
+		}
+		
 		// 获取特定商家信息
 		protected function get_biz($id)
 		{

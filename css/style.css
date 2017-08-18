@@ -29,6 +29,8 @@ a {color:#333;text-decoration:none;/* 清理BootStrap样式 */}
 
 noscript {color:#032f62;background-color:#dbedff;padding:16px;border:1px solid rgba(27,31,35,0.15);}
 
+#header, #breadcrumb {display:none;}
+
 #header {background:linear-gradient(to right, #ff484c, #ff713e);}
 	#header>.container {font-size:22px;text-align:center;height:44px;line-height:44px;}
 		#header h1 {font-size:22px;line-height:44px;}
@@ -61,14 +63,19 @@ noscript {color:#032f62;background-color:#dbedff;padding:16px;border:1px solid r
 
 #footer {text-align:center;}
 
+/* 商家相关样式 */
+.biz-name {color:#333;font-size:18px;font-weight:inherit;line-height:inherit;padding:0;margin:0;}
+
 /* 商品相关样式 */
-.item-name {color:#333;font-size:16px;font-weight:inherit;line-height:inherit;padding:0;margin:0;}
+.item-name {color:#333;font-size:18px;font-weight:inherit;line-height:inherit;padding:0;margin:0;}
 .digits>span, .digits del {color:#eee;font-size:smaller;}
 
 /* 宽度在750像素以上的设备 */
 @media only screen and (min-width:751px)
 {
 	_body {margin-bottom:0}
+
+	#header, #breadcrumb {display:block;}
 	_#header>.container>a {display:none;}
 	_#nav-header {background-color:transparent;position:relative;display:block;}
 
