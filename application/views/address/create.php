@@ -27,6 +27,13 @@
 		echo form_open_multipart($this->class_name.'/create', $attributes);
 	?>
 		<p class="help-block">必填项以“※”符号标示</p>
+		
+		<?php
+			// 检查是否传入了回调跳转URL
+			if ( isset($return_to) ):
+		?>
+		<input name=return_to type=hidden value="<?php echo $return_to ?>">
+		<?php endif ?>
 
 		<fieldset>
 			<div class=form-group>

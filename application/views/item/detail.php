@@ -6,7 +6,7 @@
 	#item-figure {padding:0;}
 
 	#item-name {color:#000;font-size:16px;font-weight:700;line-height:1;padding-bottom:.2em;}
-	
+
 	/* SKU */
 	#skus li {line-height:28px;padding:1px;margin-bottom:4px;margin-right:4px;}
 		#skus a {height:38px;line-height:38px;border:1px solid #b8b7bd;text-align:center;overflow:hidden;}
@@ -203,6 +203,12 @@
 	</section>
 	<?php endif ?>
 
+	<section id=biz-info class=row>
+		<a title="<?php echo $biz['name'] ?>" href="<?php echo base_url('biz/detail?id='.$item['biz_id']) ?>">
+			<?php echo $biz['name'] ?>
+		</a>
+	</section>
+
 	<section id=description class=row>
 		<h2>商品描述</h2>
 		<?php if ( !empty($item['description']) ): ?>
@@ -211,7 +217,7 @@
 			<?php //echo $item['description'] ?>
 		</div>
 		<?php endif ?>
-		
+
 		<div id=common-content>
 			<h3>平台统一内容</h3>
 		</div>
@@ -220,31 +226,44 @@
 
 <nav id=nav-main>
 	<ul class=row>
+		<?php // TODO 显示客服按钮前检查当前店铺客服工作状态，决定留言或即时通讯 ?>
 		<li class="col-xs-2">
 			<a title="客服" href="<?php echo base_url('dialog/detail?biz_id='.$item['biz_id']) ?>">
 				<i class="fa fa-comments" aria-hidden="true"></i>
 				客服
 			</a>
 		</li>
+
+		<?php // TODO 显示店铺按钮前检查商家经营状态 ?>
 		<li class="col-xs-2">
 			<a title="店铺" href="<?php echo base_url('biz/detail?id='.$item['biz_id']) ?>">
 				<i class="fa fa-home" aria-hidden="true"></i>
 				店铺
 			</a>
 		</li>
+
+		<?php // TODO 显示收藏、加入购物车、立即购买按钮前检查是否可售性（是否在售、库存是否足够、每单最高限量等） ?>
 		<li class="col-xs-2">
 			<a title="收藏" href="<?php echo base_url('fav_item/create?item_id='.$item['item_id']) ?>">
 				<i class="fa fa-star" aria-hidden="true"></i>
 				收藏
 			</a>
 		</li>
+
+		<?php
+			// TODO 根据每单最高及最低限量做相关处理
+			if ( !empty($in_cart) ):
+				//var_dump($in_cart);
+			endif;
+		?>
 		<li class="col-xs-3">
-			<a id=cart-add title="加入购物车" href="<?php echo base_url('cart/add?biz_id='.$item['biz_id'].'&item_id='.$item['item_id']) ?>">
+			<a id=cart-add class="btn btn-info btn-lg btn-block" title="加入购物车" href="<?php echo base_url('cart/add?biz_id='.$item['biz_id'].'&item_id='.$item['item_id']) ?>">
 				加入<wbr>购物车
 			</a>
 		</li>
+
 		<li class="col-xs-3">
-			<a id=order-create title="立即购买" href="<?php echo base_url('order/create?biz_id='.$item['biz_id'].'&item_id='.$item['item_id']) ?>">
+			<a id=order-create class="btn btn-primary btn-lg btn-block" title="立即购买" href="<?php echo base_url('order/create?item_id='.$item['item_id']) ?>">
 				立即购买
 			</a>
 		</li>

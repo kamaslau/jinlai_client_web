@@ -22,6 +22,12 @@
 	}
 </style>
 
+<script>
+	$(function(){
+		
+	});
+</script>
+
 <div id=content class=container>
 
 	<section id=list-biz>
@@ -34,22 +40,25 @@
 		<ul class=row>
 			<?php foreach ($bizs as $biz): ?>
 			<li class="item col-xs-12">
-				<a title="<?php echo $biz['name'] ?>" href="<?php echo base_url('biz/detail?id='.$biz['biz_id']) ?>">
-					<figure class="image-main col-xs-12 col-sm-6 col-md-3">
+				<figure class="image-main col-xs-12 col-sm-6 col-md-3">
+					<a title="<?php echo $biz['name'] ?>" href="<?php echo base_url('biz/detail?id='.$biz['biz_id']) ?>">
 						<img title="<?php echo $biz['name'] ?>" src="<?php echo $biz['url_logo'] ?>">
-						<figcaption>
-							<ul class=row>
-								<li class="col-xs-6">
-									<a title="收藏" href="<?php echo base_url('fav_biz/create?biz_id='.$biz['biz_id']) ?>" target=_blank><i class="fa fa-heart-o"></i> 收藏</a>
-								</li>
-							</ul>
-						</figcaption>
-					</figure>
+					</a>
+					<figcaption>
+						<ul class=row>
+							<li class="col-xs-6">
+								<a class=fav-add-biz data-biz-id="<?php echo $biz['biz_id'] ?>" title="收藏" href="<?php echo base_url('fav_biz/create?biz_id='.$biz['biz_id']) ?>" target=_blank><i class="fa fa-heart-o"></i> 收藏</a>
+							</li>
+						</ul>
+					</figcaption>
+				</figure>
 
-					<section class="col-xs-12 col-sm-6 col-md-3">
+				<section class="col-xs-12 col-sm-6 col-md-3">
+					<a title="<?php echo $biz['name'] ?>" href="<?php echo base_url('biz/detail?id='.$biz['biz_id']) ?>">
 						<h2 class=biz-name><?php echo $biz['name'] ?></h2>
-					</section>
-				</a>
+					</a>
+				</section>
+
 			</li>
 			<?php endforeach ?>
 		</ul>

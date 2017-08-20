@@ -56,11 +56,11 @@
 	<p>再忙，也要记得买点什么犒赏自己~</p>
 
 <?php else: ?>
-	<?php foreach ($bizs as $biz): ?>
+	<?php foreach ($cart_data['bizs'] as $biz): ?>
 	<section style="border:2px solid red" class=biz data-biz-id="<?php echo $biz['biz_id'] ?>">
-		<h2>
+		<h2 class=biz-name>
 			<a title="<?php echo $biz['name'] ?>" href="<?php echo base_url('biz/detail?id='.$biz['biz_id']) ?>">
-				<?php echo $biz['name'] ?>
+				<i class="fa fa-home" aria-hidden="true"></i> <?php echo $biz['name'] ?>
 			</a>
 		</h2>
 	</section>
@@ -68,58 +68,58 @@
 
 	<ul>
 	<?php
-		foreach ($items as $item):
+		foreach ($cart_data['items'] as $item):
 
-		// 生成操作参数
-		$url_param = '?';
-		// 初始化有效性、库存充足度、可减量、可加量性
-		$is_valid = $is_enough = $can_add = $can_reduce = TRUE;
+			// 生成操作URL参数
+			$url_param = '?';
+			// 初始化有效性、库存充足度、可减量、可加量性
+			$is_valid = $is_enough = $can_add = $can_reduce = TRUE;
 
-		// TODO 判断店铺状态是否正常，若正常则获取biz_id
-		if ( TRUE ):
-			$url_param .= 'biz_id='.$item['biz_id'];
-		else:
-			$is_valid = FALSE;
-		endif;
-
-		// 判断商品是否在售，若正常则获取item_id
-		if ( !empty($item['time_publish']) ):
-			$url_param .= '&item_id='.$item['item_id'];
-
-			// 判断库存是否充足
-			if ( $item['stocks'] < $item['count'] ):
-				$is_enough = FALSE;
+			// TODO 判断店铺状态是否正常，若正常则获取biz_id
+			if ( TRUE ):
+				$url_param .= 'biz_id='.$item['biz_id'];
+			else:
+				$is_valid = FALSE;
 			endif;
 
-			// 判断是否可减量
-			if ( $item['quantity_min'] >= $item['count'] ):
-				$can_reduce = FALSE;
-			endif;
+			// 判断商品是否在售，若正常则获取item_id
+			if ( empty($item['time_publish']) ):
+				$is_valid = FALSE;
 
-			// 判断是否可加量
-			if ( $item['stocks'] == $item['count'] || $item['quantity_max'] <= $item['count']):
-				$can_add = FALSE;
-			endif;
+			else:
+				$url_param .= '&item_id='.$item['item_id'];
 
-		else:
-			$is_valid = FALSE;
-		endif;
+				// 判断库存是否充足
+				if ( $item['stocks'] < $item['count'] ):
+					$is_enough = FALSE;
+				endif;
 
-		// 判断是否存在SKU
-		if ( isset($item['sku']) ):
-			// 判断SKU库存是否足够，若正常则获取sku_id
-			if ( $item['sku']['stocks'] >= $item['count'] ):
-				$url_param .= '&sku_id='.$item['sku']['sku_id'];
+				// 判断是否可减量
+				if ( $item['quantity_min'] >= $item['count'] ):
+					$can_reduce = FALSE;
+				endif;
 
 				// 判断是否可加量
-				if ( $item['sku']['stocks'] == $item['count']):
+				if ( $item['stocks'] == $item['count'] || $item['quantity_max'] <= $item['count']):
 					$can_add = FALSE;
 				endif;
-			else:
-				$is_enough = FALSE;
 			endif;
 
-		endif;
+			// 判断是否存在SKU
+			if ( isset($item['sku']) ):
+				// 判断SKU库存是否足够，若正常则获取sku_id
+				if ( $item['sku']['stocks'] >= $item['count'] ):
+					$url_param .= '&sku_id='.$item['sku']['sku_id'];
+
+					// 判断是否可加量
+					if ( $item['sku']['stocks'] == $item['count']):
+						$can_add = FALSE;
+					endif;
+				else:
+					$is_enough = FALSE;
+				endif;
+
+			endif;
 	?>
 		<li class="item row" data-biz-id="<?php echo $item['biz_id'] ?>">
 			<div class="main-images col-xs-2">

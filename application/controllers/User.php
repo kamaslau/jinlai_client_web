@@ -66,8 +66,8 @@
 
 			// 设置需要自动在视图文件中生成显示的字段
 			$this->data_to_display = array(
-				'mobile' => '手机号',
 				'nickname' => '昵称',
+				'mobile' => '手机号',
 			);
 		}
 
@@ -100,18 +100,20 @@
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
 				$data['item'] = $result['content'];
+
+				// 页面信息
+				$data['title'] = '我的资料';
+				$data['class'] = $this->class_name.' mine';
+
+				// 输出视图
+				$this->load->view('templates/header', $data);
+				$this->load->view($this->view_root.'/mine', $data);
+				$this->load->view('templates/footer', $data);
+
 			else:
-				$data['error'] = $result['content']['error']['message'];
+				redirect( base_url('login') );
+
 			endif;
-
-			// 页面信息
-			$data['title'] = $data['item']['mobile'];
-			$data['class'] = $this->class_name.' detail';
-
-			// 输出视图
-			$this->load->view('templates/header', $data);
-			$this->load->view($this->view_root.'/mine', $data);
-			$this->load->view('templates/footer', $data);
 		} // end mine
 
 		/**

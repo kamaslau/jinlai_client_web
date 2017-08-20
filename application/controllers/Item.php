@@ -95,10 +95,41 @@
 				$data['item'] = $result['content'];
 				$data['item_in_json'] = json_encode($result['content']);
 
+				// TODO 检查是否已在购物车内
+				$item_to_check = $data['item']['biz_id'].'|'.$data['item']['item_id'].'|';
+				$data['in_cart'] = $this->in_cart($item_to_check);
+
+				// 判断商品是否在售、是否可加入购物车、是否可立即下单
+				if ( empty($item['time_publish']) ):
+					$is_valid = FALSE;
+
+				else:
+					$url_param .= '&item_id='.$item['item_id'];
+
+					// 判断库存是否充足
+					if ( $item['stocks'] < $item['count'] ):
+						$is_enough = FALSE;
+					endif;
+
+					// 判断是否可减量
+					if ( $item['quantity_min'] >= $item['count'] ):
+						$can_reduce = FALSE;
+					endif;
+
+					// 判断是否可加量
+					if ( $item['stocks'] == $item['count'] || $item['quantity_max'] <= $item['count']):
+						$can_add = FALSE;
+					endif;
+				endif;
+
+				// 获取规格信息
 				$data['skus'] = $this->list_sku($data['item']['item_id']);
 
 				// 获取系统分类信息
 				$data['category'] = $this->get_category($data['item']['category_id']);
+				
+				// 获取商家信息
+				$data['biz'] = $this->get_biz($data['item']['biz_id']);
 
 				// 获取商家分类信息
 				if ( !empty($data['item']['category_biz_id']) ):

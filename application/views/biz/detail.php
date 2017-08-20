@@ -232,12 +232,11 @@
 
 				</section>
 				<?php endif ?>
-
-				<ul class=row>
-					<li class="col-xs-6"><a title="收藏" href="<?php echo base_url('fav_item/create?item_id='.$item['item_id']) ?>" target=_blank><i class="fa fa-heart-o"></i> 收藏</a></li>
-				</ul>
-			
 			</a>
+
+			<ul class=row>
+				<li class="col-xs-6"><a class=fav-add-item data-item-id="<?php echo $item['item_id'] ?>" title="收藏" href="<?php echo base_url('fav_item/create?item_id='.$item['item_id']) ?>" target=_blank><i class="fa fa-heart-o"></i> 收藏</a></li>
+			</ul>
 		</li>
 		<?php endforeach ?>
 	</ul>
@@ -246,9 +245,19 @@
 	
 	<nav id=nav-main>
 		<ul class=row>
-			<li class="col-xs-2"><a title="客服" href="<?php echo base_url('dialog/detail?biz_id='.$item['biz_id']) ?>">客服</a></li>
+			<li class="col-xs-2">
+				<a title="客服" href="<?php echo base_url('dialog/detail?biz_id='.$item['biz_id']) ?>">
+					<i class="fa fa-comments" aria-hidden="true"></i>
+					客服
+				</a>
+			</li>
 			<!--<li class="col-xs-2"><a title="发现" href="<?php echo base_url('biz/detail?id='.$item['biz_id']) ?>">店铺</a></li>-->
-			<li class="col-xs-2"><a title="收藏" href="<?php echo base_url('fav_biz/create?biz_id='.$item['biz_id']) ?>">收藏</a></li>
+			<li class="col-xs-2">
+				<a title="收藏" href="<?php echo base_url('fav_biz/create?biz_id='.$item['biz_id']) ?>">
+					<i class="fa fa-star" aria-hidden="true"></i>
+					收藏
+				</a>
+			</li>
 			<!--
 			<li class="col-xs-3"><a title="加入购物车" href="<?php echo base_url('cart/create?item_id='.$item['item_id']) ?>">加入购物车</a></li>
 			<li class="col-xs-3"><a title="立即购买" href="<?php echo base_url('order?item_id='.$item['item_id']) ?>">立即购买</a></li>

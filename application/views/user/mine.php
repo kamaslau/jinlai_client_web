@@ -55,10 +55,8 @@
 
 		<dt>昵称</dt>
 		<dd><?php echo $item['nickname'] ?></dd>
-		<dt>姓氏</dt>
-		<dd><?php echo $item['lastname'] ?></dd>
-		<dt>名</dt>
-		<dd><?php echo $item['firstname'] ?></dd>
+		<dt>姓名</dt>
+		<dd><?php echo $item['lastname'] ?><?php echo $item['firstname'] ?></dd>
 		<dt>身份证号</dt>
 		<dd><?php echo $item['code_ssn'] ?></dd>
 		<dt>身份证照片</dt>

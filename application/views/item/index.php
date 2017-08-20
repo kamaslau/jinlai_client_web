@@ -73,12 +73,12 @@
 
 					</section>
 					<?php endif ?>
-
-					<ul class=row>
-						<li class="col-xs-6"><a title="收藏" href="<?php echo base_url('fav_item/create?item_id='.$item['item_id']) ?>" target=_blank><i class="fa fa-heart-o"></i> 收藏</a></li>
-					</ul>
-				
 				</a>
+
+				<ul class=row>
+					<li class="col-xs-6"><a title="收藏" href="<?php echo base_url('fav_item/create?item_id='.$item['item_id']) ?>" target=_blank><i class="fa fa-heart-o"></i> 收藏</a></li>
+				</ul>
+				
 			</li>
 			<?php endforeach ?>
 		</ul>

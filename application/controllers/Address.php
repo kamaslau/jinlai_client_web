@@ -109,13 +109,18 @@
 		 * 创建
 		 */
 		public function create()
-		{
+		{	
 			// 页面信息
 			$data = array(
 				'title' => '创建'.$this->class_name_cn,
 				'class' => $this->class_name.' create',
 				'error' => '', // 预设错误提示
 			);
+			
+			// 检查是否传入了回调跳转URL
+			if ( !empty($this->input->get_post('return_to')) ):
+				$data['return_to'] = $this->input->get_post('return_to');
+			endif;
 
 			// 待验证的表单项
 			$this->form_validation->set_error_delimiters('', '；');
@@ -167,9 +172,16 @@
 					if ( isset($result['content']['address_id']) )
 						$this->session->address_id = $result['content']['address_id'];
 
-					$this->load->view('templates/header', $data);
-					$this->load->view($this->view_root.'/result', $data);
-					$this->load->view('templates/footer', $data);
+					// 检查是否已指定回调跳转URL
+					if ( !empty($this->input->post('return_to')) ):
+						redirect( $this->input->post('return_to') );
+						
+					else:
+						$this->load->view('templates/header', $data);
+						$this->load->view($this->view_root.'/result', $data);
+						$this->load->view('templates/footer', $data);
+
+					endif;
 
 				else:
 					// 若创建失败，则进行提示

@@ -85,12 +85,12 @@
 			
 		}
 		
-		// 将数组输出为key:value格式，主要用于在postman等工具中进行api测试
-		public function key_value($params)
+		// 输出JSON
+		protected function output_json()
 		{
-			foreach ($params as $key => $value):
-				echo $key .':' .$value ."\n";
-			endforeach;
+			header("Content-type:application/json;charset=utf-8");
+			$output_json = json_encode($this->result);
+			echo $output_json;
 		}
 
 		/**
@@ -100,7 +100,7 @@
 		 *
 		 * @params array sign_to_check 待检查的签名数据
 		 */
-		public function sign_check($sign_to_check)
+		protected function sign_check($sign_to_check)
 		{
 			$this->sign_check_exits();
 			$this->sign_check_time();
@@ -109,7 +109,7 @@
 		}
 
 		// 检查签名是否传入
-		public function sign_check_exits()
+		protected function sign_check_exits()
 		{
 			$this->sign = $this->input->post('sign');
 
@@ -121,7 +121,7 @@
 		}
 
 		// 签名时间检查
-		public function sign_check_time()
+		protected function sign_check_time()
 		{
 			$timestamp_sign = $this->input->post('timestamp');
 
@@ -149,7 +149,7 @@
 		}
 
 		// 签名参数检查
-		public function sign_check_params()
+		protected function sign_check_params()
 		{
 			// 检查需要参与签名的必要参数；
 			$params_required = array(
@@ -174,7 +174,7 @@
 		}
 
 		// 签名正确性检查
-		public function sign_check_string()
+		protected function sign_check_string()
 		{
 			// 获取传入的参数们
 			$params = $_POST;
@@ -200,7 +200,7 @@
 		/**
 		 * 生成签名
 		 */
-		public function sign_generate($params)
+		protected function sign_generate($params)
 		{
 			// 对参与签名的参数进行排序
 			ksort($params);
@@ -242,7 +242,102 @@
 				redirect( base_url('error/permission_level') );
 			endif;
 		}
-		
+
+		// 将数组输出为key:value格式，主要用于在postman等工具中进行api测试
+		protected function key_value($params)
+		{
+			echo 'app_type:'.$this->app_type.'<br>';
+			echo 'skip_sign:please<br>';
+			foreach ($params as $key => $value):
+				echo $key .':' .$value ."<br>";
+			endforeach;
+		}
+
+		// 拆分CSV为数组
+		protected function explode_csv($text, $seperator = ',')
+		{
+			// 清理可能存在的冗余分隔符及空字符
+			$text = trim($text);
+			$text = trim($text, $seperator);
+
+			// 拆分文本为数组并清理可被转换为布尔型FALSE的数组元素（空数组、空字符、NULL、0、’0‘等）
+			$array = array_filter( explode(',', $text) );
+
+			return $array;
+		} // end explode_csv
+
+		// 解析购物车
+		protected function cart_decode()
+		{
+			// 初始化商家及购物车项数组
+			$data['bizs'] = $data['items'] = array();
+
+			// 检查购物车是否为空，若空则直接返回相应提示，否则显示购物车详情
+			if ( !empty($this->session->cart) ):
+				// 拆分现购物车数组中各项，并获取商品信息
+				$current_cart = $this->explode_csv($this->session->cart);
+
+				// 获取各商品信息
+				foreach ($current_cart as $cart_item):
+					// 分解出item_id、sku_id、count等
+					list($biz_id, $item_id, $sku_id, $count) = explode('|', $cart_item);
+
+					// 获取商家信息
+					$data['bizs']['biz_'.$biz_id] = $this->get_biz($biz_id);
+
+					// 获取商品信息
+					$item = $this->get_item($item_id);
+
+					// 获取SKU信息（若有）
+					if ($sku_id != 0) $item['sku'] = $this->get_sku($sku_id);
+
+					$item['count'] = $count; // 数量保持原状
+					$data['items'][] = $item; // 推入商品信息数组
+				endforeach;
+
+			endif;
+
+			return $data;
+		}
+
+		// 检查商品是否已在购物车中
+		protected function in_cart($item_to_check)
+		{
+			$current_cart = $this->session->cart;
+			var_dump($current_cart);
+			// 检查购物车中是否有商品
+			if ( empty($current_cart) ):
+				return FALSE;
+
+			// 检查当前商品是否在购物车中
+			else:
+				$start_from = strpos(','.$current_cart, ','.$item_to_check);
+				if ( $start_from === FALSE ):
+					return FALSE;
+
+				// 获取购物车中相应商品信息数组（考虑到多规格情况）
+				else:
+					// 拆分现购物车数组中各项，并获取商品信息
+					$current_cart = $this->explode_csv($this->session->cart);
+
+					// 创建购物车项数组
+					$cart_items = array();
+
+					// 获取吻合的购物车项
+					foreach ($current_cart as $cart_item):
+						// 将待加量项加量
+						if ( strpos($cart_item, $item_to_check) !== FALSE ):
+							$cart_items[] = $cart_item;
+						endif;
+					endforeach;
+
+					return $cart_items;
+
+				endif;
+
+			endif;
+		}
+
 		// 获取商家列表
 		protected function list_biz()
 		{
@@ -479,6 +574,24 @@
 			endif;
 			
 			return $data['item'];
+		}
+
+		// 获取当前用户可用地址列表
+		protected function list_address()
+		{
+			// 从API服务器获取相应列表信息
+			$params['user_id'] = $this->session->user_id;
+			$params['time_delete'] = 'NULL';
+
+			$url = api_url('address/index');
+			$result = $this->curl->go($url, $params, 'array');
+			if ($result['status'] === 200):
+				$data['items'] = $result['content'];
+			else:
+				$data['items'] = NULL;
+			endif;
+
+			return $data['items'];
 		}
 		
 		/**
