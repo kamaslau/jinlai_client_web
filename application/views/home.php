@@ -47,7 +47,9 @@
 					<figcaption>
 						<ul class=row>
 							<li class="col-xs-6">
-								<a class=fav-add-biz data-biz-id="<?php echo $biz['biz_id'] ?>" title="收藏" href="<?php echo base_url('fav_biz/create?biz_id='.$biz['biz_id']) ?>" target=_blank><i class="fa fa-heart-o"></i> 收藏</a>
+								<a class=fav-add-biz data-biz-id="<?php echo $biz['biz_id'] ?>" title="关注" href="<?php echo base_url('fav_biz/create?biz_id='.$biz['biz_id']) ?>" target=_blank>
+									<i class="fa fa-heart-o" aria-hidden="true"></i>关注
+								</a>
 							</li>
 						</ul>
 					</figcaption>

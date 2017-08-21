@@ -36,6 +36,8 @@
 	</blockquote>
 
 	<?php else: ?>
+
+	<?php if ( isset($content) ) echo '<div class="alert alert-warning" role=alert>'.$content.'</div>'; ?>
 	<ul id=item-list class=row>
 
 		<?php foreach ($items as $item): ?>
@@ -47,7 +49,7 @@
 
 				<li class=col-xs-12>
 					<ul class="row">
-						<li class="col-xs-3"><a class=delete title="删除" href="<?php echo base_url($this->class_name.'/delete?ids='.$item[$this->id_name]) ?>" target=_blank><i class="fa fa-fw fa-trash"></i> 删除</a></li>
+						<li class="col-xs-3"><a class=delete data-op-class=<?php echo $this->class_name ?> data-op-name=delete data-id="<?php echo $item[$this->id_name] ?>" title="删除" href="<?php echo base_url($this->class_name.'/delete?ids='.$item[$this->id_name]) ?>" target=_blank><i class="fa fa-fw fa-trash"></i> 删除</a></li>
 					</ul>
 				</li>
 			</ul>

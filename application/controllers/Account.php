@@ -2,29 +2,14 @@
 	defined('BASEPATH') OR exit('此文件不可被直接访问');
 
 	/**
-	 * Account Class
+	 * Account 账户类
 	 *
 	 * @version 1.0.0
 	 * @author Kamas 'Iceberg' Lau <kamaslau@outlook.com>
 	 * @copyright ICBG <www.bingshankeji.com>
 	 */
-	class Account extends CI_Controller
+	class Account extends MY_Controller
 	{
-		/* 类名称小写，应用于多处动态生成内容 */
-		public $class_name;
-
-		/* 类名称中文，应用于多处动态生成内容 */
-		public $class_name_cn;
-
-		/* 主要相关表名 */
-		public $table_name;
-
-		/* 主要相关表的主键名*/
-		public $id_name;
-
-		/* 视图文件所在目录名 */
-		public $view_root;
-
 		public function __construct()
 		{
 			parent::__construct();
@@ -34,11 +19,12 @@
 			$this->class_name_cn = '账户'; // 改这里……
 			$this->table_name = 'user'; // 和这里……
 			$this->id_name = 'user_id';  // 还有这里，OK，这就可以了
-			$this->view_root = $this->class_name;
+			$this->view_root = $this->class_name; // 视图文件所在目录
+			$this->media_root = MEDIA_URL. 'user/'; // 媒体文件所在目录
 		}
 
 		/**
-		 * TODO 我的
+		 * 我的
 		 *
 		 * 个人中心页
 		 */
@@ -57,21 +43,14 @@
 				'class' => $this->class_name.' mine', // 页面body标签的class属性值
 			);
 
-			// 筛选条件
-			$condition['user_id'] = $this->session->user_id;
-
-			// 排序条件
-			$order_by = NULL;
-			//$order_by['name'] = 'value';
-
 			// 从API服务器获取相应列表信息
-			$params = $condition;
-			$url = api_url($this->class_name. '/index');
+			$params['id'] = $this->session->user_id;
+			$url = api_url('user/detail');
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
-				$data['items'] = $result['content'];
+				$data['user'] = $result['content'];
 			else:
-				//TODO redirect( base_url('error/code_404') ); // 若未成功获取信息，则转到错误页
+				$this->logout(); // 若获取用户资料失败，退出账户
 			endif;
 
 			// 输出视图

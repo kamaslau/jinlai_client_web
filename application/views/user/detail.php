@@ -36,7 +36,7 @@
 		<dt>头像</dt>
 		<?php if ( !empty($item['avatar']) ): ?>
 		<dd class=row>
-			<figure class="col-xs-12 col-sm-6 col-md-4">
+			<figure class="avatar col-xs-12 col-sm-6 col-md-4">
 				<img class=img-circle src="<?php echo $item['avatar'] ?>">
 			</figure>
 		</dd>

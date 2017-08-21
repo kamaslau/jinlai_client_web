@@ -244,8 +244,8 @@
 
 		<?php // TODO 显示收藏、加入购物车、立即购买按钮前检查是否可售性（是否在售、库存是否足够、每单最高限量等） ?>
 		<li class="col-xs-2">
-			<a title="收藏" href="<?php echo base_url('fav_item/create?item_id='.$item['item_id']) ?>">
-				<i class="fa fa-star" aria-hidden="true"></i>
+			<a class=fav-add-item data-item-id="<?php echo $item['item_id'] ?>" title="收藏" href="<?php echo base_url('fav_item/create?item_id='.$item['item_id']) ?>">
+				<i class="fa fa-star-o" aria-hidden="true"></i>
 				收藏
 			</a>
 		</li>

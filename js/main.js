@@ -19,7 +19,7 @@ $(function(){
 		});
 	}
 	
-	// 收藏商家
+	// 关注商家
 	$('a.fav-add-biz').click(function(){
 		// 初始化参数数组
 		params = new Object();
@@ -41,6 +41,27 @@ $(function(){
 
 		var api_url = 'fav_item/create';
 		ajax_go(api_url, params);
+
+		return false;
+	});
+	
+	// 删除（关注商家、收藏商品、TODO:地址 等）
+	// TODO 处理DOM
+	$('a[data-op-class]').click(function(){
+		var is_confirm = confirm('确定要删除此项？');
+		console.log(is_confirm);
+
+		if (is_confirm == true)
+		{
+			var op_class = $(this).attr('data-op-class');
+			var op_name = $(this).attr('data-op-name');
+			var api_url = op_class + '/' + op_name;
+
+			params = new Object();
+			params.ids = $(this).attr('data-id');
+		
+			ajax_go(api_url, params);
+		}
 
 		return false;
 	});
