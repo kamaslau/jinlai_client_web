@@ -31,7 +31,7 @@
 
 <div id=content class=container>
 	<div class="btn-group btn-group-justified" role=group>
-		<span class="btn btn-primary">密码登录</span>
+		<span class="btn btn-primary">登录</span>
 		<a class="btn btn-default" href="<?php echo base_url('login_sms') ?>">短信登录</a>
 	</div>
 
@@ -58,7 +58,15 @@
 					</span>
 				</div>
 			</div>
+		</fieldset>
 
+		<div id=next class=row>
+		    <div class="col-xs-12 col-sm-offset-2 col-sm-2">
+				<button class="btn btn-primary btn-lg btn-block" type=button role=button>下一步</button>
+		    </div>
+		</div>
+
+		<fieldset class=hide id=login-password>
 			<div class=form-group>
 				<label for=password>密码</label>
 				<div class=input-group>
@@ -68,15 +76,26 @@
 			</div>
 		</fieldset>
 
+		<fieldset class=hide id=login-sms>
+			<div class=form-group>
+				<label for=captcha>短信验证码</label>
+				<div class=input-group>
+					<input id=captcha-input class=form-control name=captcha type=number max=999999 step=1 size=6 pattern="\d{6}" placeholder="请输入短信验证码" disabled required>
+					<span class="input-group-addon">
+						<a id=sms-send href="#">获取验证码</a>
+					</span>
+				</div>
+			</div>
+		</fieldset>
+
 		<div class=row>
 		    <div class="col-xs-12 col-sm-offset-2 col-sm-2">
-				<button class="btn btn-primary btn-lg btn-block" type=submit role=button>确定</button>
+				<button class="hide btn btn-primary btn-lg btn-block" type=submit role=button>确定</button>
 		    </div>
 		</div>
 	</form>
 
 	<ul id=actions class="col-xs-12 col-sm-offset-2 col-sm-2">
-		<li><a title="注册" class="btn btn-default btn-block" href="<?php echo base_url('login_sms') ?>">短信登录/注册</a></li>
 		<li><a title="忘记密码" class="btn btn-default btn-block" href="<?php echo base_url('password_reset') ?>">忘记密码</a></li>
 	</ul>
 </div>

@@ -74,10 +74,10 @@
 
 			// 页面信息
 			$data = array(
-				'title' => '密码登录',
+				'title' => '登录',
 				'class' => $this->class_name.' login',
 			);
-			
+
 			$this->form_validation->set_rules('captcha_verify', '图片验证码', 'trim|required|exact_length[4]|callback_verify_captcha');
 			$this->form_validation->set_rules('mobile', '手机号', 'trim|required|exact_length[11]|is_natural_no_zero');
 			$this->form_validation->set_rules('password', '密码', 'trim|required|min_length[6]|max_length[20]');
@@ -486,7 +486,72 @@
 
 			endif;
 		} // end register
-	}
+		
+		/**
+		 * 用户存在性
+		 */
+		public function user_exist()
+		{
+			// 手机号及Email须至少传入一项
+			$mobile = $this->input->get('mobile');
+			$email = $this->input->get('email');
+			$wechat_union_id = $this->input->get('wechat_union_id');
+			if ( empty($mobile) && empty($email) && empty($wechat_union_id) ):
+				$this->result['status'] = 400;
+				$this->result['content']['error']['message'] = '手机号、Email及微信UnionID须至少传入一项';
+				exit();
+			endif;
+
+			// 初始化并配置表单验证库
+			$this->form_validation->set_error_delimiters('', '');
+			$data_to_validate['mobile'] = $mobile;
+			$data_to_validate['email'] = $email;
+			$data_to_validate['wechat_union_id'] = $wechat_union_id;
+			$this->form_validation->set_data($data_to_validate);
+			// 待验证的表单项
+			$this->form_validation->set_rules('mobile', '手机号', 'trim|exact_length[11]|is_natural_no_zero');
+			$this->form_validation->set_rules('email', 'Email', 'trim|max_length[40]|valid_email');
+			$this->form_validation->set_rules('wechat_union_id', '微信UnionID', 'trim|max_length[29]');
+
+			// 需要创建的数据；逐一赋值需特别处理的字段
+			$data_to_search = array(
+				'mobile' => $mobile,
+				'email' => $email,
+				'wechat_union_id' => $wechat_union_id,
+			);
+
+			// 只接受AJAX请求
+			if ( !$this->input->is_ajax_request() ):
+				redirect( base_url() ); // 转到首页
+
+			else:
+				// 若表单提交不成功
+				if ($this->form_validation->run() === FALSE):
+					$this->result['status'] = 401;
+					$this->result['content']['error']['message'] = validation_errors();
+
+				else:
+					// 向API服务器发送待查询数据
+					$params = $data_to_search;
+					$url = api_url('account/user_exist');
+					$result = $this->curl->go($url, $params, 'array');
+					if ( !empty($result) ):
+						$this->result = $result;
+
+					else:
+						$this->result['status'] = 400;
+						$this->result['content']['error']['message'] = '操作失败：网络问题';
+
+					endif;
+
+				endif;
+
+				// 返回JSON
+				$this->output_json();
+			endif;
+		} // end user_exist
+
+	} // end class Acount
 
 /* End of file Account.php */
 /* Location: ./application/controllers/Account.php */

@@ -1,7 +1,5 @@
 <style>
 	// 基本的响应式网页内嵌样式
-	// 作为一个PHP开发框架，Basic只提供一个基本的前端页面示例
-	// 当然这不妨碍我借着这个机会推广一下移动优先的响应式开发思路 lol
 
 	/* 宽度在750像素以上的设备 */
 	@media only screen and (min-width:751px)
@@ -60,7 +58,6 @@
 						<h2 class=biz-name><?php echo $biz['name'] ?></h2>
 					</a>
 				</section>
-
 			</li>
 			<?php endforeach ?>
 		</ul>

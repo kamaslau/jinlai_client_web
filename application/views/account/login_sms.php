@@ -27,7 +27,7 @@
 
 <div id=content class=container>
 	<div class="btn-group btn-group-justified" role=group>
-		<a class="btn btn-default" href="<?php echo base_url('login') ?>">密码登录</a>
+		<a class="btn btn-default" href="<?php echo base_url('login') ?>">登录</a>
 		<span class="btn btn-primary">短信登录</span>
 	</div>
 

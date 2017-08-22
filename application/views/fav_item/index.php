@@ -44,7 +44,7 @@
 		<li class="col-xs-6 col-sm-4 col-md-6" data-item-id="<?php echo $item['record_id'] ?>">
 			<ul class=row>
 				<?php if ( strpos(DEVELOPER_MOBILES, ','.$this->session->mobile.',') !== FALSE ): ?>
-				<li class=col-xs-12>ID <?php echo $item['record_id'] ?></li>
+				<span>ID <?php echo $item['record_id'] ?></span>
 				<?php endif ?>
 
 				<li class=col-xs-12>
