@@ -76,7 +76,9 @@
 				</a>
 
 				<ul class=row>
-					<li class="col-xs-6"><a class=fav-add-item data-item-id="<?php echo $item['item_id'] ?>" title="收藏" href="<?php echo base_url('fav_item/create?item_id='.$item['item_id']) ?>" target=_blank><i class="fa fa-star-o"></i> 收藏</a></li>
+					<li class="col-xs-6">
+						<a class=fav-add-item data-item-id="<?php echo $item['item_id'] ?>" title="收藏" href="<?php echo base_url('fav_item/create?item_id='.$item['item_id']) ?>" target=_blank><i class="fa fa-star-o"></i> 收藏</a>
+					</li>
 				</ul>
 				
 			</li>

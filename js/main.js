@@ -1,7 +1,7 @@
 $(function(){
 	var ajax_root = 'https://www.517ybang.com/';
-	// AJAX主程序
-	function ajax_go(api_url, call_back)
+	// 通用AJAX程序
+	function ajax_go(api_url)
 	{
 		// AJAX获取结果并生成相关HTML
 		$.getJSON(ajax_root+api_url, params, function(data)
@@ -24,7 +24,7 @@ $(function(){
 	// 登录页
 	$('#next button').click(function(){
 		$(this).hide();
-		
+
 		// 初始化参数数组
 		params = new Object();
 		params.mobile = $('[name=mobile]').val();
@@ -37,12 +37,15 @@ $(function(){
 			if (data.status == 200)
 			{
 				$('#login-password').removeClass('hide');
+				$('[name=password]').attr('required',true);
 			}
 			else // 若失败，进行提示
 			{
 				$('#login-sms').removeClass('hide');
+				$('[name=captcha]').attr('required',true);
+				console.log($('[name=captcha]').attr('required'));
 			}
-			
+
 			$('[type=submit]').removeClass('hide');
 		});
 
@@ -56,13 +59,23 @@ $(function(){
 		params.biz_id = $(this).attr('data-biz-id');
 
 		var api_url = 'fav_biz/create';
-		var result = ajax_go(api_url);
-		if (result != false)
+		
+		// AJAX获取结果并生成相关HTML
+		$.getJSON(ajax_root+api_url, params, function(data)
 		{
-			// 切换图标为已关注样式
-			var icon_to_change = $(this).find('i.fa');
-			icon_to_change.attr('class', 'fa fa-heart');
-		}
+			console.log(data); // 输出回调数据到控制台
+
+			if (data.status == 200)
+			{
+				// 切换图标为已关注样式
+				var icon_to_change = $('[data-biz-id='+ params.biz_id +']').find('i.fa');
+				icon_to_change.attr('class', 'fa fa-heart');
+			}
+			else // 若失败，进行提示
+			{
+				alert(data.content.error.message);
+			}
+		});
 
 		return false;
 	});
@@ -74,13 +87,23 @@ $(function(){
 		params.item_id = $(this).attr('data-item-id');
 
 		var api_url = 'fav_item/create';
-		var result = ajax_go(api_url);
-		if (result != false)
+
+		// AJAX获取结果并生成相关HTML
+		$.getJSON(ajax_root+api_url, params, function(data)
 		{
-			// 切换图标为已关注样式
-			var icon_to_change = $(this).find('i.fa');
-			icon_to_change.attr('class', 'fa fa-star');
-		}
+			console.log(data); // 输出回调数据到控制台
+
+			if (data.status == 200)
+			{
+				// 切换图标为已关注样式
+				var icon_to_change = $('[data-item-id='+ params.item_id +']').find('i.fa');
+				icon_to_change.attr('class', 'fa fa-star');
+			}
+			else // 若失败，进行提示
+			{
+				alert(data.content.error.message);
+			}
+		});
 
 		return false;
 	});
@@ -98,13 +121,22 @@ $(function(){
 
 			params = new Object();
 			params.ids = $(this).attr('data-id');
-
-			var result = ajax_go(api_url);
-			if (result != false)
+			
+			// AJAX获取结果并生成相关HTML
+			$.getJSON(ajax_root+api_url, params, function(data)
 			{
-				// 移除DOM
-				$(this).closest('li.item').remove();
-			}
+				console.log(data); // 输出回调数据到控制台
+
+				if (data.status == 200)
+				{
+					// 移除DOM
+					$('[data-item-id='+ params.ids +']').remove();
+				}
+				else // 若失败，进行提示
+				{
+					alert(data.content.error.message);
+				}
+			});
 		}
 
 		return false;

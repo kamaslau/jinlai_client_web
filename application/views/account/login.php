@@ -71,16 +71,18 @@
 				<label for=password>密码</label>
 				<div class=input-group>
 					<span class="input-group-addon"><i class="fa fa-key fa-fw" aria-hidden=true></i></span>
-					<input class=form-control name=password type=password <?php if ($this->input->cookie('mobile')) echo 'autofocus '; ?> placeholder="密码" required>
+					<input class=form-control name=password type=password <?php if ($this->input->cookie('mobile')) echo 'autofocus '; ?> placeholder="密码">
 				</div>
 			</div>
 		</fieldset>
 
 		<fieldset class=hide id=login-sms>
+			<input name=sms_id type=hidden>
+
 			<div class=form-group>
 				<label for=captcha>短信验证码</label>
 				<div class=input-group>
-					<input id=captcha-input class=form-control name=captcha type=number max=999999 step=1 size=6 pattern="\d{6}" placeholder="请输入短信验证码" disabled required>
+					<input id=captcha-input class=form-control name=captcha type=number max=999999 step=1 size=6 pattern="\d{6}" placeholder="请输入短信验证码" disabled>
 					<span class="input-group-addon">
 						<a id=sms-send href="#">获取验证码</a>
 					</span>

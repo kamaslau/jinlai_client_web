@@ -80,21 +80,37 @@
 
 			$this->form_validation->set_rules('captcha_verify', '图片验证码', 'trim|required|exact_length[4]|callback_verify_captcha');
 			$this->form_validation->set_rules('mobile', '手机号', 'trim|required|exact_length[11]|is_natural_no_zero');
-			$this->form_validation->set_rules('password', '密码', 'trim|required|min_length[6]|max_length[20]');
+			$this->form_validation->set_rules('password', '密码', 'trim|min_length[6]|max_length[20]');
+			$this->form_validation->set_rules('sms_id', '短信ID', 'trim|is_natural_no_zero');
+			$this->form_validation->set_rules('captcha', '短信验证码', 'trim|exact_length[6]|is_natural_no_zero');
 
 			if ($this->form_validation->run() === FALSE):
 				$data['error'] = validation_errors();
 
 			else:
+				$mobile = $this->input->post('mobile');
+				$password = $this->input->post('password');
+				$sms_id = $this->input->post('sms_id');
+				$captcha = $this->input->post('captcha');
+
 				$data_to_search = array(
-					'mobile' => $this->input->post('mobile'),
-					'password' => $this->input->post('password'),
 					'user_ip' => $this->input->ip_address(),
+					'mobile' => $mobile,
+					'password' => $password,
+					'sms_id' => $sms_id,
+					'captcha' => $captcha,
 				);
+
+				if ( !empty($password) ):
+					// 若传入了密码，则调用密码登录API
+					$url = api_url($this->class_name. '/login');
+				else:
+					// 若未传入密码，则调用短信登录API
+					$url = api_url($this->class_name. '/login_sms');
+				endif;
 
 				// 从API服务器获取相应详情信息
 				$params = $data_to_search;
-				$url = api_url($this->class_name. '/login');
 				$result = $this->curl->go($url, $params, 'array');
 
 				if ($result['status'] !== 200):
@@ -112,7 +128,7 @@
 
 					// 将用户手机号写入cookie并保存30天
 					$this->input->set_cookie('mobile', $data['item']['mobile'], 60*60*24 *30, COOKIE_DOMAIN);
-					
+
 					// 若用户已设置密码则转到首页，否则转到密码设置页
 					if ( !empty($data['item']['password']) ):
 						redirect( base_url() );
@@ -156,10 +172,10 @@
 
 			else:
 				$data_to_search = array(
+					'user_ip' => $this->input->ip_address(),
 					'mobile' => $this->input->post('mobile'),
 					'sms_id' => $this->input->post('sms_id'),
 					'captcha' => $this->input->post('captcha'),
-					'user_ip' => $this->input->ip_address(),
 				);
 
 				// 从API服务器获取相应详情信息
