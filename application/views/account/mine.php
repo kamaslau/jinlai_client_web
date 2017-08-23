@@ -7,8 +7,8 @@
 	
 		#general-actions li {text-align:left;}
 
-	/* 宽度在640像素以上的设备 */
-	@media only screen and (min-width:641px)
+	/* 宽度在750像素以上的设备 */
+	@media only screen and (min-width:751px)
 	{
 
 	}
@@ -68,7 +68,7 @@
 		</ul>
 	</section>
 
-	<section id=order-records>
+	<section id=order-nav>
 		<h2>
 			我的订单
 			<a class="pull-right" title="全部订单" href="<?php echo base_url('order') ?>">全部 &gt;</a>
@@ -99,9 +99,14 @@
 	
 	<section id=misc>
 		<ul class="row">
-			<li class=col-xs-4><a title="我的钱包" href="<?php echo base_url('balance') ?>">我的钱包</a></li>
-			<li class=col-xs-4><a title="我的积分" href="<?php echo base_url('credit') ?>">我的积分</a></li>
-			<li class=col-xs-4><a title="我的地址" href="<?php echo base_url('address') ?>">我的地址</a></li>
+			<li class=col-xs-4><a title="我的钱包" href="<?php echo base_url('balance') ?>">钱包</a></li>
+			<li class=col-xs-4><a title="我的积分" href="<?php echo base_url('credit') ?>">积分</a></li>
+			<li class=col-xs-4>
+				<a title="卡券" href="<?php echo base_url('coupon') ?>">
+					<i class="fa fa-ticket" aria-hidden="true"></i>卡券
+				</a>
+			</li>
+			<li class=col-xs-4><a title="我的地址" href="<?php echo base_url('address') ?>">地址</a></li>
 			<li class=col-xs-4><a title="关于我们" href="<?php echo base_url('article/about-us') ?>">关于我们</a></li>
 			<li class=col-xs-4><a title="APP下载" href="<?php echo base_url('download/app') ?>">APP下载</a></li>
 		</ul>
