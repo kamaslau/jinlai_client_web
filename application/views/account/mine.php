@@ -96,7 +96,7 @@
 			</li>
 		</ul>
 	</section>
-	
+
 	<section id=misc>
 		<ul class="row">
 			<li class=col-xs-4><a title="我的钱包" href="<?php echo base_url('balance') ?>">钱包</a></li>
@@ -107,18 +107,15 @@
 				</a>
 			</li>
 			<li class=col-xs-4><a title="我的地址" href="<?php echo base_url('address') ?>">地址</a></li>
+			<li class=col-xs-4><a title="系统设置" href="<?php echo base_url('setup') ?>">设置</a></li>
+			<li class=col-xs-4><a title="安全中心" href="<?php echo base_url('safty') ?>">安全中心</a></li>
+			<li class=col-xs-4><a title="商家合作" href="<?php echo base_url('biz/create') ?>">商家合作</a></li>
 			<li class=col-xs-4><a title="关于我们" href="<?php echo base_url('article/about-us') ?>">关于我们</a></li>
-			<li class=col-xs-4><a title="APP下载" href="<?php echo base_url('download/app') ?>">APP下载</a></li>
-		</ul>
-	</section>
-
-	<section id=general-actions>
-		<ul>
+			<li class=col-xs-4><a title="APP下载" href="<?php echo base_url('download/app?type=client') ?>">APP下载</a></li>
 			<!--
-			<li><a title="邀请好友" href="<?php echo base_url('invite') ?>">邀请好友</a></li>
-			<li><a title="设置" href="<?php echo base_url('setup') ?>">设置</a></li>
+			<li class=col-xs-4><a title="邀请好友" href="<?php echo base_url('invite') ?>">邀请好友</a></li>
 			-->
-			<li><a title="退出账户" id=logout class="btn btn-block btn-danger" href="<?php echo base_url('logout') ?>">退出</a></li>
+			<li class=col-xs-4><a title="退出账户" id=logout class="btn btn-block btn-danger" href="<?php echo base_url('logout') ?>">退出</a></li>
 		</ul>
 	</section>
 

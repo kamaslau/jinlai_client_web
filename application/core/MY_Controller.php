@@ -82,9 +82,9 @@
 		 */
 		public function __destruct()
 		{
-			
+
 		}
-		
+
 		// 输出JSON
 		protected function output_json()
 		{
@@ -304,7 +304,6 @@
 		protected function in_cart($item_to_check)
 		{
 			$current_cart = $this->session->cart;
-			var_dump($current_cart);
 			// 检查购物车中是否有商品
 			if ( empty($current_cart) ):
 				return FALSE;

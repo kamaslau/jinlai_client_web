@@ -51,6 +51,12 @@
 						<h2 class=biz-name><?php echo $item['name'] ?></h2>
 					</a>
 				</section>
+
+				<ul class=row>
+					<li class="col-xs-6">
+						<a class=create data-op-class=coupon data-op-name=create data-id="<?php echo $item[$this->id_name] ?>" title="领取" href="<?php echo base_url('coupon/create?template_id='.$item[$this->id_name]) ?>" target=_blank><i class="fa fa-trash"></i> 领取</a>
+					</li>
+				</ul>
 			</li>
 
 		<?php endforeach ?>

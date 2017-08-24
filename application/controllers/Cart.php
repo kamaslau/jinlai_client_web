@@ -45,6 +45,11 @@
 				'title' => $this->class_name_cn,
 				'class' => $this->class_name.' '. $this->class_name.'-index',
 			);
+			
+			// 获取购物车数据
+			$sync_result = $this->sync_down();
+			if ($sync_result !== FALSE)
+				$this->session->cart = $this->sync_down();
 
 			// 解析购物车
 			$data['cart_data'] = $this->cart_decode();
@@ -73,6 +78,7 @@
 			// 检查购物车是否为空，若空则直接添加当前商品，否则进行相应操作
 			if ( isset($this->session->cart) === FALSE ):
 				$this->session->cart = $item_to_add;
+				$this->sync_up();
 
 			else:
 				// TODO 处理最高、最低限购情景
@@ -82,6 +88,7 @@
 
 				if ( strpos($current_cart, $item_to_check) === FALSE ):
 					$this->session->cart = trim($current_cart.','.$item_to_add, ',');
+					$this->sync_up();
 
 				else:
 					// 拆分现购物车数组中各项，并将需要加量的单品加量
@@ -118,6 +125,7 @@
 						endforeach;
 
 						$this->session->cart = implode(',', $new_cart);
+						$this->sync_up();
 					endif;
 				endif;
 
@@ -182,6 +190,7 @@
 				endforeach;
 
 				$this->session->cart = implode(',', $new_cart);
+				$this->sync_up();
 				
 				// 转到购物车页
 				redirect( base_url('cart') );
@@ -234,6 +243,7 @@
 				endforeach;
 
 				$this->session->cart = implode(',', $new_cart);
+				$this->sync_up();
 
 				// 转到购物车页
 				redirect( base_url('cart') );
@@ -252,8 +262,55 @@
 			);
 
 			$this->session->cart = NULL;
+			$this->sync_up();
+			
 			redirect('cart');
 		} // end clear
+
+		// 向数据库上传用户购物车数据
+		private function sync_up()
+		{
+			// 需要编辑的数据
+			$params = array(
+				'user_id' => $this->session->user_id,
+				'id' => $this->session->user_id,
+				'name' => 'cart_string',
+				'value' => $this->session->cart,
+			);
+
+			// 向API服务器发送待创建数据
+			$url = api_url($this->class_name.'/edit_certain');
+			$result = $this->curl->go($url, $params, 'array');
+			if ($result['status'] === 200):
+				return TRUE;
+
+			else:
+				return FALSE;
+
+			endif;
+
+		} // end sync_up
+		
+		// 从数据库获取用户购物车数据
+		private function sync_down()
+		{
+			// 需要搜索的数据
+			$params = array(
+				'id' => $this->session->user_id,
+			);
+
+			// 向API服务器发送待创建数据
+			$url = api_url($this->class_name.'/detail');
+			$result = $this->curl->go($url, $params, 'array');
+			if ($result['status'] === 200):
+				return $result['content']['cart_string'];
+
+			else:
+				return FALSE;
+
+			endif;
+
+		} // end sync_down
 
 	} // end class Cart
 

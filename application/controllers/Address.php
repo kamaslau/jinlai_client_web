@@ -272,7 +272,7 @@
 					$data['content'] = $result['content']['message'];
 					$data['operation'] = 'edit';
 					$data['id'] = $id;
-					
+
 					// 检查是否需要更新本地默认地址
 					if ( isset($result['content']['address_id']) )
 						$this->session->address_id = $result['content']['address_id'];
@@ -453,7 +453,7 @@
 				'value' => $id,
 			);
 
-			// 向API服务器发送待创建数据
+			// 向API服务器发送待修改数据
 			$params = $data_to_edit;
 			$url = api_url('user/edit_certain');
 			$result = $this->curl->go($url, $params, 'array');

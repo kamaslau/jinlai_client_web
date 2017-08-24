@@ -31,7 +31,7 @@
 
 <div id=content class=container>
 	<?php if ( isset($content) ) echo '<div class="alert alert-warning" role=alert>'.$content.'</div>'; ?>
-	
+
 	<?php if ( empty($items) ): ?>
 		<blockquote>
 			<p>您未关注任何商家</p>

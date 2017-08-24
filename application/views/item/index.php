@@ -29,9 +29,6 @@
 </div>
 
 <div id=content class=container>
-	<div class=btn-group role=group>
-		<a class="btn btn-primary" title="所有<?php echo $this->class_name_cn ?>" href="<?php echo base_url($this->class_name) ?>"><i class="fa fa-list fa-fw" aria-hidden=true></i> 所有<?php echo $this->class_name_cn ?></a>
-	</div>
 
 	<?php if ( empty($items) ): ?>
 	<blockquote class=row>

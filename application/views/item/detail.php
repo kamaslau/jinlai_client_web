@@ -1,6 +1,4 @@
 <style>
-	#header, #breadcrumb {display:none;}
-	
 	#content {width:100%;}
 	
 	#item-figure {padding:0;}
@@ -19,7 +17,7 @@
 	/* 宽度在750像素以上的设备 */
 	@media only screen and (min-width:751px)
 	{
-		#header, #breadcrumb {display:block;}
+
 	}
 
 	/* 宽度在960像素以上的设备 */
