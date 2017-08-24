@@ -1,16 +1,27 @@
 <style>
-	#header {display:none;}
+	body {background-color:#efefef;}
+	.container {width:100%;}
+	
+	h2 {color:#3e3a39;font-size:28px;font-weight:600;}
 
-	#list-cart {}
+	section {background-color:#fff;margin:20px;border-radius:30px;}
+		section h2 {padding:30px 10px;}
+		section li {border-top:1px solid #dcdddd;}
+			section a {color:#3e3a39;font-size:26px;}
+	
+	.biz-name {overflow:hidden;padding:10px 20px;}
+		.biz-name>* {float:left;}
+		.biz-name img {width:60px;height:60px;margin-left:20px;margin-right:10px;overflow:hidden;display:inline-block;}
+
+	.item {padding:20px 36px 20px 20px;overflow:hidden;}
+		.item>* {float:left;height:190px;}
+		.item-image-main {width:190px;margin-left:20px;margin-right:30px;overflow:hidden;}
+		.item-info {width:374px;}
+			.count {color:#3e3a39;font-size:28px;}
+
 
 	.cart-items>li {background-color:#fff;margin-bottom:10px;padding:0.5em;}
 		.cart-items>li>* {padding-right:0;}
-
-	.main-images {padding:0;}
-		.main-images img {display:block;height:100%;}
-
-	.price>* {font-size:18px;text-align:right;}
-		.price strong {color:#1aad19;}
 
 	.actions {border-top:1px solid #9ed99d;padding:0;margin:0;margin-top:0.5em;overflow:hidden;}
 		.actions>li {height:44px;line-height:44px;padding:0;}
@@ -18,6 +29,10 @@
 			.actions>li a {font-size:20px;text-align:center;display:block;width:100%;height:100%;}
 			a.add {color:#fff;background-color:#9ed99d;}
 			a.reduce {color:rgba(0, 0, 0, 0.3);}
+	
+	#cart-actions {background-color:#fff;position:fixed;left:0;right:0;bottom:96px;height:88px;padding:24px 0 24px 20px;border-top:1px solid #e1e1e1;overflow:hidden;}
+	#cart-actions>* {float:left;display:inline;}
+	#create-order {color:#fff;background-color:orange;font-size:30px;font-weight:600;text-align:center;width:215px;height:88px;line-height:88px;position:absolute;right:0;bottom:0;}
 </style>
 
 <base href="<?php echo $this->media_root ?>">
@@ -57,10 +72,11 @@
 
 <?php else: ?>
 	<?php foreach ($cart_data['bizs'] as $biz): ?>
-	<section style="border:2px solid red" class=biz data-biz-id="<?php echo $biz['biz_id'] ?>">
+	<section class=biz data-biz-id="<?php echo $biz['biz_id'] ?>">
 		<h2 class=biz-name>
 			<a title="<?php echo $biz['name'] ?>" href="<?php echo base_url('biz/detail?id='.$biz['biz_id']) ?>">
-				<i class="fa fa-home" aria-hidden="true"></i> <?php echo $biz['name'] ?>
+				<img alt="<?php echo $biz['name'] ?>" src="<?php echo MEDIA_URL.'/biz/'.$biz['url_logo'] ?>">
+				<span><?php echo $biz['name'] ?> &gt;</span>
 			</a>
 		</h2>
 	</section>
@@ -122,13 +138,14 @@
 			endif;
 	?>
 		<li class="item row" data-biz-id="<?php echo $item['biz_id'] ?>">
-			<div class="main-images col-xs-2">
+
+			<div class=item-image-main>
 				<a href="<?php echo base_url('item/detail?id='.$item['item_id']) ?>">
 					<img alt="<?php echo $item['name'] ?>" src="<?php echo $item['url_image_main'] ?>">
 				</a>
 			</div>
 
-			<section class="col-xs-6">
+			<div class=item-info>
 				<h2 class=item-name>
 					<a title="<?php echo $item['name'] ?>" href="<?php echo base_url('item/detail?id='.$item['item_id']) ?>">
 						<?php if ($is_valid === FALSE): ?>
@@ -142,46 +159,42 @@
 						<?php echo $item['name'] ?>
 					</a>
 				</h2>
-			</section>
+				<strong class="price pull-right">￥ <?php echo $item['price'] ?></strong>
 
-			<!-- 价格相关 -->
-			<ul class="price list-unstyled col-xs-4">
-				<li><strong>￥ <?php echo $item['price'] ?></strong> &times; <?php echo $item['count'] ?></li>
-			</ul>
+				<!-- 数量调整 -->
+				<?php if ($is_valid === TRUE): ?>
+				<ul class="actions row">
+					<?php if ($can_reduce === TRUE): ?>
+					<li class="col-xs-3">
+						<a class=reduce href="<?php echo base_url('cart/reduce'.$url_param) ?>"><i class="fa fa-minus-circle" aria-hidden=true></i></a>
+					</li>
+					<?php endif ?>
+				
+					<li class="col-xs-3 count">
+						<?php echo $item['count'] ?>
+					</li>
 
-			<!-- 数量调整 -->
-			<?php if ($is_valid === TRUE): ?>
-			<ul class="actions col-xs-12 row">
-				<?php if ($can_reduce === TRUE): ?>
-				<li class="col-xs-4">
-					<a class=reduce href="<?php echo base_url('cart/reduce'.$url_param) ?>"><i class="fa fa-minus-circle" aria-hidden=true></i></a>
-				</li>
+					<li class="col-xs-3">
+						<a class=remove href="<?php echo base_url('cart/remove'.$url_param) ?>"><i class="fa fa-trash" aria-hidden=true></i></a>
+					</li>
+
+					<?php if ($can_add === TRUE): ?>
+					<li class="col-xs-3">
+						<a class=add href="<?php echo base_url('cart/add'.$url_param) ?>"><i class="fa fa-plus-circle" aria-hidden=true></i></a>
+					</li>
+					<?php endif ?>
+				</ul>
 				<?php endif ?>
+			</div>
 
-				<li class="col-xs-4">
-					<a class=remove href="<?php echo base_url('cart/remove'.$url_param) ?>"><i class="fa fa-trash" aria-hidden=true></i></a>
-				</li>
-
-				<?php if ($can_add === TRUE): ?>
-				<li class="col-xs-4">
-					<a class=add href="<?php echo base_url('cart/add'.$url_param) ?>"><i class="fa fa-plus-circle" aria-hidden=true></i></a>
-				</li>
-				<?php endif ?>
-			</ul>
-			<?php endif ?>
 		</li>
-
 		<?php endforeach ?>
 	</ul>
 
-	<ul id=cart-actions class=row>
-		<li class="col-xs-12 col-sm-offset-2 col-sm-2">
-			<a class="btn btn-primary btn-lg btn-block" title="创建订单" href="<?php echo base_url('order/create') ?>">去下单</a>
-	    </li>
-	    <li class="col-xs-12 col-sm-offset-2 col-sm-2">
-			<a class="btn btn-warning btn-lg btn-block" title="清空购物车" href="<?php echo base_url('cart/clear') ?>">清空</a>
-	    </li>
-	</ul>
+	<div id=cart-actions>
+		<a id=clear-cart title="清空购物车" href="<?php echo base_url('cart/clear') ?>">清空</a>
+		<a id=create-order title="创建订单" href="<?php echo base_url('order/create') ?>">去下单</a>
+	</div>
 
 <?php endif ?>
 </div>

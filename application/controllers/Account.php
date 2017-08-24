@@ -43,7 +43,7 @@
 				'class' => $this->class_name.' mine', // 页面body标签的class属性值
 			);
 
-			// 从API服务器获取相应列表信息
+			// 从API服务器获取当前用户资料
 			$params['id'] = $this->session->user_id;
 			$url = api_url('user/detail');
 			$result = $this->curl->go($url, $params, 'array');

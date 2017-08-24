@@ -4,20 +4,17 @@
 	/**
 	 * Article 文章类
 	 *
-	 * 以我的XX列表、列表、详情、创建、单行编辑、单/多行编辑（删除、恢复）等功能提供了常见功能的APP示例代码
-	 * CodeIgniter官方网站 https://www.codeigniter.com/user_guide/
-	 *
 	 * @version 1.0.0
 	 * @author Kamas 'Iceberg' Lau <kamaslau@outlook.com>
 	 * @copyright ICBG <www.bingshankeji.com>
 	 */
 	class Article extends MY_Controller
-	{	
+	{
 		/**
 		 * 可作为列表筛选条件的字段名；可在具体方法中根据需要删除不需要的字段并转换为字符串进行应用，下同
 		 */
 		protected $names_to_sort = array(
-			'article_id', 'category_id', 'biz_id', 'title', 'excerpt', 'content', 'url_name', 'url_images', 'time_create', 'time_delete', 'time_edit', 'creator_id', 'operator_id',
+			'category_id', 'biz_id', 'title', 'excerpt', 'content', 'url_name', 'url_images', 'time_create', 'time_delete', 'time_edit', 'creator_id', 'operator_id',
 		);
 
 		public function __construct()
@@ -31,12 +28,6 @@
 			$this->id_name = 'article_id'; // 还有这里，OK，这就可以了
 			$this->view_root = $this->class_name; // 视图文件所在目录
 			$this->media_root = MEDIA_URL. $this->class_name.'/'; // 媒体文件所在目录
-
-			// 设置需要自动在视图文件中生成显示的字段
-			$this->data_to_display = array(
-				'title' => '标题',
-				'excerpt' => '摘要',
-			);
 		}
 		
 		/**
@@ -45,7 +36,7 @@
 		public function __destruct()
 		{
 			// 调试信息输出开关
-			// $this->output->enable_profiler(TRUE);
+			//$this->output->enable_profiler(TRUE);
 		}
 
 		/**
@@ -61,7 +52,6 @@
 
 			// 筛选条件
 			$condition['time_delete'] = 'NULL';
-			//$condition['name'] = 'value';
 			// （可选）遍历筛选条件
 			foreach ($this->names_to_sort as $sorter):
 				if ( !empty($this->input->post($sorter)) )
@@ -70,7 +60,6 @@
 
 			// 排序条件
 			$order_by = NULL;
-			//$order_by['name'] = 'value';
 
 			// 从API服务器获取相应列表信息
 			$params = $condition;
@@ -82,9 +71,6 @@
 				$data['error'] = $result['content']['error']['message'];
 			endif;
 
-			// 将需要显示的数据传到视图以备使用
-			$data['data_to_display'] = $this->data_to_display;
-
 			// 输出视图
 			$this->load->view('templates/header', $data);
 			$this->load->view($this->view_root.'/index', $data);
@@ -94,7 +80,7 @@
 		/**
 		 * 详情页
 		 */
-		public function detail($url_name)
+		public function detail($url_name = NULL)
 		{
 			// 检查是否已传入必要参数
 			$id = $this->input->get_post('id')? $this->input->get_post('id'): NULL;

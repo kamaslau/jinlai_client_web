@@ -67,42 +67,10 @@ $route['account/edit'] = 'account/edit'; // 编辑账户资料
 $route['mine'] = 'account/mine'; // 个人中心（仅限登录后）
 
 /* 以下按控制器类名称字母降序排列 */
-
 /* Article 文章 */
-$route['article/detail'] = 'article/detail'; // 详情
-$route['article/edit'] = 'article/edit'; // 编辑
-$route['article/create'] = 'article/create'; // 创建
-$route['article/delete'] = 'article/delete'; // 删除
-$route['article/restore'] = 'article/restore'; // 恢复
-$route['article/trash'] = 'article/trash'; // 回收站
-$route['article'] = 'article/index'; // 列表
-
-/* Brand 品牌 */
-$route['brand/detail'] = 'brand/detail'; // 详情
-$route['brand/edit'] = 'brand/edit'; // 编辑
-$route['brand/create'] = 'brand/create'; // 创建
-$route['brand/delete'] = 'brand/delete'; // 删除
-$route['brand/restore'] = 'brand/restore'; // 恢复
-$route['brand/trash'] = 'brand/trash'; // 回收站
-$route['brand'] = 'brand/index'; // 列表
-
-/* Item 产品 */
-$route['item/detail'] = 'item/detail'; // 详情
-$route['item/edit'] = 'item/edit'; // 编辑
-$route['item/create'] = 'item/create'; // 创建
-$route['item/delete'] = 'item/delete'; // 删除
-$route['item/restore'] = 'item/restore'; // 恢复
-$route['item/trash'] = 'item/trash'; // 回收站
-$route['item'] = 'item/index'; // 列表
-
-/* Order 订单 */
-$route['order/mine'] = 'order/mine'; // 我的
-$route['order/detail'] = 'order/detail'; // 详情
-$route['order'] = 'order/index'; // 列表
-
-/* User 用户（无社交功能的前台一般可删除该组） */
-$route['user/detail'] = 'user/detail'; // 用户详情
-$route['user'] = 'user/index'; // 用户列表
+$route['article/detail'] = 'article/detail';
+$route['article/(:any)'] = 'article/detail/$1';
+$route['article'] = 'article/index';
 
 $route['default_controller'] = 'home/index';
 $route['404_override'] = '';
