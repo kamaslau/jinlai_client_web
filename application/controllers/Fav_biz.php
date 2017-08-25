@@ -26,7 +26,7 @@
 
 			// 向类属性赋值
 			$this->class_name = strtolower(__CLASS__);
-			$this->class_name_cn = '商家关注'; // 改这里……
+			$this->class_name_cn = '关注商家'; // 改这里……
 			$this->table_name = 'fav_biz'; // 和这里……
 			$this->id_name = 'record_id'; // 还有这里，OK，这就可以了
 			$this->view_root = $this->class_name; // 视图文件所在目录
@@ -49,7 +49,7 @@
 		{
 			// 页面信息
 			$data = array(
-				'title' => $this->class_name_cn. '列表',
+				'title' => '我关注的',
 				'class' => $this->class_name.' index',
 				'error' => '',
 			);

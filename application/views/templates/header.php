@@ -125,6 +125,7 @@
 					'onMenuShareTimeline',
 					'onMenuShareAppMessage',
 					'hideMenuItems',
+					'scanQRCode',
 				] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
 
 			});
@@ -169,7 +170,21 @@
 						alert('您未完成分享');
 				    }
 				});
+				
+				// 调起扫一扫
+				document.getElementById('scan').onclick = function (){
 
+					wx.scanQRCode({
+					    needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+					    scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+					    success: function (res){
+						    var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+							//alert(result);
+						}
+					});
+
+					return false;
+				};
 			});
 			
 			
@@ -230,8 +245,8 @@
 					<i class="fa fa-user" aria-hidden=true></i>
 				</a>
 				-->
-				<a id=tel-public class=nav-icon href="tel:4008820532">
-					<i class="fa fa-phone" aria-hidden=true></i>
+				<a id=scan class=nav-icon>
+					<i class="fa fa-qrcode" aria-hidden="true"></i>
 				</a>
 			</div>
 		</header>

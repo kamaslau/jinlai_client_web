@@ -49,11 +49,11 @@
 		{
 			// 页面信息
 			$data = array(
-				'title' => $this->class_name_cn. '列表',
+				'title' => '我收藏的',
 				'class' => $this->class_name.' index',
 				'error' => '',
 			);
-			
+
 			// 若存在类属性data，合并（并覆盖）
 			if ( isset($this->data) ):
 				$data = array_merge($data, $this->data);

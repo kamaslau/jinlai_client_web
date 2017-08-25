@@ -1,5 +1,5 @@
 <style>
-	// 基本的响应式网页内嵌样式
+	#header {display:block;}
 
 	/* 宽度在750像素以上的设备 */
 	@media only screen and (min-width:751px)

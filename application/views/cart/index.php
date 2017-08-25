@@ -1,8 +1,5 @@
 <style>
-	body {background-color:#efefef;}
-	.container {width:100%;}
-	
-	h2 {color:#3e3a39;font-size:28px;font-weight:600;}
+	#cart-header {background:#efefef url('/media/cart/top_bg@3x.png') center -44px no-repeat;background-size:100% auto;height:128px;}
 
 	section {background-color:#fff;margin:20px;border-radius:30px;}
 		section h2 {padding:30px 10px;}
@@ -16,9 +13,9 @@
 	.item {padding:20px 36px 20px 20px;overflow:hidden;}
 		.item>* {float:left;height:190px;}
 		.item-image-main {width:190px;margin-left:20px;margin-right:30px;overflow:hidden;}
-		.item-info {width:374px;}
-			.count {color:#3e3a39;font-size:28px;}
-
+		.item-info {font-size:28px;width:374px;}
+			.price {color:#f39800;margin:20px 0;}
+			.count {color:#3e3a39;width:92px;}
 
 	.cart-items>li {background-color:#fff;margin-bottom:10px;padding:0.5em;}
 		.cart-items>li>* {padding-right:0;}
@@ -32,7 +29,7 @@
 	
 	#cart-actions {background-color:#fff;position:fixed;left:0;right:0;bottom:96px;height:88px;padding:24px 0 24px 20px;border-top:1px solid #e1e1e1;overflow:hidden;}
 	#cart-actions>* {float:left;display:inline;}
-	#create-order {color:#fff;background-color:orange;font-size:30px;font-weight:600;text-align:center;width:215px;height:88px;line-height:88px;position:absolute;right:0;bottom:0;}
+	#create-order {color:#fff;background-color:#ff5353;font-size:30px;font-weight:600;text-align:center;width:215px;height:88px;line-height:88px;position:absolute;right:0;bottom:0;}
 </style>
 
 <base href="<?php echo $this->media_root ?>">
@@ -62,6 +59,10 @@
 </script>
 
 <?php if ($this->session->mobile === '17664073966') var_dump($this->session->cart) ?>
+
+<header id=cart-header>
+
+</header>
 
 <div id=content class=container>
 	<?php if ( !empty($content) ) echo '<p class="bg-info text-info text-center">'.$content.'</p>'; ?>
@@ -159,28 +160,28 @@
 						<?php echo $item['name'] ?>
 					</a>
 				</h2>
-				<strong class="price pull-right">￥ <?php echo $item['price'] ?></strong>
+				<div class=price>￥ <?php echo $item['price'] ?></div>
 
 				<!-- 数量调整 -->
 				<?php if ($is_valid === TRUE): ?>
 				<ul class="actions row">
 					<?php if ($can_reduce === TRUE): ?>
-					<li class="col-xs-3">
-						<a class=reduce href="<?php echo base_url('cart/reduce'.$url_param) ?>"><i class="fa fa-minus-circle" aria-hidden=true></i></a>
+					<li class=reduce>
+						<a href="<?php echo base_url('cart/reduce'.$url_param) ?>"><i class="fa fa-minus-circle" aria-hidden=true></i></a>
 					</li>
 					<?php endif ?>
 				
-					<li class="col-xs-3 count">
+					<li class=count>
 						<?php echo $item['count'] ?>
 					</li>
 
-					<li class="col-xs-3">
-						<a class=remove href="<?php echo base_url('cart/remove'.$url_param) ?>"><i class="fa fa-trash" aria-hidden=true></i></a>
+					<li class=remove>
+						<a href="<?php echo base_url('cart/remove'.$url_param) ?>"><i class="fa fa-trash" aria-hidden=true></i></a>
 					</li>
 
 					<?php if ($can_add === TRUE): ?>
-					<li class="col-xs-3">
-						<a class=add href="<?php echo base_url('cart/add'.$url_param) ?>"><i class="fa fa-plus-circle" aria-hidden=true></i></a>
+					<li class=add>
+						<a href="<?php echo base_url('cart/add'.$url_param) ?>"><i class="fa fa-plus-circle" aria-hidden=true></i></a>
 					</li>
 					<?php endif ?>
 				</ul>

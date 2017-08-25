@@ -21,6 +21,7 @@ define('SITE_DESCRIPTION', '「进来」是首款需要严苛标准认证的品�
 define('ICP_NUMBER', NULL); // ICP备案号码，没有请留空
 
 define('BASE_URL', 'https://'. $_SERVER['SERVER_NAME']); // 可对外使用的站点URL；在本地测试时须替换为类似“localhost/BasicCodeigniter”形式
+define('BIZ_URL', 'https://biz.517bang.com/'); // 商家管理中心URL
 
  // （可选）媒体文件，即非样式图片、视频、音频存储的根目录所在URL，可用于配合又拍云等第三方存储
 define('DEFAULT_IMAGE', NULL); // 默认图片URL

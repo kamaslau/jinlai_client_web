@@ -1,6 +1,5 @@
 <style>
-	body {background-color:#efefef;}
-	.container {width:100%;}
+	body {background:#efefef url('/media/account/mine/beijing@3x.png') center -44px no-repeat;background-size:100% 388px;}
 
 	#content li {text-align:center;}
 		#content li img {display:block;margin:0 auto;}
@@ -10,14 +9,14 @@
 			#user-info a>* {float:left;}
 			.avatar {margin-right:20px;}
 				.avatar img {width:130px;height:130px;}
-			#user-info h2 {font-size:28px;font-weight:600;}
+			#user-info h2 {color:#fff;}
 
 	#user-records {height:125px;padding:16px 0 26px;}
 		#user-records a {color:#fff;font-size:26px;}
 		#user-records img {width:45px;height:45px;margin-bottom:14px;}
-	
+
 	section {background-color:#fff;margin:20px 10px 0;border-radius:30px;}
-		section h2 {color:#3e3a39;font-size:28px;padding:30px 10px;}
+		section h2 {padding:30px 10px;}
 		section li {border-top:1px solid #dcdddd;}
 			section a {color:#3e3a39;font-size:26px;}
 
@@ -112,10 +111,19 @@
 				<a title="我的积分" href="<?php echo base_url('credit') ?>"><img src="/media/account/mine/jifen@3x.png">积分</a>
 			</li>
 			<li class=col-xs-4>
-				<a title="卡券" href="<?php echo base_url('coupon') ?>"><img src="/media/account/mine/kabao2@3x.png">卡券</a>
+				<a title="我的卡券" href="<?php echo base_url('coupon') ?>"><img src="/media/account/mine/kabao2@3x.png">卡券</a>
 			</li>
 			<li class=col-xs-4>
-				<a title="我的地址" href="<?php echo base_url('address') ?>"><img src="/media/account/mine/kabao2@3x.png">地址</a>
+				<a title="邀请好友" href="<?php echo base_url('invite') ?>"><img src="/media/account/mine/yaoqinghaoyou@3x.png">邀请好友</a>
+			</li>
+			<li class=col-xs-4>
+				<a title="商家合作" href="<?php echo BIZ_URL.'biz/create' ?>"><img src="/media/account/mine/shangjiahezuo@3x.png">商家合作</a>
+			</li>
+			<li class=col-xs-4>
+				<a title="进来红卡" href="<?php echo base_url('biz/create') ?>"><img src="/media/account/mine/hongka@3x.png">进来红卡</a>
+			</li>
+			<li class=col-xs-4>
+				<a title="我的地址" href="<?php echo base_url('address') ?>"><img src="/media/account/mine/dizhi@3x.png">地址</a>
 			</li>
 			<li class=col-xs-4>
 				<a title="系统设置" href="<?php echo base_url('setup') ?>"><img src="/media/account/mine/shezhi@3x.png">设置</a>
@@ -124,15 +132,12 @@
 				<a title="关于我们" href="<?php echo base_url('article/about-us') ?>"><img src="/media/account/mine/guanyuwomen@3x.png">关于我们</a>
 			</li>
 			<li class=col-xs-4>
-				<a title="安全中心" href="<?php echo base_url('safty') ?>">安全中心</a>
-			</li>
-			<li class=col-xs-4>
-				<a title="商家合作" href="<?php echo base_url('biz/create') ?>">商家合作</a>
-			</li>
-			<li class=col-xs-4><a title="APP下载" href="<?php echo base_url('download/app?type=client') ?>">APP下载</a>
+				<a title="APP下载" href="<?php echo base_url('download/app?type=client') ?>"><i class="fa fa-download"></i>APP下载</a>
 			</li>
 			<!--
-			<li class=col-xs-4><a title="邀请好友" href="<?php echo base_url('invite') ?>">邀请好友</a></li>
+			<li class=col-xs-4>
+				<a title="安全中心" href="<?php echo base_url('safty') ?>">安全中心</a>
+			</li>
 			-->
 		</ul>
 	</section>
