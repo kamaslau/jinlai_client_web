@@ -2,7 +2,9 @@
 	defined('BASEPATH') OR exit('此文件不可被直接访问');
 
 	/**
-	 * Coupon 优惠券类
+	 * Coupon 用户优惠券类
+	 *
+	 * 即优惠券（根据优惠券模板创建的优惠券）
 	 *
 	 * @version 1.0.0
 	 * @author Kamas 'Iceberg' Lau <kamaslau@outlook.com>
@@ -28,12 +30,12 @@
 		{
 			parent::__construct();
 
-			// （可选）未登录用户转到登录页
-			//($this->session->time_expire_login > time()) OR redirect( base_url('login') );
+			// 若未登录，转到密码登录页
+			($this->session->time_expire_login > time()) OR redirect( base_url('login') );
 
 			// 向类属性赋值
 			$this->class_name = strtolower(__CLASS__);
-			$this->class_name_cn = '优惠券'; // 改这里……
+			$this->class_name_cn = '我的优惠券'; // 改这里……
 			$this->table_name = 'coupon'; // 和这里……
 			$this->id_name = 'coupon_id'; // 还有这里，OK，这就可以了
 			$this->view_root = $this->class_name; // 视图文件所在目录

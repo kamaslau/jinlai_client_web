@@ -2,13 +2,13 @@
 	defined('BASEPATH') OR exit('此文件不可被直接访问');
 
 	/**
-	 * Captcha 类
+	 * Captcha 验证码类
 	 *
 	 * @version 1.0.0
 	 * @author Kamas 'Iceberg' Lau <kamaslau@outlook.com>
 	 * @copyright ICBG <www.bingshankeji.com>
 	 */
-	class Captcha extends CI_Controller
+	class Captcha extends MY_Controller
 	{
 		/* 类名称小写，应用于多处动态生成内容 */
 		public $class_name;
@@ -92,8 +92,9 @@
 		    } 
 		    imagepng($im); // 输出图片
 		    imagedestroy($im); // 释放图片所占内存
-		}
-	}
+		} // end index
+
+	} // end class Captcha
 	
 /* End of file Captcha.php */
 /* Location: ./application/controllers/Captcha.php */

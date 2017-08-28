@@ -92,7 +92,10 @@
 			// 从API服务器获取相应详情信息
 			$url = api_url($this->class_name. '/detail');
 			$result = $this->curl->go($url, $params, 'array');
-			if ($result['status'] === 200):
+			if ($result['status'] !== 200):
+				$data['error'] = $result['content']['error']['message'];
+
+			else:
 				$data['item'] = $result['content'];
 
 				// 获取该商家商品
@@ -109,8 +112,7 @@
 				else:
 					$data['error'] = $result['content']['error']['message'];
 				endif;
-			else:
-				$data['error'] = $result['content']['error']['message'];
+				
 			endif;
 
 			// 页面信息

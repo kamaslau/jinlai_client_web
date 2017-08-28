@@ -2,14 +2,16 @@
 	defined('BASEPATH') OR exit('此文件不可被直接访问');
 
 	/**
-	 * Coupon_template 优惠券模板类
+	 * Coupon_template 优惠券类
+	 *
+	 * 即优惠券模板（平台或商家创建、可被用户领取的优惠券模板）
 	 *
 	 * @version 1.0.0
 	 * @author Kamas 'Iceberg' Lau <kamaslau@outlook.com>
 	 * @copyright ICBG <www.bingshankeji.com>
 	 */
 	class Coupon_template extends MY_Controller
-	{	
+	{
 		/**
 		 * 可作为列表筛选条件的字段名；可在具体方法中根据需要删除不需要的字段并转换为字符串进行应用，下同
 		 */
@@ -24,7 +26,7 @@
 
 			// 向类属性赋值
 			$this->class_name = strtolower(__CLASS__);
-			$this->class_name_cn = '商家优惠券'; // 改这里……
+			$this->class_name_cn = '优惠券'; // 改这里……
 			$this->table_name = 'coupon_template'; // 和这里……
 			$this->id_name = 'template_id'; // 还有这里，OK，这就可以了
 			$this->view_root = $this->class_name; // 视图文件所在目录
@@ -53,7 +55,6 @@
 
 			// 筛选条件
 			$condition['time_delete'] = 'NULL';
-			//$condition['name'] = 'value';
 			// （可选）遍历筛选条件
 			foreach ($this->names_to_sort as $sorter):
 				if ( !empty($this->input->post($sorter)) )
@@ -62,7 +63,6 @@
 
 			// 排序条件
 			$order_by = NULL;
-			//$order_by['name'] = 'value';
 
 			// 从API服务器获取相应列表信息
 			$params = $condition;
@@ -98,7 +98,7 @@
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
 				$data['item'] = $result['content'];
-				
+
 				// 获取系统商品分类信息
 				if ( !empty($data['item']['category_id']) ):
 					$data['category'] = $this->get_category($data['item']['category_id']);

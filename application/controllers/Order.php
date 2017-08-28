@@ -14,14 +14,14 @@
 		 * 可作为列表筛选条件的字段名；可在具体方法中根据需要删除不需要的字段并转换为字符串进行应用，下同
 		 */
 		protected $names_to_sort = array(
-			'order_id', 'biz_id', 'user_id', 'user_ip', 'subtotal', 'promotion_id', 'discount_promotion', 'coupon_id', 'discount_coupon', 'credit_id', 'discount_payed', 'freight', 'discount_reprice', 'repricer_id', 'total', 'total_payed', 'total_refund', 'fullname', 'mobile', 'province', 'city', 'county', 'street', 'longitude', 'latitude', 'payment_type', 'payment_account', 'payment_id', 'note_user', 'note_stuff', 'commission', 'promoter_id', 'time_create', 'time_cancel', 'time_expire', 'time_pay', 'time_refuse', 'time_accept', 'time_deliver', 'time_confirm', 'time_confirm_auto', 'time_comment', 'time_refund', 'time_delete', 'time_edit', 'operator_id', 'status', 'refund_status', 'invoice_status',
+			'biz_id', 'user_id', 'user_ip', 'subtotal', 'promotion_id', 'discount_promotion', 'coupon_id', 'discount_coupon', 'credit_id', 'discount_payed', 'freight', 'discount_reprice', 'repricer_id', 'total', 'total_payed', 'total_refund', 'fullname', 'mobile', 'province', 'city', 'county', 'street', 'longitude', 'latitude', 'payment_type', 'payment_account', 'payment_id', 'note_user', 'note_stuff', 'commission', 'promoter_id', 'time_create', 'time_cancel', 'time_expire', 'time_pay', 'time_refuse', 'time_accept', 'time_deliver', 'time_confirm', 'time_confirm_auto', 'time_comment', 'time_refund', 'time_delete', 'time_edit', 'operator_id', 'status', 'refund_status', 'invoice_status',
 		);
 
 		/**
 		 * 可被编辑的字段名
 		 */
 		protected $names_edit_allowed = array(
-			'order_id', 'biz_id', 'user_id', 'user_ip', 'subtotal', 'promotion_id', 'discount_promotion', 'coupon_id', 'discount_coupon', 'credit_id', 'discount_payed', 'freight', 'discount_reprice', 'repricer_id', 'total', 'total_payed', 'total_refund', 'fullname', 'mobile', 'province', 'city', 'county', 'street', 'longitude', 'latitude', 'payment_type', 'payment_account', 'payment_id', 'note_user', 'note_stuff', 'commission', 'promoter_id', 'time_create', 'time_cancel', 'time_expire', 'time_pay', 'time_refuse', 'time_accept', 'time_deliver', 'time_confirm', 'time_confirm_auto', 'time_comment', 'time_refund', 'time_delete', 'time_edit', 'operator_id', 'status', 'refund_status', 'invoice_status',
+			'promotion_id', 'discount_promotion', 'coupon_id', 'discount_coupon', 'credit_id', 'discount_payed', 'freight', 'discount_reprice', 'repricer_id', 'total', 'total_payed', 'total_refund', 'fullname', 'mobile', 'province', 'city', 'county', 'street', 'longitude', 'latitude', 'payment_type', 'payment_account', 'payment_id', 'note_user', 'note_stuff', 'commission', 'promoter_id', 'time_create', 'time_cancel', 'time_expire', 'time_pay', 'time_refuse', 'time_accept', 'time_deliver', 'time_confirm', 'time_confirm_auto', 'time_comment', 'time_refund', 'time_delete', 'time_edit', 'operator_id', 'status', 'refund_status', 'invoice_status',
 		);
 
 		/**
@@ -29,7 +29,7 @@
 		 */
 		protected $names_edit_required = array(
 			'id',
-			'order_id', 'biz_id', 'user_id', 'user_ip', 'subtotal', 'promotion_id', 'discount_promotion', 'coupon_id', 'discount_coupon', 'credit_id', 'discount_payed', 'freight', 'discount_reprice', 'repricer_id', 'total', 'total_payed', 'total_refund', 'fullname', 'mobile', 'province', 'city', 'county', 'street', 'longitude', 'latitude', 'payment_type', 'payment_account', 'payment_id', 'note_user', 'note_stuff', 'commission', 'promoter_id', 'time_create', 'time_cancel', 'time_expire', 'time_pay', 'time_refuse', 'time_accept', 'time_deliver', 'time_confirm', 'time_confirm_auto', 'time_comment', 'time_refund', 'time_delete', 'time_edit', 'operator_id', 'status', 'refund_status', 'invoice_status',
+			'user_id', 'promotion_id', 'discount_promotion', 'coupon_id', 'discount_coupon', 'credit_id', 'discount_payed', 'freight', 'discount_reprice', 'repricer_id', 'total', 'total_payed', 'total_refund', 'fullname', 'mobile', 'province', 'city', 'county', 'street', 'longitude', 'latitude', 'payment_type', 'payment_account', 'payment_id', 'note_user', 'note_stuff', 'commission', 'promoter_id', 'time_create', 'time_cancel', 'time_expire', 'time_pay', 'time_refuse', 'time_accept', 'time_deliver', 'time_confirm', 'time_confirm_auto', 'time_comment', 'time_refund', 'time_delete', 'time_edit', 'operator_id', 'status', 'refund_status', 'invoice_status',
 		);
 		
 		/**
@@ -91,7 +91,6 @@
 			// 筛选条件
 			$condition['user_id'] = $this->session->user_id;
 			$condition['time_delete'] = 'NULL';
-			//$condition['name'] = 'value';
 			// （可选）遍历筛选条件
 			foreach ($this->names_to_sort as $sorter):
 				if ( !empty($this->input->post($sorter)) )
@@ -100,7 +99,6 @@
 
 			// 排序条件
 			$order_by = NULL;
-			//$order_by['name'] = 'value';
 
 			// 从API服务器获取相应列表信息
 			$params = $condition;
@@ -173,7 +171,6 @@
 
 			// 排序条件
 			$order_by['time_delete'] = 'DESC';
-			//$order_by['name'] = 'value';
 
 			// 从API服务器获取相应列表信息
 			$params = $condition;
@@ -184,9 +181,6 @@
 			else:
 				$data['error'] = $result['content']['error']['message'];
 			endif;
-
-			// 将需要显示的数据传到视图以备使用
-			$data['data_to_display'] = $this->data_to_display;
 
 			// 输出视图
 			$this->load->view('templates/header', $data);
@@ -256,7 +250,7 @@
 				);
 				// 自动生成无需特别处理的数据
 				$data_need_no_prepare = array(
-					'item_id', 'sku_id', 'count', 'address_id', 'note_user',
+					'address_id', 'note_user', 'item_id', 'sku_id', 'count',
 				);
 				foreach ($data_need_no_prepare as $name)
 					$data_to_create[$name] = $this->input->post($name);
@@ -441,11 +435,6 @@
 				endif;
 			endforeach;
 
-			// 操作可能需要检查操作权限
-			// $role_allowed = array('管理员', '经理'); // 角色要求
-// 			$min_level = 30; // 级别要求
-// 			$this->basic->permission_check($role_allowed, $min_level);
-
 			// 页面信息
 			$data = array(
 				'title' => '修改'.$this->class_name_cn. $name,
@@ -469,12 +458,6 @@
 			// 动态设置待验证字段名及字段值
 			$data_to_validate["{$name}"] = $value;
 			$this->form_validation->set_data($data_to_validate);
-			$this->form_validation->set_rules('id', '待修改项ID', 'trim|required|is_natural_no_zero');
-			$this->form_validation->set_rules('order_id', '订单ID', 'trim|required');
-			$this->form_validation->set_rules('biz_id', '商户ID', 'trim|required');
-			$this->form_validation->set_rules('user_id', '用户ID', 'trim|required');
-			$this->form_validation->set_rules('user_ip', '用户下单IP地址', 'trim|');
-			$this->form_validation->set_rules('subtotal', '小计（元）', 'trim|required');
 			$this->form_validation->set_rules('promotion_id', '营销活动ID', 'trim|');
 			$this->form_validation->set_rules('discount_promotion', '营销活动折抵金额（元）', 'trim|');
 			$this->form_validation->set_rules('coupon_id', '优惠券ID', 'trim|');
@@ -503,23 +486,6 @@
 			$this->form_validation->set_rules('佣金比例/提成率', 'trim|');
 			$this->form_validation->set_rules('commission', '佣金（元）', 'trim|');
 			$this->form_validation->set_rules('promoter_id', '推广者ID', 'trim|');
-			$this->form_validation->set_rules('time_create', '用户下单时间', 'trim|required');
-			$this->form_validation->set_rules('time_cancel', '用户取消时间', 'trim|');
-			$this->form_validation->set_rules('time_expire', '自动过期时间', 'trim|');
-			$this->form_validation->set_rules('time_pay', '用户付款时间', 'trim|');
-			$this->form_validation->set_rules('time_refuse', '商家拒绝时间', 'trim|');
-			$this->form_validation->set_rules('time_accept', '商家接单时间', 'trim|');
-			$this->form_validation->set_rules('time_deliver', '商家发货时间', 'trim|');
-			$this->form_validation->set_rules('time_confirm', '用户确认时间', 'trim|');
-			$this->form_validation->set_rules('time_confirm_auto', '系统确认时间', 'trim|');
-			$this->form_validation->set_rules('time_comment', '用户评价时间', 'trim|');
-			$this->form_validation->set_rules('time_refund', '商家退款时间', 'trim|');
-			$this->form_validation->set_rules('time_delete', '用户删除时间', 'trim|');
-			$this->form_validation->set_rules('time_edit', '最后操作时间', 'trim|required');
-			$this->form_validation->set_rules('operator_id', '最后操作者ID', 'trim|');
-			$this->form_validation->set_rules('status', '订单状态', 'trim|required');
-			$this->form_validation->set_rules('refund_status', '退款状态', 'trim|required');
-			$this->form_validation->set_rules('invoice_status', '发票状态', 'trim|required');
 
 			// 若表单提交不成功
 			if ($this->form_validation->run() === FALSE):

@@ -16,7 +16,7 @@
 		public function __construct()
 		{
 			parent::__construct();
-			
+
 			// 向类属性赋值
 			$this->class_name = strtolower(__CLASS__);
 			$this->class_name_cn = '购物车'; // 改这里……
@@ -43,7 +43,7 @@
 			// 页面信息
 			$data = array(
 				'title' => $this->class_name_cn,
-				'class' => $this->class_name.' '. $this->class_name.'-index',
+				'class' => $this->class_name,
 			);
 			
 			// 获取购物车数据
@@ -264,7 +264,7 @@
 
 			$this->session->cart = NULL;
 			$this->sync_up();
-			
+
 			redirect('cart');
 		} // end clear
 
@@ -289,7 +289,6 @@
 				return FALSE;
 
 			endif;
-
 		} // end sync_up
 		
 		// 从数据库获取用户购物车数据
@@ -310,7 +309,6 @@
 				return FALSE;
 
 			endif;
-
 		} // end sync_down
 
 	} // end class Cart

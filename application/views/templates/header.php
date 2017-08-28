@@ -23,7 +23,7 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20170825">
+		<meta name=version content="revision20170828">
 		<meta name=author content="刘亚杰Kamas">
 		<meta name=copyright content="青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
@@ -44,17 +44,17 @@
 				    // 设置cURL参数，要求结果保存到字符串中还是输出到屏幕上。
 				    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 				    curl_setopt($curl, CURLOPT_ENCODING, 'UTF-8');
-			
+
 					// 需要通过POST方式发送的数据
 					if ($method === 'post'):
 						$params['app_type'] = 'biz'; // 应用类型默认为biz
 						curl_setopt($curl, CURLOPT_POST, count($params));
 						curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
 					endif;
-			
+
 				    // 运行cURL，请求API
 					$result = curl_exec($curl);
-			
+
 					// 输出CURL请求头以便调试
 					//var_dump(curl_getinfo($curl));
 
@@ -127,7 +127,6 @@
 					'hideMenuItems',
 					'scanQRCode',
 				] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-
 			});
 
 			wx.ready(function(){
@@ -170,7 +169,7 @@
 						alert('您未完成分享');
 				    }
 				});
-				
+
 				// 调起扫一扫
 				document.getElementById('scan').onclick = function (){
 
@@ -185,9 +184,29 @@
 
 					return false;
 				};
+
+				// 获取地理位置及网络类型
+				document.getElementById('locate').onclick = function (){
+					wx.getLocation({
+					    type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+					    success: function (res) {
+					        var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+					        var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+							alert(longitude + ',' +latitude);
+					        //var speed = res.speed; // 速度，以米/每秒计
+					        //var accuracy = res.accuracy; // 位置精度
+					    }
+					});
+					wx.getNetworkType({
+					    success: function (res) {
+					        var networkType = res.networkType; // 返回网络类型2g，3g，4g，wifi
+							alert(networkType);
+					    }
+					});
+				
+					return false;
+				};
 			});
-			
-			
 		</script>
 		<?php //endif ?>
 		
@@ -237,17 +256,20 @@
 					<a id=logo title="<?php echo SITE_NAME ?>" href="<?php echo base_url() ?>"><?php echo SITE_NAME ?></a>
 				</h1>
 
+				<a id=locate class=nav-icon>
+					<i class="fa fa-map-marker" aria-hidden="true"></i>
+				</a>
+				<a id=scan class=nav-icon>
+					<i class="fa fa-qrcode" aria-hidden="true"></i>
+				</a>
+				<!--
 				<a id=nav-switch class=nav-icon href="#header">
 					<i class="fa fa-bars" aria-hidden=true></i>
 				</a>
-				<!--
 				<a id=to-mine class=nav-icon href="<?php echo base_url('mine') ?>">
 					<i class="fa fa-user" aria-hidden=true></i>
 				</a>
 				-->
-				<a id=scan class=nav-icon>
-					<i class="fa fa-qrcode" aria-hidden="true"></i>
-				</a>
 			</div>
 		</header>
 
@@ -304,6 +326,7 @@
 			</div>
 		</nav>
 
+		<!--
 		<script>
 		// 手机版菜单的显示和隐藏
 		$(function(){
@@ -339,5 +362,6 @@
 			}
 		});
 		</script>
+		-->
 
 		<main id=maincontainer role=main>
