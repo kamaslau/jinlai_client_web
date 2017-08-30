@@ -365,7 +365,6 @@
 			// 待验证的表单项
 			$this->form_validation->set_error_delimiters('', '；');
 			$this->form_validation->set_rules('ids', '待操作数据ID们', 'trim|required|regex_match[/^(\d|\d,?)+$/]'); // 仅允许非零整数和半角逗号
-			$this->form_validation->set_rules('password', '密码', 'trim|required|min_length[6]|max_length[20]');
 
 			// 若表单提交不成功
 			if ($this->form_validation->run() === FALSE):
