@@ -17,7 +17,7 @@
 
 	section {background-color:#fff;margin:20px 10px 0;border-radius:30px;}
 		section h2 {padding:30px 10px;}
-		section li {border-top:1px solid #dcdddd;}
+		section li {border-top:1px solid #ddd;}
 			section a {color:#3e3a39;font-size:26px;}
 
 	#order-nav {}

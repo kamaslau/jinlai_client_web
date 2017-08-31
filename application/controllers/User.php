@@ -14,7 +14,7 @@
 		 * 可作为列表筛选条件的字段名；可在具体方法中根据需要删除不需要的字段并转换为字符串进行应用，下同
 		 */
 		protected $names_to_sort = array(
-			'user_id', 'password', 'nickname', 'lastname', 'firstname', 'code_ssn', 'url_image_id', 'gender', 'dob', 'avatar', 'mobile', 'email', 'wechat_union_id', 'address_id', 'bank_name', 'bank_account', 'last_login_timestamp', 'last_login_ip',
+			'password', 'nickname', 'lastname', 'firstname', 'code_ssn', 'url_image_id', 'gender', 'dob', 'avatar', 'mobile', 'email', 'wechat_union_id', 'address_id', 'bank_name', 'bank_account', 'last_login_timestamp', 'last_login_ip',
 			'time_create', 'time_delete', 'time_edit', 'creator_id', 'operator_id',
 		);
 
@@ -66,6 +66,31 @@
 				'nickname' => '昵称',
 				'mobile' => '手机号',
 			);
+
+			// 每几个字符（默认4个）后插入一个特定分隔符(默认“-”)
+			function seperate_it($string_to_process, $seperator = '-', $index_between = 4)
+			{
+				$string_length = mb_strlen($string_to_process,'UTF8'); // 待处理字符串长度
+				$string_to_output = ''; // 待输出字符串
+
+				// 将字符串转为数组
+				while ($string_length > 0){
+				    $string_array[] = mb_substr($string_to_process,0,1,'utf8'); //这一段是取字符串$str的第一个字符
+				    $string_to_process = mb_substr($string_to_process,1,$string_length,'utf8'); //这一段是取字符串$str除了第一个字符之外的其他字符
+				    $string_length = mb_strlen($string_to_process,'UTF8'); //这一段是取字符串$str的字符串长度
+				}
+				// 每隔四个字符加一个分隔符
+				for ($i=0; $i<count($string_array); $i++):
+					$string_to_output .= $string_array[$i];
+					// 若达到间隔，则拼入分隔符
+					if (($i+1) % $index_between == 0)
+						$string_to_output .= $seperator;			
+				endfor;
+				// 去掉末尾可能存在的分隔符
+				$string_to_output = rtrim($string_to_output, $seperator);
+				
+				return $string_to_output;
+			}
 		}
 
 		/**
@@ -233,15 +258,9 @@
 				$this->form_validation->set_rules('nickname', '昵称', 'trim|max_length[12]');
 				$this->form_validation->set_rules('lastname', '姓氏', 'trim|max_length[9]');
 				$this->form_validation->set_rules('firstname', '名', 'trim|max_length[6]');
-				$this->form_validation->set_rules('code_ssn', '身份证号', 'trim|exact_length[18]');
-				$this->form_validation->set_rules('url_image_id', '身份证照片', 'trim|max_length[255]');
 				$this->form_validation->set_rules('gender', '性别', 'trim|in_list[男,女]');
 				$this->form_validation->set_rules('dob', '出生日期', 'trim|exact_length[10]');
 				$this->form_validation->set_rules('avatar', '头像', 'trim|max_length[255]');
-				$this->form_validation->set_rules('email', '电子邮件地址', 'trim|max_length[40]|valid_email');
-				$this->form_validation->set_rules('address_id', '默认地址', 'trim|is_natural_no_zero');
-				$this->form_validation->set_rules('bank_name', '开户行名称', 'trim|min_length[3]|max_length[20]');
-				$this->form_validation->set_rules('bank_account', '开户行账号', 'trim|max_length[30]');
 
 				// 若表单提交不成功
 				if ($this->form_validation->run() === FALSE):
@@ -256,10 +275,11 @@
 					$data_to_edit = array(
 						'user_id' => $this->session->user_id,
 						'id' => $id,
+						'dob' => !empty($this->input->post('dob'))? $this->input->post('dob'): NULL,
 					);
 					// 自动生成无需特别处理的数据
 					$data_need_no_prepare = array(
-						'nickname', 'lastname', 'firstname', 'code_ssn', 'url_image_id', 'gender', 'dob', 'avatar', 'email', 'address_id', 'bank_name', 'bank_account',
+						'nickname', 'lastname', 'firstname', 'gender', 'avatar',
 					);
 					foreach ($data_need_no_prepare as $name)
 						$data_to_edit[$name] = $this->input->post($name);

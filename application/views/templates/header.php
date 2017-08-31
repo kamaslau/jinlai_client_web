@@ -23,7 +23,7 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20170830">
+		<meta name=version content="revision20170831">
 		<meta name=author content="刘亚杰Kamas">
 		<meta name=copyright content="青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
@@ -141,7 +141,7 @@
 				wx.onMenuShareTimeline({
 				    title: '分享一个好平台 <?php echo $title ?>', // 分享标题
 				    link: '<?php echo 'https://'. $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] ?>', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-				    imgUrl: null, // 分享图标
+				    imgUrl: '<?php echo base_url('/media/icon120@3x.png') ?>', // 分享图标
 				    success: function () {
 				        // 用户确认分享后执行的回调函数
 						alert('分享成功');
@@ -157,12 +157,12 @@
 				    title: '分享一个好平台 <?php echo $title ?>', // 分享标题
 				    desc: '<?php echo $description ?>', // 分享描述
 				    link: '<?php echo 'https://'. $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] ?>', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-				    imgUrl: null, // 分享图标
+				    imgUrl: '<?php echo base_url('/media/icon120@3x.png') ?>', // 分享图标
 				    type: '', // 分享类型,music、video或link，不填默认为link
 				    dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
 				    success: function () {
 				        // 用户确认分享后执行的回调函数
-						alert('谢谢分享');
+						alert('分享成功');
 				    },
 				    cancel: function () {
 				        // 用户取消分享后执行的回调函数
@@ -221,10 +221,8 @@
 		<link rel=stylesheet media=all href="https://cdn.key2all.com/font-awesome/css/font-awesome.min.css">
 		<link rel=stylesheet media=all href="/css/style.css">
 
-		<!--
-		<link rel="shortcut icon" href="//images.ybslux.com/logos/logo_32x32.png">
-		<link rel=apple-touch-icon href="//images.ybslux.com/logos/logo_120x120.png">
-		-->
+		<link rel="shortcut icon" href="/media/icon28@3x.png">
+		<link rel=apple-touch-icon href="/media/icon120@3x.png">
 
 		<link rel=canonical href="<?php echo current_url() ?>">
 

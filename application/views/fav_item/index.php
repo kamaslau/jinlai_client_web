@@ -46,7 +46,7 @@
 			<span>ID <?php echo $item['record_id'] ?></span>
 			<?php endif ?>
 
-			<a href="<?php echo base_url($this->class_name. '/detail?id='.$item[$this->id_name]) ?>">
+			<a title="<?php echo $item['name'] ?>" href="<?php echo base_url('item/detail?id='.$item['item_id']) ?>">
 				<figure class=image-main class="col-xs-12 col-sm-6 col-md-4">
 					<img title="<?php echo $item['name'] ?>" src="<?php echo $item['url_image_main'] ?>">
 				</figure>

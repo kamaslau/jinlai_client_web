@@ -47,13 +47,13 @@
 				<?php endif ?>
 
 				<figure class="image-main col-xs-12 col-sm-6 col-md-3">
-					<a title="<?php echo $item['name'] ?>" href="<?php echo base_url($this->class_name. '/detail?id='.$item[$this->id_name]) ?>">
+					<a title="<?php echo $item['name'] ?>" href="<?php echo base_url('biz/detail?id='.$item['biz_id']) ?>">
 						<img title="<?php echo $item['name'] ?>" src="<?php echo $item['url_logo'] ?>">
 					</a>
 				</figure>
 
 				<section class="col-xs-12 col-sm-6 col-md-3">
-					<a title="<?php echo $item['name'] ?>" href="<?php echo base_url($this->class_name. '/detail?id='.$item[$this->id_name]) ?>">
+					<a title="<?php echo $item['name'] ?>" href="<?php echo base_url('biz/detail?id='.$item['biz_id']) ?>">
 						<h2 class=biz-name><?php echo $item['name'] ?></h2>
 					</a>
 				</section>
@@ -63,7 +63,6 @@
 						<a class=delete data-op-class=<?php echo $this->class_name ?> data-op-name=delete data-id="<?php echo $item[$this->id_name] ?>" title="删除" href="<?php echo base_url($this->class_name.'/delete?ids='.$item[$this->id_name]) ?>" target=_blank><i class="fa fa-trash"></i> 删除</a>
 					</li>
 				</ul>
-
 			</li>
 			<?php endforeach ?>
 

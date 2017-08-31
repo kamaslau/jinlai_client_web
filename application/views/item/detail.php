@@ -1,9 +1,18 @@
 <style>
 	#content {width:100%;}
-	
-	#item-figure {padding:0;}
+		#content>* {color:#898989;background-color:#fff;}
+		#content>section {padding:30px 20px;border-radius:20px;margin:20px;}
 
-	#item-name {color:#000;font-size:16px;font-weight:700;line-height:1;padding-bottom:.2em;}
+	#item-figure {border-radius:0 0 20px 20px;}
+
+	#item-name {color:#3e3a39;font-size:30px;line-height:1;margin-bottom:10px;}
+	#slogan {color:#9fa0a0;font-size:24px;margin-bottom:30px;}
+
+	#service-promise li {background:url('/media/item/detail/quan@3x.png') no-repeat left center;background-size:24px 24px;padding-left:34px;}
+
+	#prices {font-size:24px;}
+		#prices strong {color:#ff3649;font-size:44px;font-weight:600;}
+		#prices small {font-size:32px;}
 
 	/* SKU */
 	#skus li {line-height:28px;padding:1px;margin-bottom:4px;margin-right:4px;}
@@ -13,25 +22,43 @@
 			#skus h3 {font-size:12px;max-width:97px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;text-indent: 0;padding-left:1px;}
 
 	#description p, #description img {line-height:1;}
-
-	/* 宽度在750像素以上的设备 */
-	@media only screen and (min-width:751px)
-	{
-
-	}
-
-	/* 宽度在960像素以上的设备 */
-	@media only screen and (min-width:961px)
-	{
-
-	}
-
-	/* 宽度在1280像素以上的设备 */
-	@media only screen and (min-width:1281px)
-	{
-
-	}
 </style>
+
+<script>
+wx.ready(function(){
+	// 分享到朋友圈
+	wx.onMenuShareTimeline({
+	    title: '<?php echo $title.'【'.SITE_NAME.'】' ?>', // 分享标题
+	    link: '<?php echo base_url('item/detail?id='.$item['item_id']) ?>', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+	    imgUrl: '<?php echo $this->media_root.$item['url_image_main'] ?>', // 分享图标
+	    success: function () {
+	        // 用户确认分享后执行的回调函数
+			alert('分享成功');
+	    },
+	    cancel: function () {
+	        // 用户取消分享后执行的回调函数
+			alert('未完成分享');
+	    }
+	});
+
+	// 分享给朋友
+	wx.onMenuShareAppMessage({
+	    desc: '<?php echo $description ?>', // 分享描述
+	    title: '<?php echo $title.'【'.SITE_NAME.'】' ?>', // 分享标题
+	    link: '<?php echo base_url('item/detail?id='.$item['item_id']) ?>', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+	    imgUrl: '<?php echo $this->media_root.$item['url_image_main'] ?>', // 分享图标
+	    type: 'link', // 分享类型,music、video或link，不填默认为link
+	    success: function () {
+	        // 用户确认分享后执行的回调函数
+			alert('分享成功');
+	    },
+	    cancel: function () {
+	        // 用户取消分享后执行的回调函数
+			alert('您未完成分享');
+	    }
+	});
+});
+</script>
 
 <base href="<?php echo $this->media_root ?>">
 
@@ -44,16 +71,14 @@
 </div>
 
 <div id=content class=container>
-	<div id=item-figure class="col-xs-12 col-sm-6 swiper-container">
+	<div id=item-figure class="swiper-container row">
 		<?php
 			// 判断是否有形象图，若有，则将形象图与主图拼装为轮播内容进行显示
 			if ( empty($item['figure_image_urls']) ):
 		?>
-		<div class=row>
-			<figure id=image_main class="col-xs-12 col-sm-6 col-md-4">
-				<img title="<?php echo $item['name'] ?>" src="<?php echo $item['url_image_main'] ?>">
-			</figure>
-		</div>
+		<figure id=image_main>
+			<img title="<?php echo $item['name'] ?>" src="<?php echo $item['url_image_main'] ?>">
+		</figure>
 
 		<?php else: ?>
 		<ul id=figure-images class="swiper-wrapper">
@@ -83,36 +108,16 @@
 		<?php endif ?>
 	</div>
 
-	<!--
-	<div id=item-figure classs="col-xs-12 col-sm-6">
-		<div class=row>
-			<figure id=image_main class="col-xs-12 col-sm-6 col-md-4">
-				<img title="<?php echo $item['name'] ?>" src="<?php echo $item['url_image_main'] ?>">
-			</figure>
-		</div>
-
-		<?php if ( !empty($item['figure_video_urls']) ): ?>
-		<ul id=figure-videos class=row>
-			<?php
-				$figure_video_urls = explode(',', $item['figure_video_urls']);
-				foreach($figure_video_urls as $url):
-			?>
-			<li class="col-xs-6 col-sm-4 col-md-3">
-				<video src="<?php echo $url ?>" controls="controls">您的浏览器不支持视频播放</video>
-			</li>
-			<?php endforeach ?>
-		</ul>
-		<?php endif ?>
-	</div>
-	-->
-
-	<div id=item-bried class="col-xs-12 col-sm-6">
+	<section id=item-brief>
 		<h2 id=item-name><?php echo $item['name'] ?></h2>
+
+		<?php echo !empty($item['slogan'])? '<h3 id=slogan>'.$item['slogan'].'</h3>': NULL ?>
+
 		<ul class=row>
-			<?php echo !empty($item['slogan'])? '<li class=slogan>'.$item['slogan'].'</li>': NULL ?>
-			
 			<li id=prices>
-				<strong>￥ <?php echo substr($item['price'], 0, -3).'<small>'.substr($item['price'], -3).'</small>' ?></strong>
+				<strong>
+					<small>￥</small><?php echo substr($item['price'], 0, -3).'<small>'.substr($item['price'], -3).'</small>' ?>
+				</strong>
 				<?php echo ($item['tag_price'] !== '0.00')? ' <del>￥'. $item['tag_price']. '</del>': NULL ?>
 			</li>
 
@@ -123,67 +128,19 @@
 				<?php echo $item['quantity_max'] > 0? ' 限购 '.$item['quantity_max'].$unit_name: NULL ?>
 			</li>
 		</ul>
-	</div>
-
-	<dl id=list-info class=dl-horizontal>
-		<?php if ( isset($brand) ): ?>
-		<dt>品牌</dt>
-		<dd><?php echo !empty($item['brand_id'])? $brand['name']: '未设置'; ?></dd>
-		<?php endif ?>
-
-		<?php if ( !empty($item['code_biz']) ): ?>
-		<dt>货号</dt>
-		<dd><?php echo $item['code_biz'] ?></dd>
-		<?php endif ?>
-
-		<dt>是否可用优惠券</dt>
-		<dd><?php echo ($item['coupon_allowed'] === '1')? '是': '否'; ?></dd>
-		<dt>积分抵扣率</dt>
-		<dd><?php echo $item['discount_credit'] * 100 ?>%</dd>
-
-		<?php if ( ! empty($item['time_suspend']) ): ?>
-		<dt>预定上架时间</dt>
-		<dd><?php echo !empty($item['time_to_publish'])? date('Y-m-d H:i:s', $item['time_to_publish']). '开售': NULL ?></dd>
-		<?php endif ?>
-
-		<?php if ( ! empty($item['time_publish']) ): ?>
-		<dt>预定下架时间</dt>
-		<dd><?php echo empty($item['time_to_suspend'])? '未设置': date('Y-m-d H:i:s', $item['time_to_suspend']); ?></dd>
-		<?php endif ?>
-
-		<dt>运费</dt>
-		<dd>
-			<?php
-				// 预算运费
-				if ( empty($item['freight_template_id']) ):
-			?>
-			包邮
-			<?php
-				else:
-					echo $freight_template['name'];
-				endif;
-			?>
-
-			<p class=help-block>以下3项择一填写即可；若填写多项，将按毛重、净重、体积重的顺序取首个有效值计算运费。</p>
-			<ul class="list-horizontal row">
-				<li class="col-xs-12 col-sm-4">毛重 <?php echo ($item['weight_gross'] !== '0.00')? $item['weight_gross']: '-'; ?> KG</li>
-				<li class="col-xs-12 col-sm-4">净重 <?php echo ($item['weight_net'] !== '0.00')? $item['weight_net']: '-'; ?> KG</li>
-				<li class="col-xs-12 col-sm-4">体积重 <?php echo ($item['weight_volume'] !== '0.00')? $item['weight_volume']: '-'; ?> KG</li>
-			</ul>
-		</dd>
-
-		<dt>店内活动</dt>
-		<dd>
-			<?php if ( ! empty($item['promotion_id']) ): ?>
-			<strong><?php echo $promotion['name'] ?></strong>
-			<?php endif ?>
-		</dd>
-	</dl>
+	</section>
+	
+	<section id=service-promise>
+		<ul class=row>
+			<li class=col-xs-4>上门处理投诉</li>
+			<li class=col-xs-4>满58元包邮</li>
+			<li class=col-xs-4>3小时送达</li>
+		</ul>
+	</section>
 
 	<?php if ( !empty($skus) ): ?>
 	<section id=skus>
-
-		<ul class="horizontal">
+		<ul class=horizontal>
 			<?php foreach ($skus as $sku): ?>
 			<li>
 				<a data-item-id="<?php echo $item['item_id'] ?>" data-sku-id="<?php echo $sku['sku_id'] ?>" data-stocks="<?php echo $sku['stocks'] ?>" href="<?php echo base_url('sku/detail?id='.$sku['sku_id']) ?>">
@@ -197,7 +154,6 @@
 			</li>
 			<?php endforeach ?>
 		</ul>
-
 	</section>
 	<?php endif ?>
 
@@ -222,28 +178,38 @@
 	</section>
 </div>
 
+<style>
+	#nav-main {padding:14px 20px 14px 40px;border-top:1px solid #ddd;border-radius:20px 20px 0 0;}
+		#nav-main .btn {width:194px;height:64px;line-height:64px;margin-top:3px;border-radius:10px;}
+		#nav-main li.vice-button {margin-right:54px;}
+			#nav-main li.vice-button a {font-size:24px;line-height:1;text-align:center;}
+		#nav-main li:nth-of-type(3) {margin-right:40px;}
+		#nav-main li:last-of-type {margin-left:10px;}
+		#nav-main img {width:36px;height:36px;margin:0 auto 10px;}
+</style>
+
 <nav id=nav-main>
-	<ul class=row>
+	<ul>
 		<?php // TODO 显示客服按钮前检查当前店铺客服工作状态，决定留言或即时通讯 ?>
-		<li class="col-xs-2">
+		<li class=vice-button>
 			<a title="客服" href="<?php echo base_url('dialog/detail?biz_id='.$item['biz_id']) ?>">
-				<i class="fa fa-comments" aria-hidden="true"></i>
+				<img src="<?php echo base_url('/media/item/detail/kafu_icon@3x.png') ?>">
 				客服
 			</a>
 		</li>
 
 		<?php // TODO 显示店铺按钮前检查商家经营状态 ?>
-		<li class="col-xs-2">
+		<li class=vice-button>
 			<a title="店铺" href="<?php echo base_url('biz/detail?id='.$item['biz_id']) ?>">
-				<i class="fa fa-home" aria-hidden="true"></i>
+				<img src="<?php echo base_url('/media/item/detail/dianpu_icon@3x.png') ?>">
 				店铺
 			</a>
 		</li>
 
 		<?php // TODO 显示收藏、加入购物车、立即购买按钮前检查是否可售性（是否在售、库存是否足够、每单最高限量等） ?>
-		<li class="col-xs-2">
+		<li class=vice-button>
 			<a class=fav-add-item data-item-id="<?php echo $item['item_id'] ?>" title="收藏" href="<?php echo base_url('fav_item/create?item_id='.$item['item_id']) ?>">
-				<i class="fa fa-star-o" aria-hidden="true"></i>
+				<img src="<?php echo base_url('/media/item/detail/shoucang-@3x.png') ?>">
 				收藏
 			</a>
 		</li>
@@ -254,13 +220,13 @@
 				//var_dump($in_cart);
 			endif;
 		?>
-		<li class="col-xs-3">
+		<li>
 			<a id=cart-add class="btn btn-info btn-lg btn-block" title="加入购物车" href="<?php echo base_url('cart/add?biz_id='.$item['biz_id'].'&item_id='.$item['item_id']) ?>">
 				加入<wbr>购物车
 			</a>
 		</li>
 
-		<li class="col-xs-3">
+		<li>
 			<a id=order-create class="btn btn-primary btn-lg btn-block" title="立即购买" href="<?php echo base_url('order/create?item_id='.$item['item_id']) ?>">
 				立即购买
 			</a>

@@ -49,9 +49,7 @@
 
 		<dt>性别</dt>
 		<dd><?php echo $item['gender'] ?></dd>
-		<dt>出生日期</dt>
+		<dt>生日</dt>
 		<dd><?php echo $item['dob'] ?></dd>
-		<dt>注册时间</dt>
-		<dd><?php echo $item['time_create'] ?></dd>
 	</dl>
 </div>

@@ -40,7 +40,7 @@
 			<li class="item col-xs-12">
 				<figure class="image-main col-xs-12 col-sm-6 col-md-3">
 					<a title="<?php echo $biz['name'] ?>" href="<?php echo base_url('biz/detail?id='.$biz['biz_id']) ?>">
-						<img title="<?php echo $biz['name'] ?>" src="<?php echo $biz['url_logo'] ?>">
+						<img title="<?php echo $biz['name'] ?>" src="<?php echo MEDIA_URL.'biz/'.$biz['url_logo'] ?>">
 					</a>
 					<figcaption>
 						<ul class=row>
