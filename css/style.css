@@ -30,7 +30,7 @@ h1 {font-size:42px;}
 h2 {color:#3e3a39;font-size:28px;font-weight:500;}
 .login {color:#111;background:none;padding:0;margin-bottom:0;}
 
-body {color:#3e8a39;font-size:28px;line-height:44px;background-color:#efefef;z-index:100;margin-bottom:98px;}
+body {color:#3e3a39;font-size:28px;line-height:44px;background-color:#efefef;z-index:100;margin-bottom:98px;}
 .container {width:100%;padding:0;/* 去掉BootStrap默认的左右内边距 */}
 video {width:100%;max-width:100%;}
 video, img {display:block;}

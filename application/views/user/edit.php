@@ -66,7 +66,7 @@
 					<p class="form-control-static"><?php echo $item['mobile'] ?></p>
 				</div>
 			</div>
-			
+
 			<div class=form-group>
 				<label for=avatar class="col-sm-2 control-label">头像</label>
 				<div class=col-sm-10>
@@ -128,7 +128,7 @@
 			</div>
 
 			<div class=form-group>
-				<label for=dob class="col-sm-2 control-label">出生日期</label>
+				<label for=dob class="col-sm-2 control-label">生日</label>
 				<div class=col-sm-10>
 					<input class="form-control" name=dob type=date min=<?php echo date('Y-m-d', strtotime("-120years")) ?> max=<?php echo date('Y-m-d', strtotime("-14years")) ?> value="<?php echo $item['dob'] ?>" placeholder="例如：1994-07-28">
 				</div>

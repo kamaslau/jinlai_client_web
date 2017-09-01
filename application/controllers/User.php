@@ -241,7 +241,7 @@
 				$this->load->view('templates/header', $data);
 				$this->load->view($this->view_root.'/result', $data);
 				$this->load->view('templates/footer', $data);
-				
+
 			else:
 				// 从API服务器获取相应详情信息
 				$params['id'] = $id;

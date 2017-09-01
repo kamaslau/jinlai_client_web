@@ -21,6 +21,8 @@
 			#skus figure {width:28px;height:28px;}
 			#skus h3 {font-size:12px;max-width:97px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;text-indent: 0;padding-left:1px;}
 
+	#general-seperater {font-size:24px;background-color:transparent;text-align:center;margin:50px 0;}
+
 	#description p, #description img {line-height:1;}
 </style>
 
@@ -163,19 +165,19 @@ wx.ready(function(){
 		</a>
 	</section>
 
-	<section id=description class=row>
-		<h2>商品描述</h2>
+	<p id=general-seperater>继续拖动，查看图文详情</p>
+
+	<div id=description class=row>
 		<?php if ( !empty($item['description']) ): ?>
 		<div id=description-content>
-			<h3>商家内容</h3>
-			<?php //echo $item['description'] ?>
+			<?php echo $item['description'] ?>
 		</div>
 		<?php endif ?>
 
 		<div id=common-content>
 			<h3>平台统一内容</h3>
 		</div>
-	</section>
+	</div>
 </div>
 
 <style>
