@@ -210,8 +210,8 @@ wx.ready(function(){
 
 		<?php // TODO 显示收藏、加入购物车、立即购买按钮前检查是否可售性（是否在售、库存是否足够、每单最高限量等） ?>
 		<li class=vice-button>
-			<a class=fav-add-item data-item-id="<?php echo $item['item_id'] ?>" title="收藏" href="<?php echo base_url('fav_item/create?item_id='.$item['item_id']) ?>">
-				<img src="<?php echo base_url('/media/item/detail/shoucang-@3x.png') ?>">
+			<a class=create data-op-class=fav_item data-op-name=create data-id="<?php echo $item['item_id'] ?>" title="收藏" href="<?php echo base_url('fav_item/create?id='.$item['item_id']) ?>">
+				<img data-src-success="<?php echo base_url('/media/item/detail/shoucang-_xuanzhong@3x.png') ?>" src="<?php echo base_url('/media/item/detail/shoucang-@3x.png') ?>">
 				收藏
 			</a>
 		</li>

@@ -106,13 +106,100 @@
 			// 页面信息
 			$data['title'] = $data['item']['name'];
 			$data['class'] = $this->class_name.' detail';
-			//$data['keywords'] = $this->class_name.','. $data['item']['name'];
 
 			// 输出视图
 			$this->load->view('templates/header', $data);
 			$this->load->view($this->view_root.'/detail', $data);
 			$this->load->view('templates/footer', $data);
 		} // end detail
+
+		/**
+		 * 创建
+		 *
+		 * 即领取优惠券包中所有优惠券
+		 */
+		public function create()
+		{
+			// 获取待创建项ID
+			$id = $this->input->get('id');
+
+			// 待验证的表单项
+			$this->form_validation->set_error_delimiters('', '；');
+			$data_to_validate['combo_id'] = $id;
+			$this->form_validation->set_data($data_to_validate);
+			$this->form_validation->set_rules('combo_id', '优惠券包ID', 'trim|required');
+
+			// 需要创建的数据；逐一赋值需特别处理的字段
+			$data_to_create = array(
+				'user_id' => $this->session->user_id,
+				'combo_id' => $id,
+			);
+
+			// 对AJAX请求特别处理
+			if ( $this->input->is_ajax_request() ):
+				// 若表单提交不成功
+				if ($this->form_validation->run() === FALSE):
+					$this->result['status'] = 401;
+					$this->result['content']['error']['message'] = validation_errors();
+
+				else:
+					// 向API服务器发送待创建数据
+					$params = $data_to_create;
+					$url = api_url('coupon/create');
+					$result = $this->curl->go($url, $params, 'array');
+					if ( !empty($result) ):
+						$this->result = $result;
+
+					else:
+						$this->result['status'] = 400;
+						$this->result['content']['error']['message'] = '操作失败：网络问题';
+
+					endif;
+
+				endif;
+			
+				// 返回JSON
+				$this->output_json();
+
+			// 非AJAX请求
+			else:
+				// 页面信息
+				$data = array(
+					'title' => '领取'.$this->class_name_cn,
+					'class' => $this->class_name.' create',
+					'error' => '', // 预设错误提示
+				);
+
+				// 若表单提交不成功
+				if ($this->form_validation->run() === FALSE):
+					$data['content'] = validation_errors();
+
+				else:
+					// 向API服务器发送待创建数据
+					$params = $data_to_create;
+					$url = api_url($this->class_name. '/create');
+					$result = $this->curl->go($url, $params, 'array');
+					if ($result['status'] === 200):
+						$data['title'] = $this->class_name_cn. '领取成功';
+						$data['class'] = 'success';
+						$data['content'] = $result['content']['message'];
+						$data['operation'] = 'create';
+						$data['id'] = $result['content']['id']; // 创建后的信息ID
+
+					else:
+						// 若创建失败，则进行提示
+						$data['content'] = $result['content']['error']['message'];
+
+					endif;
+
+				endif;
+
+				// 转到优惠券领取结果
+				$this->load->view('templates/header', $data);
+				$this->load->view('coupon/result', $data);
+				$this->load->view('templates/footer', $data);
+			endif;
+		} // end create
 
 	} // end class Coupon_combo
 

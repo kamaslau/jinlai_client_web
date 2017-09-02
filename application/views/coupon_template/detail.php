@@ -39,13 +39,12 @@
 		<dd><?php echo $item['description'] ?></dd>
 		<dt>面值</dt>
 		<dd>￥ <?php echo $item['amount'] ?></dd>
-		<dt>起用金额/订单小计</dt>
+		<dt>起用金额</dt>
 		<dd>￥ <?php echo $item['min_subtotal'] ?></dd>
 
 		<dt>总限量</dt>
 		<dd>
 			<?php echo empty($item['max_amount'])? '无': $item['max_amount'].'份'; ?>
-			<p class=help-block>当作为优惠券包中的优惠券进行发放时，限量以优惠券包限量为准</p>
 		</dd>
 		<dt>单个用户限量</dt>
 		<dd><?php echo empty($item['max_amount_user'])? '无': $item['max_amount_user'].'份'; ?></dd>
@@ -81,12 +80,9 @@
 			);
 			$options = array_flip($options);
 		?>
-		<dt>有效期</dt>
-		<dd><?php echo $options[ $item['period'] ] ?></dd>
 		<dt>有效时间</dt>
 		<dd>
-			<p class="bg-info text-info text-center">若未指定结束时间但已指定了有效期，则结束时间以有效期为准</p>
-			<?php echo empty($item['time_start'])? '自领取时起': date('Y-m-d H:i:s', $item['time_start']); ?> <?php echo empty($item['time_end'])? '至 有效期结束': '至 '.date('Y-m-d H:i:s', $item['time_end']); ?>
+			<?php echo empty($item['time_start'])? date('Y-m-d H:i:s'): date('Y-m-d H:i:s', $item['time_start']); ?> <?php echo empty($item['time_end'])? '起 '.$options[ $item['period'] ].'内': '至 '.date('Y-m-d H:i:s', $item['time_end']); ?>
 		</dd>
 	</dl>
 

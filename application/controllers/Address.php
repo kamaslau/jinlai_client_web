@@ -466,19 +466,15 @@
 				// 更新本地session默认地址ID
 				$this->session->address_id = $id;
 
-				$this->load->view('templates/header', $data);
-				$this->load->view($this->view_root.'/result', $data);
-				$this->load->view('templates/footer', $data);
-
 			else:
 				// 若修改失败，则进行提示
 				$data['error'] .= $result['content']['error']['message'];
 
-				$this->load->view('templates/header', $data);
-				$this->load->view($this->view_root.'/result', $data);
-				$this->load->view('templates/footer', $data);
-
 			endif;
+			
+			$this->load->view('templates/header', $data);
+			$this->load->view($this->view_root.'/result', $data);
+			$this->load->view('templates/footer', $data);
 
 		} // end default_this
 

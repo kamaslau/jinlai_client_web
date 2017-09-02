@@ -45,8 +45,8 @@
 					<figcaption>
 						<ul class=row>
 							<li class="col-xs-6">
-								<a class=fav-add-biz data-biz-id="<?php echo $biz['biz_id'] ?>" title="关注" href="<?php echo base_url('fav_biz/create?biz_id='.$biz['biz_id']) ?>" target=_blank>
-									<i class="fa fa-heart-o" aria-hidden="true"></i>关注
+								<a class=create data-op-class=fav_biz data-op-name=create data-id="<?php echo $biz['biz_id'] ?>" title="关注" href="<?php echo base_url('fav_biz/create?id='.$biz['biz_id']) ?>">
+									<img data-src-success="<?php echo base_url('/media/item/detail/shoucang-_xuanzhong@3x.png') ?>" src="<?php echo base_url('/media/item/detail/shoucang-@3x.png') ?>">关注
 								</a>
 							</li>
 						</ul>

@@ -1,6 +1,8 @@
 $(function(){
+	// AJAX根URL
 	var ajax_root = 'https://www.517ybang.com/';
-	// 通用AJAX程序
+
+	// AJAX程序范例
 	function ajax_go(api_url)
 	{
 		// AJAX获取结果并生成相关HTML
@@ -21,7 +23,7 @@ $(function(){
 		});
 	}
 
-	// 登录页
+	// 智能登录页
 	$('#next button').click(function(){
 		$(this).hide();
 
@@ -52,14 +54,21 @@ $(function(){
 		return false;
 	});
 
-	// 关注商家
-	$('a.fav-add-biz').click(function(){
-		// 初始化参数数组
-		params = new Object();
-		params.biz_id = $(this).attr('data-biz-id');
+	// 切换图片（更改src）
+	function img_switch(dom_to_change)
+	{
+		var target_src = dom_to_change.attr('data-src-success');
+		dom_to_change.attr('src', target_src);
+	}
 
-		var api_url = 'fav_biz/create';
-		
+	// 创建（领取优惠券、TODO:加入购物车、收藏商品、关注商家 等）
+	$('a[data-op-name=create]').click(function(){
+		var api_url = $(this).attr('data-op-class') + '/create';
+		var dom_to_change = $(this).find('img[data-src-success]'); // 待修改样式的dom
+
+		params = new Object();
+		params.id = $(this).attr('data-id');
+
 		// AJAX获取结果并生成相关HTML
 		$.getJSON(ajax_root+api_url, params, function(data)
 		{
@@ -67,9 +76,13 @@ $(function(){
 
 			if (data.status == 200)
 			{
-				// 切换图标为已关注样式
-				var icon_to_change = $('[data-biz-id='+ params.biz_id +']').find('i.fa');
-				icon_to_change.attr('class', 'fa fa-heart');
+				alert(data.content.message);
+
+				// 检查是否需要切换图片
+				if (dom_to_change !== undefined)
+				{
+					img_switch(dom_to_change);
+				}
 			}
 			else // 若失败，进行提示
 			{
@@ -79,37 +92,9 @@ $(function(){
 
 		return false;
 	});
-
-	// 收藏商品
-	$('a.fav-add-item').click(function(){
-		// 初始化参数数组
-		params = new Object();
-		params.item_id = $(this).attr('data-item-id');
-
-		var api_url = 'fav_item/create';
-
-		// AJAX获取结果并生成相关HTML
-		$.getJSON(ajax_root+api_url, params, function(data)
-		{
-			console.log(data); // 输出回调数据到控制台
-
-			if (data.status == 200)
-			{
-				// 切换图标为已关注样式
-				var icon_to_change = $('[data-item-id='+ params.item_id +']').find('i.fa');
-				icon_to_change.attr('class', 'fa fa-star');
-			}
-			else // 若失败，进行提示
-			{
-				alert(data.content.error.message);
-			}
-		});
-
-		return false;
-	});
-
+	
 	// 删除（关注商家、收藏商品、TODO:地址 等）
-	$('a[data-op-class]').click(function(){
+	$('a[data-op-name=delete]').click(function(){
 		var is_confirm = confirm('确定要删除此项？');
 		console.log(is_confirm);
 

@@ -89,16 +89,19 @@
 		 */
 		public function create()
 		{
+			// 获取待创建项ID
+			$id = $this->input->get('id');
+
 			// 待验证的表单项
 			$this->form_validation->set_error_delimiters('', '；');
-			$data_to_validate['item_id'] = $this->input->get('item_id');
+			$data_to_validate['item_id'] = $id;
 			$this->form_validation->set_data($data_to_validate);
 			$this->form_validation->set_rules('item_id', '相关商品ID', 'trim|required');
 			
 			// 需要创建的数据；逐一赋值需特别处理的字段
 			$data_to_create = array(
 				'user_id' => $this->session->user_id,
-				'item_id' => $this->input->get('item_id'),
+				'item_id' => $id,
 			);
 
 			// 对AJAX请求特别处理

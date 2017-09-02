@@ -16,7 +16,7 @@
 		 * 可作为列表筛选条件的字段名；可在具体方法中根据需要删除不需要的字段并转换为字符串进行应用，下同
 		 */
 		protected $names_to_sort = array(
-			'user_id', 'template_id', 'category_id', 'biz_id', 'category_biz_id', 'item_id', 'name', 'description', 'amount', 'min_subtotal', 'time_start', 'time_end', 'time_expire', 'order_id', 'time_used', 'time_create', 'time_delete', 'status',
+			'category_id', 'biz_id', 'category_biz_id', 'item_id', 'name', 'description', 'amount', 'min_subtotal', 'time_start', 'time_end', 'time_expire', 'order_id', 'time_used', 'time_create', 'time_delete', 'status',
 		);
 
 		/**
@@ -41,7 +41,7 @@
 			$this->view_root = $this->class_name; // 视图文件所在目录
 			$this->media_root = MEDIA_URL. $this->class_name.'/'; // 媒体文件所在目录
 		}
-		
+
 		/**
 		 * 截止3.1.3为止，CI_Controller类无析构函数，所以无需继承相应方法
 		 */
@@ -129,12 +129,9 @@
 		 */
 		public function create()
 		{
-			// （可选）未登录用户转到登录页
-			($this->session->time_expire_login > time()) OR redirect( base_url('login') );
-
 			// 页面信息
 			$data = array(
-				'title' => '领取优惠券'.$this->class_name_cn,
+				'title' => '领取优惠券',
 				'class' => $this->class_name.' create',
 				'error' => '', // 预设错误提示
 			);
@@ -148,11 +145,8 @@
 
 			// 若表单提交不成功
 			if ($this->form_validation->run() === FALSE):
-				$data['error'] = validation_errors();
-
-				$this->load->view('templates/header', $data);
-				$this->load->view($this->view_root.'/create', $data);
-				$this->load->view('templates/footer', $data);
+				$data['content'] = validation_errors();
+				var_dump($data['content']);
 
 			else:
 				// 需要创建的数据；逐一赋值需特别处理的字段
@@ -164,12 +158,13 @@
 					'template_id', 'combo_id',
 				);
 				foreach ($data_need_no_prepare as $name)
-					$data_to_create[$name] = $this->input->post($name);
+					$data_to_create[$name] = $this->input->get_post($name);
 
 				// 向API服务器发送待创建数据
 				$params = $data_to_create;
 				$url = api_url($this->class_name. '/create');
 				$result = $this->curl->go($url, $params, 'array');
+				var_dump($result);
 				if ($result['status'] === 200):
 					$data['title'] = $this->class_name_cn. '领取成功';
 					$data['class'] = 'success';
@@ -177,21 +172,17 @@
 					$data['operation'] = 'create';
 					$data['id'] = $result['content']['id']; // 创建后的信息ID
 
-					$this->load->view('templates/header', $data);
-					$this->load->view($this->view_root.'/result', $data);
-					$this->load->view('templates/footer', $data);
-
 				else:
 					// 若创建失败，则进行提示
-					$data['error'] = $result['content']['error']['message'];
-
-					$this->load->view('templates/header', $data);
-					$this->load->view($this->view_root.'/create', $data);
-					$this->load->view('templates/footer', $data);
+					$data['content'] = $result['content']['error']['message'];
 
 				endif;
 				
 			endif;
+			
+			$this->load->view('templates/header', $data);
+			$this->load->view($this->view_root.'/result', $data);
+			$this->load->view('templates/footer', $data);
 		} // end create
 
 	} // end class Coupon

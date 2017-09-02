@@ -231,8 +231,9 @@
 
 			<ul class=row>
 				<li class="col-xs-6">
-					<a class=fav-add-item data-item-id="<?php echo $item['item_id'] ?>" title="收藏" href="<?php echo base_url('fav_item/create?item_id='.$item['item_id']) ?>" target=_blank>
-						<i class="fa fa-star-o" aria-hidden="true"></i>收藏
+					<a class=create data-op-class=fav_item data-op-name=create data-id="<?php echo $item['item_id'] ?>" title="收藏" href="<?php echo base_url('fav_item/create?id='.$item['item_id']) ?>">
+						<img data-src-success="<?php echo base_url('/media/item/detail/shoucang-_xuanzhong@3x.png') ?>" src="<?php echo base_url('/media/item/detail/shoucang-@3x.png') ?>">
+						收藏
 					</a>
 				</li>
 			</ul>
@@ -249,10 +250,9 @@
 					<i class="fa fa-comments" aria-hidden="true"></i>客服
 				</a>
 			</li>
-			<!--<li class="col-xs-2"><a title="发现" href="<?php echo base_url('biz/detail?id='.$item['biz_id']) ?>">店铺</a></li>-->
 			<li class="col-xs-2">
-				<a class=fav-add-biz data-biz-id="<?php echo $item['biz_id'] ?>" title="关注" href="<?php echo base_url('fav_biz/create?biz_id='.$item['biz_id']) ?>">
-					<i class="fa fa-heart-o" aria-hidden="true"></i>关注
+				<a class=create data-op-class=fav_biz data-op-name=create data-id="<?php echo $item['biz_id'] ?>" title="关注" href="<?php echo base_url('fav_biz/create?id='.$item['biz_id']) ?>">
+					<img data-src-success="<?php echo base_url('/media/item/detail/shoucang-_xuanzhong@3x.png') ?>" src="<?php echo base_url('/media/item/detail/shoucang-@3x.png') ?>">关注
 				</a>
 			</li>
 			<!--
