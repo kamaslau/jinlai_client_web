@@ -298,7 +298,7 @@
 			endif;
 
 			return $data;
-		}
+		} // end cart_decode
 
 		// 检查商品是否已在购物车中
 		protected function in_cart($item_to_check)

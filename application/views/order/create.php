@@ -21,6 +21,24 @@
 	}
 </style>
 
+<script>
+	$(function(){
+		// 标注默认地址为选中状态
+		$('#address-list>li[data-id=<?php echo $this->session->address_id ?>]').addClass('active');
+
+		// 点击地址项时获取并填充相应字段值
+		$('#address-list>li').click(function(){
+			var address_id = $(this).attr('data-id');
+			console.log(address_id);
+			$('[name=address_id]').val(address_id);
+
+			// 标注为选中状态
+			$('#address-list>li.active').removeClass('active');
+			$(this).addClass('active');
+		});
+	});
+</script>
+
 <base href="<?php echo $this->media_root ?>">
 
 <div id=breadcrumb>
@@ -56,25 +74,12 @@
 
 			// 移除购物车项前要求用户确定
 			$('a.remove').click(function(){
-				var is_confirm = confirm('确定要删除这个宝贝吗');
+				var is_confirm = confirm('确定删除这个宝贝吗');
 			
 				if (is_confirm == false)
 				{
 					return false;
 				}
-			});
-			
-			// 标注默认地址为选中状态
-			$('#address-list>li[data-address-id=<?php echo $this->session->address_id ?>]').addClass('active');
-			
-			// 点击地址项时获取并填充相应字段值
-			$('#address-list>li').click(function(){
-				var address_id = $(this).attr('data-address-id');
-				$('[name=address_id]').val(address_id);
-
-				// 标注为选中状态
-				$('#address-list>li.active').removeClass('active');
-				$(this).addClass('active');
 			});
 		});
 	</script>
@@ -234,12 +239,8 @@
 					<ul id=address-list class=row>
 
 						<?php foreach ($addresses as $item): ?>
-						<li class="col-xs-12 col-sm-6 col-md-4" data-address-id="<?php echo $item['address_id'] ?>">
+						<li class="col-xs-12 col-sm-6 col-md-4" data-id="<?php echo $item['address_id'] ?>">
 							<ul class=row>
-								<?php if ( strpos(DEVELOPER_MOBILES, ','.$this->session->mobile.',') !== FALSE ): ?>
-								<li class=col-xs-12>ID <?php echo $item['address_id'] ?></li>
-								<?php endif ?>
-
 								<li class=col-xs-12>
 									<?php if ( !empty($item['brief']) ): ?>
 									<em>「<?php echo $item['brief'] ?>」</em>
@@ -257,7 +258,7 @@
 
 					</ul>
 					<a class="btn btn-default btn-lg" href="<?php echo base_url('address/create?return_to='.$url_to_return) ?>">添加地址</a>
-				
+
 					<?php endif ?>
 				</div>
 			</div>
@@ -265,9 +266,9 @@
 
 		<fieldset>
 			<div class=form-group>
-				<label for=note_user class="col-sm-2 control-label">用户留言</label>
+				<label for=note_user class="col-sm-2 control-label">留言</label>
 				<div class=col-sm-10>
-					<input class=form-control name=note_user type=text value="<?php echo set_value('note_user') ?>" placeholder="如有特殊要求，请留言说明">
+					<textarea name=note_user class=form-control placeholder="如有特殊要求，请留言说明，最多255个字符"><?php echo set_value('note_user') ?></textarea>
 				</div>
 			</div>
 		</fieldset>

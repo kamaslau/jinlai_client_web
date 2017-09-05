@@ -31,7 +31,7 @@
 			'id',
 			'user_id', 'promotion_id', 'discount_promotion', 'coupon_id', 'discount_coupon', 'credit_id', 'discount_payed', 'freight', 'discount_reprice', 'repricer_id', 'total', 'total_payed', 'total_refund', 'fullname', 'mobile', 'province', 'city', 'county', 'street', 'longitude', 'latitude', 'payment_type', 'payment_account', 'payment_id', 'note_user', 'note_stuff', 'commission', 'promoter_id', 'time_create', 'time_cancel', 'time_expire', 'time_pay', 'time_refuse', 'time_accept', 'time_deliver', 'time_confirm', 'time_confirm_auto', 'time_comment', 'time_refund', 'time_delete', 'time_edit', 'operator_id', 'status', 'refund_status', 'invoice_status',
 		);
-		
+
 		/**
 		 * 编辑单行特定字段时必要的字段名
 		 */
@@ -67,7 +67,7 @@
 				//...
 		    }
 		}
-		
+
 		/**
 		 * 截止3.1.3为止，CI_Controller类无析构函数，所以无需继承相应方法
 		 */
@@ -96,9 +96,6 @@
 				if ( !empty($this->input->post($sorter)) )
 					$condition[$sorter] = $this->input->post($sorter);
 			endforeach;
-
-			// 排序条件
-			$order_by = NULL;
 
 			// 从API服务器获取相应列表信息
 			$params = $condition;
@@ -200,6 +197,29 @@
 				'error' => '', // 预设错误提示
 			);
 
+			// 获取当前用户可用的收货地址列表
+			$data['addresses'] = $this->list_address();
+
+			// 若是单商品订单，获取相应商家、商品信息
+			if ( !empty($this->input->get_post('item_id')) ):
+				$data['item'] = $this->get_item($this->input->get_post('item_id'));
+
+				// 获取相应商家信息
+				if ( !empty($data['item']) ):
+					$data['biz'] = $this->get_biz($data['item']['biz_id']);
+				endif;
+				
+				// 若已指定规格，获取相应规格信息
+				if ( !empty($this->input->get_post('sku_id')) ):
+					$data['sku'] = $this->get_sku($this->input->get_post('sku_id'));
+				endif;
+
+			// 若为购物车订单，解析购物车
+			elseif ( !empty($this->session->cart) ):
+				$data['cart_data'] = $this->cart_decode();
+
+			endif;
+
 			// 待验证的表单项
 			$this->form_validation->set_error_delimiters('', '；');
 			// 验证规则 https://www.codeigniter.com/user_guide/libraries/form_validation.html#rule-reference
@@ -213,29 +233,6 @@
 			// 若表单提交不成功
 			if ($this->form_validation->run() === FALSE):
 				$data['error'] = validation_errors();
-
-				// 获取当前用户可用的收货地址列表
-				$data['addresses'] = $this->list_address();
-
-				// 若是单商品订单，获取相应商家、商品信息
-				if ( !empty($this->input->get_post('item_id')) ):
-					$data['item'] = $this->get_item($this->input->get_post('item_id'));
-					
-					// 获取相应商家信息
-					if ( !empty($data['item']) ):
-						$data['biz'] = $this->get_biz($data['item']['biz_id']);
-					endif;
-					
-					// 若已指定规格，获取相应规格信息
-					if ( !empty($this->input->get_post('sku_id')) ):
-						$data['sku'] = $this->get_sku($this->input->get_post('sku_id'));
-					endif;
-
-				// 若为购物车订单，解析购物车
-				elseif ( !empty($this->session->cart) ):
-					$data['cart_data'] = $this->cart_decode();
-
-				endif;
 
 				$this->load->view('templates/header', $data);
 				$this->load->view($this->view_root.'/create', $data);
@@ -256,8 +253,10 @@
 					$data_to_create[$name] = $this->input->post($name);
 
 				// 向API服务器发送待创建数据
-				$params = $data_to_create;
-				$this->key_value($params);exit();
+				$params = $data_to_create; // 清理空参数，并按键名升序对数组排序
+				//$params = array_filter($data_to_create); // 清理空参数，并按键名升序对数组排序
+				ksort($params);
+				$this->key_value($params);exit(); // 测试
 				$url = api_url($this->class_name. '/create');
 				$result = $this->curl->go($url, $params, 'array');
 				if ($result['status'] === 200):
@@ -283,6 +282,40 @@
 
 			endif;
 		} // end create
+
+		/**
+		 * 支付
+		 */
+		public function pay()
+		{
+			// 检查是否已传入必要参数
+			$id = $this->input->get_post('id')? $this->input->get_post('id'): NULL;
+			if ( !empty($id) ):
+				$params['id'] = $id;
+				$params['user_id'] = $this->session->user_id;
+				$params['status'] = '待付款'; // 仅待付款状态的订单可以支付
+			else:
+				redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
+			endif;
+
+			// 页面信息
+			$data['title'] = $this->class_name_cn. '支付';
+			$data['class'] = $this->class_name.' pay';
+
+			// 从API服务器获取相应详情信息
+			$url = api_url($this->class_name. '/detail');
+			$result = $this->curl->go($url, $params, 'array');
+			if ($result['status'] === 200):
+				$data['item'] = $result['content'];
+			else:
+				$data['error'] = $result['content']['error']['message'];
+			endif;
+
+			// 输出视图
+			$this->load->view('templates/header', $data);
+			$this->load->view($this->view_root.'/pay', $data);
+			$this->load->view('templates/footer', $data);
+		} // end detail
 
 		/**
 		 * 编辑单行
