@@ -44,8 +44,8 @@ function api_url($api_name)
 }
 
 // 微信公众平台参数
-define('WECHAT_APP_ID', 'wxc79bcec5d7183cce');
-define('WECHAT_APP_SECRET', '1e0529df8e006e4b415bd7c84fe240fa');
+define('WECHAT_APP_ID', 'wxba173a67df14c087');
+define('WECHAT_APP_SECRET', '1b1bf0c279a0d9eb0ec7288787ccb20a');
 define('WECHAT_TOKEN', '');
 define('AES_KEY', '');
 

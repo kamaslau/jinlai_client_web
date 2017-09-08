@@ -1,7 +1,4 @@
 <?php
-$page_title = '微信支付 - 公众号支付';
-require_once 'header.php';
-
 require_once '../lib/WxPay.Api.php';
 require_once 'WxPay.JsApiPay.php';
 
@@ -16,12 +13,15 @@ $info_array = array('type', 'body', 'order_id', 'total_fee');
 foreach ($info_array as $item):
 	!empty($_GET[$item])? setcookie($item, $_GET[$item]): NULL;
 endforeach;
+var_dump($_COOKIE);
 
 $tools = new JsApiPay();
 $openId = $tools->GetOpenid();
+var_dump($openId);
 
 // ②、统一下单
 $input = new WxPayUnifiedOrder();
+//var_dump($input);
 $input->SetTrade_type('JSAPI');
 // 设置必填参数；appid、mch_id、noncestr、spbill_create_ip、sign已填,商户无需重复填写
 $input->SetOpenid($openId);
@@ -50,6 +50,9 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
  * 2、jsapi支付时需要填入用户openid，WxPay.JsApiPay.php中有获取openid流程 （文档可以参考微信公众平台“网页授权接口”，
  * 参考http://mp.weixin.qq.com/wiki/17/c0f37d5704f0b64713d5d2c37b468d75.html）
  */
+
+	$page_title = '微信支付 - 公众号支付';
+	require_once 'header.php';
 ?>
 	<body class=wepay>
 
@@ -122,7 +125,7 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
 				</dl>
 			</div>
 
-			<p id=close_tip>完成支付后，您可以到 <a title="订单中心" href="<?php echo WxPayConfig::CLIENT_URL.'mine' ?>">个人中心</a> 查看相关信息</p>
+			<p id=close_tip>完成支付后，您可以到 <a title="订单中心" href="<?php echo WxPayConfig::CLIENT_URL.'mine' ?>">个人中心</a> 查看相关订单信息</p>
 
 			<button type=button onclick="callpay()" class="btn btn-primary btn-lg">确定</button>
 		</div>

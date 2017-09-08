@@ -84,7 +84,14 @@
 <nav id=nav-main>
 	<ul>
 		<li>
-			<a id=order-create class="btn btn-primary btn-lg btn-block" title="立即购买" href="<?php echo base_url('order/pay?id='.$item[$this->id_name]) ?>">
+			<?php
+			// 测试者/开发者每笔订单仅需支付0.01元
+			if ( strpos(DEVELOPER_MOBILES, ','.$this->session->mobile.',') !== FALSE ) $item['total'] = 0.01;
+
+			// 生成支付信息
+			$payment_string = 'type=order&order_id='.$item['order_id']. '&total_fee='.$item['total']. '&body='.urlencode(SITE_NAME.'商品订单 编号').$item['order_id'];
+			?>
+			<a id=order-create class="btn btn-primary btn-lg btn-block" title="立即购买" href="<?php echo WEPAY_URL_JSAPI.$payment_string ?>">
 				去付款
 			</a>
 		</li>

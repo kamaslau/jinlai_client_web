@@ -77,6 +77,7 @@
 					$params = NULL;
 					$url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.WECHAT_APP_ID.'&secret='.WECHAT_APP_SECRET;
 					$result = curl($url, $params, 'array');
+					//var_dump($result);
 					return $result['access_token'];
 				}
 

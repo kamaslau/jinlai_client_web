@@ -33,10 +33,17 @@ class MicroPay
 			|| !array_key_exists("out_trade_no", $result)
 			|| !array_key_exists("result_code", $result))
 		{
-			echo "接口调用失败,请确认是否输入是否有误！";
+			// 若需用户输入密码，则进行提示
+			if ( $result['err_code'] === 'USERPAYING' ):
+				echo $result['err_code_des'];
+			else:
+				//var_dump($result);
+				echo '接口调用失败：'.$result['err_code_des'];
+			endif;
+			
 			throw new WxPayException("接口调用失败！");
 		}
-		
+
 		//签名验证
 		$out_trade_no = $microPayInput->GetOut_trade_no();
 		
