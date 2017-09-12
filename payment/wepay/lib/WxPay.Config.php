@@ -21,13 +21,13 @@ class WxPayConfig
 	 * MCHID：商户号（必须配置，开户邮件中可查看）
 	 * KEY：商户支付密钥，参考开户邮件设置（必须配置，登录商户平台自行设置）
 	 * 设置地址：https://pay.weixin.qq.com/index.php/account/api_cert
-	 * 
+	 *
 	 * @var string
 	 */
-	const APPID = 'wxc79bcec5d7183cce';
-	const APPSECRET = '1e0529df8e006e4b415bd7c84fe240fa';
-	const MCHID = '1279542501';
-	const KEY = 'qingdaoyibangyibangwangkeji77777';
+	const APPID = 'wxba173a67df14c087';
+	const APPSECRET = '1b1bf0c279a0d9eb0ec7288787ccb20a';
+	const MCHID = '1488874732';
+	const KEY = 'OHLAt2qyVdNVHqWWoWoc5Q4UbpFycpH6';
 
 	//=======【相关url设置】===================================
 	const CLIENT_URL = 'https://www.517ybang.com/'; // 客户端URL
