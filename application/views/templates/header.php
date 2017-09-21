@@ -23,7 +23,7 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20170909">
+		<meta name=version content="revision20170921">
 		<meta name=author content="刘亚杰Kamas,青岛意帮网络科技有限公司产品部&amp;技术部">
 		<meta name=copyright content="进来商城,青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
@@ -217,7 +217,7 @@
 
 		<link rel=stylesheet media=all href="<?php echo CDN_URL ?>css/reset.css">
 		<link rel=stylesheet media=all href="<?php echo CDN_URL ?>bootstrap/css/bootstrap.min.css">
-		<link rel=stylesheet media=all href="https://cdn.key2all.com/flat-ui/css/flat-ui.min.css">
+		<link rel=stylesheet media=all href="<?php echo CDN_URL ?>css/flat-ui.min.css">
 		<link rel=stylesheet media=all href="<?php echo CDN_URL ?>font-awesome/css/font-awesome.min.css">
 		<link rel=stylesheet media=all href="/css/style.css">
 

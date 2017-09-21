@@ -160,7 +160,7 @@
 			// 页面信息
 			$data['title'] = isset($data['item'])? $data['item']['name']: $this->class_name_cn. '详情';
 			$data['class'] = $this->class_name.' detail';
-			$data['description'] = isset($data['item']['slogan'])? $data['item']['slogan']: NULL;
+			$data['description'] = isset($data['item']['slogan'])? $data['item']['slogan']: SITE_NAME;
 
 			// 输出视图
 			$this->load->view('templates/header', $data);

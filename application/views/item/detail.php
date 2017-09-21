@@ -100,8 +100,8 @@ wx.ready(function(){
 		<!-- 页码提示 -->
 	    <div class="swiper-pagination"></div>
 		
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/css/swiper.min.css">
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
+		<link rel="stylesheet" href="<?php echo CDN_URL ?>css/swiper.min.css">
+		<script src="<?php echo CDN_URL ?>js/swiper.jquery.min.js"></script>
 		<script>
 			var swiper = new Swiper('.swiper-container',{
 	            pagination: '.swiper-pagination'
