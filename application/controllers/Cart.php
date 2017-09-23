@@ -24,6 +24,10 @@
 			$this->id_name = 'item_id';  // 还有这里，OK，这就可以了
 			$this->view_root = $this->class_name; // 视图文件所在目录
 			$this->media_root = MEDIA_URL. 'item/'; // 媒体文件所在目录
+
+			// 从API获取当前用户购物车项
+			if ($sync_result !== FALSE)
+				$this->session->cart = $this->sync_down();
 		}
 
 		/**
@@ -45,11 +49,6 @@
 				'title' => $this->class_name_cn,
 				'class' => $this->class_name,
 			);
-			
-			// 获取购物车数据
-			$sync_result = $this->sync_down();
-			if ($sync_result !== FALSE)
-				$this->session->cart = $this->sync_down();
 
 			// 解析购物车
 			$data['cart_data'] = $this->cart_decode();
@@ -125,7 +124,7 @@
 							endif;
 						endforeach;
 
-						$this->session->cart = implode(',', $new_cart);
+						$this->session->cart = trim(implode(',', $new_cart), ',');
 						$this->sync_up();
 					endif;
 				endif;
@@ -190,7 +189,7 @@
 					endif;
 				endforeach;
 
-				$this->session->cart = implode(',', $new_cart);
+				$this->session->cart = trim(implode(',', $new_cart), ',');
 				$this->sync_up();
 				
 				// 转到购物车页
@@ -243,7 +242,7 @@
 					endif;
 				endforeach;
 
-				$this->session->cart = implode(',', $new_cart);
+				$this->session->cart = trim(implode(',', $new_cart), ',');
 				$this->sync_up();
 
 				// 转到购物车页
