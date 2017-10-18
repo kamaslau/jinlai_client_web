@@ -1,0 +1,34 @@
+.fl{
+	float: left;
+}
+.fr{
+	float: right !important;
+}
+.clearfix:after{
+	content:".";
+	display:block;
+	height:0;
+	clear:both;
+	visibility:hidden;
+}
+.textcenter{
+	text-align: center;
+}
+.none{
+	display: none;
+}
+.block{
+	display: block;
+}
+.auto{
+	margin: 0 auto;
+}
+.abs{
+	position: absolute;
+}
+.rel{
+	position: relative;
+}
+.fiex{
+	position: fixed;
+}

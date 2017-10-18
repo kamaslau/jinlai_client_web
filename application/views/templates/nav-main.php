@@ -1,3 +1,4 @@
+<!--
 <style>
 
 
@@ -28,3 +29,32 @@
 		<li class="col-xs-3"><a <?php if ($class === 'account mine') echo 'class=active' ?> title="我的" href="<?php echo base_url('mine') ?>">我的</a></li>
 	</ul>
 </nav>
+-->
+
+		<!--底部tab切换区域-->
+		<div class="tabWrap fiex">
+			<div class="tabbar auto">
+				<div class="column">
+					<div class="item cur">
+						<i class="icon iconfont icon-icon"></i>
+						<span class="text">首页</span>
+					</div>
+					<div class="item">
+						<i class="icon iconfont icon-fenlei"></i>
+						<span class="text">分类</span>
+					</div>
+					<div class="item">
+						<i class="icon iconfont icon-fenlei1"></i>
+						<span class="text">发现</span>
+					</div>
+					<div class="item">
+						<i class="icon iconfont icon-gouwuche"></i>
+						<span class="text">购物车</span>
+					</div>
+					<div class="item">
+						<i class="icon iconfont icon-wode"></i>
+						<span class="text">我的</span>
+					</div>
+				</div>
+			</div>
+		</div>

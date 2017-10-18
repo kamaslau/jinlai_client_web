@@ -23,16 +23,18 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20170921">
+		<meta name=version content="revision20171019">
 		<meta name=author content="刘亚杰Kamas,青岛意帮网络科技有限公司产品部&amp;技术部">
 		<meta name=copyright content="进来商城,青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
 
-		<!--<meta name=viewport content="width=device-width,user-scalable=0">-->
+		<meta name=viewport content="width=device-width,user-scalable=0">
+		<!--
 		<meta name=viewport content="width=750,user-scalable=0">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		-->
 
-		<?php //if ($is_wechat): ?>
+		<?php if ($is_wechat): ?>
 		<script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 		<script>
 			<?php
@@ -209,9 +211,42 @@
 				};
 			});
 		</script>
-		<?php //endif ?>
-
+		<?php endif ?>
+		
 		<script src="<?php echo CDN_URL ?>js/jquery-3.2.1.min.js"></script>
+		
+		<script src="/js/rem.js"></script>
+		<script src="/js/swiper.min.js"></script>
+		<script src="/js/jquery.easing.min.js"></script>
+		<script src="/js/index.js"></script>
+
+		<!--清除浏览器默认样式css-->
+		<link href="/css/normal.css" rel="stylesheet"/>
+		<!--公用部分css-->
+		<link href="<?php echo base_url() ?>css/common.css" rel="stylesheet"/>
+		<link href="/css/base.css" rel="stylesheet"/>
+		<link href="/css/swiper.css" rel="stylesheet"/>
+		<link href="/css/index.css" rel="stylesheet"/>
+		<link href="/css/alert.css" rel="stylesheet"/>
+		<style>
+			body{
+				padding-bottom: 1rem;
+			}
+
+			.swiper-pagination-bullet-active{
+				background: orange !important;
+			}
+			.swiper-pagination-bullet {
+			    background: #ccc;
+		}
+		.swiper-container-horizontal > .swiper-pagination {
+		    bottom: -2px;
+		    left: 0;
+		    width: 100%;
+		}
+		</style>
+
+		<!--
 		<script defer src="<?php echo CDN_URL ?>js/js.cookie.js"></script>
 		<script src="/js/main.js"></script>
 
@@ -220,6 +255,7 @@
 		<link rel=stylesheet media=all href="<?php echo CDN_URL ?>css/flat-ui.min.css">
 		<link rel=stylesheet media=all href="<?php echo CDN_URL ?>font-awesome/css/font-awesome.min.css">
 		<link rel=stylesheet media=all href="/css/style.css">
+		-->
 
 		<link rel="shortcut icon" href="<?php echo CDN_URL ?>icon/jinlai_client/icon28@3x.png">
 		<link rel=apple-touch-icon href="<?php echo CDN_URL ?>icon/jinlai_client/icon120@3x.png">
@@ -242,12 +278,11 @@
 
 <?php
 	/**
-	 * APP中调用webview时配合URL按需显示相应部分
+	 * APP、微信中调用webview时配合URL按需显示相应部分
 	 * 此处以在APP中以WebView打开页面时不显示页面header部分为例
 	 */
-	//if ($is_wechat === FALSE):
+	if ($is_ios + $is_android + $is_wechat === FALSE):
 ?>
-<?php //endif ?>
 		<header id=header role=banner>
 			<div class=container>
 				<h1>
@@ -323,6 +358,7 @@
 
 			</div>
 		</nav>
+<?php endif ?>
 
 		<!--
 		<script>
@@ -360,6 +396,7 @@
 			}
 		});
 		</script>
-		-->
+		
 
 		<main id=maincontainer role=main>
+		-->

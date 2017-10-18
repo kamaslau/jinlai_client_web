@@ -1,11 +1,13 @@
-		</main>
+		<!--</main>-->
 <!-- End #maincontainer -->
 
 <?php
-	// 若通过微信访问，则不显示部分内容
+	// 检查当前设备信息
 	$user_agent = $_SERVER['HTTP_USER_AGENT'];
 	$is_wechat = strpos($user_agent, 'MicroMessenger')? TRUE: FALSE;
-	if ( ! $is_wechat):
+	$is_ios = strpos($user_agent, 'iPhone')? TRUE: FALSE;
+	$is_android = strpos($user_agent, 'Android')? TRUE: FALSE;
+	if ($is_ios + $is_android + $is_wechat === FALSE):
 ?>
 		<footer id=footer role=contentinfo>
 			<div id=copyright>
