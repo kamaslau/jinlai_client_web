@@ -31,30 +31,40 @@
 </nav>
 -->
 
-		<!--底部tab切换区域-->
-		<div class="tabWrap fiex">
-			<div class="tabbar auto">
-				<div class="column">
-					<div class="item cur">
-						<i class="icon iconfont icon-icon"></i>
-						<span class="text">首页</span>
-					</div>
-					<div class="item">
-						<i class="icon iconfont icon-fenlei"></i>
-						<span class="text">分类</span>
-					</div>
-					<div class="item">
-						<i class="icon iconfont icon-fenlei1"></i>
-						<span class="text">发现</span>
-					</div>
-					<div class="item">
-						<i class="icon iconfont icon-gouwuche"></i>
-						<span class="text">购物车</span>
-					</div>
-					<div class="item">
-						<i class="icon iconfont icon-wode"></i>
-						<span class="text">我的</span>
-					</div>
+<?php
+	// 检查当前设备信息
+	$user_agent = $_SERVER['HTTP_USER_AGENT'];
+	$is_wechat = strpos($user_agent, 'MicroMessenger')? TRUE: FALSE;
+	$is_ios = ($this->input->get('device_platform') === 'ios' || strpos($user_agent, 'iPhone') || strpos($user_agent, 'iPad'))? TRUE: FALSE;
+	$is_android = strpos($user_agent, 'Android')? TRUE: FALSE;
+	if (($is_ios === FALSE && $is_android === FALSE) || $is_wechat === TRUE):
+?>
+	<!--底部tab切换区域-->
+	<div class="tabWrap fiex">
+		<div class="tabbar auto">
+			<div class="column">
+				<div class="item cur">
+					<i class="icon iconfont icon-icon"></i>
+					<span class="text">首页</span>
+				</div>
+				<div class="item">
+					<i class="icon iconfont icon-fenlei"></i>
+					<span class="text">分类</span>
+				</div>
+				<div class="item">
+					<i class="icon iconfont icon-fenlei1"></i>
+					<span class="text">发现</span>
+				</div>
+				<div class="item">
+					<i class="icon iconfont icon-gouwuche"></i>
+					<span class="text">购物车</span>
+				</div>
+				<div class="item">
+					<i class="icon iconfont icon-wode"></i>
+					<span class="text">我的</span>
 				</div>
 			</div>
 		</div>
+	</div>
+
+<?php endif ?>

@@ -116,7 +116,7 @@
 			endif;
 
 			// 页面信息
-			$data['title'] = isset($data['item'])? $data['item']['name']: $this->class_name_cn. '详情';
+			$data['title'] = isset($data['item'])? $data['item']['brief_name']: $this->class_name_cn. '详情';
 			$data['class'] = $this->class_name.' detail';
 
 			// 输出视图

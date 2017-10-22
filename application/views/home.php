@@ -1,6 +1,6 @@
-		<!--tab切换content区域-->
-		<div class="tabcontent">
-			<div class="item">
+<!--tab切换content区域-->
+		<div class="tabcontent" id="list">
+			<div class="item" style="display: block;">
 				<!--菜单区域开始-->
 				<div class="menuOuter">
 				<div class="swiper-container">
@@ -220,13 +220,13 @@
 			</div>
 				<!--广告图区域-->
 				<div class="addpic auto">
-					<img src="media/home/banner@3x.png" />
+					<img data-src="<?php echo CDN_URL ?>media/home/banner@3x.png" />
 				</div>
 				<!--公告文字区域开始-->
 				<div class="announcement auto">
 					<!--左边图片区域-->
 					<div class="pic">
-						<img src="media/home/title.png" />
+						<img data-src="<?php echo CDN_URL ?>media/home/title.png" />
 					</div>
 					<div class="line"></div>
 					<!--右边文字部分-->
@@ -253,19 +253,19 @@
 				<div class="fruidWrap clearfix auto">
 					<ul>
 						<li>
-							<img src="media/home/jianhuo@3x.png" />
+							<img data-src="<?php echo CDN_URL ?>media/home/jianhuo@3x.png" />
 						</li>
 						<li>
-							<img src="media/home/jianhuo_putao@3x.png" />
+							<img data-src="<?php echo CDN_URL ?>media/home/jianhuo_putao@3x.png" />
 						</li>
 						<li style="margin-right:0">
-							<img src="media/home/jianhuo_mangguo@3x.png" />
+							<img data-src="<?php echo CDN_URL ?>media/home/jianhuo_mangguo@3x.png" />
 						</li>
 					</ul>
 				</div>
 				<!--新品上新图片-->
 				<div class="newgoodspic auto">
-					<img src="media/home/xinpinshangxin@3x.png" />
+					<img data-src="<?php echo CDN_URL ?>media/home/xinpinshangxin@3x.png" />
 				</div>
 				<!--新品上新商品区域开始-->
 				<div class="newgoodslist auto clearfix">
@@ -274,14 +274,14 @@
 							<ul class="clearfix">
 								<li>
 									<div class="pic">
-										<img src="media/home/slider1-1.png" />
+										<img data-src="<?php echo CDN_URL ?>media/home/banner@3x.png" />
 									</div>
 									<p>IPhone7红色版</p>
 									<span>¥3,900</span>
 								</li>
 								<li style="margin-left: .3rem;">
 									<div class="pic">
-										<img src="media/home/banner@3x.png" />
+										<img data-src="<?php echo CDN_URL ?>media/home/banner@3x.png" />
 									</div>
 									<p>IPhone7红色版</p>
 									<span>¥3,900</span>
@@ -292,14 +292,14 @@
 							<ul class="clearfix">
 								<li>
 									<div class="pic">
-										<img src="media/home/jianhuo@3x.png" />
+										<img data-src="<?php echo CDN_URL ?>media/home/jianhuo@3x.png" />
 									</div>
 									<p>IPhone7红色版</p>
 									<span>¥3,900</span>
 								</li>
 								<li style="margin-left: .3rem;">
 									<div class="pic">
-										<img src="media/home/slider1-1.png" />
+										<img data-src="<?php echo CDN_URL ?>media/home/jianhuo@3x.png" />
 									</div>
 									<p>IPhone7红色版</p>
 									<span>¥3,900</span>
@@ -311,21 +311,21 @@
 						<ul>
 							<li>
 								<div class="pic">
-									<img src="media/home/jianhuo_mangguo@3x.png" />
+									<img data-src="<?php echo CDN_URL ?>media/home/jianhuo_mangguo@3x.png" />
 								</div>
 								<p>IPhone8</p>
 								<span>¥9985</span>
 							</li>
 							<li>
 								<div class="pic">
-									<img src="media/home/jianhuo_putao@3x.png" />
+									<img data-src="<?php echo CDN_URL ?>media/home/jianhuo_putao@3x.png" />
 								</div>
 								<p>IPhone8</p>
 								<span>¥9985</span>
 							</li>
 							<li style="margin-right:0">
 								<div class="pic">
-									<img src="media/home/banner1@3x.png" />
+									<img data-src="<?php echo CDN_URL ?>media/home/banner1@3x.png" />
 								</div>
 								<p>IPhone8</p>
 								<span>¥9985</span>
@@ -336,7 +336,7 @@
 				<!--在线拼团区域开始-->
 				<div class="onlinegroup clearfix">
 					<div class="newgoodspic auto">
-						<img src="media/home/zaixianpintuan@3x.png">
+						<img data-src="<?php echo CDN_URL ?>media/home/zaixianpintuan@3x.png">
 					</div>
 					<!--在线拼团商品详情区域-->
 					<div class="onlinegroupcontent wid718 auto mt10">
@@ -344,7 +344,7 @@
 							<!--倒计时区域-->
 							<div class="time"></div>
 							<div class="pic">
-								<img src="media/home/banner@3x.png"/>
+								<img data-src="<?php echo CDN_URL ?>media/home/banner@3x.png"/>
 							</div>
 							<h1>OMG超霸系列</h1>
 							<h2>同轴设计时腕表</h2>
@@ -358,14 +358,14 @@
 								<ul>
 									<li>
 										<div class="pic">
-											<img src="media/home/jianhuo@3x.png"/>
+											<img data-src="<?php echo CDN_URL ?>media/home/jianhuo@3x.png"/>
 										</div>
 										<h1>日本阳光红富士</h1>
 										<h2>¥9.9/斤</h2>
 									</li>
 									<li>
 										<div class="pic">
-											<img src="media/home/jianhuo@3x.png"/>
+											<img data-src="<?php echo CDN_URL ?>media/home/jianhuo@3x.png"/>
 										</div>
 										<h1>日本阳光红富士</h1>
 										<h2>¥9.9/斤</h2>
@@ -376,14 +376,14 @@
 								<ul>
 									<li>
 										<div class="pic">
-											<img src="media/home/jianhuo@3x.png"/>
+											<img data-src="<?php echo CDN_URL ?>media/home/jianhuo@3x.png"/>
 										</div>
 										<h1>日本阳光红富士</h1>
 										<h2>¥9.9/斤</h2>
 									</li>
 									<li>
 										<div class="pic">
-											<img src="media/home/jianhuo@3x.png"/>
+											<img data-src="<?php echo CDN_URL ?>media/home/jianhuo@3x.png"/>
 										</div>
 										<h1>日本阳光红富士</h1>
 										<h2>¥9.9/斤</h2>
@@ -397,7 +397,7 @@
 				<!--商家搜罗-->
 				<div class="onlinegroup clearfix">
 					<div class="newgoodspic auto">
-						<img src="media/home/shangjaisousuo@3x.png">
+						<img data-src="<?php echo CDN_URL ?>media/home/shangjaisousuo@3x.png">
 					</div>
 			</div>
 			<!--颜色叠加公用部分-->
@@ -419,7 +419,7 @@
 					
 				</div>
 				<div class="fr squarecube" id="more">
-					<img src="media/home/icon_4@3x.png" class="block auto" />
+					<img data-src="<?php echo CDN_URL ?>media/home/list.png" class="block auto" />
 				</div>
 			</div>
 			<!--颜色叠加区域内容-->
@@ -427,124 +427,164 @@
 				<!--时尚内容-->
 				<div class="colorovertab clearfix" style="display:block">
 				<div class="left fl refreshcontent">
-					<img src="media/home/jianhuo@3x.png" />
-					<h1>The Diner  啤酒配披萨</h1>
+					<a href="https://www.517ybang.com/biz/detail?id=2">
+						<img data-src="<?php echo CDN_URL ?>media/home/jianhuo@3x.png" />
+						<h1>The Diner  啤酒配披萨</h1>
+					</a>
 				</div>
 				<div class="right fr refreshcontent">
-					<img src="media/home/banner@3x.png" />
-					<h1>遇见你 很高兴  啤酒配披萨</h1>
+					<a href="https://www.517ybang.com/biz/detail?id=2">
+						<img data-src="<?php echo CDN_URL ?>media/home/jianhuo@3x.png" />
+						<h1>The Diner  啤酒配披萨</h1>
+					</a>
 				</div>
 				<div class="mid fl">
 					<div class="midleft refreshcontent">
-						<img src="media/home/banner@3x.png" />
-						<h1>买了面包大面包也可以带有亲情人</h1>
-						<h2>面包也可以带有亲情面包也可以带有亲情面包也可以带有亲情</h2>
+						<a href="https://www.517ybang.com/biz/detail?id=2">
+							<img data-src="<?php echo CDN_URL ?>media/home/banner@3x.png" />
+							<h1>买了面包大面包也可以带有亲情人</h1>
+							<h2>面包也可以带有亲情面包也可以带有亲情面包也可以带有亲情</h2>
+						</a>
 					</div>
 					<div class="midright fr refreshcontent">
-						<img src="media/home/banner@3x.png" />
-						<h1>买了面包大面包也可以带有亲情人</h1>
-						<h2>面包也可以带有亲情面包也可以带有亲情面包也可以带有亲情</h2>
+						<a href="https://www.517ybang.com/biz/detail?id=2">
+							<img data-src="<?php echo CDN_URL ?>media/home/banner@3x.png" />
+							<h1>买了面包大面包也可以带有亲情人</h1>
+							<h2>面包也可以带有亲情面包也可以带有亲情面包也可以带有亲情</h2>
+						</a>
 					</div>
 				</div>
 				</div>
 				<!--丽人内容-->
 				<div class="colorovertab clearfix">
 				<div class="left fl refreshcontent">
-					<img src="media/home/jianhuo_mangguo@3x.png" />
-					<h1>The Diner  啤酒配披萨</h1>
+					<a href="https://www.517ybang.com/biz/detail?id=2">
+						<img data-src="<?php echo CDN_URL ?>media/home/jianhuo_mangguo@3x.png" />
+						<h1>The Diner  啤酒配披萨</h1>
+					</a>
 				</div>
 				<div class="right fr refreshcontent">
-					<img src="media/home/banner@3x.png" />
-					<h1>遇见你 很高兴  啤酒配披萨</h1>
+					<a href="https://www.517ybang.com/biz/detail?id=2">
+						<img data-src="<?php echo CDN_URL ?>media/home/jianhuo_mangguo@3x.png" />
+						<h1>The Diner  啤酒配披萨</h1>
+					</a>
 				</div>
 				<div class="mid fl">
 					<div class="midleft refreshcontent">
-						<img src="media/home/banner@3x.png" />
-						<h1>买了面包大面包也可以带有亲情人</h1>
-						<h2>面包也可以带有亲情面包也可以带有亲情面包也可以带有亲情</h2>
+						<a href="https://www.517ybang.com/biz/detail?id=2">
+							<img data-src="<?php echo CDN_URL ?>media/home/banner@3x.png" />
+							<h1>买了面包大面包也可以带有亲情人</h1>
+							<h2>面包也可以带有亲情面包也可以带有亲情面包也可以带有亲情</h2>
+						</a>
 					</div>
 					<div class="midright fr refreshcontent">
-						<img src="media/home/banner@3x.png" />
-						<h1>买了面包大面包也可以带有亲情人</h1>
-						<h2>面包也可以带有亲情面包也可以带有亲情面包也可以带有亲情</h2>
+						<a href="https://www.517ybang.com/biz/detail?id=2">
+							<img data-src="<?php echo CDN_URL ?>media/home/banner@3x.png" />
+							<h1>买了面包大面包也可以带有亲情人</h1>
+							<h2>面包也可以带有亲情面包也可以带有亲情面包也可以带有亲情</h2>
+						</a>
 					</div>
 				</div>
 				</div>
 				<!--娱乐内容-->
 				<div class="colorovertab clearfix">
 				<div class="left fl refreshcontent">
-					<img src="media/home/banner@3x.png" />
-					<h1>The Diner  啤酒配披萨</h1>
+					<a href="https://www.517ybang.com/biz/detail?id=2">
+						<img data-src="<?php echo CDN_URL ?>media/home/banner@3x.png">
+						<h1>The Diner  啤酒配披萨</h1>
+					</a>
 				</div>
 				<div class="right fr refreshcontent">
-					<img src="media/home/banner@3x.png" />
-					<h1>遇见你 很高兴  啤酒配披萨</h1>
+					<a href="https://www.517ybang.com/biz/detail?id=2">
+						<img data-src="<?php echo CDN_URL ?>media/home/banner@3x.png">
+						<h1>The Diner  啤酒配披萨</h1>
+					</a>
 				</div>
 				<div class="mid fl">
 					<div class="midleft refreshcontent">
-						<img src="media/home/banner@3x.png" />
-						<h1>买了面包大面包也可以带有亲情人</h1>
-						<h2>面包也可以带有亲情面包也可以带有亲情面包也可以带有亲情</h2>
+						<a href="https://www.517ybang.com/biz/detail?id=2">
+							<img data-src="<?php echo CDN_URL ?>media/home/banner@3x.png">
+							<h1>买了面包大面包也可以带有亲情人</h1>
+							<h2>面包也可以带有亲情面包也可以带有亲情面包也可以带有亲情</h2>
+						</a>
 					</div>
 					<div class="midright fr refreshcontent">
-						<img src="media/home/banner@3x.png" />
-						<h1>买了面包大面包也可以带有亲情人</h1>
-						<h2>面包也可以带有亲情面包也可以带有亲情面包也可以带有亲情</h2>
+						<a href="https://www.517ybang.com/biz/detail?id=2">
+							<img data-src="<?php echo CDN_URL ?>media/home/banner@3x.png">
+							<h1>买了面包大面包也可以带有亲情人</h1>
+							<h2>面包也可以带有亲情面包也可以带有亲情面包也可以带有亲情</h2>
+						</a>
 					</div>
 				</div>
 				</div>
 				<!--美食tab内容-->
-				<div class="colorovertab clearfix">
-				<div class="left fl refreshcontent">
-					<img src="media/home/banner@3x.png" />
-					<h1>The Diner  啤酒配披萨</h1>
-				</div>
-				<div class="right fr refreshcontent">
-					<img src="media/home/banner@3x.png" />
-					<h1>遇见你 很高兴  啤酒配披萨</h1>
-				</div>
-				<div class="mid fl">
-					<div class="midleft refreshcontent">
-						<img src="media/home/banner@3x.png" />
-						<h1>买了面包大面包也可以带有亲情人</h1>
-						<h2>面包也可以带有亲情面包也可以带有亲情面包也可以带有亲情</h2>
+					<div class="colorovertab clearfix">
+					<div class="left fl refreshcontent">
+						<a href="https://www.517ybang.com/biz/detail?id=2">
+							<img data-src="<?php echo CDN_URL ?>media/home/banner@3x.png">
+							<h1>The Diner  啤酒配披萨</h1>
+						</a>
 					</div>
-					<div class="midright fr refreshcontent">
-						<img src="media/home/banner@3x.png" />
-						<h1>买了面包大面包也可以带有亲情人</h1>
-						<h2>面包也可以带有亲情面包也可以带有亲情面包也可以带有亲情</h2>
+					<div class="right fr refreshcontent">
+						<a href="https://www.517ybang.com/biz/detail?id=2">
+							<img data-src="<?php echo CDN_URL ?>media/home/banner@3x.png">
+							<h1>遇见你 很高兴  啤酒配披萨</h1>
+						</a>
 					</div>
-				</div>
+					<div class="mid fl">
+						<div class="midleft refreshcontent">
+							<a href="https://www.517ybang.com/biz/detail?id=2">
+								<img data-src="<?php echo CDN_URL ?>media/home/banner@3x.png">
+								<h1>买了面包大面包也可以带有亲情人</h1>
+								<h2>面包也可以带有亲情面包也可以带有亲情面包也可以带有亲情</h2>
+							</a>
+						</div>
+						<div class="midright fr refreshcontent">
+							<a href="https://www.517ybang.com/biz/detail?id=2">
+								<img data-src="<?php echo CDN_URL ?>media/home/banner@3x.png">
+								<h1>买了面包大面包也可以带有亲情人</h1>
+								<h2>面包也可以带有亲情面包也可以带有亲情面包也可以带有亲情</h2>
+							</a>
+						</div>
+					</div>
 				</div>
 				<div class="botWrap auto wid718 border20 fl mt10 clearfix">
 					<div class="dotcontent clearfix bgfff border20">
 						<ul>
 							<li>
-								<img src="media/home/jianhuo@3x.png" class="auto block">
-								<h1>炖小鸡吨小金菜饭</h1>
-								<h2>¥383.2</h2>
+								<a href="https://www.517ybang.com/item/detail?id=26">
+									<img data-src="<?php echo CDN_URL ?>media/home/jianhuo@3x.png" class="auto block">
+									<h1>炖小鸡吨小金菜饭</h1>
+									<h2>¥383.2</h2>
+								</a>
 							</li>
 							<li>
-								<img src="media/home/jianhuo@3x.png" class="auto block">
-								<h1>炖小鸡吨小金菜饭</h1>
-								<h2>¥383.2</h2>
+								<a href="https://www.517ybang.com/item/detail?id=26">
+									<img data-src="<?php echo CDN_URL ?>media/home/jianhuo@3x.png" class="auto block">
+									<h1>炖小鸡吨小金菜饭</h1>
+									<h2>¥383.2</h2>
+								</a>
 							</li>
 							<li>
-								<img src="media/home/jianhuo@3x.png" class="auto block">
-								<h1>炖小鸡吨小金菜饭</h1>
-								<h2>¥383.2</h2>
+								<a href="https://www.517ybang.com/item/detail?id=26">
+									<img data-src="<?php echo CDN_URL ?>media/home/jianhuo@3x.png" class="auto block">
+									<h1>炖小鸡吨小金菜饭</h1>
+									<h2>¥383.2</h2>
+								</a>
 							</li>
 							<li>
-								<img src="media/home/jianhuo@3x.png" class="auto block">
-								<h1>炖小鸡吨小金菜饭</h1>
-								<h2>¥383.2</h2>
+								<a href="https://www.517ybang.com/item/detail?id=26">
+									<img data-src="<?php echo CDN_URL ?>media/home/jianhuo@3x.png" class="auto block">
+									<h1>炖小鸡吨小金菜饭</h1>
+									<h2>¥383.2</h2>
+								</a>
 							</li>
 						</ul>
 					</div>
 				</div>
 				<!--运动健康区域-->
 				<div class="wid718 auto bgfff border20 exercise fl">
-					<img src="media/home/cainixihuan@3x.png" />
+					<img data-src="<?php echo CDN_URL ?>media/home/cainixihuan@3x.png" />
 				</div>
 				<div class="coloroverlay mt14 fl">
 				<div class="coloroverlaywrap">
@@ -560,7 +600,7 @@
 					
 				</div>
 				<div class="fr square">
-					<img src="media/home/icon_2@3x.png" class="block auto" />
+					<img data-src="<?php echo CDN_URL ?>media/home/icon_2@3x.png" class="block auto" />
 				</div>
 			</div>
 			</div>
@@ -568,21 +608,21 @@
 			<div class="coloroverlaycontent clearfix">
 				
 				<div class="left fl">
-					<img src="media/home/banner@3x.png">
+					<img data-src="<?php echo CDN_URL ?>media/home/banner@3x.png">
 					<h1>The Diner  啤酒配披萨</h1>
 				</div>
 				<div class="right fr">
-					<img src="media/home/banner@3x.png">
+					<img data-src="<?php echo CDN_URL ?>media/home/banner@3x.png">
 					<h1>遇见你 很高兴  啤酒配披萨</h1>
 				</div>
 				<div class="mid fl">
 					<div class="midleft">
-						<img src="media/home/banner@3x.png">
+						<img data-src="<?php echo CDN_URL ?>media/home/banner@3x.png">
 						<h1>买了面包大面包也可以带有亲情人</h1>
 						<h2>面包也可以带有亲情面包也可以带有亲情面包也可以带有亲情</h2>
 					</div>
 					<div class="midright fr">
-						<img src="media/home/banner@3x.png">
+						<img data-src="<?php echo CDN_URL ?>media/home/banner@3x.png">
 						<h1>买了面包大面包也可以带有亲情人</h1>
 						<h2>面包也可以带有亲情面包也可以带有亲情面包也可以带有亲情</h2>
 					</div>
@@ -592,22 +632,22 @@
 					<div class="dotcontent clearfix bgfff border20">
 						<ul>
 							<li>
-								<img src="media/home/jianhuo@3x.png" class="auto block">
+								<img data-src="<?php echo CDN_URL ?>media/home/jianhuo@3x.png" class="auto block">
 								<h1>炖小鸡吨小金菜饭</h1>
 								<h2>¥383.2</h2>
 							</li>
 							<li>
-								<img src="media/home/jianhuo@3x.png" class="auto block">
+								<img data-src="<?php echo CDN_URL ?>media/home/jianhuo@3x.png" class="auto block">
 								<h1>炖小鸡吨小金菜饭</h1>
 								<h2>¥383.2</h2>
 							</li>
 							<li>
-								<img src="media/home/jianhuo@3x.png" class="auto block">
+								<img data-src="<?php echo CDN_URL ?>media/home/jianhuo@3x.png" class="auto block">
 								<h1>炖小鸡吨小金菜饭</h1>
 								<h2>¥383.2</h2>
 							</li>
 							<li>
-								<img src="media/home/jianhuo@3x.png" class="auto block">
+								<img data-src="<?php echo CDN_URL ?>media/home/jianhuo@3x.png" class="auto block">
 								<h1>炖小鸡吨小金菜饭</h1>
 								<h2>¥383.2</h2>
 							</li>
@@ -616,7 +656,7 @@
 				</div>
 				<!--运动健康区域-->
 				<div class="wid718 auto bgfff border20 exercise fl">
-					<img src="media/home/cainixihuan@3x.png">
+					<img data-src="<?php echo CDN_URL ?>media/home/cainixihuan@3x.png">
 				</div>
 				<div class="coloroverlay mt14 fl">
 				<div class="coloroverlaywrap">
@@ -632,28 +672,28 @@
 					
 				</div>
 				<div class="fr square">
-					<img src="media/home/icon_2@3x.png" class="block auto">
+					<img data-src="<?php echo CDN_URL ?>media/home/icon_2@3x.png" class="block auto">
 				</div>
 			</div>
 			</div>
 			<div class="coloroverlaycontent clearfix">
 				<div class="left fr">
-					<img src="media/home/banner1@3x.png">
+					<img data-src="<?php echo CDN_URL ?>media/home/banner1@3x.png">
 					<h1>The Diner  啤酒配披萨</h1>
 				</div>
 				<div class="right fl">
-					<img src="media/home/banner@3x.png">
+					<img data-src="<?php echo CDN_URL ?>media/home/banner@3x.png">
 					<h1>遇见你 很高兴  啤酒配披萨</h1>
 				</div>
 				<!--运动装备区域-->
 				<div class="mid fl">
 					<div class="midleft fr">
-						<img src="media/home/banner@3x.png">
+						<img data-src="<?php echo CDN_URL ?>media/home/banner@3x.png">
 						<h1>买了面包大面包也可以带有亲情人</h1>
 						<h2>面包也可以带有亲情面包也可以带有亲情面包也可以带有亲情</h2>
 					</div>
 					<div class="midright fl">
-						<img src="media/home/banner@3x.png">
+						<img data-src="<?php echo CDN_URL ?>media/home/banner@3x.png">
 						<h1>买了面包大面包也可以带有亲情人</h1>
 						<h2>面包也可以带有亲情面包也可以带有亲情面包也可以带有亲情</h2>
 					</div>
@@ -663,22 +703,22 @@
 					<div class="dotcontent clearfix bgfff border20">
 						<ul>
 							<li>
-								<img src="media/home/jianhuo@3x.png" class="auto block">
+								<img data-src="<?php echo CDN_URL ?>media/home/jianhuo@3x.png" class="auto block">
 								<h1>炖小鸡吨小金菜饭</h1>
 								<h2>¥383.2</h2>
 							</li>
 							<li>
-								<img src="media/home/jianhuo@3x.png" class="auto block">
+								<img data-src="<?php echo CDN_URL ?>media/home/jianhuo@3x.png" class="auto block">
 								<h1>炖小鸡吨小金菜饭</h1>
 								<h2>¥383.2</h2>
 							</li>
 							<li>
-								<img src="media/home/jianhuo@3x.png" class="auto block">
+								<img data-src="<?php echo CDN_URL ?>media/home/jianhuo@3x.png" class="auto block">
 								<h1>炖小鸡吨小金菜饭</h1>
 								<h2>¥383.2</h2>
 							</li>
 							<li>
-								<img src="media/home/jianhuo@3x.png" class="auto block">
+								<img data-src="<?php echo CDN_URL ?>media/home/jianhuo@3x.png" class="auto block">
 								<h1>炖小鸡吨小金菜饭</h1>
 								<h2>¥383.2</h2>
 							</li>
@@ -687,7 +727,7 @@
 				</div>
 				<!--电子产品-->
 				<div class="wid718 auto bgfff border20 exercise clearfix">
-					<img src="media/home/zaixianpintuan@3x.png">
+					<img data-src="<?php echo CDN_URL ?>media/home/zaixianpintuan@3x.png">
 				</div>
 				<div class="coloroverlay mt14">
 				<div class="coloroverlaywrap">
@@ -703,7 +743,7 @@
 					
 				</div>
 				<div class="fr square">
-					<img src="media/home/icon_1@3x.png" class="block auto">
+					<img data-src="<?php echo CDN_URL ?>media/home/icon_1@3x.png" class="block auto">
 				</div>
 			</div>
 			<div class="coloroverlaycontent clearfix">
@@ -711,12 +751,12 @@
 				<!--运动装备区域-->
 				<div class="mid fl">
 					<div class="midleft fr mt0">
-						<img src="media/home/banner@3x.png">
+						<img data-src="<?php echo CDN_URL ?>media/home/banner@3x.png">
 						<h1>买了面包大面包也可以带有亲情人</h1>
 						<h2>面包也可以带有亲情面包也可以带有亲情面包也可以带有亲情</h2>
 					</div>
 					<div class="midright fl mt0">
-						<img src="media/home/banner@3x.png">
+						<img data-src="<?php echo CDN_URL ?>media/home/banner@3x.png">
 						<h1>买了面包大面包也可以带有亲情人</h1>
 						<h2>面包也可以带有亲情面包也可以带有亲情面包也可以带有亲情</h2>
 					</div>
@@ -724,11 +764,11 @@
 				</div>
 				<div class="coloroverlaycontent clearfix">
 				<div class="left fr">
-					<img src="media/home/banner1@3x.png">
+					<img data-src="<?php echo CDN_URL ?>media/home/banner1@3x.png">
 					<h1>The Diner  啤酒配披萨</h1>
 				</div>
 				<div class="right fl">
-					<img src="media/home/banner@3x.png">
+					<img data-src="<?php echo CDN_URL ?>media/home/banner@3x.png">
 					<h1>遇见你 很高兴  啤酒配披萨</h1>
 				</div>
 				</div>
@@ -736,22 +776,22 @@
 					<div class="dotcontent clearfix bgfff border20">
 						<ul>
 							<li>
-								<img src="media/home/jianhuo@3x.png" class="auto block">
+								<img data-src="<?php echo CDN_URL ?>media/home/jianhuo@3x.png" class="auto block">
 								<h1>炖小鸡吨小金菜饭</h1>
 								<h2>¥383.2</h2>
 							</li>
 							<li>
-								<img src="media/home/jianhuo@3x.png" class="auto block">
+								<img data-src="<?php echo CDN_URL ?>media/home/jianhuo@3x.png" class="auto block">
 								<h1>炖小鸡吨小金菜饭</h1>
 								<h2>¥383.2</h2>
 							</li>
 							<li>
-								<img src="media/home/jianhuo@3x.png" class="auto block">
+								<img data-src="<?php echo CDN_URL ?>media/home/jianhuo@3x.png" class="auto block">
 								<h1>炖小鸡吨小金菜饭</h1>
 								<h2>¥383.2</h2>
 							</li>
 							<li>
-								<img src="media/home/jianhuo@3x.png" class="auto block">
+								<img data-src="<?php echo CDN_URL ?>media/home/jianhuo@3x.png" class="auto block">
 								<h1>炖小鸡吨小金菜饭</h1>
 								<h2>¥383.2</h2>
 							</li>
@@ -760,43 +800,43 @@
 				</div>
 				<!--猜你喜欢-->
 				<div class="wid718 auto bgfff border20 exercise clearfix">
-					<img src="media/home/cainixihuan@3x.png">
+					<img data-src="<?php echo CDN_URL ?>media/home/cainixihuan@3x.png">
 				</div>
 				<!--猜你喜欢内容区域开始-->
 				<div class="like wid718 auto clearfix mt10">
 					<ul>
 						<li>
-							<img src="media/home/jianhuo_putao@3x.png"/>
+							<img data-src="<?php echo CDN_URL ?>media/home/jianhuo_putao@3x.png"/>
 							<h1>JUSTE UN CLOU 手镯</h1>
 							<h2>8K玫瑰金</h2>
 							<h3>¥5100</h3>
 						</li>
 						<li>
-							<img src="media/home/jianhuo_putao@3x.png"/>
+							<img data-src="<?php echo CDN_URL ?>media/home/jianhuo_putao@3x.png"/>
 							<h1>JUSTE UN CLOU 手镯</h1>
 							<h2>8K玫瑰金</h2>
 							<h3>¥5100</h3>
 						</li>
 						<li class="mr0">
-							<img src="media/home/jianhuo_putao@3x.png"/>
+							<img data-src="<?php echo CDN_URL ?>media/home/jianhuo_putao@3x.png"/>
 							<h1>JUSTE UN CLOU 手镯</h1>
 							<h2>8K玫瑰金</h2>
 							<h3>¥5100</h3>
 						</li>
 						<li>
-							<img src="media/home/jianhuo_putao@3x.png"/>
+							<img data-src="<?php echo CDN_URL ?>media/home/jianhuo_putao@3x.png"/>
 							<h1>JUSTE UN CLOU 手镯</h1>
 							<h2>8K玫瑰金</h2>
 							<h3>¥5100</h3>
 						</li>
 						<li>
-							<img src="media/home/jianhuo_putao@3x.png"/>
+							<img data-src="<?php echo CDN_URL ?>media/home/jianhuo_putao@3x.png"/>
 							<h1>JUSTE UN CLOU 手镯</h1>
 							<h2>8K玫瑰金</h2>
 							<h3>¥5100</h3>
 						</li>
 						<li class="mr0">
-							<img src="media/home/jianhuo_putao@3x.png"/>
+							<img data-src="<?php echo CDN_URL ?>media/home/jianhuo_putao@3x.png"/>
 							<h1>JUSTE UN CLOU 手镯</h1>
 							<h2>8K玫瑰金</h2>
 							<h3>¥5100</h3>
@@ -809,3 +849,81 @@
 			<div class="item">购物车</div>
 			<div class="item">我的进来</div>
 		</div>
+		<!--底部tab切换区域-->
+		<!--<div class="tabWrap fiex">
+		<div class="tabbar auto">
+			<div class="column">
+				<div class="item cur">
+					<i class="icon iconfont icon-icon"></i>
+					<span class="text">主页</span>
+				</div>
+				<div class="item">
+					<i class="icon iconfont icon-fenlei"></i>
+					<span class="text">分类</span>
+				</div>
+				<div class="item">
+					<i class="icon iconfont icon-fenlei1"></i>
+					<span class="text">发现</span>
+				</div>
+				<div class="item">
+					<i class="icon iconfont icon-gouwuche"></i>
+					<span class="text">购物车</span>
+				</div>
+				<div class="item">
+					<i class="icon iconfont icon-wode"></i>
+					<span class="text">我的</span>
+				</div>
+			</div>
+		</div>
+		</div>-->
+<script>
+$(document).ready(function() {
+    setInterval('AutoScroll("#news")', 3000);
+    var indexNum = 0;
+$("#more").on("click",function(){
+	if(indexNum == 0){
+		$(".refreshcontent").each(function(){
+//		d = Math.random()*1000; //延迟1s
+//		$(this).delay(d).animate({opacity: 0}, {
+//			step: function(n){
+//				s = 1-n; 
+//				$(this).css("transform", "scale("+s+")");
+//			}, 
+//			duration: 1000, 
+//		})
+	
+	}).promise().done(function(){
+		storm();
+	});
+	
+	}
+	else{
+		card();
+	}
+	
+});
+function storm()
+{
+	indexNum = 1;
+$(".refreshcontent").remove();
+var oAddElement = '<div class="swiper-container7" id="newmorelist" style="margin-top:.1rem;border-radius: .2rem;"><div class="swiper-wrapper"><div class="swiper-slide"><div class="list-group-item"><div class="list"><img src="<?php echo CDN_URL ?>media/slider1-2.png" class="fl"><div class="listtext fr"><span class="area">0.3km</span><h1>韦博英语韦博英语韦博英语韦博英语韦博英语(麦岛分路店)</h1><div class="star"><ul><li><i class="icon iconfont icon-wuxing"></i></li><li><i class="icon iconfont icon-wuxing"></i></li><li><i class="icon iconfont icon-wuxing"></i></li><li><i class="icon iconfont icon-wuxing"></i></li><li><i class="icon iconfont icon-wuxing"></i></li></ul></div><div class="tag">麦岛路沿线   英语</div><div class="allbuy"><span class="tuan">团</span><span>99元 单人体验一次</span></div></div></div><div class="list"><img src="<?php echo CDN_URL ?>media/slider1-2.png" class="fl"><div class="listtext fr"><span class="area">0.3km</span><h1>韦博英语韦博英语韦博英语韦博英语韦博英语(麦岛分路店)</h1><div class="star"><ul><li><i class="icon iconfont icon-wuxing"></i></li><li><i class="icon iconfont icon-wuxing"></i></li><li><i class="icon iconfont icon-wuxing"></i></li><li><i class="icon iconfont icon-wuxing"></i></li><li><i class="icon iconfont icon-wuxing"></i></li></ul></div><div class="tag">麦岛路沿线   英语</div><div class="allbuy"><span class="tuan">团</span><span>99元 单人体验一次</span></div></div></div><div class="list"><img src="<?php echo CDN_URL ?>media/slider1-2.png" class="fl"><div class="listtext fr"><span class="area">0.3km</span><h1>韦博英语韦博英语韦博英语韦博英语韦博英语(麦岛分路店)</h1><div class="star"><ul><li><i class="icon iconfont icon-wuxing"></i></li><li><i class="icon iconfont icon-wuxing"></i></li><li><i class="icon iconfont icon-wuxing"></i></li><li><i class="icon iconfont icon-wuxing"></i></li><li><i class="icon iconfont icon-wuxing"></i></li></ul></div><div class="tag">麦岛路沿线   英语</div><div class="allbuy"><span class="tuan">团</span><span>99元 单人体验一次</span></div></div></div><div class="list"><img src="<?php echo CDN_URL ?>media/slider1-2.png" class="fl"><div class="listtext fr"><span class="area">0.3km</span><h1>韦博英语韦博英语韦博英语韦博英语韦博英语(麦岛分路店)</h1><div class="star"><ul><li><i class="icon iconfont icon-wuxing"></i></li><li><i class="icon iconfont icon-wuxing"></i></li><li><i class="icon iconfont icon-wuxing"></i></li><li><i class="icon iconfont icon-wuxing"></i></li><li><i class="icon iconfont icon-wuxing"></i></li></ul></div><div class="tag">麦岛路沿线   英语</div><div class="allbuy"><span class="tuan">团</span><span>99元 单人体验一次</span></div></div></div><div class="list"><img src="<?php echo CDN_URL ?>media/slider1-2.png" class="fl"><div class="listtext fr"><span class="area">0.3km</span><h1>韦博英语韦博英语韦博英语韦博英语韦博英语(麦岛分路店)</h1><div class="star"><ul><li><i class="icon iconfont icon-wuxing"></i></li><li><i class="icon iconfont icon-wuxing"></i></li><li><i class="icon iconfont icon-wuxing"></i></li><li><i class="icon iconfont icon-wuxing"></i></li><li><i class="icon iconfont icon-wuxing"></i></li></ul></div><div class="tag">麦岛路沿线   英语</div><div class="allbuy"><span class="tuan">团</span><span>99元 单人体验一次</span></div></div></div><div class="list"><img src="<?php echo CDN_URL ?>media/slider1-2.png" class="fl"><div class="listtext fr"><span class="area">0.3km</span><h1>韦博英语韦博英语韦博英语韦博英语韦博英语(麦岛分路店)</h1><div class="star"><ul><li><i class="icon iconfont icon-wuxing"></i></li><li><i class="icon iconfont icon-wuxing"></i></li><li><i class="icon iconfont icon-wuxing"></i></li><li><i class="icon iconfont icon-wuxing"></i></li><li><i class="icon iconfont icon-wuxing"></i></li></ul></div><div class="tag">麦岛路沿线   英语</div><div class="allbuy"><span class="tuan">团</span><span>99元 单人体验一次</span></div></div></div></div></div></div></div>';
+	$(oAddElement).insertBefore($("#morelist"));
+	$("#more").find("img").attr("src","<?php echo CDN_URL ?>media/home/icon_4@3x.png");
+
+}
+function card()
+{
+	indexNum = 0;
+	$("#newmorelist").remove();
+	var addCardElement = '<div class="left fl refreshcontent"><img src="<?php echo CDN_URL ?>media/home/banner@3x.png"><h1>The Diner  啤酒配披萨</h1></div><div class="right fr refreshcontent"><img src="<?php echo CDN_URL ?>media/home/banner@3x.png"><h1>遇见你 很高兴  啤酒配披萨</h1></div><div class="mid fl"><div class="midleft refreshcontent"><img src="<?php echo CDN_URL ?>media/home/banner@3x.png"><h1>买了面包大面包也可以带有亲情人</h1><h2>面包也可以带有亲情面包也可以带有亲情面包也可以带有亲情</h2></div><div class="midright fr refreshcontent"><img src="<?php echo CDN_URL ?>media/home/banner@3x.png"><h1>买了面包大面包也可以带有亲情人</h1><h2>面包也可以带有亲情面包也可以带有亲情面包也可以带有亲情</h2></div></div>';
+	$(addCardElement).insertBefore($("#morelist .botWrap"));
+	$("#more").find("img").attr("src","<?php echo CDN_URL ?>media/home/list.png");
+	
+}
+//商家搜罗tab切换
+$(".coloroverlaywrap div").on("click",function(){
+	$("#morelist .colorovertab").eq($(this).index()).show().siblings(".colorovertab").hide();
+});
+
+});
+</script>

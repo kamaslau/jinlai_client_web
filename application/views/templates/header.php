@@ -4,7 +4,7 @@
 	// 检查当前设备信息
 	$user_agent = $_SERVER['HTTP_USER_AGENT'];
 	$is_wechat = strpos($user_agent, 'MicroMessenger')? TRUE: FALSE;
-	$is_ios = strpos($user_agent, 'iPhone')? TRUE: FALSE;
+	$is_ios = (strpos($user_agent, 'iPhone') || strpos($user_agent, 'iPad'))? TRUE: FALSE;
 	$is_android = strpos($user_agent, 'Android')? TRUE: FALSE;
 
 	// 生成SEO相关变量，一般为页面特定信息与在config/config.php中设置的站点通用信息拼接
