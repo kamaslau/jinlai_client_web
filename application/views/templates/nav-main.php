@@ -43,28 +43,28 @@
 	<div class="tabWrap fiex">
 		<div class="tabbar auto">
 			<div class="column">
-				<div class="item cur">
-					<i class="icon iconfont icon-icon"></i>
-					<span class="text">首页</span>
+				<div class="itemmenulist cur">
+					<i class="icon-shouye_xiala"></i>
+					<span class="text">主页</span>
 				</div>
-				<div class="item">
+				<div class="itemmenulist">
 					<i class="icon iconfont icon-fenlei"></i>
 					<span class="text">分类</span>
 				</div>
-				<div class="item">
+				<div class="itemmenulist">
 					<i class="icon iconfont icon-fenlei1"></i>
 					<span class="text">发现</span>
 				</div>
-				<div class="item">
+				<div class="itemmenulist">
 					<i class="icon iconfont icon-gouwuche"></i>
 					<span class="text">购物车</span>
 				</div>
-				<div class="item">
+				<div class="itemmenulist">
 					<i class="icon iconfont icon-wode"></i>
 					<span class="text">我的</span>
 				</div>
 			</div>
 		</div>
-	</div>
+		</div>
 
 <?php endif ?>

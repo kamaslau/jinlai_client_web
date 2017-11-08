@@ -4,7 +4,7 @@
 	// 检查当前设备信息
 	$user_agent = $_SERVER['HTTP_USER_AGENT'];
 	$is_wechat = strpos($user_agent, 'MicroMessenger')? TRUE: FALSE;
-	$is_ios = (strpos($user_agent, 'iPhone') || strpos($user_agent, 'iPad'))? TRUE: FALSE;
+	$is_ios = strpos($user_agent, 'iPhone')? TRUE: FALSE;
 	$is_android = strpos($user_agent, 'Android')? TRUE: FALSE;
 
 	// 生成SEO相关变量，一般为页面特定信息与在config/config.php中设置的站点通用信息拼接
@@ -23,7 +23,7 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20171019">
+		<meta name=version content="revision20171109">
 		<meta name=author content="刘亚杰Kamas,青岛意帮网络科技有限公司产品部&amp;技术部">
 		<meta name=copyright content="进来商城,青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
@@ -213,21 +213,26 @@
 		</script>
 		<?php endif ?>
 		
-		<script src="<?php echo CDN_URL ?>js/jquery-3.2.1.min.js"></script>
+		<script src="<?php echo CDN_URL ?>js/jquery-2.1.4.min.js"></script>
+		<script src="<?php echo CDN_URL ?>js/jqm.js"></script>
+		<script src="<?php echo CDN_URL ?>js/rem.js"></script>
+		<script src="<?php echo CDN_URL ?>js/swiper.min.js"></script>
+		<script src="<?php echo CDN_URL ?>js/jquery.easing.min.js"></script>
+		<script src="<?php echo CDN_URL ?>js/lazy-load-img.js"></script>
+		<script src="<?php echo CDN_URL ?>js/shopping.js"></script>
+	
+		<script src="<?php echo CDN_URL ?>js/index.js"></script>
+			<script src="<?php echo CDN_URL ?>js/fsbanner.js"></script>
+		<!--<script src="<?php echo CDN_URL ?>js/educationclassification.js"></script>-->
 		
-		<script src="/js/rem.js"></script>
-		<script src="/js/swiper.min.js"></script>
-		<script src="/js/jquery.easing.min.js"></script>
-		<script src="/js/index.js"></script>
-
 		<!--清除浏览器默认样式css-->
-		<link href="/css/normal.css" rel="stylesheet"/>
+		<link href="<?php echo CDN_URL ?>css/normal.css" rel="stylesheet"/>
 		<!--公用部分css-->
-		<link href="<?php echo base_url() ?>css/common.css" rel="stylesheet"/>
-		<link href="/css/base.css" rel="stylesheet"/>
-		<link href="/css/swiper.css" rel="stylesheet"/>
-		<link href="/css/index.css" rel="stylesheet"/>
-		<link href="/css/alert.css" rel="stylesheet"/>
+		<link href="<?php echo CDN_URL ?>css/common.css" rel="stylesheet"/>
+		<link href="<?php echo CDN_URL ?>css/base.css" rel="stylesheet"/>
+		<link href="<?php echo CDN_URL ?>css/swiper.css" rel="stylesheet"/>
+		<link href="<?php echo CDN_URL ?>css/index.css" rel="stylesheet"/>
+		<link href="<?php echo CDN_URL ?>css/alert.css" rel="stylesheet"/>
 		<style>
 			body{
 				padding-bottom: 1rem;
@@ -243,6 +248,9 @@
 		    bottom: -2px;
 		    left: 0;
 		    width: 100%;
+		}
+		#nav-header{
+			display: none;
 		}
 		</style>
 
@@ -264,14 +272,25 @@
 
 		<meta name=format-detection content="telephone=yes, address=no, email=no">
 		<meta name=apple-itunes-app content="app-id=1066224229">
+		<script>
+            var user_agent = new Object();
+            user_agent.is_wechat = <?php echo ($is_wechat === TRUE)? 'true': 'false' ?>;
+            user_agent.is_ios = <?php echo ($is_ios === TRUE)? 'true': 'false' ?>;
+            user_agent.is_android = <?php echo ($is_android === TRUE)? 'true': 'false' ?>;
+        </script>
 	</head>
 <?php
 	// 将head内容立即输出，让用户浏览器立即开始请求head中各项资源，提高页面加载速度
 	ob_flush();flush();
-?>
 
+    // 生成body的class
+	$body_class = ( isset($class) )? $class: NULL;
+    $body_class .= ($is_wechat === TRUE)? ' is_wechat': NULL;
+    $body_class .= ($is_ios === TRUE)? ' is_ios': NULL;
+    $body_class .= ($is_android === TRUE)? ' is_android': NULL;
+?>
 <!-- 内容开始 -->
-	<body<?php echo (isset($class))? ' class="'.$class.'"': NULL; ?>>
+	<body<?php echo ( !empty($body_class) )? ' class="'.$body_class.'"': NULL ?>>
 		<noscript>
 			<p>您的浏览器功能加载出现问题，请刷新浏览器重试；如果仍然出现此提示，请考虑更换浏览器。</p>
 		</noscript>

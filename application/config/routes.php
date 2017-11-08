@@ -72,6 +72,9 @@ $route['article/detail'] = 'article/detail';
 $route['article/(:any)'] = 'article/detail/$1';
 $route['article'] = 'article/index';
 
+/* TODO 临时 Item_category 商品分类 */
+$route['category'] = 'item_category/index';
+
 $route['default_controller'] = 'home/index';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = TRUE; // 将路径中的“-”解析为“_”，兼顾SEO需要与类命名规范
