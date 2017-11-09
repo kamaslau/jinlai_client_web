@@ -98,13 +98,9 @@
 			else:
 				$data['item'] = $result['content'];
 
-				// 获取该商家商品
-				// 筛选条件
-				$condition['time_delete'] = 'NULL';
-				$condition['biz_id'] = $id;
-
-				// 从API服务器获取相应列表信息
-				$params = $condition;
+				// 获取该商家商品未删除商品
+				$params['time_delete'] = 'NULL';
+				$params['biz_id'] = $id;
 				$url = api_url('item/index');
 				$result = $this->curl->go($url, $params, 'array');
 				if ($result['status'] === 200):
@@ -113,6 +109,18 @@
 					$data['error'] = $result['content']['error']['message'];
 				endif;
 				
+				// 获取该商家店铺装修商品；忽略是否下架或删除
+				if ( !empty( $data['item']['m1ids'] ) ):
+					$params['biz_id'] = $id;
+					$params['ids'] = $data['item']['m1ids'];
+					$url = api_url('item/index');
+					$result = $this->curl->go($url, $params, 'array');
+					if ($result['status'] === 200):
+						$data['item']['m1_items'] = $result['content'];
+					else:
+						$data['error'] = $result['content']['error']['message'];
+					endif;
+				endif;
 			endif;
 
 			// 页面信息

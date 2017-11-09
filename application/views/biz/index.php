@@ -1,73 +1,226 @@
-<style>
 
-
-	/* 宽度在750像素以上的设备 */
-	@media only screen and (min-width:751px)
-	{
-
-	}
-	
-	/* 宽度在960像素以上的设备 */
-	@media only screen and (min-width:961px)
-	{
-
-	}
-
-	/* 宽度在1280像素以上的设备 */
-	@media only screen and (min-width:1281px)
-	{
-
-	}
-</style>
-
-<base href="<?php echo $this->media_root ?>">
-
-<div id=breadcrumb>
-	<ol class="breadcrumb container">
-		<li><a href="<?php echo base_url() ?>">首页</a></li>
-		<li class=active><?php echo $this->class_name_cn ?></li>
-	</ol>
-</div>
-
-<div id=content class=container>
-	<div class=btn-group role=group>
-		<a class="btn btn-primary" title="所有<?php echo $this->class_name_cn ?>" href="<?php echo base_url($this->class_name) ?>"><i class="fa fa-list fa-fw" aria-hidden=true></i> 所有<?php echo $this->class_name_cn ?></a>
+			<!--头部banner区域开始-->
+		<div class="bannerWrap auto">
+			<div class="swiper-container">
+	        <div class="swiper-wrapper">
+	            <div class="swiper-slide">
+	            	<img src="media/slider1-2.png" />
+	            </div>
+	            <div class="swiper-slide">
+	            	<img src="media/slider1-2.png" />
+	            </div>
+	            <div class="swiper-slide">
+	            	<img src="media/slider1-1.png" />
+	            </div>
+	            <div class="swiper-slide">
+	            	<img src="media/slider1-2.png" />
+	            </div>
+	        </div>
+	        <!-- Add Pagination -->
+	        <div class="swiper-pagination"></div>
+	    </div>
 	</div>
-
-	<?php if ( empty($items) ): ?>
-	<blockquote>
-		<p>一大波商家正在排队入驻中……</p>
-	</blockquote>
-
-	<?php else: ?>
-	<ul id=item-list class=row>
-		<?php foreach ($items as $item): ?>
-		<li class="item col-xs-12">
-
-			<figure class="image-main col-xs-12 col-sm-6 col-md-3">
-				<a title="<?php echo $item['name'] ?>" href="<?php echo base_url($this->class_name. '/detail?id='.$item[$this->id_name]) ?>">
-					<img title="<?php echo $item['name'] ?>" src="<?php echo $item['url_logo'] ?>">
-				</a>
-				<figcaption>
-					<ul class=row>
-						<li class="col-xs-6">
-							<a class=create data-op-class=fav_biz data-op-name=create data-id="<?php echo $item['biz_id'] ?>" title="关注" href="<?php echo base_url('fav_biz/create?id='.$item['biz_id']) ?>">
-								<img data-src-success="<?php echo base_url('/media/item/detail/shoucang-_xuanzhong@3x.png') ?>" src="<?php echo base_url('/media/item/detail/shoucang-@3x.png') ?>">关注
-							</a>
+	<!--商品分类-->
+	<div class="threecol clearfix none">
+	<ul>
+		<li>
+			<div class="pic shopIndexpic">
+				<img src="media/home/jianhuo_putao@3x.png">
+			</div>
+		</li>
+		<li>
+			<div class="pic shopIndexpic">
+				<img src="media/home/jianhuo_putao@3x.png">
+			</div>
+		</li>
+		<li style="margin-right:0">
+			<div class="pic shopIndexpic">
+				<img src="media/home/banner1@3x.png">
+			</div>
+		</li>
+	</ul>
+</div>
+	<!--卡片式导航分类区域-->
+	<div class="shopIndexcard clearfix auto mt10 wid710">
+		<div class="pictitle wid710 border20">
+			<img src="media/home/linebar.png" />
+		</div>
+		<div class="pic mt10">
+			<img src="media/home/banner1@3x.png" />
+		</div>
+		<!--卡片式导航商品内容区域-->
+		<div class="cardnavcontent clearfix wid710 auto mt14">
+			<ul>
+				<li>
+					<div class="pic">
+						<img src="media/home/jianhuo@3x.png" />
+					</div>
+						<h1>NIKE男子休闲鞋子</h1>
+						<h2>AIR PERSON</h2>
+						<h3>¥3444.00</h3>
+				</li>
+				<li>
+					<div class="pic">
+						<img src="media/home/jianhuo@3x.png" />
+					</div>
+						<h1>NIKE男子休闲鞋子</h1>
+						<h2>AIR PERSON</h2>
+						<h3>¥3444.00</h3>
+				</li>
+				<li style="margin-right: 0;">
+					<div class="pic">
+						<img src="media/home/jianhuo@3x.png" />
+					</div>
+						<h1>NIKE男子休闲鞋子</h1>
+						<h2>AIR PERSON</h2>
+						<h3>¥3444.00</h3>
+				</li>
+			
+			</ul>
+		</div>
+	</div>
+	<!--卡片式导航分类区域-->
+	<div class="shopIndexcard clearfix auto mt10 wid710">
+		<div class="pictitle wid710 border20">
+			<img src="media/home/linebar.png" />
+		</div>
+		<div class="pic mt10">
+			<img src="media/home/banner1@3x.png" />
+		</div>
+		<!--卡片式导航商品内容区域-->
+		<div class="cardnavcontent clearfix wid710 auto mt14">
+			<ul>
+				<li>
+					<div class="pic">
+						<img src="media/home/jianhuo@3x.png" />
+					</div>
+						<h1>NIKE男子休闲鞋子</h1>
+						<h2>AIR PERSON</h2>
+						<h3>¥3444.00</h3>
+				</li>
+				<li>
+					<div class="pic">
+						<img src="media/home/jianhuo@3x.png" />
+					</div>
+						<h1>NIKE男子休闲鞋子</h1>
+						<h2>AIR PERSON</h2>
+						<h3>¥3444.00</h3>
+				</li>
+				<li style="margin-right: 0;">
+					<div class="pic">
+						<img src="media/home/jianhuo@3x.png" />
+					</div>
+						<h1>NIKE男子休闲鞋子</h1>
+						<h2>AIR PERSON</h2>
+						<h3>¥3444.00</h3>
+				</li>
+			
+			</ul>
+		</div>
+	</div>
+	<!--卡片式导航分类区域-->
+	<div class="shopIndexcard clearfix auto mt10 wid710">
+		<div class="pictitle wid710 border20">
+			<img src="media/home/linebar.png" />
+		</div>
+		<div class="pic mt10">
+			<img src="media/home/banner1@3x.png" />
+		</div>
+		<!--卡片式导航商品内容区域-->
+		<div class="cardnavcontent clearfix wid710 auto mt14">
+			<ul>
+				<li>
+					<div class="pic">
+						<img src="media/home/jianhuo@3x.png" />
+					</div>
+						<h1>NIKE男子休闲鞋子</h1>
+						<h2>AIR PERSON</h2>
+						<h3>¥3444.00</h3>
+				</li>
+				<li>
+					<div class="pic">
+						<img src="media/home/jianhuo@3x.png" />
+					</div>
+						<h1>NIKE男子休闲鞋子</h1>
+						<h2>AIR PERSON</h2>
+						<h3>¥3444.00</h3>
+				</li>
+				<li style="margin-right: 0;">
+					<div class="pic">
+						<img src="media/home/jianhuo@3x.png" />
+					</div>
+						<h1>NIKE男子休闲鞋子</h1>
+						<h2>AIR PERSON</h2>
+						<h3>¥3444.00</h3>
+				</li>
+			
+			</ul>
+		</div>
+	</div>
+	<div class="wid718 auto bgfff border20 exercise clearfix">
+					<img src="media/home/linebar.png">
+	</div>
+	<div class="like wid718 auto clearfix mt10">
+					<ul>
+						<li>
+							<img src="media/home/jianhuo_putao@3x.png">
+							<h1>JUSTE UN CLOU 手镯</h1>
+							<h2>8K玫瑰金</h2>
+							<h3>¥5100</h3>
+						</li>
+						<li>
+							<img src="media/home/jianhuo_putao@3x.png">
+							<h1>JUSTE UN CLOU 手镯</h1>
+							<h2>8K玫瑰金</h2>
+							<h3>¥5100</h3>
+						</li>
+						<li class="mr0">
+							<img src="media/home/jianhuo_putao@3x.png">
+							<h1>JUSTE UN CLOU 手镯</h1>
+							<h2>8K玫瑰金</h2>
+							<h3>¥5100</h3>
+						</li>
+						<li>
+							<img src="media/home/jianhuo_putao@3x.png">
+							<h1>JUSTE UN CLOU 手镯</h1>
+							<h2>8K玫瑰金</h2>
+							<h3>¥5100</h3>
+						</li>
+						<li>
+							<img src="media/home/jianhuo_putao@3x.png">
+							<h1>JUSTE UN CLOU 手镯</h1>
+							<h2>8K玫瑰金</h2>
+							<h3>¥5100</h3>
+						</li>
+						<li class="mr0">
+							<img src="media/home/jianhuo_putao@3x.png">
+							<h1>JUSTE UN CLOU 手镯</h1>
+							<h2>8K玫瑰金</h2>
+							<h3>¥5100</h3>
 						</li>
 					</ul>
-				</figcaption>
-			</figure>
-
-			<section class="col-xs-12 col-sm-6 col-md-3">
-				<a title="<?php echo $item['name'] ?>" href="<?php echo base_url($this->class_name. '/detail?id='.$item[$this->id_name]) ?>">
-					<h2 class=biz-name><?php echo $item['name'] ?></h2>
-				</a>
-			</section>
-
-		</li>
-		<?php endforeach ?>
-	</ul>
-
-	<?php endif ?>
-</div>
+				</div>
+				<!--底部导航区域-->
+				<div class="fiex footerbar clearfix">
+					<div class="textbar fl">
+						<ul>
+							<li>
+								<span>宝贝分类</span>
+								<p class="line"></p>
+							</li>
+							<li>
+								<span>宝贝分类</span>
+								<p class="line"></p>
+							</li>
+							<li>
+								<span>宝贝分类</span>
+								<p class="line"></p>
+							</li>
+						</ul>
+					</div>
+					<div class="wechat">
+						<i></i>
+						<span>客服</span>
+					</div>
+					
+				</div>

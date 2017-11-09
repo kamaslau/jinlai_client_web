@@ -160,6 +160,24 @@
 			$this->load->view($this->view_root.'/create', $data);
 			$this->load->view('templates/footer', $data);
 		} // end create
+		
+		/**
+		 * 创建页
+		 */
+		public function joined()
+		{
+			// 页面信息
+			$data = array(
+				'title' => '成功加入'.$this->class_name_cn,
+				'class' => $this->class_name.' joined',
+				'error' => '', // 预设错误提示
+			);
+
+			// 输出视图
+			$this->load->view('templates/header', $data);
+			$this->load->view($this->view_root.'/result_success', $data);
+			$this->load->view('templates/footer', $data);
+		} // end create
 
 	} // end class Member_biz
 

@@ -17,6 +17,9 @@
 		       background-size: contain;
 		    background-repeat: no-repeat;
 			}
+			.ui-loader{
+				display: none;
+			}
 		</style>
 	</head>
 <body>
@@ -44,28 +47,28 @@
 	<div class="equity">
 		<h2>我的特权<span>当前等级普通会员</span><span class="fr">解绑会员卡</span></h2>
 		
-		<ul>
+	<ul>
 			<li>
 				<a>
-					<i class=" icon-jifen"></i>
+					<i class="icon-xiaoxi"></i>
 				</a>
 				<span>活动提前通知</span>
 			</li>
 			<li>
 				<a>
-					<i class=" icon-jifen"></i>
+					<i class="icon-xinpin"></i>
 				</a>
 				<span>95折享新品</span>
 			</li>
 			<li>
 				<a>
-					<i class=" icon-jifen"></i>
+					<i class="icon-jifen2"></i>
 				</a>
 				<span>入会送积分</span>
 			</li>
 			<li>
 				<a>
-					<i class=" icon-jifen"></i>
+					<i class="icon-gouwu"></i>
 				</a>
 				<span>购物送积分</span>
 			</li>

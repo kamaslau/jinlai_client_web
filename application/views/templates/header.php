@@ -289,6 +289,7 @@
     $body_class .= ($is_ios === TRUE)? ' is_ios': NULL;
     $body_class .= ($is_android === TRUE)? ' is_android': NULL;
 ?>
+
 <!-- 内容开始 -->
 	<body<?php echo ( !empty($body_class) )? ' class="'.$body_class.'"': NULL ?>>
 		<noscript>
@@ -419,3 +420,8 @@
 
 		<main id=maincontainer role=main>
 		-->
+		<style>
+			.ui-loader{
+				display: none;
+			}
+		</style>
