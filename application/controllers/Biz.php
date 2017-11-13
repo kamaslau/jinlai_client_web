@@ -109,18 +109,58 @@
 					$data['error'] = $result['content']['error']['message'];
 				endif;
 				
-				// 获取该商家店铺装修商品；忽略是否下架或删除
-				if ( !empty( $data['item']['m1ids'] ) ):
+				// 获取该商家店铺装修方案
+				if ( !empty($data['item']['ornament_id']) ):
 					$params['biz_id'] = $id;
-					$params['ids'] = $data['item']['m1ids'];
-					$url = api_url('item/index');
+					$params['id'] = $data['item']['ornament_id'];
+					$url = api_url('ornament_biz/detail');
 					$result = $this->curl->go($url, $params, 'array');
 					if ($result['status'] === 200):
-						$data['item']['m1_items'] = $result['content'];
+						$data['ornament'] = $result['content'];
 					else:
 						$data['error'] = $result['content']['error']['message'];
 					endif;
+					
+					// 获取该商家店铺装修商品；忽略是否下架或删除
+					if ( !empty( $data['ornament']['home_m1_ids'] ) ):
+						$params['biz_id'] = $id;
+						$params['ids'] = $data['ornament']['home_m1_ids'];
+						$url = api_url('item/index');
+						$result = $this->curl->go($url, $params, 'array');
+						if ($result['status'] === 200):
+							$data['item']['m1_items'] = $result['content'];
+						else:
+							$data['error'] = $result['content']['error']['message'];
+						endif;
+					endif;
+					
+					// 获取该商家店铺装修商品；忽略是否下架或删除
+					if ( !empty( $data['ornament']['home_m2_ids'] ) ):
+						$params['biz_id'] = $id;
+						$params['ids'] = $data['ornament']['home_m2_ids'];
+						$url = api_url('item/index');
+						$result = $this->curl->go($url, $params, 'array');
+						if ($result['status'] === 200):
+							$data['item']['m2_items'] = $result['content'];
+						else:
+							$data['error'] = $result['content']['error']['message'];
+						endif;
+					endif;
+
+					// 获取该商家店铺装修商品；忽略是否下架或删除
+					if ( !empty( $data['ornament']['home_m3_ids'] ) ):
+						$params['biz_id'] = $id;
+						$params['ids'] = $data['ornament']['home_m3_ids'];
+						$url = api_url('item/index');
+						$result = $this->curl->go($url, $params, 'array');
+						if ($result['status'] === 200):
+							$data['item']['m3_items'] = $result['content'];
+						else:
+							$data['error'] = $result['content']['error']['message'];
+						endif;
+					endif;
 				endif;
+				
 			endif;
 
 			// 页面信息

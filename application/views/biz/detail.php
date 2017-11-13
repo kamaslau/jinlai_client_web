@@ -72,18 +72,18 @@
 		<div class="bannerWrap auto">
 			<div class="swiper-container">
 	        <div class="swiper-wrapper">
+				<?php
+					if ( !empty($ornament['home_slides']) ):
+						$slides = explode(',', $ornament['home_slides']);
+						foreach ($slides as $slide):
+				?>
 	            <div class="swiper-slide">
-	            	<img src="<?php echo CDN_URL ?>media/slider1-2.png" />
+	            	<img src="<?php echo MEDIA_URL.'ornament_biz/'. $slide ?>">
 	            </div>
-	            <div class="swiper-slide">
-	            	<img src="<?php echo CDN_URL ?>media/slider1-1.png" />
-	            </div>
-	            <div class="swiper-slide">
-	            	<img src="<?php echo CDN_URL ?>media/slider1-2.png" />
-	            </div>
-	            <div class="swiper-slide">
-	            	<img src="<?php echo CDN_URL ?>media/slider1-1.png" />
-	            </div>
+				<?php
+						endforeach;
+					endif;
+				?>
 	        </div>
 	        <!-- Add Pagination -->
 	        <div class="swiper-pagination"></div>
@@ -111,131 +111,108 @@
 		</li>
 	</ul>
 </div>
+	
+	<?php if ( !empty($ornament['home_m1_ids']) ): ?>
 	<!--卡片式导航分类区域-->
 	<div class="shopIndexcard clearfix auto mt10 wid710">
 		<div class="pictitle wid710 border20">
-			<img src="<?php echo CDN_URL ?>media/home/linebar.png" />
+			<img src="<?php echo CDN_URL ?>media/home/linebar.png">
 		</div>
 		<div class="pic mt10">
-			<a href="<?php echo base_url('item/detail?id='.$item['m1ace_id']) ?>">
-				<img src="<?php echo $this->media_root.$item['m1figure_url'] ?>">
+			<a href="<?php echo base_url('item/detail?id='.$ornament['home_m1_ace_id']) ?>" target="_self">
+				<img src="<?php echo MEDIA_URL.'ornament_biz/'.$ornament['home_m1_ace_url'] ?>">
 			</a>
 		</div>
 		<!--卡片式导航商品内容区域-->
 		<div class="cardnavcontent clearfix wid710 auto mt14">
 			<ul>
-				<?php foreach ($item['m1_items'] as $item): ?>
+				<?php foreach ($item['m1_items'] as $module_item): ?>
 				<li>
-					<a href="<?php echo base_url('item/detail?id='.$item['item_id']) ?>">
+					<a href="<?php echo base_url('item/detail?id='.$module_item['item_id']) ?>" target="_self">
 						<div class=pic>
-							<img src="<?php echo MEDIA_URL. 'item/'.$item['url_image_main'] ?>">
+							<img src="<?php echo MEDIA_URL.'item/'.$module_item['url_image_main'] ?>">
 						</div>
 					
-						<h1><?php echo $item['name'] ?></h1>
-						<h2><?php echo $item['slogan'] ?></h2>
-						<h3>￥ <?php echo $item['price'] ?></h3>
+						<h1><?php echo $module_item['name'] ?></h1>
+						<h2><?php echo $module_item['slogan'] ?></h2>
+						<h3>￥ <?php echo $module_item['price'] ?></h3>
 					</a>
 				</li>
 				<?php endforeach ?>
 			</ul>
 		</div>
 	</div>
+	<?php endif ?>
+	
+	<?php if ( !empty($ornament['home_m2_ids']) ): ?>
 	<!--卡片式导航分类区域-->
 	<div class="shopIndexcard clearfix auto mt10 wid710">
 		<div class="pictitle wid710 border20">
-			<img src="<?php echo CDN_URL ?>media/home/linebar.png" />
+			<img src="<?php echo CDN_URL ?>media/home/linebar.png">
 		</div>
 		<div class="pic mt10">
-			<img src="<?php echo CDN_URL ?>media/home/banner1@3x.png" />
+			<a href="<?php echo base_url('item/detail?id='.$ornament['home_m2_ace_id']) ?>" target="_self">
+				<img src="<?php echo MEDIA_URL.'ornament_biz/'.$ornament['home_m2_ace_url'] ?>">
+			</a>
 		</div>
 		<!--卡片式导航商品内容区域-->
 		<div class="cardnavcontent clearfix wid710 auto mt14">
 			<ul>
+				<?php foreach ($item['m2_items'] as $module_item): ?>
 				<li>
-					<a href="https://www.517ybang.com/item/detail?id=3" target="_self">
-					<div class="pic">
-						<img src="<?php echo CDN_URL ?>media/home/xinpinshangxin/xpsx160/160x160_0.jpg" />
-					</div>
+					<a href="<?php echo base_url('item/detail?id='.$module_item['item_id']) ?>" target="_self">
+						<div class=pic>
+							<img src="<?php echo MEDIA_URL.'item/'.$module_item['url_image_main'] ?>">
+						</div>
+					
+						<h1><?php echo $module_item['name'] ?></h1>
+						<h2><?php echo $module_item['slogan'] ?></h2>
+						<h3>￥ <?php echo $module_item['price'] ?></h3>
 					</a>
-						<h1>NIKE男子休闲鞋子</h1>
-						<h2>AIR PERSON</h2>
-						<h3>¥3444.00</h3>
 				</li>
-				<li>
-					<a href="https://www.517ybang.com/item/detail?id=3" target="_self">
-					<div class="pic">
-						<img src="<?php echo CDN_URL ?>media/home/xinpinshangxin/xpsx160/160x160_1.jpg" />
-					</div>
-					</a>
-						<h1>NIKE男子休闲鞋子</h1>
-						<h2>AIR PERSON</h2>
-						<h3>¥3444.00</h3>
-				</li>
-				<li style="margin-right: 0;">
-					<a href="https://www.517ybang.com/item/detail?id=3" target="_self">
-					<div class="pic">
-						<img src="<?php echo CDN_URL ?>media/home/xinpinshangxin/xpsx160/160x160_2.jpg" />
-					</div>
-					</a>
-						<h1>NIKE男子休闲鞋子</h1>
-						<h2>AIR PERSON</h2>
-						<h3>¥3444.00</h3>
-				</li>
-			
+				<?php endforeach ?>
 			</ul>
 		</div>
 	</div>
+	<?php endif ?>
+	
+	<?php if ( !empty($ornament['home_m3_ids']) ): ?>
 	<!--卡片式导航分类区域-->
 	<div class="shopIndexcard clearfix auto mt10 wid710">
 		<div class="pictitle wid710 border20">
-			<img src="<?php echo CDN_URL ?>media/home/linebar.png" />
+			<img src="<?php echo CDN_URL ?>media/home/linebar.png">
 		</div>
 		<div class="pic mt10">
-			<img src="<?php echo CDN_URL ?>media/home/banner1@3x.png" />
+			<a href="<?php echo base_url('item/detail?id='.$ornament['home_m3_ace_id']) ?>" target="_self">
+				<img src="<?php echo MEDIA_URL.'ornament_biz/'.$ornament['home_m3_ace_url'] ?>">
+			</a>
 		</div>
 		<!--卡片式导航商品内容区域-->
 		<div class="cardnavcontent clearfix wid710 auto mt14">
 			<ul>
+				<?php foreach ($item['m3_items'] as $module_item): ?>
 				<li>
-					<a href="https://www.517ybang.com/item/detail?id=3" target="_self">
-					<div class="pic">
-						<img src="<?php echo CDN_URL ?>media/home/yundongjiankang/160x160_0.jpg" />
-					</div>
+					<a href="<?php echo base_url('item/detail?id='.$module_item['item_id']) ?>" target="_self">
+						<div class=pic>
+							<img src="<?php echo MEDIA_URL.'item/'.$module_item['url_image_main'] ?>">
+						</div>
+					
+						<h1><?php echo $module_item['name'] ?></h1>
+						<h2><?php echo $module_item['slogan'] ?></h2>
+						<h3>￥ <?php echo $module_item['price'] ?></h3>
 					</a>
-						<h1>NIKE男子休闲鞋子</h1>
-						<h2>AIR PERSON</h2>
-						<h3>¥3444.00</h3>
 				</li>
-				<li>
-					<a href="https://www.517ybang.com/item/detail?id=3" target="_self">
-					<div class="pic">
-						<img src="<?php echo CDN_URL ?>media/home/yundongjiankang/160x160_1.jpg" />
-					</div>
-					</a>
-						<h1>NIKE男子休闲鞋子</h1>
-						<h2>AIR PERSON</h2>
-						<h3>¥3444.00</h3>
-				</li>
-				<li style="margin-right: 0;">
-					<a href="https://www.517ybang.com/item/detail?id=3" target="_self">
-					<div class="pic">
-						<img src="<?php echo CDN_URL ?>media/home/yundongjiankang/160x160_2.jpg" />
-					</div>
-					</a>
-						<h1>NIKE男子休闲鞋子</h1>
-						<h2>AIR PERSON</h2>
-						<h3>¥3444.00</h3>
-				</li>
-			
+				<?php endforeach ?>
 			</ul>
 		</div>
 	</div>
+	<?php endif ?>
+	
 	<div class="wid718 auto bgfff border20 exercise clearfix">
-					<img src="<?php echo CDN_URL ?>media/home/cainixihuan/cainixihuan@3x.png">
+		<img src="<?php echo CDN_URL ?>media/home/cainixihuan/cainixihuan@3x.png">
 	</div>
 	<div class="like wid718 auto clearfix mt10">
 					<ul>
-						
 						<li>
 							<a href="https://www.517ybang.com/item/detail?id=3" target="_self">
 							<img src="<?php echo CDN_URL ?>media/home/cainixihuan/cnxh/210x210_0.jpg">
@@ -289,4 +266,7 @@
 <script>
 	// <?php echo $this->class_name_cn ?>数据
 	var item = <?php echo json_encode($item) ?>
+	
+	// 店铺装修信息
+	var ornament = <?php echo isset($ornament)? json_encode($ornament): 'undefined' ?>
 </script>
