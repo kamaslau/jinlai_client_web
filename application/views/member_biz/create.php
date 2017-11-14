@@ -1,52 +1,45 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8">
-		<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
-		<title></title>
-		<!--清除浏览器默认样式css-->
-		<link href="<?php echo CDN_URL ?>css/normal.css" rel="stylesheet"/>
-		<!--公用部分css-->
-		<link href="<?php echo CDN_URL ?>css/common.css" rel="stylesheet"/>
-		<link href="<?php echo CDN_URL ?>css/base.css" rel="stylesheet"/>
-		<link href="<?php echo CDN_URL ?>css/swiper.css" rel="stylesheet"/>
-		<link href="<?php echo CDN_URL ?>css/index.css" rel="stylesheet"/>
-		<style>
-			body{
-			background: url(<?php echo CDN_URL ?>media/home/beijing@3x.png) #f2f2f3;
-		       background-size: contain;
-		    background-repeat: no-repeat;
-			}
-			.ui-loader{
-				display: none;
-			}
-		</style>
-	</head>
-<body>
+<style>
+    <?php if ( !empty($item['ornament']['main_figure_url']) ): ?>
+    body{
+        background:#f2f2f3 url(<?php echo MEDIA_URL.'ornament_biz/'.$item['ornament']['main_figure_url'] ?>) no-repeat center top;
+        background-size: contain;
+    }
+    <?php endif ?>
+
+    <?php if ( !empty($item['ornament']['vi_color_first']) ): ?>
+    .vipcard {background-color:#<?php echo $item['ornament']['vi_color_first'] ?>;}
+    .equity i:before {color:#<?php echo $item['ornament']['vi_color_first'] ?>;}
+    <?php endif ?>
+
+    .ui-loader {display:none;}
+
+    .enterstorebtn a {color:#fff;}
+</style>
+
 	<div class="storemainlogo">
-		<img src="<?php echo CDN_URL ?>media/home/logo@3x.png" />
+        <img src="<?php echo MEDIA_URL.'biz/'. $item['url_logo'] ?>">
 	</div>
 	<div class="enterstorebtn">
-		进入店铺
+        <a href="<?php echo base_url('biz/detail?id='.$item['biz_id']) ?>">进入店铺</a>
 	</div>
 	<div class="vipcard wid670 auto">
 		<div class="storelogo fl">
-			<img src="<?php echo CDN_URL ?>media/home/logo@3x.png"/>
+            <img src="<?php echo MEDIA_URL.'biz/'. $item['url_logo'] ?>">
 		</div>
 		<div class="rule fr">
 			查看条款  <i class=" icon-Arrow"></i>
 		</div>
-		<h2>申请成为NIKE会员</h2>
+		<h2>申请成为<?php echo $item['brief_name'] ?>会员</h2>
 		<div class="clearfix">
-			<input type="text" />
-			<a>加入会员</a>
+            <input name=mobile type=tel value="<?php echo $this->input->post('mobile')? set_value('mobile'): $this->input->cookie('mobile') ?>" size=11 pattern="\d{11}" placeholder="请输入您的常用手机号" required>
+			<a href="<?php echo base_url('member_biz/joined?id='.$item['biz_id']) ?>">加入会员</a>
 		</div>
-		
 		<p>
-			*若老会员绑定,需和线下会员预留手机号与姓名保持一致
-			*我已经阅读并了解此品牌基本网站条款条件,隐私政策及会员卡绑定协议,并且同意接受所有条款
+			* 若老会员绑定，需和线下会员预留手机号与姓名保持一致
+			* 我已经阅读并了解此品牌基本网站条款条件,隐私政策及会员卡绑定协议,并且同意接受所有条款
 		</p>
 	</div>
+
 	<div class="equity">
 		<h2>成为会员可享权益</h2>
 		<ul>
@@ -76,9 +69,3 @@
 			</li>
 		</ul>
 	</div>
-
-
-<script src="https://cdn.bootcss.com/jquery/1.8.3/jquery.js"></script>
-		<script type="text/javascript" src="js/rem.js" ></script>
-</body>
-</html>

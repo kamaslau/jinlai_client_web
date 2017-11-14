@@ -23,7 +23,7 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20171109">
+		<meta name=version content="revision20171114">
 		<meta name=author content="刘亚杰Kamas,青岛意帮网络科技有限公司产品部&amp;技术部">
 		<meta name=copyright content="进来商城,青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
@@ -301,7 +301,7 @@
 	 * APP、微信中调用webview时配合URL按需显示相应部分
 	 * 此处以在APP中以WebView打开页面时不显示页面header部分为例
 	 */
-	if ($is_ios + $is_android + $is_wechat === FALSE):
+	if (($is_ios + $is_android + $is_wechat) === FALSE):
 ?>
 		<header id=header role=banner>
 			<div class=container>
@@ -416,7 +416,6 @@
 			}
 		});
 		</script>
-		
 
 		<main id=maincontainer role=main>
 		-->

@@ -95,9 +95,9 @@
 			// 排序条件
 			$order_by = NULL;
 			
-			// 从API服务器获取相应列表信息
+			// 从API服务器获取商家列表信息（及装修信息）
 			$params = $condition;
-			$url = api_url($this->class_name. '/index');
+			$url = api_url('biz/index');
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
 				$data['items'] = $result['content'];
@@ -125,7 +125,7 @@
 			endif;
 
 			// 从API服务器获取相应详情信息
-			$url = api_url($this->class_name. '/detail');
+			$url = api_url('biz/detail');
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
 				$data['item'] = $result['content'];
@@ -134,12 +134,12 @@
 			endif;
 
 			// 页面信息
-			$data['title'] = isset($data['item'])? $data['item']['name']: $this->class_name_cn. '详情';
+			$data['title'] = isset($data['item'])? $data['item']['brief_name']: $this->class_name_cn. '详情';
 			$data['class'] = $this->class_name.' detail';
 
 			// 输出视图
 			$this->load->view('templates/header', $data);
-			$this->load->view($this->view_root.'/detail', $data);
+			$this->load->view($this->view_root.'/create', $data);
 			$this->load->view('templates/footer', $data);
 		} // end detail
 		
@@ -166,17 +166,31 @@
 		 */
 		public function joined()
 		{
-			// 页面信息
-			$data = array(
-				'title' => '成功加入'.$this->class_name_cn,
-				'class' => $this->class_name.' joined',
-				'error' => '', // 预设错误提示
-			);
+            // 检查是否已传入必要参数
+            $id = $this->input->get_post('id')? $this->input->get_post('id'): NULL;
+            if ( !empty($id) ):
+                $params['id'] = $id;
+            else:
+                redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
+            endif;
 
-			// 输出视图
-			$this->load->view('templates/header', $data);
-			$this->load->view($this->view_root.'/result_success', $data);
-			$this->load->view('templates/footer', $data);
+            // 从API服务器获取相应详情信息
+            $url = api_url('biz/detail');
+            $result = $this->curl->go($url, $params, 'array');
+            if ($result['status'] === 200):
+                $data['item'] = $result['content'];
+            else:
+                $data['error'] = $result['content']['error']['message'];
+            endif;
+
+            // 页面信息
+            $data['title'] = isset($data['item'])? $data['item']['brief_name']: $this->class_name_cn. '详情';
+            $data['class'] = $this->class_name.' detail';
+
+            // 输出视图
+            $this->load->view('templates/header', $data);
+            $this->load->view($this->view_root.'/result_success', $data);
+            $this->load->view('templates/footer', $data);
 		} // end create
 
 	} // end class Member_biz
