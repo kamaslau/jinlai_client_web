@@ -96,7 +96,7 @@
 			$this->form_validation->set_error_delimiters('', '；');
 			$data_to_validate['biz_id'] = $id;
 			$this->form_validation->set_data($data_to_validate);
-			$this->form_validation->set_rules('biz_id', '相关商家ID', 'trim|required');
+            $this->form_validation->set_rules('biz_id', '所属商家ID', 'trim|required|is_natural_no_zero');
 
 			// 需要创建的数据；逐一赋值需特别处理的字段
 			$data_to_create = array(
@@ -134,7 +134,7 @@
 			else:
 				// 页面信息
 				$data = array(
-					'title' => '创建'.$this->class_name_cn,
+					'title' => '新增'.$this->class_name_cn,
 					'class' => $this->class_name.' create',
 					'error' => '', // 预设错误提示
 				);

@@ -9,6 +9,8 @@
 	    background-size:contain;
         overflow:hidden;}
         .ui-loader {display:none;}
+		
+		.entermember {color:#9fa0a0;}
     </style>
 
     <?php
@@ -26,7 +28,7 @@
                 <img src="<?php echo MEDIA_URL.'biz/'. $item['url_logo'] ?>">
             </div>
             <h1><?php echo $item['brief_name'] ?></h1>
-            <span class="entermember">加入会员</span>
+            <span class="entermember">我是会员</span>
             <div class="memberdescription">
                 会员享特权,多重优惠抢不停!
             </div>
