@@ -10,7 +10,13 @@
         overflow:hidden;}
         .ui-loader {display:none;}
     </style>
-
+	<!--头部title区域开始-->
+	<div class="member_title" style="display:none">
+		<i class="icon-back fl"></i>
+		会员
+		<i class="icon-huiyuan fr"></i>
+		
+	</div>
     <?php
         foreach ($items as $item):
             $inline_style = '';

@@ -172,7 +172,9 @@
             // 获取当前用户相应商家会员卡信息
             $params = array(
                 'biz_id' => $id,
-                'user_id' => $this->session->user_id,
+                //'user_id' => $this->session->user_id,
+                'user_id' => 1,
+
             );
             $url = api_url($this->class_name.'/detail');
             $result = $this->curl->go($url, $params, 'array');
@@ -213,7 +215,8 @@
 
             // 需要创建的数据；逐一赋值需特别处理的字段
             $data_to_create = array(
-                'user_id' => $this->session->user_id,
+                //'user_id' => $this->session->user_id,
+                'user_id' => 1,
                 'biz_id' => $id,
                 'mobile' => $mobile,
             );

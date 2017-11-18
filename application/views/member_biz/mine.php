@@ -15,7 +15,7 @@
 
     <?php
         foreach ($items as $item):
-            $inline_style = '';
+            $inline_style = ''; // 根据商家店铺装修方案设置样式
             if ( !empty($item['vi_color_first']) )
                 $inline_style .= 'background-color:#'.$item['vi_color_first'].';';
             if ( !empty($item['member_thumb_url']) )

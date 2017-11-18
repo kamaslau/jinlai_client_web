@@ -28,21 +28,27 @@
 	<div class="enterstorebtn">
         <a href="<?php echo base_url('biz/detail?id='.$item['biz_id']) ?>" target="_self">进入店铺</a>
 	</div>
-	<div class="vipcard wid670 auto" style="background:url(<?php echo MEDIA_URL.'ornament_biz/'.$item['ornament']['member_figure_url'] ?>) no-repeate center center">
+
+	<div class="vipcard wid670 auto">
 		<div class="storelogo fl">
             <img src="<?php echo MEDIA_URL.'biz/'. $item['url_logo'] ?>">
 		</div>
 		<div class="rule fr">
             <?php echo $item['brief_name'] ?>
 		</div>
-		<div class="viptext">VIP</div>
+		<div class="viptext">VIP<?php echo $member_biz['level'] ?></div>
 		<p>
 			Hi，<?php echo $this->session->nickname ?>
-			<span>普通会员</span>
+			<span>VIP<?php echo $member_biz['level'] ?></span>
 		</p>
 	</div>
-	<div class="equity">
-		<h2>我的特权<span>当前等级普通会员</span><span class="fr">解绑会员卡</span></h2>
+
+	<div class=equity>
+		<h2>
+            我的特权
+            <span>当前等级 VIP<?php echo $member_biz['level'] ?></span>
+            <span class="fr">解绑会员卡</span>
+        </h2>
 		
 	    <ul>
 			<li>
