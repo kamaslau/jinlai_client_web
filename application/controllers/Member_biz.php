@@ -99,7 +99,8 @@
             if ($result['status'] === 200):
                 $data['items'] = $result['content'];
             else:
-                $data['error'] = $result['content']['error']['message'];
+                // $data['error'] = $result['content']['error']['message'];
+                redirect( base_url($this->class_name) ); // 若未领取任何会员卡，转到会员卡列表页
             endif;
 
             // 输出视图

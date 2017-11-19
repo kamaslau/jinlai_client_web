@@ -2,19 +2,19 @@
 	defined('BASEPATH') OR exit('此文件不可被直接访问');
 
 	/**
-	 * Article 平台文章类
+	 * Article_biz 平台文章类
 	 *
 	 * @version 1.0.0
 	 * @author Kamas 'Iceberg' Lau <kamaslau@outlook.com>
 	 * @copyright ICBG <www.bingshankeji.com>
 	 */
-	class Article extends MY_Controller
+	class Article_biz extends MY_Controller
 	{
 		/**
 		 * 可作为列表筛选条件的字段名；可在具体方法中根据需要删除不需要的字段并转换为字符串进行应用，下同
 		 */
 		protected $names_to_sort = array(
-			'category_id', 'title', 'excerpt', 'content', 'url_name', 'url_images', 'time_create', 'time_delete', 'time_edit', 'creator_id', 'operator_id',
+			'biz_id', 'title', 'excerpt', 'content', 'url_images', 'time_create', 'time_delete', 'time_edit', 'creator_id', 'operator_id',
 		);
 
 		public function __construct()
@@ -23,8 +23,8 @@
 
 			// 向类属性赋值
 			$this->class_name = strtolower(__CLASS__);
-			$this->class_name_cn = '文章'; // 改这里……
-			$this->table_name = 'article'; // 和这里……
+			$this->class_name_cn = '商家文章'; // 改这里……
+			$this->table_name = 'article_biz'; // 和这里……
 			$this->id_name = 'article_id'; // 还有这里，OK，这就可以了
 			$this->view_root = $this->class_name; // 视图文件所在目录
 			$this->media_root = MEDIA_URL. $this->class_name.'/'; // 媒体文件所在目录
@@ -112,7 +112,7 @@
 			$this->load->view('templates/footer', $data);
 		} // end detail
 
-	} // end class Article
+	} // end class Article_biz
 
-/* End of file Article.php */
-/* Location: ./application/controllers/Article.php */
+/* End of file Article_biz.php */
+/* Location: ./application/controllers/Article_biz.php */

@@ -1,4 +1,5 @@
 <style>
+
     <?php if ( !empty($item['ornament']['main_figure_url']) ): ?>
     body{
         background:#f2f2f3 url(<?php echo MEDIA_URL.'ornament_biz/'.$item['ornament']['main_figure_url'] ?>) no-repeat center top;
@@ -77,3 +78,18 @@
 			</li>
 		</ul>
 	</div>
+	<script type="text/javascript">
+// 		//$('.member_wrap').remove();
+// 		// debugger;
+// 		// function reurl(){ 
+// 		// url = location.href; //把当前页面的地址赋给变量url 
+// 		// var times = url.split('?'); //分切变量url分隔符号为“？” 
+// 		// if(times[1]!= 1){//如果？后的值不等于1表示没有刷新
+// 		// url +="？1"; //把变量url的值加入？1 
+// 		// self.location.replace(url); //刷新页面
+// } 
+// } 
+
+// reurl(); //执行这个函数
+		
+	</script>
