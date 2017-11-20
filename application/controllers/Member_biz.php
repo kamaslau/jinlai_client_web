@@ -172,10 +172,9 @@
 
             // 获取当前用户相应商家会员卡信息
             $params = array(
-                'biz_id' => $id,
                 //'user_id' => $this->session->user_id,
                 'user_id' => 1,
-
+                'biz_id' => $id,
             );
             $url = api_url($this->class_name.'/detail');
             $result = $this->curl->go($url, $params, 'array');
@@ -201,84 +200,85 @@
          */
         public function create()
         {
-            // 获取待创建项ID
-            $id = $this->input->post_get('id');
-            // 获取手机号
-            $mobile = $this->input->post_get('mobile');
+            // 检查是否已传入必要参数
+            $biz_id = $this->input->get_post('id')? $this->input->get_post('id'): NULL;
+            if ( !empty($biz_id) ):
+                $data_to_validate['biz_id'] = $biz_id;
+            else:
+                redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
+            endif;
+
+            // 页面信息
+            $data = array(
+                'title' => '领取'.$this->class_name_cn,
+                'class' => $this->class_name.' create',
+                'error' => '', // 预设错误提示
+            );
+
+            // 获取商家详情信息
+            $params['id'] = $biz_id;
+            $url = api_url('biz/detail');
+            $result = $this->curl->go($url, $params, 'array');
+            if ($result['status'] === 200):
+                $data['item'] = $result['content'];
+            else:
+                // 若商家不存在，转回列表页
+                redirect(base_url($this->class_name));
+            endif;
 
             // 待验证的表单项
             $this->form_validation->set_error_delimiters('', '；');
-            $data_to_validate['biz_id'] = $id;
-            $data_to_validate['mobile'] = $mobile;
             $this->form_validation->set_data($data_to_validate);
             $this->form_validation->set_rules('biz_id', '所属商家ID', 'trim|required|is_natural_no_zero');
-            $this->form_validation->set_rules('mobile', '手机号', 'trim|required|exact_length[11]|is_natural_no_zero');
+            $this->form_validation->set_rules('mobile', '登记手机号', 'trim|required|exact_length[11]|is_natural_no_zero');
 
-            // 需要创建的数据；逐一赋值需特别处理的字段
-            $data_to_create = array(
-                //'user_id' => $this->session->user_id,
-                'user_id' => 1,
-                'biz_id' => $id,
-                'mobile' => $mobile,
-            );
-            
-                if ( !empty($id) ):
-                    $params['id'] = $id;
-                else:
-                    redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
-                endif;
+            // 若表单提交不成功
+            if ($this->form_validation->run() === FALSE):
+                $data['error'] = trim(validation_errors(), '；');
 
-                // 页面信息
-                $data = array(
-                    'title' => '领取'.$this->class_name_cn,
-                    'class' => $this->class_name.' create',
-                    'error' => '', // 预设错误提示
+                $this->load->view('templates/header', $data);
+                $this->load->view($this->view_root.'/create', $data);
+                $this->load->view('templates/footer', $data);
+
+            else:
+                // 需要创建的数据；逐一赋值需特别处理的字段
+                $data_to_create = array(
+                    //'user_id' => $this->session->user_id,
+                    'user_id' => 1,
+                    'biz_id' => $biz_id,
                 );
+                // 自动生成无需特别处理的数据
+                $data_need_no_prepare = array(
+                    'mobile',
+                );
+                foreach ($data_need_no_prepare as $name)
+                    $data_to_create[$name] = $this->input->post($name);
 
-                // 获取商家详情信息
-                $url = api_url('biz/detail');
+                // 向API服务器发送待创建数据
+                $params = $data_to_create;
+                $url = api_url($this->class_name. '/create');
                 $result = $this->curl->go($url, $params, 'array');
                 if ($result['status'] === 200):
-                    $data['item'] = $result['content'];
-                else:
-                    // 若商家不存在，转回列表页
-                    redirect(base_url($this->class_name));
-                endif;
+                    $data['title'] = $this->class_name_cn. '领取成功';
+                    $data['class'] = 'success';
+                    $data['content'] = $result['content']['message'];
+                    $data['operation'] = 'create';
+                    $data['id'] = $result['content']['id']; // 创建后的信息ID
 
-                // 若表单提交不成功
-                if ($this->form_validation->run() === FALSE):
-                    $data['error'] = validation_errors();
+                    // 转到商家会员卡详情页
+                    redirect(base_url('member_biz/detail?id='.$id));
+
+                else:
+                    // 若创建失败，则进行提示
+                    $data['error'] = $result['content']['error']['message'];
 
                     $this->load->view('templates/header', $data);
                     $this->load->view($this->view_root.'/create', $data);
                     $this->load->view('templates/footer', $data);
 
-                else:
-                    // 向API服务器发送待创建数据
-                    $params = $data_to_create;
-                    $url = api_url($this->class_name. '/create');
-                    $result = $this->curl->go($url, $params, 'array');
-                    if ($result['status'] === 200):
-                        $data['title'] = $this->class_name_cn. '领取成功';
-                        $data['class'] = 'success';
-                        $data['content'] = $result['content']['message'];
-                        $data['operation'] = 'create';
-                        $data['id'] = $result['content']['id']; // 创建后的信息ID
-
-                        // 转到商家会员卡详情页
-                        redirect(base_url('member_biz/detail?id='.$id));
-
-                    else:
-                        // 若创建失败，则进行提示
-                        $data['error'] = $result['content']['error']['message'];
-
-                        $this->load->view('templates/header', $data);
-                        $this->load->view($this->view_root.'/create', $data);
-                        $this->load->view('templates/footer', $data);
-
-                    endif;
-
                 endif;
+
+            endif;
         } // end create
 
         /**

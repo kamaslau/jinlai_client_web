@@ -1,5 +1,4 @@
 <style>
-
     <?php if ( !empty($item['ornament']['main_figure_url']) ): ?>
     body{
         background:#f2f2f3 url(<?php echo MEDIA_URL.'ornament_biz/'.$item['ornament']['main_figure_url'] ?>) no-repeat center top;
@@ -21,9 +20,13 @@
     .enterstorebtn a {color:#fff;}
 </style>
 
-	<div class="storemainlogo">
+<?php
+    // 若未指定会员卡LOGO，使用商家LOGO
+    $logo_url = MEDIA_URL. (!empty($item['ornament']['member_logo_url'])? 'ornament_biz/'. $item['ornament']['member_logo_url']: 'biz/'. $item['url_logo']);
+?>
+    <div class="storemainlogo">
 		 <a href="<?php echo base_url('biz/detail?id='.$item['biz_id']) ?>" target="_self">
-        	<img src="<?php echo MEDIA_URL.'biz/'. $item['url_logo'] ?>">
+             <img src="<?php echo $logo_url ?>">
         </a>
 	</div>
 	<div class="enterstorebtn">
@@ -31,9 +34,6 @@
 	</div>
 
 	<div class="vipcard wid670 auto">
-		<div class="storelogo fl">
-            <img src="<?php echo MEDIA_URL.'biz/'. $item['url_logo'] ?>">
-		</div>
 		<div class="rule fr">
             <?php echo $item['brief_name'] ?>
 		</div>
@@ -78,7 +78,7 @@
 			</li>
 		</ul>
 	</div>
-	<script type="text/javascript">
+	<script>
 // 		//$('.member_wrap').remove();
 // 		// debugger;
 // 		// function reurl(){ 

@@ -1,75 +1,77 @@
 <style>
+    body {padding:.2rem;}
 
-
-	/* 宽度在750像素以上的设备 */
-	@media only screen and (min-width:751px)
-	{
-		
+	.abstracts{
+		padding: .4rem .2rem;
+		background: #b5b5b6;
+		border-radius: .2rem;
 	}
-	
-	/* 宽度在960像素以上的设备 */
-	@media only screen and (min-width:961px)
-	{
-
+	.abstracts>h1{
+		text-align: center;
+		font-size: .28rem;
+		color: #fff;
+		padding-bottom: .3rem;
 	}
-
-	/* 宽度在1280像素以上的设备 */
-	@media only screen and (min-width:1281px)
-	{
-
+	.abstracts>p{
+		color: #fff;
+		font-size: .22rem;
+		line-height: .36rem;
+	}
+	.articletext{
+        font-size: .28rem;
+        color: #666464;
+		margin-top: .6rem;
+	}
+	.articletext h1{
+		text-align: center;
+		color: #3e3a39;
+		font-size: .30rem;
+		padding-bottom: .2rem;
+	}
+	.articletext time{
+		font-size: .22rem;
+		color: #9fa0a0;
+		padding-bottom: .3rem;
+		display: block;
+		float: right;
+	}
+	.articletext p{
+		line-height: .36rem;
+	}
+	.articletext h2{
+		margin-top: .5rem;
+		margin-bottom: .22rem;
+		font-size: .24rem;
+		color: #666464;
+		font-weight: bold;
+		float: left;
 	}
 </style>
 
-<base href="<?php echo $this->media_root ?>">
 
-<div id=breadcrumb>
-	<ol class="breadcrumb container">
-		<li><a href="<?php echo base_url() ?>">首页</a></li>
-		<li><a href="<?php echo base_url($this->class_name) ?>"><?php echo $this->class_name_cn ?></a></li>
-		<li class=active><?php echo $title ?></li>
-	</ol>
+<!--<div class="wid670 auto mt20 abstracts">
+	<h1>摘要</h1>
+	<p>
+		《进来》是首款需要严苛标准认证的品控网购平台,是高质量产品的输出桥梁。我们旨在联合最优秀的商家及企业，让所有的高品质的商品和服务在同一个地方(《进来》)让用户共享。
+	</p>
 </div>
+-->
 
-<div id=content class=container>
+<ul class=row>
+    <?php
+    $figure_image_urls = explode(',', $item['url_images']);
+    foreach($figure_image_urls as $url):
+        ?>
+        <li class="col-xs-6 col-sm-4 col-md-3">
+            <img src="<?php echo $url ?>">
+        </li>
+    <?php endforeach ?>
+</ul>
 
-	<?php
-		if ( !empty($error) ):
-			echo '<div class="alert alert-warning" role=alert>'.$error.'</div>';
+<!--内容区域-->
+<div class="articletext wid670 auto">
+	<h1><?php echo $item['title'] ?></h1>
+	<time><?php echo $item['time_edit'] ?></time>
 
-		else:
-	?>
-	
-	<header>
-		<h2><?php echo $item['title'] ?></h2>
-		<ul class="list-horizontal row">
-			<li class="col-xs-12 col-sm-6 col-md-3"><?php echo $item['time_edit'] ?></li>
-		</ul>
-		<div class="excerpt well"><?php echo $item['excerpt'] ?></div>
-	</header>
-
-	<section id=article-content><?php echo $item['content'] ?></section>
-
-	<dl id=list-info class=dl-horizontal>
-		<!--
-		<dt>分类</dt>
-		<dd><?php echo $item['category_id'] ?></dd>
-		-->
-		<?php if ( !empty($item['url_images']) ): ?>
-		<dt>形象图</dt>
-		<dd>
-			<ul class=row>
-				<?php
-					$figure_image_urls = explode(',', $item['url_images']);
-					foreach($figure_image_urls as $url):
-				?>
-				<li class="col-xs-6 col-sm-4 col-md-3">
-					<img src="<?php echo $url ?>">
-				</li>
-				<?php endforeach ?>
-			</ul>
-		</dd>
-		<?php endif ?>
-	</dl>
-
-	<?php endif ?>
+    <?php echo $item['content'] ?>
 </div>

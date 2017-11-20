@@ -15,27 +15,38 @@
     .ui-loader {display:none;}
     .enterstorebtn a {color:#fff;}
 </style>
+
+<?php
+// 若未指定会员卡LOGO，使用商家LOGO
+$logo_url = MEDIA_URL. (!empty($item['ornament']['member_logo_url'])? 'ornament_biz/'. $item['ornament']['member_logo_url']: 'biz/'. $item['url_logo']);
+?>
 	<div class="member_wrap">
 	<div class="storemainlogo">
         <a href="<?php echo base_url('biz/detail?id='.$item['biz_id']) ?>" target="_self">
-            <img src="<?php echo MEDIA_URL.'biz/'. $item['url_logo'] ?>">
+            <img src="<?php echo $logo_url ?>">
         </a>
 	</div>
 	<div class="enterstorebtn">
         <a href="<?php echo base_url('biz/detail?id='.$item['biz_id']) ?>" target="_self">进入店铺</a>
 	</div>
     <?php
-    if ( !empty($error) ) echo '<div class="alert alert-warning" role=alert>'.$error.'</div>'; // 若有错误提示信息则显示
     $attributes = array('class' => 'form-'.$this->class_name.'-create vipcard wid670 auto', 'role' => 'form');
     echo form_open($this->class_name.'/create?id='.$item['biz_id'], $attributes);
     ?>
 		<div class="storelogo fl">
-            <img src="<?php echo MEDIA_URL.'biz/'. $item['url_logo'] ?>">
+            <img src="<?php echo $logo_url ?>">
 		</div>
 		<div class="rule fr">
 			查看条款  <i class=" icon-Arrow"></i>
 		</div>
-		<h2>申请成为<?php echo $item['brief_name'] ?>会员</h2>
+
+        <?php
+            if ( !empty($error) ):
+                echo '<h2>'. $error. '</h2>'; // 若有错误提示信息则显示
+            else:
+                echo '<h2>申请成为'. $item['brief_name']. '会员</h2>';
+            endif;
+        ?>
 
         <div class=clearfix>
             <input name=mobile type=tel value="<?php echo $this->input->post('mobile')? set_value('mobile'): $this->input->cookie('mobile') ?>" size=11 pattern="\d{11}" placeholder="请输入您的常用手机号" required>
@@ -78,11 +89,10 @@
 		</ul>
 	</div>
 	</div>
-	<script type="text/javascript">
+	<script>
 	$('.cleardoc').click(function(){
 		setTimeout(function(){
 			$('.ui-page').eq(0).hide();
 		},800);
-		
 	})
 	</script>

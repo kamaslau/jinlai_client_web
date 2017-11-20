@@ -31,7 +31,7 @@
 
     <a class="entermember_wrap" href="<?php echo base_url('member_biz/detail?id='.$item['biz_id']) ?>" target="_self">
         <div class="member_list wid710 auto border20" style="<?php echo $inline_style ?>">
-            <div class="memberlistpic">
+            <div class="memberlistpic"<?php if (!empty($item['member_logo_url']) && !empty($item['vi_color_second'])) echo ' style="background-color:#'.$item['vi_color_second'].'"' ?>>
                 <img src="<?php echo $logo_url ?>">
             </div>
             <h1><?php echo $item['brief_name'] ?></h1>
