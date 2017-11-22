@@ -15,7 +15,6 @@
 		<i class="icon-back fl"></i>
 		会员
 		<i class="icon-huiyuan fr"></i>
-		
 	</div>
     <?php
         foreach ($items as $item):
@@ -28,7 +27,6 @@
             if ( !empty($item['member_thumb_url']) )
                 $inline_style .= 'background: url('. MEDIA_URL.'ornament_biz/'.$item['member_thumb_url']. ') no-repeat center center;';
     ?>
-
     <a class="entermember_wrap" href="<?php echo base_url('member_biz/detail?id='.$item['biz_id']) ?>" target="_self">
         <div class="member_list wid710 auto border20" style="<?php echo $inline_style ?>">
             <div class="memberlistpic"<?php if (!empty($item['member_logo_url']) && !empty($item['vi_color_second'])) echo ' style="background-color:#'.$item['vi_color_second'].'"' ?>>
@@ -41,5 +39,4 @@
             </div>
         </div>
 	</a>
-
     <?php endforeach ?>
