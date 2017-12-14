@@ -6,6 +6,9 @@
 		font-size: .2rem;
 	}
 </style>
+<?php
+    if ( ! $this->user_agent['is_desktop']):
+?>
 		<!--<footer id=footer role=contentinfo>
 			<div id=copyright>
 				<div class=container>
@@ -23,6 +26,7 @@
 
 			<a id=totop title="回到页首" href="#"><i class="fa fa-chevron-up" aria-hidden=true></i></a>
 		</footer>-->
+<?php endif ?>
 
 		<script>
 			$(function(){

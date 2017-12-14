@@ -43,24 +43,32 @@
 	<div class="tabWrap fiex">
 		<div class="tabbar auto">
 			<div class="column">
-				<div class="itemmenulist cur">
+				<a href="https://www.517ybang.com" target="_self">
+				<div class="itemmenulist">
 					<i class="icon-shouye_xiala"></i>
 					<span class="text">主页</span>
 				</div>
+				</a>
+				<a href="https://www.517ybang.com/category" target="_self">
 				<div class="itemmenulist">
-					<i class="icon iconfont icon-fenlei"></i>
+					<i class="icon-fenlei-2"></i>
 					<span class="text">分类</span>
 				</div>
+				</a>
+				<a href="https://www.517ybang.com/member_biz" target="_self">
 				<div class="itemmenulist">
-					<i class="icon iconfont icon-fenlei1"></i>
-					<span class="text">发现</span>
+					<i class="icon-huiyuan-2"></i>
+					<span class="text">会员</span>
 				</div>
+				</a>
+				<a href="https://www.517ybang.com/cart" target="_self">
 				<div class="itemmenulist">
-					<i class="icon iconfont icon-gouwuche"></i>
+					<i class="icon-shop"></i>
 					<span class="text">购物车</span>
 				</div>
+				</a>
 				<div class="itemmenulist">
-					<i class="icon iconfont icon-wode"></i>
+					<i class="icon-wode-2"></i>
 					<span class="text">我的</span>
 				</div>
 			</div>
