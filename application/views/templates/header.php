@@ -1,18 +1,12 @@
 <?php
 	defined('BASEPATH') OR exit('No direct script access allowed');
 
-	// 检查当前设备信息
-	$user_agent = $_SERVER['HTTP_USER_AGENT'];
-	$is_wechat = strpos($user_agent, 'MicroMessenger')? TRUE: FALSE;
-	$is_ios = strpos($user_agent, 'iPhone')? TRUE: FALSE;
-	$is_android = strpos($user_agent, 'Android')? TRUE: FALSE;
-
-	// 生成SEO相关变量，一般为页面特定信息与在config/config.php中设置的站点通用信息拼接
-	$title = isset($title)? $title.' - '.SITE_NAME: SITE_NAME.' - '.SITE_SLOGAN;
-	$keywords = isset($keywords)? $keywords.',': NULL;
-	$keywords .= SITE_KEYWORDS;
-	$description = isset($description)? $description: NULL;
-	$description .= SITE_DESCRIPTION;
+    // 生成SEO相关变量，一般为页面特定信息与在config/config.php中设置的站点通用信息拼接
+    $title = isset($title)? $title: SITE_NAME.' - '.SITE_SLOGAN;
+    $keywords = isset($keywords)? $keywords.',': NULL;
+    $keywords .= SITE_KEYWORDS;
+    $description = isset($description)? $description: NULL;
+    $description .= SITE_DESCRIPTION;
 ?>
 <!doctype html>
 <html lang=zh-cn>
@@ -23,19 +17,16 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20171122">
+		<meta name=version content="revision20171214">
 		<meta name=author content="刘亚杰Kamas,青岛意帮网络科技有限公司产品部&amp;技术部">
 		<meta name=copyright content="进来商城,青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
 
 		<meta name=viewport content="width=device-width,user-scalable=0">
-		<!--
-		<meta name=viewport content="width=750,user-scalable=0">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		-->
 
-		<?php if ($is_wechat): ?>
-		<script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+		<?php if ($this->user_agent['is_wechat']): ?>
+		<script src="https://res.wx.qq.com/open/js/jweixin-1.3.0.js"></script>
 		<script>
 			<?php
 				function curl($url, $params = NULL, $return = 'array', $method = 'get')
@@ -142,7 +133,7 @@
 
 				// 分享到朋友圈
 				wx.onMenuShareTimeline({
-				    title: '分享一个好平台 <?php echo $title ?>', // 分享标题
+				    title: '<?php echo $title ?>', // 分享标题
 				    link: '<?php echo 'https://'. $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] ?>', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
 				    imgUrl: '<?php echo base_url('/media/icon120@3x.png') ?>', // 分享图标
 				    success: function () {
@@ -157,7 +148,7 @@
 
 				// 分享给朋友
 				wx.onMenuShareAppMessage({
-				    title: '分享一个好平台 <?php echo $title ?>', // 分享标题
+				    title: '<?php echo $title ?>', // 分享标题
 				    desc: '<?php echo $description ?>', // 分享描述
 				    link: '<?php echo 'https://'. $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] ?>', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
 				    imgUrl: '<?php echo base_url('/media/icon120@3x.png') ?>', // 分享图标
@@ -212,37 +203,25 @@
 			});
 		</script>
 		<?php endif ?>
-		
-		<script src="<?php echo CDN_URL ?>js/jquery-2.1.4.min.js"></script>
-		<script src="<?php echo CDN_URL ?>js/jqm.js"></script>
-		<script src="<?php echo CDN_URL ?>js/rem.js"></script>
-		<script src="<?php echo CDN_URL ?>js/swiper.min.js"></script>
-		<script src="<?php echo CDN_URL ?>js/jquery.easing.min.js"></script>
-		<script src="<?php echo CDN_URL ?>js/lazy-load-img.js"></script>
-		<script src="<?php echo CDN_URL ?>js/shopping.js"></script>
-	
-		<script src="<?php echo CDN_URL ?>js/index.js"></script>
-			<script src="<?php echo CDN_URL ?>js/fsbanner.js"></script>
-		<!--<script src="<?php echo CDN_URL ?>js/educationclassification.js"></script>-->
-		
+
 		<!--清除浏览器默认样式css-->
-		<link href="<?php echo CDN_URL ?>css/normal.css" rel="stylesheet"/>
+		<link href="<?php echo CDN_URL ?>css/normal.css" rel="stylesheet">
 		<!--公用部分css-->
-		<link href="<?php echo CDN_URL ?>css/common.css" rel="stylesheet"/>
-		<link href="<?php echo CDN_URL ?>css/base.css" rel="stylesheet"/>
-		<link href="<?php echo CDN_URL ?>css/swiper.css" rel="stylesheet"/>
-		<link href="<?php echo CDN_URL ?>css/index.css" rel="stylesheet"/>
-		<link href="<?php echo CDN_URL ?>css/alert.css" rel="stylesheet"/>
+		<link href="<?php echo CDN_URL ?>css/common.css" rel="stylesheet">
+		<link href="<?php echo CDN_URL ?>css/base.css" rel="stylesheet">
+		<link href="<?php echo CDN_URL ?>css/swiper.css" rel="stylesheet">
+		<link href="<?php echo CDN_URL ?>css/index.css" rel="stylesheet">
+		<link href="<?php echo CDN_URL ?>css/alert.css" rel="stylesheet">
 		<style>
 			body{
 				padding-bottom: 1rem;
 			}
 
-			.swiper-pagination-bullet-active{
-				background: orange !important;
+			.pagination-bullet-active{
+				background:#606060 !important ;
 			}
 			.swiper-pagination-bullet {
-			    background: #ccc;
+			    background: #eaeaea;
 		}
 		.swiper-container-horizontal > .swiper-pagination {
 		    bottom: -2px;
@@ -264,34 +243,40 @@
 		<link rel=stylesheet media=all href="<?php echo CDN_URL ?>font-awesome/css/font-awesome.min.css">
 		<link rel=stylesheet media=all href="/css/style.css">
 		-->
-
-		<link rel="shortcut icon" href="<?php echo CDN_URL ?>icon/jinlai_client/icon28@3x.png">
-		<link rel=apple-touch-icon href="<?php echo CDN_URL ?>icon/jinlai_client/icon120@3x.png">
-
-		<link rel=canonical href="<?php echo current_url() ?>">
-
-		<meta name=format-detection content="telephone=yes, address=no, email=no">
-		<meta name=apple-itunes-app content="app-id=1066224229">
-		<script>
+        <script>
             var user_agent = new Object();
-            user_agent.is_wechat = <?php echo ($is_wechat === TRUE)? 'true': 'false' ?>;
-            user_agent.is_ios = <?php echo ($is_ios === TRUE)? 'true': 'false' ?>;
-            user_agent.is_android = <?php echo ($is_android === TRUE)? 'true': 'false' ?>;
+            user_agent.is_wechat = <?php echo ($this->user_agent['is_wechat'])? 'true': 'false' ?>;
+            user_agent.is_ios = <?php echo ($this->user_agent['is_ios'])? 'true': 'false' ?>;
+            user_agent.is_android = <?php echo ($this->user_agent['is_android'])? 'true': 'false' ?>;
         </script>
-	</head>
+
+        <?php if ($this->user_agent['is_desktop']): ?>
+        <link rel="shortcut icon" href="<?php echo CDN_URL ?>icon/jinlai_client/icon28@3x.png">
+        <link rel=canonical href="<?php echo current_url() ?>">
+        <?php else: ?>
+        <link rel=apple-touch-icon href="<?php echo CDN_URL ?>icon/jinlai_client/icon120@3x.png">
+        <meta name=format-detection content="telephone=yes, address=no, email=no">
+        <meta name=apple-itunes-app content="app-id=1066224229">
+        <?php endif ?>
+
 <?php
-	// 将head内容立即输出，让用户浏览器立即开始请求head中各项资源，提高页面加载速度
-	ob_flush();flush();
+    // 将head内容立即输出，让用户浏览器立即开始请求head中各项资源，提高页面加载速度
+    ob_flush();flush();
 
     // 生成body的class
-	$body_class = ( isset($class) )? $class: NULL;
-    $body_class .= ($is_wechat === TRUE)? ' is_wechat': NULL;
-    $body_class .= ($is_ios === TRUE)? ' is_ios': NULL;
-    $body_class .= ($is_android === TRUE)? ' is_android': NULL;
+    $body_class = ( isset($class) )? $class: NULL;
+    $body_class .= ($this->user_agent['is_wechat'] === TRUE)? ' is_wechat': NULL;
+    $body_class .= ($this->user_agent['is_ios'] === TRUE)? ' is_ios': NULL;
+    $body_class .= ($this->user_agent['is_android'] === TRUE)? ' is_android': NULL;
+    $body_class .= ($this->user_agent['is_mobile'])? ' is_mobile': NULL; // 移动端设备
+
+    $body_class .= ($this->user_agent['is_macos'] === TRUE)? ' is_macos': NULL;
+    $body_class .= ($this->user_agent['is_windows'] === TRUE)? ' is_windows': NULL;
+    $body_class .= ($this->user_agent['is_desktop'])? ' is_desktop': NULL; // 非移动端设备
 ?>
 
 <!-- 内容开始 -->
-	<body<?php echo ( !empty($body_class) )? ' class="'.$body_class.'"': NULL ?>>
+    <body<?php echo ( !empty($body_class) )? ' class="'.$body_class.'"': NULL ?>>
 		<noscript>
 			<p>您的浏览器功能加载出现问题，请刷新浏览器重试；如果仍然出现此提示，请考虑更换浏览器。</p>
 		</noscript>
@@ -301,12 +286,12 @@
 	 * APP、微信中调用webview时配合URL按需显示相应部分
 	 * 此处以在APP中以WebView打开页面时不显示页面header部分为例
 	 */
-	if (($is_ios + $is_android + $is_wechat) === FALSE):
+	if ( $this->user_agent['is_desktop']):
 ?>
 		<header id=header role=banner>
 			<div class=container>
 				<h1>
-					<a id=logo title="<?php echo SITE_NAME ?>" href="<?php echo base_url() ?>"><?php echo SITE_NAME ?></a>
+					<a id=logo class=none title="<?php echo SITE_NAME ?>" href="<?php echo base_url() ?>"><?php echo SITE_NAME ?></a>
 				</h1>
 
 				<a id=locate class=nav-icon>
@@ -419,6 +404,16 @@
 
 		<main id=maincontainer role=main>
 		-->
+		<script src="<?php echo CDN_URL ?>js/jquery-2.1.4.min.js"></script>
+		<script src="<?php echo CDN_URL ?>js/rem.js"></script>
+		<script src="<?php echo CDN_URL ?>js/swiper.min.js"></script>
+		<script src="<?php echo CDN_URL ?>js/jquery.easing.min.js"></script>
+		<script src="<?php echo CDN_URL ?>js/lazy-load-img.js"></script>
+		<script src="<?php echo CDN_URL ?>js/shopping.js"></script>
+		<script src="<?php echo CDN_URL ?>js/index.js"></script>
+		<script src="<?php echo CDN_URL ?>js/fsbanner.js"></script>
+		<script src="<?php echo CDN_URL ?>js/jquery.fly.min.js"></script>
+		</body>
 		<style>
 			.ui-loader{
 				display: none;

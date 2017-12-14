@@ -14,8 +14,7 @@
 		 * 可作为列表筛选条件的字段名；可在具体方法中根据需要删除不需要的字段并转换为字符串进行应用，下同
 		 */
 		protected $names_to_sort = array(
-			'longitude', 'latitude', 'nation', 'province', 'city', 'county',
-			'time_create', 'time_delete', 'time_edit', 'creator_id', 'operator_id', 'status',
+			'longitude', 'latitude', 'nation', 'province', 'city', 'county', 'time_create', 'time_delete', 'time_edit', 'creator_id', 'operator_id', 'status',
 		);
 
 		public function __construct()
@@ -29,14 +28,7 @@
 			$this->id_name = 'biz_id'; // 还有这里，OK，这就可以了
 			$this->view_root = $this->class_name; // 视图文件所在目录
 			$this->media_root = MEDIA_URL. $this->class_name.'/'; // 媒体文件所在目录
-		}
-
-		public function __destruct()
-		{
-			parent::__destruct();
-			// 调试信息输出开关
-			// $this->output->enable_profiler(TRUE);
-		}
+		} // end __construct
 		
 		/**
 		 * 列表页
@@ -103,25 +95,31 @@
 				if ($result['status'] === 200):
 					$data['items'] = $result['content'];
 				else:
+                    $data['items'] = array();
 					$data['error'] = $result['content']['error']['message'];
 				endif;
 				
 				// 获取该商家店铺装修方案
-				if ( !empty($data['item']['ornament_id']) ):
-					$params['biz_id'] = $id;
-					$params['id'] = $data['item']['ornament_id'];
-					$url = api_url('ornament_biz/detail');
-					$result = $this->curl->go($url, $params, 'array');
-					if ($result['status'] === 200):
-						$data['ornament'] = $result['content'];
-					else:
-						$data['error'] = $result['content']['error']['message'];
-					endif;
-					
-					// 获取该商家店铺装修商品；忽略是否下架或删除
-					if ( !empty( $data['ornament']['home_m1_ids'] ) ):
+				if ( !empty($data['item']['ornament']) ):
+                    $ornament = $data['item']['ornament'];
+
+                    // 获取顶部模块装修商品；忽略是否下架或删除
+                    if ( !empty( $ornament['home_m0_ids'] ) ):
+                        $params['biz_id'] = $id;
+                        $params['ids'] = $ornament['home_m0_ids'];
+                        $url = api_url('item/index');
+                        $result = $this->curl->go($url, $params, 'array');
+                        if ($result['status'] === 200):
+                            $data['item']['m0_items'] = $result['content'];
+                        else:
+                            $data['error'] = $result['content']['error']['message'];
+                        endif;
+                    endif;
+
+					// 获取模块一装修商品；忽略是否下架或删除
+					if ( !empty( $ornament['home_m1_ids'] ) ):
 						$params['biz_id'] = $id;
-						$params['ids'] = $data['ornament']['home_m1_ids'];
+						$params['ids'] = $ornament['home_m1_ids'];
 						$url = api_url('item/index');
 						$result = $this->curl->go($url, $params, 'array');
 						if ($result['status'] === 200):
@@ -131,10 +129,10 @@
 						endif;
 					endif;
 					
-					// 获取该商家店铺装修商品；忽略是否下架或删除
-					if ( !empty( $data['ornament']['home_m2_ids'] ) ):
+					// 获取模块二装修商品；忽略是否下架或删除
+					if ( !empty( $ornament['home_m2_ids'] ) ):
 						$params['biz_id'] = $id;
-						$params['ids'] = $data['ornament']['home_m2_ids'];
+						$params['ids'] = $ornament['home_m2_ids'];
 						$url = api_url('item/index');
 						$result = $this->curl->go($url, $params, 'array');
 						if ($result['status'] === 200):
@@ -144,10 +142,10 @@
 						endif;
 					endif;
 
-					// 获取该商家店铺装修商品；忽略是否下架或删除
-					if ( !empty( $data['ornament']['home_m3_ids'] ) ):
+					// 获取模块三装修商品；忽略是否下架或删除
+					if ( !empty( $ornament['home_m3_ids'] ) ):
 						$params['biz_id'] = $id;
-						$params['ids'] = $data['ornament']['home_m3_ids'];
+						$params['ids'] = $ornament['home_m3_ids'];
 						$url = api_url('item/index');
 						$result = $this->curl->go($url, $params, 'array');
 						if ($result['status'] === 200):

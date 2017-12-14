@@ -4,7 +4,7 @@
 	/**
 	 * MY_Controller 基础控制器类
 	 *
-	 * 针对API服务，对Controller类进行了扩展
+	 * 针对客户端类型应用，对Controller类进行了扩展
 	 *
 	 * @version 1.0.0
 	 * @author Kamas 'Iceberg' Lau <kamaslau@outlook.com>
@@ -47,14 +47,17 @@
 		/* 需要显示的字段 */
 		public $data_to_display;
 
+        // 访问设备信息
+        public $user_agent = array();
+
 		// 客户端类型
-		protected $app_type;
+        public $app_type;
 
 		// 客户端版本号
-		protected $app_version;
+        public $app_version;
 
 		// 设备操作系统平台ios/android；非移动客户端传空值
-		protected $device_platform;
+        public $device_platform;
 
 		// 设备唯一码；全小写
 		protected $device_number;
@@ -75,23 +78,41 @@
 			$this->app_version = '0.0.1';
 			$this->device_platform = 'web';
 			$this->device_number = '';
-	    }
 
-		/**
-		 * 截止3.1.3为止，CI_Controller类无析构函数，所以无需继承相应方法
-		 */
-		public function __destruct()
-		{
+            // 检查当前设备信息
+            $this->user_agent_determine();
+        } // end __construct
 
-		}
+        /**
+         * 截止3.1.3为止，CI_Controller类无析构函数，所以无需继承相应方法
+         */
+        public function __destruct()
+        {
+            // 如果已经打开测试模式，则输出调试信息
+            if ($this->input->post_get('test_mode') === 'on')
+                $this->output->enable_profiler(TRUE);
+        } // end __destruct
 
-		// 输出JSON
-		protected function output_json()
-		{
-			header("Content-type:application/json;charset=utf-8");
-			$output_json = json_encode($this->result);
-			echo $output_json;
-		}
+        /**
+         * 检查访问设备类型
+         */
+        protected function user_agent_determine()
+        {
+            // 获取当前设备信息
+            $user_agent = $_SERVER['HTTP_USER_AGENT'];
+
+            // 判断是否为移动端
+            $this->user_agent['is_wechat'] = strpos($user_agent, 'MicroMessenger/')? TRUE: FALSE;
+            $this->user_agent['is_ios'] = strpos($user_agent, 'like Mac OS')? TRUE: FALSE;
+            $this->user_agent['is_android'] = strpos($user_agent, 'Android;')? TRUE: FALSE;
+            $this->user_agent['is_mobile'] = ($this->user_agent['is_wechat'] || $this->user_agent['is_ios'] || $this->user_agent['is_android'])? TRUE: FALSE; // 移动端设备
+
+            // 判断是否为非移动端
+            $this->user_agent['is_macos'] = strpos($user_agent, 'Macintosh;')? TRUE: FALSE;
+            $this->user_agent['is_linux'] = strpos($user_agent, 'Linux;')? TRUE: FALSE;
+            $this->user_agent['is_windows'] = strpos($user_agent, 'Windows ')? TRUE: FALSE;
+            $this->user_agent['is_desktop'] = ( ! $this->user_agent['is_mobile'])? TRUE: FALSE; // 非移动端设备
+        } // user_agent_determine
 
 		/**
 		 * 签名有效性检查
@@ -243,28 +264,82 @@
 			endif;
 		}
 
-		// 将数组输出为key:value格式，主要用于在postman等工具中进行api测试
-		protected function key_value($params)
-		{
-			echo 'app_type:'.$this->app_type.'<br>';
-			echo 'skip_sign:please<br>';
-			foreach ($params as $key => $value):
-				echo $key .':' .$value ."<br>";
-			endforeach;
-		}
+        /**
+         * 计算特定表数据量
+         *
+         * @params string $table_name 需要计数的表名
+         * @params array $conditions 筛选条件
+         * @return int/boolean
+         */
+        protected function count_table($table_name, $conditions = NULL)
+        {
+            $params['user_id'] = 'NULL'; // 默认可获取不属于当前用户的数据
 
-		// 拆分CSV为数组
-		protected function explode_csv($text, $seperator = ',')
-		{
-			// 清理可能存在的冗余分隔符及空字符
-			$text = trim($text);
-			$text = trim($text, $seperator);
+            // 获取筛选条件
+            if ( !empty($conditions) )
+                $params = array_merge($params, $conditions);
 
-			// 拆分文本为数组并清理可被转换为布尔型FALSE的数组元素（空数组、空字符、NULL、0、’0‘等）
-			$array = array_filter( explode(',', $text) );
+            // 从API服务器获取相应列表信息
+            $url = api_url($table_name. '/count');
+            $result = $this->curl->go($url, $params, 'array');
+            if ($result['status'] === 200):
+                $count = $result['content']['count'];
+            else:
+                $count = 0; // 若获取失败则返回“0”
+            endif;
 
-			return $array;
-		} // end explode_csv
+            return $count;
+        } // count_table
+
+        // 将数组输出为key:value格式，主要用于在postman等工具中进行api测试
+        protected function key_value($params)
+        {
+            foreach (array_filter($params) as $key => $value):
+                echo $key .':' .$value ."\n";
+            endforeach;
+        } // end key_value
+
+        /**
+         * 拆分CSV为数组
+         */
+        protected function explode_csv($text, $seperator = ',')
+        {
+            // 清理可能存在的空字符、冗余分隔符
+            $text = trim($text);
+            $text = trim($text, $seperator);
+
+            // 拆分文本为数组并清理可被转换为布尔型FALSE的数组元素（空数组、空字符、NULL、0、’0‘等）
+            $array = array_filter( explode(',', $text) );
+
+            return $array;
+        } // end explode_csv
+
+        /**
+         * 获取批量操作时的ID数组
+         *
+         * @return array $ids 解析为数组的ID们
+         */
+        protected function parse_ids_array()
+        {
+            // 检查是否已传入必要参数
+            if ( !empty($this->input->get_post('ids')) ):
+                $ids = $this->input->get_post('ids');
+
+                // 将字符串格式转换为数组格式
+                if ( !is_array($ids) ):
+                    $ids = explode(',', $ids);
+                endif;
+
+            elseif ( !empty($this->input->post('ids[]')) ):
+                $ids = $this->input->post('ids[]');
+
+            else:
+                redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
+
+            endif;
+
+            return $ids;
+        } // end parse_ids_array
 
 		// 解析购物车
 		protected function cart_decode()
@@ -335,12 +410,13 @@
 				endif;
 
 			endif;
-		}
+		} // end in_cart
 
 		// 获取商家列表
 		protected function list_biz()
 		{
 			// 从API服务器获取相应列表信息
+            $params['user_id'] = 'NULL'; // 可获取不属于当前用户的数据
 			$params['time_delete'] = 'NULL';
 
 			$url = api_url('biz/index');
@@ -352,13 +428,14 @@
 			endif;
 
 			return $data['items'];
-		}
+		} // end list_biz
 		
 		// 获取特定商家信息
 		protected function get_biz($id)
 		{
 			// 从API服务器获取相应列表信息
 			$params['id'] = $id;
+            $params['user_id'] = 'NULL'; // 可获取不属于当前用户的数据
 			$params['time_delete'] = 'NULL';
 
 			$url = api_url('biz/detail');
@@ -370,13 +447,14 @@
 			endif;
 
 			return $data['item'];
-		}
+		} // end get_biz
 
 		// 获取特定商品信息
 		protected function get_item($id)
 		{
 			// 从API服务器获取相应列表信息
 			$params['id'] = $id;
+            $params['user_id'] = 'NULL'; // 可获取不属于当前用户的数据
 			$params['time_delete'] = 'NULL';
 
 			$url = api_url('item/detail');
@@ -388,14 +466,14 @@
 			endif;
 			
 			return $data['item'];
-		}
+		} // end get_item
 		
 		// 获取商品列表
 		protected function list_sku($item_id = NULL)
 		{	
-			if ( !empty($item_id) ):
-				$params['item_id'] = $item_id;
-			endif;
+			if ( !empty($item_id) )
+			    $params['item_id'] = $item_id;
+            $params['user_id'] = 'NULL'; // 可获取不属于当前用户的数据
 			$params['time_delete'] = 'NULL';
 
 			// 从API服务器获取相应列表信息
@@ -408,13 +486,14 @@
 			endif;
 			
 			return $data['items'];
-		}
+		} // end list_sku
 
 		// 获取特定商品信息
 		protected function get_sku($id)
 		{
 			// 从API服务器获取相应列表信息
 			$params['id'] = $id;
+            $params['user_id'] = 'NULL'; // 默认可获取不属于当前用户的数据
 			$params['time_delete'] = 'NULL';
 
 			$url = api_url('sku/detail');
@@ -426,12 +505,13 @@
 			endif;
 			
 			return $data['item'];
-		}
+		} // end get_sku
 		
 		// 获取品牌列表
 		protected function list_brand()
 		{
 			// 从API服务器获取相应列表信息
+            $params['user_id'] = 'NULL'; // 默认可获取不属于当前用户的数据
 			$params['time_delete'] = 'NULL';
 
 			$url = api_url('brand/index');
@@ -443,13 +523,14 @@
 			endif;
 
 			return $data['items'];
-		}
+		} // end list_brand
 		
 		// 获取特定品牌信息
 		protected function get_brand($id)
 		{
 			// 从API服务器获取相应列表信息
 			$params['id'] = $id;
+            $params['user_id'] = 'NULL'; // 默认可获取不属于当前用户的数据
 			$params['time_delete'] = 'NULL';
 
 			$url = api_url('brand/detail');
@@ -461,30 +542,33 @@
 			endif;
 			
 			return $data['item'];
-		}
+		} // end get_brand
 
-		// 获取系统分类列表
-		protected function list_category()
-		{
-			// 从API服务器获取相应列表信息
-			$params['time_delete'] = 'NULL';
+        // 获取系统分类列表
+        protected function list_category($level = 1)
+        {
+            $params['user_id'] = 'NULL'; // 默认可获取不属于当前用户的数据
+            $params['time_delete'] = 'NULL';
+            $params['level'] = $level;
 
-			$url = api_url('item_category/index');
-			$result = $this->curl->go($url, $params, 'array');
-			if ($result['status'] === 200):
-				$data['items'] = $result['content'];
-			else:
-				$data['items'] = NULL;
-			endif;
-			
-			return $data['items'];
-		}
+            // 从API服务器获取相应列表信息
+            $url = api_url('item_category/index');
+            $result = $this->curl->go($url, $params, 'array');
+            if ($result['status'] === 200):
+                $data['items'] = $result['content'];
+            else:
+                $data['items'] = NULL;
+            endif;
+
+            return $data['items'];
+        } // end list_category
 		
 		// 获取特定系统分类信息
 		protected function get_category($id)
 		{
 			// 从API服务器获取相应列表信息
 			$params['id'] = $id;
+            $params['user_id'] = 'NULL'; // 默认可获取不属于当前用户的数据
 			$params['time_delete'] = 'NULL';
 			
 			$url = api_url('item_category/detail');
@@ -496,17 +580,13 @@
 			endif;
 			
 			return $data['item'];
-		}
+		} // end get_category
 		
 		// 获取商家分类列表
 		protected function list_category_biz($id = NULL)
 		{
-			if ( !empty($this->session->biz_id) ):
-				$params['biz_id'] = $this->session->biz_id;
-			else:
-				$params['biz_id'] = $id;
-			endif;
-			
+		    $params['biz_id'] = $id;
+            $params['user_id'] = 'NULL'; // 默认可获取不属于当前用户的数据
 			$params['time_delete'] = 'NULL';
 
 			// 从API服务器获取相应列表信息
@@ -519,13 +599,14 @@
 			endif;
 			
 			return $data['items'];
-		}
+		} // end list_category_biz
 		
 		// 获取特定商家分类信息
 		protected function get_category_biz($id)
 		{
 			// 从API服务器获取相应列表信息
 			$params['id'] = $id;
+            $params['user_id'] = 'NULL'; // 默认可获取不属于当前用户的数据
 			$params['time_delete'] = 'NULL';
 
 			$url = api_url('item_category_biz/detail');
@@ -537,13 +618,14 @@
 			endif;
 			
 			return $data['item'];
-		}
+		} // end get_category_biz
 		
 		// 获取店内活动详情
 		protected function get_promotion_biz($id)
 		{
 			// 从API服务器获取相应列表信息
 			$params['id'] = $id;
+            $params['user_id'] = 'NULL'; // 默认可获取不属于当前用户的数据
 			$params['time_delete'] = 'NULL';
 
 			$url = api_url('promotion_biz/detail');
@@ -555,13 +637,14 @@
 			endif;
 			
 			return $data['item'];
-		}
+		} // end get_promotion_biz
 		
 		// 获取特定商家运费模板详情
 		protected function get_freight_template_biz($id)
 		{
 			// 从API服务器获取相应列表信息
 			$params['id'] = $id;
+            $params['user_id'] = 'NULL'; // 默认可获取不属于当前用户的数据
 			$params['time_delete'] = 'NULL';
 
 			$url = api_url('freight_template_biz/detail');
@@ -573,13 +656,12 @@
 			endif;
 			
 			return $data['item'];
-		}
+		} // end get_freight_template_biz
 
 		// 获取当前用户可用地址列表
 		protected function list_address()
 		{
 			// 从API服务器获取相应列表信息
-			$params['user_id'] = $this->session->user_id;
 			$params['time_delete'] = 'NULL';
 
 			$url = api_url('address/index');
@@ -591,33 +673,9 @@
 			endif;
 
 			return $data['items'];
-		}
-		
-		/**
-		 * count_table
-		 *
-		 * @params string $table_name 需要计数的表名
-		 * @params array $conditions 筛选条件
-		 * @return int/boolean
-		 **/
-		protected function count_table($table_name, $conditions = NULL)
-		{
-			// 获取筛选条件
-			if ( !empty($conditions) ):
-				$params = $conditions;
-			endif;
-			
-			$params['time_delete'] = 'NULL';
+		} // end list_address
 
-			// 从API服务器获取相应列表信息
-			$url = api_url($table_name. '/count');
-			$result = $this->curl->go($url, $params, 'array');
-			if ($result['status'] === 200):
-				$count = $result['content']['count'];
-			else:
-				$count = 0; // 若获取失败则返回“0”
-			endif;
+    } // end class MY_Controller
 
-			return $count;
-		}
-	}
+/* End of file MY_Controller.php */
+/* Location: ./application/controllers/MY_Controller.php */
