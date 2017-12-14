@@ -26,8 +26,7 @@
 			$this->media_root = MEDIA_URL. 'item/'; // 媒体文件所在目录
 
 			// 从API获取当前用户购物车项
-			if ($sync_result !== FALSE)
-				$this->session->cart = $this->sync_down();
+			$this->session->cart = $this->sync_down();
 		}
 
 		/**

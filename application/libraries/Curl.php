@@ -2,7 +2,7 @@
 	defined('BASEPATH') OR exit('此文件不可被直接访问');
 
 	/**
-	* Curl类
+	* Curl 类
 	*
 	* @version 1.0.0
 	* @author Kamas 'Iceberg' Lau <kamaslau@outlook.com>
@@ -30,7 +30,16 @@
 
 			// 需要通过POST方式发送的数据
 			if ($method === 'post'):
-				$params['app_type'] = 'client'; // 应用类型默认为client
+                // 引用原始CodeIgniter对象
+                $this->CI =& get_instance();
+
+                // 发送当前应用类型
+                $params['app_type'] = $this->CI->app_type;
+
+                // 若未未传入用户ID，则发送当前用户ID（若有）
+                if ( ! isset($params['user_id']))
+                    $params['user_id'] = $this->CI->session->biz_id;
+
 				curl_setopt($curl, CURLOPT_POST, count($params));
 				curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
 			endif;
