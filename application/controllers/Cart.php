@@ -30,15 +30,6 @@
 		}
 
 		/**
-		 * 截止3.1.3为止，CI_Controller类无析构函数，所以无需继承相应方法
-		 */
-		public function __destruct()
-		{
-			// 调试信息输出开关
-			//$this->output->enable_profiler(TRUE);
-		}
-
-		/**
 		 * 列表页
 		 */
 		public function index()

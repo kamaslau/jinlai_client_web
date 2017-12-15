@@ -62,15 +62,6 @@
 		}
 
 		/**
-		 * 截止3.1.3为止，CI_Controller类无析构函数，所以无需继承相应方法
-		 */
-		public function __destruct()
-		{
-			// 调试信息输出开关
-			//$this->output->enable_profiler(TRUE);
-		}
-
-		/**
 		 * 列表页
 		 */
 		public function index()
@@ -83,7 +74,6 @@
 
 			// 筛选条件
 			$condition['time_delete'] = 'NULL';
-			$condition['user_id'] = $this->session->user_id; // 仅可获取本人的数据
 
 			// 排序条件
 			$order_by = NULL;
@@ -147,9 +137,7 @@
 
 			else:
 				// 需要创建的数据；逐一赋值需特别处理的字段
-				$data_to_create = array(
-					'user_id' => $this->session->user_id,
-				);
+				$data_to_create = array();
 				// 自动生成无需特别处理的数据
 				$data_need_no_prepare = array(
 					'brief', 'fullname', 'mobile', 'province', 'city', 'county', 'street', 'longitude', 'latitude', 'zipcode',
@@ -251,7 +239,6 @@
 			else:
 				// 需要编辑的数据；逐一赋值需特别处理的字段
 				$data_to_edit = array(
-					'user_id' => $this->session->user_id,
 					'id' => $id,
 					//'name' => $this->input->post('name')),
 				);
@@ -348,7 +335,6 @@
 				else:
 					// 从API服务器获取相应详情信息
 					$params['id'] = $id;
-					$params['user_id'] = $this->session->user_id; // 仅可修改本人的数据
 					$url = api_url($this->class_name. '/detail');
 					$result = $this->curl->go($url, $params, 'array');
 					if ($result['status'] === 200):
@@ -390,7 +376,6 @@
 
 				// 需要存入数据库的信息
 				$data_to_edit = array(
-					'user_id' => $this->session->user_id,
 					'ids' => $ids,
 					'password' => $password,
 					'operation' => $op_view, // 操作名称
@@ -446,7 +431,6 @@
 
 			// 需要编辑的数据
 			$data_to_edit = array(
-				'user_id' => $this->session->user_id,
 				'id' => $this->session->user_id,
 				'name' => 'address_id',
 				'value' => $id,

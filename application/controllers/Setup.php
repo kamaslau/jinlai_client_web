@@ -2,7 +2,7 @@
 	defined('BASEPATH') OR exit('此文件不可被直接访问');
 
 	/**
-	 * Setup 设置类
+	 * Setup 设置页类
 	 *
 	 * @version 1.0.0
 	 * @author Kamas 'Iceberg' Lau <kamaslau@outlook.com>
@@ -24,15 +24,6 @@
 			$this->id_name = 'user_id'; // 还有这里，OK，这就可以了
 			$this->view_root = $this->class_name; // 视图文件所在目录
 			$this->media_root = MEDIA_URL. 'user/'; // 媒体文件所在目录
-		}
-		
-		/**
-		 * 截止3.1.3为止，CI_Controller类无析构函数，所以无需继承相应方法
-		 */
-		public function __destruct()
-		{
-			// 调试信息输出开关
-			//$this->output->enable_profiler(TRUE);
 		}
 
 		/**

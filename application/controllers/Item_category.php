@@ -63,15 +63,6 @@
 				'description' => '描述',
 			);
 		}
-		
-		/**
-		 * 截止3.1.3为止，CI_Controller类无析构函数，所以无需继承相应方法
-		 */
-		public function __destruct()
-		{
-			// 调试信息输出开关
-			// $this->output->enable_profiler(TRUE);
-		}
 
 		/**
 		 * 列表页
@@ -80,7 +71,7 @@
 		{
 			// 页面信息
 			$data = array(
-				'title' => $this->class_name_cn. '列表',
+				'title' => $this->class_name_cn,
 				'class' => $this->class_name.' index',
 			);
 

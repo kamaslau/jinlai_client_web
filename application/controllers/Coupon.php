@@ -43,15 +43,6 @@
 		}
 
 		/**
-		 * 截止3.1.3为止，CI_Controller类无析构函数，所以无需继承相应方法
-		 */
-		public function __destruct()
-		{
-			// 调试信息输出开关
-			// $this->output->enable_profiler(TRUE);
-		}
-
-		/**
 		 * 列表页
 		 */
 		public function index()
@@ -63,8 +54,6 @@
 			);
 
 			// 筛选条件
-			$condition['biz_id'] = $this->session->biz_id;
-			$condition['user_id'] = $this->session->user_id;
 			$condition['time_delete'] = 'NULL';
 			// （可选）遍历筛选条件
 			foreach ($this->names_to_sort as $sorter):
@@ -97,8 +86,6 @@
 			$id = $this->input->get_post('id')? $this->input->get_post('id'): NULL;
 			if ( !empty($id) ):
 				$params['id'] = $id;
-				$condition['biz_id'] = $this->session->biz_id;
-				$condition['user_id'] = $this->session->user_id;
 			else:
 				redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
 			endif;
@@ -151,14 +138,9 @@
 			else:
 				// 需要创建的数据；逐一赋值需特别处理的字段
 				$data_to_create = array(
-					'user_id' => $this->session->user_id,
+					'template_id' => $this->input->get_post('template_id'),
+                    'combo_id' => $this->input->get_post('combo_id'),
 				);
-				// 自动生成无需特别处理的数据
-				$data_need_no_prepare = array(
-					'template_id', 'combo_id',
-				);
-				foreach ($data_need_no_prepare as $name)
-					$data_to_create[$name] = $this->input->get_post($name);
 
 				// 向API服务器发送待创建数据
 				$params = $data_to_create;
