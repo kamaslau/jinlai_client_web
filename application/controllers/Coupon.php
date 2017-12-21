@@ -133,7 +133,6 @@
 			// 若表单提交不成功
 			if ($this->form_validation->run() === FALSE):
 				$data['content'] = validation_errors();
-				var_dump($data['content']);
 
 			else:
 				// 需要创建的数据；逐一赋值需特别处理的字段
@@ -146,7 +145,6 @@
 				$params = $data_to_create;
 				$url = api_url($this->class_name. '/create');
 				$result = $this->curl->go($url, $params, 'array');
-				var_dump($result);
 				if ($result['status'] === 200):
 					$data['title'] = $this->class_name_cn. '领取成功';
 					$data['class'] = 'success';

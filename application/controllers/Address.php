@@ -59,7 +59,7 @@
 			$this->table_name = 'address'; // 和这里……
 			$this->id_name = 'address_id'; // 还有这里，OK，这就可以了
 			$this->view_root = $this->class_name;
-		}
+		} // end __construct
 
 		/**
 		 * 列表页

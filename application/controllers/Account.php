@@ -21,7 +21,7 @@
 			$this->id_name = 'user_id';  // 还有这里，OK，这就可以了
 			$this->view_root = $this->class_name; // 视图文件所在目录
 			$this->media_root = MEDIA_URL. 'user/'; // 媒体文件所在目录
-		}
+		} // end __construct
 
 		/**
 		 * 我的
