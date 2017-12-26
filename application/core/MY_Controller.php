@@ -112,7 +112,7 @@
             $this->user_agent['is_linux'] = (strpos($user_agent, 'Linux;') && !strpos($user_agent, 'Android'))? TRUE: FALSE;
             $this->user_agent['is_windows'] = strpos($user_agent, 'Windows ')? TRUE: FALSE;
             $this->user_agent['is_desktop'] = ( ! $this->user_agent['is_mobile'])? TRUE: FALSE; // 非移动端设备
-        } // user_agent_determine
+        } // end user_agent_determine
 
 		/**
 		 * 签名有效性检查
@@ -127,7 +127,7 @@
 			$this->sign_check_time();
 			$this->sign_check_params();
 			$this->sign_check_string();
-		}
+		} // end $sign_to_check
 
 		// 检查签名是否传入
 		protected function sign_check_exits()
@@ -139,7 +139,7 @@
 				$this->result['content']['error']['message'] = '未传入签名';
 				exit();
 			endif;
-		}
+		} // end sign_check_exits
 
 		// 签名时间检查
 		protected function sign_check_time()
@@ -167,7 +167,7 @@
 				endif;
 
 			endif;
-		}
+		} // end sign_check_time
 
 		// 签名参数检查
 		protected function sign_check_params()
@@ -192,7 +192,7 @@
 			else:
 				return TRUE;
 			endif;
-		}
+		} // end sign_check_params
 
 		// 签名正确性检查
 		protected function sign_check_string()
@@ -216,7 +216,7 @@
 				return TRUE;
 
 			endif;
-		}
+		} // end sign_check_string
 
 		/**
 		 * 生成签名
@@ -241,7 +241,7 @@
 			$sign = strtoupper( SHA1($param_string) );
 
 			return $sign;
-		}
+		} // end sign_generate
 
 		/**
 		 * 权限检查
@@ -262,7 +262,7 @@
 			elseif ( $current_level < $min_level):
 				redirect( base_url('error/permission_level') );
 			endif;
-		}
+		} // end permission_check
 
         /**
          * 计算特定表数据量
@@ -289,7 +289,7 @@
             endif;
 
             return $count;
-        } // count_table
+        }// end count_table
 
         // 将数组输出为key:value格式，主要用于在postman等工具中进行api测试
         protected function key_value($params)

@@ -17,7 +17,7 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20171221">
+		<meta name=version content="revision20171226">
 		<meta name=author content="刘亚杰Kamas,青岛意帮网络科技有限公司产品部&amp;技术部">
 		<meta name=copyright content="进来商城,青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
@@ -246,14 +246,18 @@
             user_agent.is_android = <?php echo ($this->user_agent['is_android'])? 'true': 'false' ?>;
         </script>
 
-        <?php if ($this->user_agent['is_desktop']): ?>
-        <link rel="shortcut icon" href="<?php echo CDN_URL ?>icon/jinlai_client/icon28@3x.png">
         <link rel=canonical href="<?php echo current_url() ?>">
-        <?php else: ?>
+        <link rel="shortcut icon" href="<?php echo CDN_URL ?>icon/jinlai_client/icon28@3x.png">
+
+        <?php if ($this->user_agent['is_ios'] || $this->user_agent['is_macos']): ?>
         <link rel=apple-touch-icon href="<?php echo CDN_URL ?>icon/jinlai_client/icon120@3x.png">
-        <meta name=format-detection content="telephone=yes, address=no, email=no">
         <meta name=apple-itunes-app content="app-id=1066224229">
         <?php endif ?>
+
+        <?php if ($this->user_agent['is_mobile']): ?>
+        <meta name=format-detection content="telephone=yes, address=no, email=no">
+        <?php endif ?>
+    </head>
 
 <?php
     // 将head内容立即输出，让用户浏览器立即开始请求head中各项资源，提高页面加载速度
@@ -277,12 +281,22 @@
 			<p>您的浏览器功能加载出现问题，请刷新浏览器重试；如果仍然出现此提示，请考虑更换浏览器。</p>
 		</noscript>
 
+        <?php if ($this->user_agent['is_mobile'] && !$this->user_agent['is_wechat']): ?>
+        <a href="jinlaiclient://item/detail?id=188">打开进来商城</a>
+        <!--
+        <script>
+            $(function(){
+                self.location = 'jinlaiclient://item/detail?id=188';
+            });
+        </script>
+        -->
+        <?php endif ?>
 <?php
 	/**
 	 * APP、微信中调用webview时配合URL按需显示相应部分
 	 * 此处以在APP中以WebView打开页面时不显示页面header部分为例
 	 */
-	if ( $this->user_agent['is_desktop']):
+	if ($this->user_agent['is_wechat'] || $this->user_agent['is_desktop']):
 ?>
 		<header id=header role=banner>
 			<div class=container>
