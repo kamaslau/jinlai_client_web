@@ -8,8 +8,8 @@
     $description = isset($description)? $description: NULL;
     $description .= SITE_DESCRIPTION;
 ?>
-<!doctype html>
-<html lang=zh-cn>
+<!DOCTYPE html>
+<html lang="en">
 	<head>
 		<meta charset=utf-8>
 		<meta http-equiv=x-dns-prefetch-control content=on>
@@ -17,14 +17,24 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20171226">
+		<meta name=version content="revision20171228">
 		<meta name=author content="刘亚杰Kamas,青岛意帮网络科技有限公司产品部&amp;技术部">
 		<meta name=copyright content="进来商城,青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
-
+		
 		<meta name=viewport content="width=device-width,user-scalable=0">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-
+				<script src="<?php echo CDN_URL ?>js/jquery-2.1.4.min.js"></script>
+		
+		<script src="<?php echo CDN_URL ?>js/swiper.min.js"></script>
+		<script src="<?php echo CDN_URL ?>js/jquery.easing.min.js"></script>
+		<script src="<?php echo CDN_URL ?>js/lazy-load-img.js"></script>
+		<script src="<?php echo CDN_URL ?>js/shopping.js"></script>
+		<script src="<?php echo CDN_URL ?>js/index.js"></script>
+		<script src="<?php echo CDN_URL ?>js/fsbanner.js"></script>
+		<script src="<?php echo CDN_URL ?>js/jquery.fly.min.js"></script>
+		<script src="<?php echo CDN_URL ?>js/rem.js"></script>
+		
 		<?php if ($this->user_agent['is_wechat']): ?>
 		<script src="https://res.wx.qq.com/open/js/jweixin-1.3.0.js"></script>
 		<script>
@@ -229,16 +239,7 @@
 		}
 		</style>
 
-		<!--
-		<script defer src="<?php echo CDN_URL ?>js/js.cookie.js"></script>
-		<script src="/js/main.js"></script>
-
-		<link rel=stylesheet media=all href="<?php echo CDN_URL ?>css/reset.css">
-		<link rel=stylesheet media=all href="<?php echo CDN_URL ?>bootstrap/css/bootstrap.min.css">
-		<link rel=stylesheet media=all href="<?php echo CDN_URL ?>css/flat-ui.min.css">
-		<link rel=stylesheet media=all href="<?php echo CDN_URL ?>font-awesome/css/font-awesome.min.css">
-		<link rel=stylesheet media=all href="/css/style.css">
-		-->
+	
         <script>
             var user_agent = new Object();
             user_agent.is_wechat = <?php echo ($this->user_agent['is_wechat'])? 'true': 'false' ?>;
@@ -280,17 +281,6 @@
 		<noscript>
 			<p>您的浏览器功能加载出现问题，请刷新浏览器重试；如果仍然出现此提示，请考虑更换浏览器。</p>
 		</noscript>
-
-        <?php if ($this->user_agent['is_mobile'] && !$this->user_agent['is_wechat']): ?>
-        <a href="jinlaiclient://item/detail?id=188">打开进来商城</a>
-        <!--
-        <script>
-            $(function(){
-                self.location = 'jinlaiclient://item/detail?id=188';
-            });
-        </script>
-        -->
-        <?php endif ?>
 <?php
 	/**
 	 * APP、微信中调用webview时配合URL按需显示相应部分
@@ -414,16 +404,33 @@
 
 		<main id=maincontainer role=main>
 		-->
-		<script src="<?php echo CDN_URL ?>js/jquery-2.1.4.min.js"></script>
-		<script src="<?php echo CDN_URL ?>js/rem.js"></script>
-		<script src="<?php echo CDN_URL ?>js/swiper.min.js"></script>
-		<script src="<?php echo CDN_URL ?>js/jquery.easing.min.js"></script>
-		<script src="<?php echo CDN_URL ?>js/lazy-load-img.js"></script>
-		<script src="<?php echo CDN_URL ?>js/shopping.js"></script>
-		<script src="<?php echo CDN_URL ?>js/index.js"></script>
-		<script src="<?php echo CDN_URL ?>js/fsbanner.js"></script>
-		<script src="<?php echo CDN_URL ?>js/jquery.fly.min.js"></script>
-		
+
+        <!-- 部分功能仅在非微信移动端浏览器中可用 -->
+        <?php if (!$this->user_agent['is_wechat'] && $this->user_agent['is_mobile']): ?>
+
+            <!-- 部分功能仅在调试模式下可用 -->
+            <?php if ($this->input->get('test_mode') === 'on'): ?>
+
+                <p><?php echo $_SERVER['HTTP_USER_AGENT'] ?></p>
+
+                <?php
+                    if ( ! $this->user_agent['is_app']):
+
+                    $scheme_url = APP_SCHEME.'://'. substr($_SERVER['REQUEST_URI'], 1);
+                ?>
+                <a style="font-size:.12rem;" href="<?php echo $scheme_url ?>">在<?php echo SITE_NAME ?>APP中打开</a>
+
+                <script>
+                    $(function(){
+                        // 转到原生页面
+                        window.location.href = '<?php echo $scheme_url ?>';
+                    });
+                </script>
+                <?php endif ?>
+
+            <?php endif ?>
+
+        <?php endif ?>
 		</body>
 		<style>
 			.ui-loader{

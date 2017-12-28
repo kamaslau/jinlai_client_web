@@ -47,6 +47,9 @@ function api_url($api_name)
 	return API_URL. $api_name;
 }
 
+// 原生应用scheme
+define('APP_SCHEME', 'jinlaiclient');
+
 // 微信公众平台参数
 define('WECHAT_APP_ID', 'wxba173a67df14c087');
 define('WECHAT_APP_SECRET', '1b1bf0c279a0d9eb0ec7288787ccb20a');

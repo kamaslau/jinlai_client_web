@@ -107,6 +107,9 @@
             $this->user_agent['is_android'] = strpos($user_agent, 'Android')? TRUE: FALSE;
             $this->user_agent['is_mobile'] = ($this->user_agent['is_wechat'] || $this->user_agent['is_ios'] || $this->user_agent['is_android'])? TRUE: FALSE; // 移动端设备
 
+            // 判断是否为应用内调用
+            $this->user_agent['is_app'] = ($this->user_agent['is_mobile'] && strpos($user_agent, '; '.APP_SCHEME.'/'))? TRUE: FALSE;
+
             // 判断是否为非移动端
             $this->user_agent['is_macos'] = strpos($user_agent, 'Macintosh;')? TRUE: FALSE;
             $this->user_agent['is_linux'] = (strpos($user_agent, 'Linux;') && !strpos($user_agent, 'Android'))? TRUE: FALSE;
