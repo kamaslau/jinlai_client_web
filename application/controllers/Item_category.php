@@ -62,7 +62,7 @@
 				'name' => '名称',
 				'description' => '描述',
 			);
-		}
+		} // __construct
 
 		/**
 		 * 列表页

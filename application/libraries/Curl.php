@@ -38,7 +38,9 @@
 
                 // 若未未传入用户ID，则发送当前用户ID（若有）
                 if ( ! isset($params['user_id']))
-                    $params['user_id'] = $this->CI->session->biz_id;
+                    $params['user_id'] = $this->CI->session->user_id;
+
+                //var_dump($params);
 
 				curl_setopt($curl, CURLOPT_POST, count($params));
 				curl_setopt($curl, CURLOPT_POSTFIELDS, $params);

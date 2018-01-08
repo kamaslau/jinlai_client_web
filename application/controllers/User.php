@@ -91,7 +91,7 @@
 				
 				return $string_to_output;
 			}
-		}
+		} // __construct
 
 		/**
 		 * 我的

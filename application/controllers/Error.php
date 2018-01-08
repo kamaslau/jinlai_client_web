@@ -45,7 +45,7 @@
 				'view_root' => $this->view_root,
 			);
 			$this->load->library('basic', $basic_configs);
-		}
+		} // __construct
 		
 		/**
 		 * 截止3.1.3为止，CI_Controller类无析构函数，所以无需继承相应方法

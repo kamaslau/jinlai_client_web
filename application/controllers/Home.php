@@ -17,7 +17,7 @@
             // 向类属性赋值
             $this->class_name = strtolower(__CLASS__);
             $this->class_name_cn = '首页'; // 改这里……
-        }
+        } // __construct
 
 		// 首页
 		public function index()

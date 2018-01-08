@@ -60,7 +60,7 @@
 			// 设置目标路径
 			chmod($this->target_directory, 0777); // 设置权限为可写
 			$this->target_url = $_SERVER['DOCUMENT_ROOT']. '/'. $this->target_directory;
-		}
+		} // __construct
 
 		/**
 		 * 析构时将待输出的内容以json格式返回

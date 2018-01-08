@@ -27,7 +27,7 @@
 
 			// 从API获取当前用户购物车项
 			$this->session->cart = $this->sync_down();
-		}
+		} // __construct
 
 		/**
 		 * 列表页

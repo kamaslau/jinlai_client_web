@@ -17,25 +17,16 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20171228">
+		<meta name=version content="revision20180108">
 		<meta name=author content="刘亚杰Kamas,青岛意帮网络科技有限公司产品部&amp;技术部">
 		<meta name=copyright content="进来商城,青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
 		
 		<meta name=viewport content="width=device-width,user-scalable=0">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-				<script src="<?php echo CDN_URL ?>js/jquery-2.1.4.min.js"></script>
+			
 		
-		<script src="<?php echo CDN_URL ?>js/swiper.min.js"></script>
-		<script src="<?php echo CDN_URL ?>js/jquery.easing.min.js"></script>
-		<script src="<?php echo CDN_URL ?>js/lazy-load-img.js"></script>
-		<script src="<?php echo CDN_URL ?>js/shopping.js"></script>
-		<script src="<?php echo CDN_URL ?>js/index.js"></script>
-		<script src="<?php echo CDN_URL ?>js/fsbanner.js"></script>
-		<script src="<?php echo CDN_URL ?>js/jquery.fly.min.js"></script>
-		<script src="<?php echo CDN_URL ?>js/rem.js"></script>
-		
-		<?php if ($this->user_agent['is_wechat']): ?>
+		<?php //if ($this->user_agent['is_wechat']): ?>
 		<script src="https://res.wx.qq.com/open/js/jweixin-1.3.0.js"></script>
 		<script>
 			<?php
@@ -212,7 +203,7 @@
 				};
 			});
 		</script>
-		<?php endif ?>
+		<?php //endif ?>
 
 		<!--清除浏览器默认样式css-->
 		<link href="<?php echo CDN_URL ?>css/normal.css" rel="stylesheet">
@@ -222,6 +213,15 @@
 		<link href="<?php echo CDN_URL ?>css/swiper.css" rel="stylesheet">
 		<link href="<?php echo CDN_URL ?>css/index.css" rel="stylesheet">
 		<link href="<?php echo CDN_URL ?>css/alert.css" rel="stylesheet">
+		<script src="<?php echo CDN_URL ?>js/jquery-2.1.4.min.js"></script>
+		<script src="<?php echo CDN_URL ?>js/swiper.min.js"></script>
+		<script src="<?php echo CDN_URL ?>js/jquery.easing.min.js"></script>
+		<script src="<?php echo CDN_URL ?>js/lazy-load-img.js"></script>
+		<script src="<?php echo CDN_URL ?>js/shopping.js"></script>
+		<script src="<?php echo CDN_URL ?>js/index.js"></script>
+		<script src="<?php echo CDN_URL ?>js/fsbanner.js"></script>
+		<script src="<?php echo CDN_URL ?>js/jquery.fly.min.js"></script>
+		<script src="<?php echo CDN_URL ?>js/rem.js"></script>
 		<style>
 			.pagination-bullet-active{
 				background:#606060 !important ;
