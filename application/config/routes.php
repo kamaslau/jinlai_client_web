@@ -51,6 +51,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 
 /* Home 首页 */
+$route['gateway'] = 'home/gateway'; // 路由页属于首页类
 $route['home'] = 'home/index'; // 首页
 
 /* Account 账号 */
@@ -72,8 +73,11 @@ $route['article/detail'] = 'article/detail';
 $route['article/(:any)'] = 'article/detail/$1';
 $route['article'] = 'article/index';
 
-/* TODO 临时 Item_category 商品分类 */
-$route['category'] = 'item_category/index';
+/* 商品分类 */
+$route['item/category'] = 'item_category/index';
+
+/* 商品 */
+$route['item/detail'] = 'item/detail';
 
 $route['default_controller'] = 'home/index';
 $route['404_override'] = '';

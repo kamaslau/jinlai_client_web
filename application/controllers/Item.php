@@ -14,7 +14,7 @@
 		 * 可作为列表筛选条件的字段名；可在具体方法中根据需要删除不需要的字段并转换为字符串进行应用，下同
 		 */
 		protected $names_to_sort = array(
-			'category_id', 'brand_id', 'biz_id', 'category_biz_id', 'tag_price', 'price', 'unit_name', 'weight_net', 'weight_gross', 'weight_volume', 'stocks', 'quantity_max', 'quantity_min', 'coupon_allowed', 'discount_credit', 'commission_rate', 'time_to_publish', 'time_to_suspend', 'promotion_id', 'status',
+			'category_id', 'brand_id', 'biz_id', 'category_biz_id', 'code_biz', 'barcode', 'tag_price', 'price', 'unit_name', 'weight_net', 'weight_gross', 'weight_volume', 'stocks', 'quantity_max', 'quantity_min', 'coupon_allowed', 'discount_credit', 'commission_rate', 'time_to_publish', 'time_to_suspend', 'promotion_id', 'status',
 			'time_create', 'time_delete', 'time_publish', 'time_suspend', 'time_edit', 'creator_id', 'operator_id',
 		);
 
@@ -41,7 +41,7 @@
 				'title' => $this->class_name_cn. '列表',
 				'class' => $this->class_name.' index',
 			);
-			
+
 			// 筛选条件
 			$condition['time_delete'] = 'NULL';
 			// （可选）遍历筛选条件
@@ -71,13 +71,16 @@
 		 */
 		public function detail()
 		{
-			// 检查是否已传入必要参数
-			$id = $this->input->get_post('id')? $this->input->get_post('id'): NULL;
-			if ( !empty($id) ):
-				$params['id'] = $id;
-			else:
-				redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
-			endif;
+            // 检查是否已传入必要参数
+            $id = $this->input->get_post('id')? $this->input->get_post('id'): NULL;
+            $barcode = $this->input->get_post('barcode')? $this->input->get_post('barcode'): NULL;
+            if ( ! empty($id) ):
+                $params['id'] = $id;
+            elseif ( ! empty($barcode)):
+                $params['barcode'] = $barcode;
+            else:
+                redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
+            endif;
 
 			// 从API服务器获取相应详情信息
 			$url = api_url($this->class_name. '/detail');

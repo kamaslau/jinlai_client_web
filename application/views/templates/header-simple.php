@@ -17,21 +17,24 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20180127">
+		<meta name=version content="revision20180128">
 		<meta name=author content="刘亚杰Kamas,青岛意帮网络科技有限公司产品部&amp;技术部">
 		<meta name=copyright content="进来商城,青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
 		
 		<meta name=viewport content="width=device-width,user-scalable=0">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-			
-		
+
+		<script src="<?php echo CDN_URL ?>js/jquery-3.2.1.min.js"></script>
+		<script defer src="<?php echo CDN_URL ?>bootstrap/js/bootstrap.min.js"></script>
+        <script>
+            var user_agent = new Object();
+            user_agent.is_wechat = <?php echo ($this->user_agent['is_wechat'])? 'true': 'false' ?>;
+            user_agent.is_ios = <?php echo ($this->user_agent['is_ios'])? 'true': 'false' ?>;
+            user_agent.is_android = <?php echo ($this->user_agent['is_android'])? 'true': 'false' ?>;
+        </script>
+
 		<?php if ($this->user_agent['is_wechat']): ?>
-		<!--<link href="<?php echo CDN_URL ?>css/muipublic.css" rel="stylesheet">
-		<link href="<?php echo CDN_URL ?>css/mui.min.css" rel="stylesheet">
-		<link href="<?php echo CDN_URL ?>css/mui.indexedlist.css" rel="stylesheet">
-		<script src="<?php echo CDN_URL ?>js/mui.min.js"></script>
-		<script src="<?php echo CDN_URL ?>js/mui.indexedlist.js"></script>-->
 		<script src="https://res.wx.qq.com/open/js/jweixin-1.3.0.js"></script>
 		<script>
 			<?php
@@ -177,9 +180,27 @@
 					    needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
 					    scanType: ['qrCode','barCode'], // 可以指定扫二维码还是一维码，默认二者都有
 					    success: function (res){
-						    var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
-                            //TODO 若为条形码，输出条码；若为二维码，转到URL
-                            alert(JSON.stringify(res));
+					        // 二维码/条形码内容（仅needResult为1时可用）
+						    var result = res.resultStr;
+
+                            // 输出扫码结果
+                            //alert(JSON.stringify(res));
+
+                            // 若扫描结果为URL，转到URL
+                            if (result.indexOf('://') != -1)
+                            {
+                                window.location = result;
+                            }
+                            // 若扫描结果为条形码，传到商品详情页
+                            else if (result.indexOf('EAN_13,') != -1)
+                            {
+                                window.location = '<?php echo base_url('item/detail?barcode=') ?>' + result.slice(result.indexOf('EAN_13,'));
+                            }
+                            else
+                            {
+                                // 复制扫码结果
+                                var scan_result = result;
+                            }
 						}
 					});
 
@@ -212,46 +233,14 @@
 		<?php endif ?>
 
 		<!--清除浏览器默认样式css-->
-		<link href="<?php echo CDN_URL ?>css/normal.css" rel="stylesheet">
+		<link rel=stylesheet media=all href="<?php echo CDN_URL ?>css/reset.css">
 		<!--公用部分css-->
-		<link href="<?php echo CDN_URL ?>css/common.css" rel="stylesheet">
-		<link href="<?php echo CDN_URL ?>css/base.css" rel="stylesheet">
-		<link href="<?php echo CDN_URL ?>css/swiper.css" rel="stylesheet">
-		<link href="<?php echo CDN_URL ?>css/index.css" rel="stylesheet">
-		<link href="<?php echo CDN_URL ?>css/alert.css" rel="stylesheet">
-		<script src="<?php echo CDN_URL ?>js/jquery-2.1.4.min.js"></script>
-		<script src="<?php echo CDN_URL ?>js/swiper.min.js"></script>
-		<script src="<?php echo CDN_URL ?>js/jquery.easing.min.js"></script>
-		<script src="<?php echo CDN_URL ?>js/lazy-load-img.js"></script>
-		<script src="<?php echo CDN_URL ?>js/shopping.js"></script>
-		<script src="<?php echo CDN_URL ?>js/index.js"></script>
-		<script src="<?php echo CDN_URL ?>js/fsbanner.js"></script>
-		<script src="<?php echo CDN_URL ?>js/jquery.fly.min.js"></script>
-		<script src="<?php echo CDN_URL ?>js/rem.js"></script>
-		<style>
-			.pagination-bullet-active{
-				background:#606060 !important ;
-			}
-			.swiper-pagination-bullet {
-			    background: #eaeaea;
-		}
-		.swiper-container-horizontal > .swiper-pagination {
-		    bottom: -2px;
-		    left: 0;
-		    width: 100%;
-		}
-		#nav-header{
-			display: none;
-		}
-		</style>
-
-	
-        <script>
-            var user_agent = new Object();
-            user_agent.is_wechat = <?php echo ($this->user_agent['is_wechat'])? 'true': 'false' ?>;
-            user_agent.is_ios = <?php echo ($this->user_agent['is_ios'])? 'true': 'false' ?>;
-            user_agent.is_android = <?php echo ($this->user_agent['is_android'])? 'true': 'false' ?>;
-        </script>
+        <link rel=stylesheet media=all href="<?php echo CDN_URL ?>bootstrap/css/bootstrap.min.css">
+        <link rel=stylesheet media=all href="<?php echo CDN_URL ?>font-awesome/css/font-awesome.min.css">
+        <style>
+            h1 {text-align: center;}
+            h1 a {color:#ae424f}
+        </style>
 
         <link rel=canonical href="<?php echo current_url() ?>">
         <link rel="shortcut icon" href="<?php echo CDN_URL ?>icon/jinlai_client/icon28@3x.png">
@@ -299,117 +288,11 @@
 				<h1>
 					<a id=logo class=none title="<?php echo SITE_NAME ?>" href="<?php echo base_url() ?>"><?php echo SITE_NAME ?></a>
 				</h1>
-
-				<a id=locate class=nav-icon>
-					<i class="fa fa-map-marker" aria-hidden="true"></i>
-				</a>
-				<a id=scan class=nav-icon>
-					<i class="fa fa-qrcode" aria-hidden="true"></i>
-				</a>
-				<!--
-				<a id=nav-switch class=nav-icon href="#header">
-					<i class="fa fa-bars" aria-hidden=true></i>
-				</a>
-				<a id=to-mine class=nav-icon href="<?php echo base_url('mine') ?>">
-					<i class="fa fa-user" aria-hidden=true></i>
-				</a>
-				-->
 			</div>
 		</header>
-
-		<nav id=nav-header role=navigation>
-			<div class=container>
-				<div id=user-info class=row>
-					<?php
-						// 用户名
-						$username = !empty($this->session->nickname)? $this->session->nickname: $this->session->mobile;
-						// 用户头像
-						$avatar = !empty($this->session->avatar)? $this->session->avatar: NULL;
-					?>
-					<figure class=col-xs-4>
-						<a title="<?php echo $username ?>" href="<?php echo base_url('user/mine') ?>">
-							<img class="img-circle" alt="<?php echo $username ?>" src="<?php echo $avatar ?>">
-						</a>
-					</figure>
-					<div class=col-xs-8>
-						<a title="<?php echo $username ?>" href="<?php echo base_url('user/mine') ?>">
-							<h1><?php echo $username ?> <i class="fa fa-angle-right pull-right" aria-hidden=true></i></h1>
-						</a>
-					</div>
-				</div>
-
-				<ul id=user-records class=horizontal>
-					<li class=col-xs-4><a title="收藏宝贝" href="<?php echo base_url('fav_item') ?>">收藏宝贝</a></li>
-					<li class=col-xs-4><a title="关注店铺" href="<?php echo base_url('fav_biz') ?>">关注店铺</a></li>
-					<li class=col-xs-4><a title="我的足迹" href="<?php echo base_url('footprint') ?>">我的足迹</a></li>
-				</ul>
-
-				<ul id=main-nav>
-					<li><a title="我的订单" href="<?php echo base_url('order') ?>">我的订单</a></li>
-					<li><a title="我的钱包" href="<?php echo base_url('balance') ?>">我的钱包</a></li>
-					<li><a title="我的卡券" href="<?php echo base_url('coupon') ?>">我的卡券</a></li>
-					<li><a title="我的地址" href="<?php echo base_url('address') ?>">我的地址</a></li>
-					<!--<li><a title="邀请好友" href="<?php echo base_url('invite') ?>">邀请好友</a></li>-->
-				</ul>
-
-				<div id=user-panel>
-					<ul id=user-actions class=horizontal>
-						<?php if ( !isset($this->session->time_expire_login) ): ?>
-						<li><a title="登录" href="<?php echo base_url('login') ?>">登录</a></li>
-						<?php else: ?>
-						<li><a title="设置" href="<?php echo base_url('setup') ?>">设置</a></li>
-						<li><a title="退出" href="<?php echo base_url('logout') ?>">退出</a></li>
-						<?php endif ?>
-					</ul>
-				</div>
-
-				<a id=tel-flatform-public href="tel:4008820532">
-					<i class="fa fa-phone" aria-hidden=true></i> 400-882-0532
-				</a>
-
-			</div>
-		</nav>
 <?php endif ?>
 
-		<!--
-		<script>
-		// 手机版菜单的显示和隐藏
-		$(function(){
-			var nav_icon = $('#nav-switch>i');
-			$('#nav-switch').click(
-				function(){
-					var current_class = nav_icon.attr('class');
-					if (current_class == 'fa fa-bars'){
-						// 展开页首导航栏
-						nav_icon.attr('class', 'fa fa-minus');
-						$('#nav-header').stop().fadeIn(400);
-						$('#nav-header>.container').animate({width:"85%"}, 300);
-						nav_icon.css('color', '#ff484c');
-					} else {
-						hide_nav_header();
-					}
-					return false;
-				}
-			);
-
-			// 点击展开的菜单可将其隐藏
-			$('#nav-header').click(function(){
-				hide_nav_header();
-			});
-
-			// 收起页首导航栏
-			function hide_nav_header()
-			{
-				nav_icon.attr('class', 'fa fa-bars');
-				$('#nav-header>.container').stop().animate({width:"0"}, 300);
-				$('#nav-header').fadeOut(200);
-				nav_icon.css('color', '#fff');
-			}
-		});
-		</script>
-
 		<main id=maincontainer role=main>
-		-->
 
         <!-- 部分功能仅在移动端非微信浏览器中可用 -->
         <?php if (!$this->user_agent['is_wechat'] && $this->user_agent['is_mobile']): ?>
@@ -437,9 +320,3 @@
             <?php endif ?>
 
         <?php endif ?>
-		</body>
-		<style>
-			.ui-loader{
-				display: none;
-			}
-		</style>

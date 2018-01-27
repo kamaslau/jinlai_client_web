@@ -19,7 +19,9 @@
             $this->class_name_cn = '首页'; // 改这里……
         } // __construct
 
-		// 首页
+		/**
+         * 首页
+         */
 		public function index()
 		{
 			// 页面信息
@@ -37,6 +39,29 @@
 			$this->load->view('templates/nav-main', $data);
 			$this->load->view('templates/footer', $data);
 		} // end index
+
+        /**
+         * 路由页
+         *
+         * 提供iOS、Android下载地址，及客户端/商家端微信公众号、移动端二维码
+         */
+        public function gateway()
+        {
+            // 页面信息
+            $data = array(
+                'title' => NULL, // 直接使用默认标题
+                'class' => $this->class_name. ' gateway', // 页面body标签的class属性值
+            );
+
+            // 载入视图
+            $this->load->view('templates/header-simple', $data);
+            if ($this->user_agent['is_desktop'] === TRUE):
+                $this->load->view('home/gateway-desktop', $data);
+            else:
+                $this->load->view('home/gateway-mobile', $data);
+            endif;
+            $this->load->view('templates/footer', $data);
+        } // end gateway
 
 	} // end class Home
 
