@@ -1,5 +1,5 @@
 <style>
-body {background-color:#ae424f;}
+body {background-color:#b61b21;}
 
     #list-clients li {background-color:#fff;width:48%;border-radius:8%;}
         #list-clients li:nth-of-type(2n+0) {margin-left:4%;}
@@ -28,7 +28,7 @@ body {background-color:#ae424f;}
 
             // 创建二维码并转换为图片格式，以使微信能识别该二维码
             $(dom).qrcode({
-                foreground: "#ae424f",
+                foreground: "#b61b21",
                 background: "#fff",
                 text: string,
             });

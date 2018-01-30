@@ -83,9 +83,9 @@
             $this->user_agent_determine();
 
             // 若为桌面端，且不是路由页，则转到路由页
-            if (($this->user_agent['is_desktop'] === TRUE) && ($this->router->method !== 'gateway')):
-                redirect(base_url('gateway'));
-            endif;
+//            if (($this->user_agent['is_desktop'] === TRUE) && ($this->router->method !== 'gateway')):
+//                redirect(base_url('gateway'));
+//            endif;
         } // end __construct
 
         /**
@@ -108,6 +108,7 @@
 
             // 判断是否为移动端
             $this->user_agent['is_wechat'] = strpos($user_agent, 'MicroMessenger/')? TRUE: FALSE;
+            $this->user_agent['is_alipay'] = strpos($user_agent, 'AlipayClient/')? TRUE: FALSE;
             $this->user_agent['is_ios'] = strpos($user_agent, 'like Mac OS')? TRUE: FALSE;
             $this->user_agent['is_android'] = strpos($user_agent, 'Android')? TRUE: FALSE;
             $this->user_agent['is_mobile'] = ($this->user_agent['is_wechat'] || $this->user_agent['is_ios'] || $this->user_agent['is_android'])? TRUE: FALSE; // 移动端设备

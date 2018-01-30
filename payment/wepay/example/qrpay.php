@@ -60,17 +60,41 @@ $input->SetProduct_id('biz_join_deposit');
 $result = $notify->GetPayUrl($input);
 $url3 = $result['code_url'];
 ?>
+
+<style>
+    @font-face {
+        font-family: Impact;
+        src:url('/font/Impact.ttf'); /* ttf字体格式的在移动端兼容性足够好 */
+    }
+
+    html,body{margin:0 auto;height:100%;}
+    body {color:#fff;background:#b61b21 url('/media/images/payment/gateway/bg-body.png') no-repeat center center;background-size:cover;padding-top:21.2%;}
+    li {width:27.5%;margin:0 auto 14.5%;text-align:center;}
+    figure.qrcode {background-color:#fff;border-radius:5px;padding:5px;}
+
+    h2,h3 {line-height:1;font-family:"微软雅黑",sans-serif;}
+    h2 {font-size:40px;height:40px;}
+    small {font-size:50px;height:50px;line-height:1;font-family:Impact;margin-top:8px;display:block;}
+    h3 {font-size:24px;height:24px;margin:20px 0 22px;}
+</style>
+
 	<body class="payment gateway">
 		<div id=content class=container>
 
 			<ul>
                 <li>
-                    <h2>进来商城入驻意向金</h2>
+                    <h2>进来商城</h2>
+                    <small>COME IN</small>
+                    <h3>入驻意向金</h3>
+
                     <figure class=qrcode data-qrcode-string="<?php echo $url2 ?>"></figure>
                 </li>
 
                 <li>
-                    <h2>进来商城入驻保证金</h2>
+                    <h2>进来商城</h2>
+                    <small>COME IN</small>
+                    <h3>入驻保证金</h3>
+
                     <figure class=qrcode data-qrcode-string="<?php echo $url3 ?>"></figure>
 
                     <?php //$url3 = WxPayConfig::CLIENT_URL. 'payment/wepay/example/qrcode.php?data='. urlencode($url3); ?>

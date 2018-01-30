@@ -9,8 +9,6 @@
  请确保项目文件有可写权限，不然打印不了日志。
  */
 
-header("Content-type: text/html; charset=utf-8");
-
 require_once dirname ( __FILE__ ).DIRECTORY_SEPARATOR.'service/AlipayTradeService.php';
 require_once dirname ( __FILE__ ).DIRECTORY_SEPARATOR.'buildermodel/AlipayTradeWapPayContentBuilder.php';
 require dirname ( __FILE__ ).DIRECTORY_SEPARATOR.'./../config.php';
@@ -78,7 +76,11 @@ if ( !empty($_POST['WIDout_trade_no']) && trim($_POST['WIDout_trade_no']) != '')
                 var dom = dom || '#qrcode';
 
                 // 创建二维码并转换为图片格式，以使微信能识别该二维码
-                $(dom).qrcode(string);
+                $(dom).qrcode({
+                    foreground: "#b61b21",
+                    background: "#fff",
+                    text: string,
+                });
 
                 // 将canvas转换为Base64格式的图片内容
                 function convertCanvasToImage(canvas)
@@ -128,144 +130,44 @@ if ( !empty($_POST['WIDout_trade_no']) && trim($_POST['WIDout_trade_no']) != '')
 
     <link rel=stylesheet media=all href="<?php echo CDN_URL ?>css/reset.css">
     <style>
-        body{
-            font-family: "Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+        @font-face {
+            font-family: Impact;
+            src:url('/font/Impact.ttf'); /* ttf字体格式的在移动端兼容性足够好 */
         }
-        .new-btn-login-sp{
-            padding: 1px;
-            display: inline-block;
-            width: 75%;
-        }
-        .new-btn-login {
-            background-color: #02aaf1;
-            color: #FFFFFF;
-            font-weight: bold;
-            border: none;
-            width: 100%;
-            height: 30px;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        #main{
-            width:100%;
-            margin:0 auto;
-            font-size:14px;
-        }
-        .red-star{
-            color:#f00;
-            width:10px;
-            display:inline-block;
-        }
-        .null-star{
-            color:#fff;
-        }
-        .content{
-            margin-top:5px;
-        }
-        .content dt{
-            width:100px;
-            display:inline-block;
-            float: left;
-            margin-left: 20px;
-            color: #666;
-            font-size: 13px;
-            margin-top: 8px;
-        }
-        .content dd{
-            margin-left:120px;
-            margin-bottom:5px;
-        }
-        .content dd input {
-            width: 85%;
-            height: 28px;
-            border: 0;
-            -webkit-border-radius: 0;
-            -webkit-appearance: none;
-        }
-        #btn-dd{
-            margin: 20px;
-            text-align: center;
-        }
-        .one_line{
-            display: block;
-            height: 1px;
-            border: 0;
-            border-top: 1px solid #eeeeee;
-            width: 100%;
-            margin-left: 20px;
-        }
-        .am-header {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: box;
-            width: 100%;
-            position: relative;
-            padding: 7px 0;
-            -webkit-box-sizing: border-box;
-            -ms-box-sizing: border-box;
-            box-sizing: border-box;
-            background: #1D222D;
-            height: 50px;
-            text-align: center;
-            -webkit-box-pack: center;
-            -ms-flex-pack: center;
-            box-pack: center;
-            -webkit-box-align: center;
-            -ms-flex-align: center;
-            box-align: center;
-        }
-        .am-header h1 {
-            -webkit-box-flex: 1;
-            -ms-flex: 1;
-            box-flex: 1;
-            line-height: 18px;
-            text-align: center;
-            font-size: 18px;
-            font-weight: 300;
-            color: #fff;
-        }
+
+        html,body{margin:0 auto;height:100%;}
+        body {color:#fff;background:#b61b21 url('/media/images/payment/gateway/bg-body.png') no-repeat center center;background-size:cover;padding-top:21.2%;}
+        li {width:27.5%;margin:0 auto 14.5%;text-align:center;}
+        figure.qrcode {background-color:#fff;border-radius:5px;padding:5px;}
+
+        h2,h3 {line-height:1;font-family:"微软雅黑",sans-serif;}
+        h2 {font-size:40px;height:40px;}
+        small {font-size:50px;height:50px;line-height:1;font-family:Impact;margin-top:8px;display:block;}
+        h3 {font-size:24px;height:24px;margin:20px 0 22px;}
     </style>
 </head>
 
-<body text=#000000 bgColor="#ffffff" leftMargin=0 topMargin=4>
-    <header class="am-header">
-        <h1>支付宝手机网站支付接口快速通道(接口名：alipay.trade.wap.pay)</h1>
-    </header>
+    <body class="payment gateway">
+        <div id=content class=container>
 
-    <div id="main">
-        <form name=alipayment action='' method=post target="_blank">
-            <div id="body" style="clear:left">
-                <dl class="content">
-                    <dt>商户订单号</dt>
-                    <dd>
-                        <input id="WIDout_trade_no" name="WIDout_trade_no" />
-                    </dd>
-                    <hr class="one_line">
-                    <dt>订单名称</dt>
-                    <dd>
-                        <input id="WIDsubject" name="WIDsubject" />
-                    </dd>
-                    <hr class="one_line">
-                    <dt>付款金额</dt>
-                    <dd>
-                        <input id="WIDtotal_amount" name="WIDtotal_amount" />
-                    </dd>
-                    <hr class="one_line">
-                    <dt>商品描述</dt>
-                    <dd>
-                        <input id="WIDbody" name="WIDbody" />
-                    </dd>
-                    <hr class="one_line">
-                    <dt></dt>
-                    <dd id="btn-dd">
-                        <span class="new-btn-login-sp">
-                            <button class="new-btn-login" type="submit" style="text-align:center;">确认</button>
-                        </span>
-                    </dd>
-                </dl>
-            </div>
-		</form>
-	</div>
-</body>
+            <ul>
+                <li>
+                    <h2>进来商城</h2>
+                    <small>COME IN</small>
+                    <h3>入驻意向金</h3>
 
+                    <figure class=qrcode data-qrcode-string="<?php echo $url2 ?>"></figure>
+                </li>
+
+                <li>
+                    <h2>进来商城</h2>
+                    <small>COME IN</small>
+                    <h3>入驻保证金</h3>
+
+                    <figure class=qrcode data-qrcode-string="<?php echo $url3 ?>"></figure>
+                </li>
+            </ul>
+
+        </div>
+    </body>
 </html>

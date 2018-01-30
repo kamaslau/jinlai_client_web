@@ -32,7 +32,7 @@ class WxPayConfig
 	//=======【相关url设置】===================================
 	const CLIENT_URL = 'https://www.517ybang.com/'; // 客户端URL
 	const API_URL = 'https://api.517ybang.com/'; // API URL
-	const NOTIFY_URL = 'https://www.517ybang.com/payment/wepay/example/notify.php'; // 异步通知URL
+	const NOTIFY_URL = 'https://api.517ybang.com/wepay/notify'; // 异步通知URL
 	const PAYMENT_PROCESS_URL = 'https://api.517ybang.com/payment_process'; // 支付状态变更处理URL
 
 	//=======【证书路径设置】=====================================

@@ -1,5 +1,5 @@
 <style>
-    figure.qrcode {color:#ae424f;background-color:#ae424f;}
+    figure.qrcode {color:#b61b21;background-color:#b61b21;}
     canvas {padding:10rem;}
 </style>
 
@@ -20,7 +20,7 @@
 
             // 创建二维码并转换为图片格式，以使微信能识别该二维码
             $(dom).qrcode({
-                foreground: "#ae424f",
+                foreground: "#b61b21",
                 background: "#fff",
                 text: string,
             });
