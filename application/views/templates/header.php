@@ -133,7 +133,7 @@
 				// 隐藏部分按钮
 				wx.hideMenuItems({
 				    menuList:[
-				    	'menuItem:share:qq', 'menuItem:share:QZone', 'menuItem:share:facebook', 'menuItem:copyUrl', 'menuItem:readMode', 'menuItem:openWithQQBrowser', 'menuItem:openWithSafari', 'menuItem:share:email',
+				    	'menuItem:share:qq', 'menuItem:share:QZone', 'menuItem:share:facebook', /*'menuItem:copyUrl',*/ 'menuItem:readMode', 'menuItem:openWithQQBrowser', 'menuItem:openWithSafari', 'menuItem:share:email',
 				    ] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
 				});
 
