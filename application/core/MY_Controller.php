@@ -83,9 +83,9 @@
             $this->user_agent_determine();
 
             // 若为桌面端，且不是路由页，则转到路由页
-//            if (($this->user_agent['is_desktop'] === TRUE) && ($this->router->method !== 'gateway')):
-//                redirect(base_url('gateway'));
-//            endif;
+            if (($this->user_agent['is_desktop'] === TRUE) && ($this->router->method !== 'gateway')):
+                redirect(base_url('gateway'));
+            endif;
         } // end __construct
 
         /**
