@@ -2,10 +2,10 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="aeb9d16b-a7f9-4c64-8bfe-971d6be53fc2" name="jinlai_client_web" url="http://47.92.138.78">
+      <webServer id="aeb9d16b-a7f9-4c64-8bfe-971d6be53fc2" name="jinlai_client_web" url="https://www.517ybang.com/">
         <fileTransfer host="47.92.138.78" port="21" rootFolder="/public_html">
           <advancedOptions>
-            <advancedOptions dataProtectionLevel="Private" />
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" showHiddenFiles="true" />
           </advancedOptions>
           <option name="port" value="21" />
         </fileTransfer>
