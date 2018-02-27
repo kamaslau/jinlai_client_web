@@ -5,10 +5,9 @@ header('Cache-Control:no-cache');
 $content = array(
     array('type' => 'text', 'content' => '测试一下前端是否可以正常接收'."<br>".'并解析JSON格式返回的EventStream信息'), // 文字
     array('type' => 'image', 'url_image' => 'https://jinlaisandbox-images.b0.upaiyun.com/user/avatar/201801/0129/1407221.jpg'), // 图片
+    array('type' => 'url', 'url_page' => 'https://www.517ybang.com/', 'title' => '进来商城', 'url_image' => NULL), // 网页
     array('type' => 'item', 'item_id' => 3), // 商品
-    array('type' => 'coupon_template', 'content' => array()), // 优惠券模板（列表）
-    array('type' => 'order', 'content' => array()), // 订单
-    array('type' => 'url', 'url' => 'https://www.517ybang.com/', 'title' => '进来商城', 'url_image' => NULL), // 网页
+    array('type' => 'order', 'order_id' => 1, 'content' => array()), // 订单
 );
 
 $data = array(
@@ -23,18 +22,17 @@ while ($total < $max)
 
     // 生成一个0-1之间的随机数，根据随机数是否大于0.5决定是客户类消息还是商家类消息（即相应字段是否有值）
     $random = rand(0,1);
+    $content_type = $_GET['biz_id'] - 1;
 
     $extra_data = array(
         'message_id' => substr($timestamp, 7),
 
         'user_id' => ($random > 0.5)? 1: NULL,
-        'biz_id' => (TRUE)? 2: NULL,
-        'type' => $content[$random]['type'],
-        'url_image' => $content[$random]['url_image'],
-        'content' => $content[$random]['content'],
+        'biz_id' => $_GET['biz_id'],
         'time_create' => $timestamp
     );
     $data = array_merge($data, $extra_data);
+    $data = array_merge($data, $content[$content_type]);
 
     // 输出数据
     try {
