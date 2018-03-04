@@ -69,7 +69,7 @@
 	<dl id=list-record class=dl-horizontal>
 		<dt>创建时间</dt>
 		<dd>
-			<?php echo $item['time_create'] ?>
+            <?php echo date('Y-m-d H:i:s', $item['time_create']) ?>
 			<a href="<?php echo base_url('stuff/detail?id='.$item['creator_id']) ?>" target=new>查看创建者</a>
 		</dd>
 

@@ -54,74 +54,105 @@
 	<dl id=list-info class=dl-horizontal>
 		<dt><?php echo $this->class_name_cn ?>ID</dt>
 		<dd><?php echo $item[$this->id_name] ?></dd>
-		
-		<dt>主图</dt>
-		<dd class=row>
-			<?php
-				$column_image = 'url_image_main';
-				if ( empty($item[$column_image]) ):
-			?>
-			<p>未上传</p>
-			<?php else: ?>
-			<figure class="col-xs-12 col-sm-6 col-md-4">
-				<img src="<?php echo $item[$column_image] ?>">
-			</figure>
-			<?php endif ?>
-		</dd>
-		
-		<dt>形象图</dt>
-		<dd>
-			<?php
-				$column_images = 'url_image_main';
-				if ( empty($item[$column_images]) ):
-			?>
-			<p>未上传</p>
-			<?php else: ?>
-			<ul class=row>
-				<?php
-					$image_urls = explode(',', $item[$column_images]);
-					foreach($image_urls as $url):
-				?>
-				<li class="col-xs-6 col-sm-4 col-md-3">
-					<img src="<?php echo $url ?>">
-				</li>
-				<?php endforeach ?>
-			</ul>
-			<?php endif ?>
-		</dd>
-		
-		<dt>投票ID</dt>
-		<dd><?php echo $item['vote_id'] ?></dd>
+
 		<dt>名称</dt>
 		<dd><?php echo $item['name'] ?></dd>
 		<dt>描述</dt>
 		<dd><?php echo $item['description'] ?></dd>
-		<dt>形象图URL</dt>
-		<dd><?php echo $item['url_image'] ?></dd>
-		<dt>形象视频URL</dt>
-		<dd><?php echo $item['url_video'] ?></dd>
-		<dt>背景音乐URL</dt>
-		<dd><?php echo $item['url_audio'] ?></dd>
+
+        <dt>形象图</dt>
+        <dd class=row>
+            <?php
+            $column_image = 'url_image';
+            if ( empty($item[$column_image]) ):
+                ?>
+                <p>未上传</p>
+            <?php else: ?>
+                <figure class="col-xs-12 col-sm-6 col-md-4">
+                    <img src="<?php echo $item[$column_image] ?>">
+                </figure>
+            <?php endif ?>
+        </dd>
+
+        <dt>形象视频</dt>
+        <dd class=row>
+            <?php
+            $column_image = 'url_video';
+            if ( empty($item[$column_image]) ):
+                ?>
+                <p>未上传</p>
+            <?php else: ?>
+                <figure class="col-xs-12 col-sm-6 col-md-4">
+                    <video src="<?php echo $item[$column_image] ?>" controls>
+                </figure>
+            <?php endif ?>
+        </dd>
+
+        <dt>背景音乐</dt>
+        <dd class=row>
+            <?php
+            $column_image = 'url_audio';
+            if ( empty($item[$column_image]) ):
+                ?>
+                <p>未上传</p>
+            <?php else: ?>
+                <figure class="col-xs-12 col-sm-6 col-md-4">
+                    <audio src="<?php echo $item[$column_image] ?>">
+                </figure>
+            <?php endif ?>
+        </dd>
+
 		<dt>URL名称</dt>
 		<dd><?php echo $item['url_name'] ?></dd>
 		<dt>可报名</dt>
 		<dd><?php echo $item['signup_allowed'] ?></dd>
+
 		<dt>每选民最高总选票数</dt>
-		<dd><?php echo $item['max_user_total'] ?></dd>
+		<dd><?php echo ($item['max_user_total'] == 0)? '不限': $item['max_user_total'].'票' ?></dd>
 		<dt>每选民最高日选票数</dt>
-		<dd><?php echo $item['max_user_daily'] ?></dd>
+		<dd><?php echo $item['max_user_daily'] ?>票</dd>
 		<dt>每选民同选项最高日选票数</dt>
-		<dd><?php echo $item['max_user_daily_each'] ?></dd>
+
 		<dt>开始时间</dt>
 		<dd><?php echo date('Y-m-d H:i:s', $item['time_start']) ?></dd>
 		<dt>结束时间</dt>
 		<dd><?php echo date('Y-m-d H:i:s', $item['time_end']) ?></dd>
 	</dl>
 
+        <style>
+            #list-options {overflow:hidden;}
+                #list-options>li {width:48%;float:left;overflow:hidden;}
+                #list-options>li:nth-of-type(2n+0) {margin-left:4%;}
+                #list-options li>div {overflow:hidden;}
+            .option-actions a {color:#fff;display:block;width:50%;height:100%;float:left;}
+                .option-detail {background-color:#4cb5ff;}
+                .option-create {background-color:red;}
+        </style>
+
+    <ul id=list-options>
+        <?php foreach ($options as $option): ?>
+        <li>
+
+            <h3><?php echo $option['name'] ?></h3>
+            <figure class="option-image">
+                <img src="<?php echo $option['url_image'] ?>">
+            </figure>
+            <div class="option-brief">
+                <div>已获 <?php echo $option['ballot_count'] ?> 票</div>
+            </div>
+            <div class="option-actions">
+                <a class=option-detail href="<?php echo base_url('vote_option/detail?id='.$item['vote_id']) ?>">拉票</a>
+                <a class=option-create href="<?php echo base_url('vote_ballot/create?vote_id='.$item['vote_id'].'&option_id='.$option['option_id']) ?>">投票</a>
+            </div>
+
+        </li>
+        <?php endforeach ?>
+    </ul>
+
 	<dl id=list-record class=dl-horizontal>
 		<dt>创建时间</dt>
 		<dd>
-			<?php echo $item['time_create'] ?>
+			<?php echo date('Y-m-d H:i:s', $item['time_create']) ?>
 			<a href="<?php echo base_url('stuff/detail?id='.$item['creator_id']) ?>" target=new>查看创建者</a>
 		</dd>
 

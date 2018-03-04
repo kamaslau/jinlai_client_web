@@ -4,13 +4,11 @@
 	/**
 	 * Error 类
 	 *
-	 * CodeIgniter官方网站 https://www.codeigniter.com/user_guide/
-	 *
 	 * @version 1.0.0
 	 * @author Kamas 'Iceberg' Lau <kamaslau@outlook.com>
 	 * @copyright ICBG <www.bingshankeji.com>
 	 */
-	class Error extends CI_Controller
+	class Error extends MY_Controller
 	{
 		/* 类名称小写，应用于多处动态生成内容 */
 		public $class_name;
@@ -34,27 +32,10 @@
 			// 向类属性赋值
 			$this->class_name = strtolower(__CLASS__);
 			$this->class_name_cn = '错误'; // 改这里……
-			$this->table_name = 'table'; // 和这里……
-			$this->id_name = 'table_id'; // 还有这里，OK，这就可以了
+			$this->table_name = NULL; // 和这里……
+			$this->id_name = NULL; // 还有这里，OK，这就可以了
 			$this->view_root = $this->class_name;
-
-			// 设置并调用Basic核心库
-			$basic_configs = array(
-				'table_name' => $this->table_name,
-				'id_name' => $this->id_name,
-				'view_root' => $this->view_root,
-			);
-			$this->load->library('basic', $basic_configs);
-		} // __construct
-		
-		/**
-		 * 截止3.1.3为止，CI_Controller类无析构函数，所以无需继承相应方法
-		 */
-		public function __destruct()
-		{
-			// 调试信息输出开关
-			// $this->output->enable_profiler(TRUE);
-		}
+		} // end __construct
 
 		/**
 		 * 列表页
