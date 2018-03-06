@@ -83,9 +83,9 @@
             $this->user_agent_determine();
 
             // 若为桌面端，且不是路由页，则转到路由页
-            if (($this->user_agent['is_desktop'] === TRUE) && (($_REQUEST['test_mode'] !== 'on') || ($this->router->method !== 'gateway'))):
-                redirect(base_url('gateway'));
-            endif;
+//            if (($this->user_agent['is_desktop'] === TRUE) && (($_REQUEST['test_mode'] !== 'on') || ($this->router->method !== 'gateway'))):
+//                redirect(base_url('gateway'));
+//            endif;
         } // end __construct
 
         /**
@@ -349,6 +349,45 @@
 
             return $ids;
         } // end parse_ids_array
+
+        /**
+         * TODO 微信登录
+         *
+         * 使用手机号及密码进行账户登录
+         *
+         * @return void
+         */
+        protected function login_wechat($wechat_union_id)
+        {
+            // 若已登录，转到首页
+            !isset($this->session->time_expire_login) OR redirect( base_url() );
+
+            $data_to_search = array(
+                'wechat_union_id' => $wechat_union_id,
+            );
+
+            // 从API服务器获取相应详情信息
+            $params = $data_to_search;
+            $result = $this->curl->go($url, $params, 'array');
+
+            if ($result['status'] !== 200):
+                $data['error'] = $result['content']['error']['message'];
+
+            else:
+                // 获取用户信息
+                $data['item'] = $result['content'];
+                // 将信息键值对写入session
+                foreach ($data['item'] as $key => $value):
+                    $user_data[$key] = $value;
+                endforeach;
+                $user_data['time_expire_login'] = time() + 60*60*24 *30; // 默认登录状态保持30天
+                $this->session->set_userdata($user_data);
+
+                // 将用户手机号写入cookie并保存30天
+                $this->input->set_cookie('mobile', $data['item']['mobile'], 60*60*24 *30, COOKIE_DOMAIN);
+
+            endif;
+        } // end login_wechat
 
 		// 解析购物车
 		protected function cart_decode()
@@ -683,6 +722,63 @@
 
 			return $data['items'];
 		} // end list_address
+
+        // 获取特定投票信息
+        protected function get_vote($id)
+        {
+            // 从API服务器获取相应列表信息
+            $params['id'] = $id;
+            $params['user_id'] = 'NULL'; // 可获取不属于当前用户的数据
+            $params['time_delete'] = 'NULL';
+
+            $url = api_url('vote/detail');
+            $result = $this->curl->go($url, $params, 'array');
+            if ($result['status'] === 200):
+                $data['item'] = $result['content'];
+            else:
+                $data['item'] = NULL;
+            endif;
+
+            return $data['item'];
+        } // end get_vote
+
+        // 获取特定投票候选项信息
+        protected function get_vote_option($id)
+        {
+            // 从API服务器获取相应列表信息
+            $params['id'] = $id;
+            $params['user_id'] = 'NULL'; // 可获取不属于当前用户的数据
+            $params['time_delete'] = 'NULL';
+
+            $url = api_url('vote_option/detail');
+            $result = $this->curl->go($url, $params, 'array');
+            if ($result['status'] === 200):
+                $data['item'] = $result['content'];
+            else:
+                $data['item'] = NULL;
+            endif;
+
+            return $data['item'];
+        } // end get_vote_option
+
+        // 获取投票选项列表
+        protected function list_vote_option($vote_id)
+        {
+            // 从API服务器获取相应列表信息
+            $params['vote_id'] = $vote_id;
+            $params['user_id'] = 'NULL'; // 可获取不属于当前用户的数据
+            $params['time_delete'] = 'NULL';
+
+            $url = api_url('vote_option/index');
+            $result = $this->curl->go($url, $params, 'array');
+            if ($result['status'] === 200):
+                $data['items'] = $result['content'];
+            else:
+                $data['items'] = NULL;
+            endif;
+
+            return $data['items'];
+        } // end list_vote_option
 
     } // end class MY_Controller
 

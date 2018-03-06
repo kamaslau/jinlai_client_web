@@ -1,4 +1,3 @@
-<link rel=stylesheet media=all href="/css/create.css">
 <style>
 
 
@@ -21,17 +20,7 @@
     }
 </style>
 
-<script defer src="/js/create.js"></script>
-
 <base href="<?php echo $this->media_root ?>">
-
-<div id=breadcrumb>
-	<ol class="breadcrumb container">
-		<li><a href="<?php echo base_url() ?>">首页</a></li>
-		<li><a href="<?php echo base_url($this->class_name) ?>"><?php echo $this->class_name_cn ?></a></li>
-		<li class=active><?php echo $title ?></li>
-	</ol>
-</div>
 
 <div id=content class=container>
 	<?php

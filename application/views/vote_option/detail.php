@@ -1,7 +1,18 @@
-<link rel=stylesheet media=all href="/css/detail.css">
+<link rel=stylesheet media=all href="/css/vote.css">
 <style>
+    #content {margin-top:-60px;padding:0 95px 90px;}
 
+    .vote-option {width:560px;margin:0 auto;overflow:hidden;}
 
+    #option-brief {overflow:hidden;}
+    .option-brief, .option-actions {width:50%;float:left;}
+        .option-brief>*:not(:last-child) {margin-bottom:30px;}
+    .option-actions {margin-top:0;}
+        .option-actions>a {float:right;clear:both;}
+            .option-actions>a:not(:first-child) {margin-left:0;margin-top:30px;}
+
+    .option-figure {padding:0;}
+        .option-figure figure {width:520px;height:520px}
 	/* 宽度在750像素以上的设备 */
 	@media only screen and (min-width:751px)
 	{
@@ -21,79 +32,60 @@
 	}
 </style>
 
-<script defer src="/js/detail.js"></script>
+<script defer src="/js/vote.js"></script>
+
+<?php if ($class == 'success'): ?>
+<script>
+    $(function(){
+        $('#vote-succeed').show();
+    });
+</script>
+<?php endif ?>
 
 <base href="<?php echo $this->media_root ?>">
 
-<div id=breadcrumb>
-	<ol class="breadcrumb container">
-		<li><a href="<?php echo base_url() ?>">首页</a></li>
-		<li><a href="<?php echo base_url($this->class_name) ?>"><?php echo $this->class_name_cn ?></a></li>
-		<li class=active><?php echo $title ?></li>
-	</ol>
-</div>
+<?php if ( empty($vote['url_image']) ): ?>
+    <h1 id=vote-name><?php echo $vote['name'] ?></h1>
+<?php else: ?>
+    <figure id=vote-url_image class=vote-figure>
+        <a href="<?php echo base_url('vote/detail?id='.$vote['vote_id']) ?>">
+            <img alt="<?php echo $vote['name'] ?>形象图" src="<?php echo $vote['url_image'] ?>">
+        </a>
+    </figure>
+<?php endif ?>
 
 <div id=content class=container>
 	<?php if ( empty($item) ): ?>
 	<p><?php echo $error ?></p>
 
-	<?php
-		else:
-			// 需要特定角色和权限进行该操作
-			$current_role = $this->session->role; // 当前用户角色
-			$current_level = $this->session->level; // 当前用户级别
-			$role_allowed = array('管理员', '经理');
-			$level_allowed = 30;
-			if ( in_array($current_role, $role_allowed) && ($current_level >= $level_allowed) ):
-			?>
-		    <ul id=item-actions class=list-unstyled>
-				<li><a title="编辑" href="<?php echo base_url($this->class_name.'/edit?id='.$item[$this->id_name]) ?>">编辑</a></li>
-		    </ul>
-			<?php endif ?>
+	<?php else: ?>
+    <div class=vote-option data-option_id="<?php echo $item['option_id'] ?>">
 
-	<dl id=list-info class=dl-horizontal>
-		<dt><?php echo $this->class_name_cn ?>ID</dt>
-		<dd><?php echo $item[$this->id_name] ?></dd>
-		<dt>所属投票ID</dt>
-		<dd><?php echo $item['vote_id'] ?></dd>
-		<dt>名称</dt>
-		<dd><?php echo $item['name'] ?></dd>
-		<dt>描述</dt>
-		<dd><?php echo $item['description'] ?></dd>
-		<dt>形象图URL</dt>
-		<dd class=row>
-			<?php
-				$column_image = 'url_image';
-				if ( empty($item[$column_image]) ):
-			?>
-			<p>未上传</p>
-			<?php else: ?>
-			<figure class="col-xs-12 col-sm-6 col-md-4">
-				<img src="<?php echo $item[$column_image] ?>">
-			</figure>
-			<?php endif ?>
-		</dd>
-	</dl>
+        <div id=option-brief>
+            <div class=option-brief>
+                <div class=option-id># <?php echo $item['option_id'] ?></div>
+                <h2 class=option-name><?php echo $item['name'] ?></h2>
+                <div class=ballot-count><span><?php echo $item['ballot_count'] ?></span> 票</div>
+            </div>
 
-	<dl id=list-record class=dl-horizontal>
-		<dt>创建时间</dt>
-		<dd>
-			<?php echo $item['time_create'] ?>
-			<a href="<?php echo base_url('stuff/detail?id='.$item['creator_id']) ?>" target=new>查看创建者</a>
-		</dd>
+            <div class=option-actions>
+                <?php
+                // 通用字符串
+                $common_params = 'vote_id='.$item['vote_id'].'&option_id='.$item['option_id'];
+                $common_attrs = 'data-vote_id='.$item['vote_id'].' data-option_id='.$item['option_id'];
+                ?>
+                <a class=option-detail <?php echo $common_attrs ?> href="#share-guide">拉票</a>
+                <a class=_ballot-create <?php echo $common_attrs ?> href="<?php echo base_url('vote_ballot/create?'.$common_params) ?>">投票</a>
+            </div>
+        </div>
 
-		<?php if ( ! empty($item['time_delete']) ): ?>
-		<dt>删除时间</dt>
-		<dd><?php echo $item['time_delete'] ?></dd>
-		<?php endif ?>
+        <div class=option-figure>
+            <figure>
+                <img src="<?php echo MEDIA_URL.'vote/'.$item['url_image'] ?>">
+            </figure>
+        </div>
 
-		<?php if ( ! empty($item['operator_id']) ): ?>
-		<dt>最后操作时间</dt>
-		<dd>
-			<?php echo $item['time_edit'] ?>
-			<a href="<?php echo base_url('stuff/detail?id='.$item['operator_id']) ?>" target=new>查看最后操作者</a>
-		</dd>
-		<?php endif ?>
-	</dl>
+    </div>
+
 	<?php endif ?>
 </div>

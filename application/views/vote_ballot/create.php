@@ -1,4 +1,3 @@
-<link rel=stylesheet media=all href="/css/create.css">
 <style>
 
 
@@ -21,17 +20,7 @@
     }
 </style>
 
-<script defer src="/js/create.js"></script>
-
 <base href="<?php echo $this->media_root ?>">
-
-<div id=breadcrumb>
-	<ol class="breadcrumb container">
-		<li><a href="<?php echo base_url() ?>">首页</a></li>
-		<li><a href="<?php echo base_url($this->class_name) ?>"><?php echo $this->class_name_cn ?></a></li>
-		<li class=active><?php echo $title ?></li>
-	</ol>
-</div>
 
 <div id=content class=container>
 	<?php
@@ -42,24 +31,18 @@
 		<p class=help-block>必填项以“※”符号标示</p>
 
 		<fieldset>
-			<legend>基本信息</legend>
 			
 			<div class=form-group>
-				<label for=vote_id class="col-sm-2 control-label">所属投票ID</label>
+				<label for=vote_id class="col-sm-2 control-label">所属投票ID ※</label>
 				<div class=col-sm-10>
-					<input class=form-control name=vote_id type=text value="<?php echo set_value('vote_id') ?>" placeholder="所属投票ID" required>
+					<input class=form-control name=vote_id type=number min="1" step="1" value="<?php echo set_value('vote_id') ?>" placeholder="所属投票ID" required>
 				</div>
 			</div>
+
 			<div class=form-group>
-				<label for=option_id class="col-sm-2 control-label">候选项ID</label>
+				<label for=option_id class="col-sm-2 control-label">候选项ID ※</label>
 				<div class=col-sm-10>
-					<input class=form-control name=option_id type=text value="<?php echo set_value('option_id') ?>" placeholder="候选项ID" required>
-				</div>
-			</div>
-			<div class=form-group>
-				<label for=user_id class="col-sm-2 control-label">用户ID</label>
-				<div class=col-sm-10>
-					<input class=form-control name=user_id type=text value="<?php echo set_value('user_id') ?>" placeholder="用户ID" required>
+					<input class=form-control name=option_id type=number min="1" step="1" value="<?php echo set_value('option_id') ?>" placeholder="候选项ID" required>
 				</div>
 			</div>
 		</fieldset>

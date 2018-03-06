@@ -20,7 +20,6 @@
 </style>
 
 <script defer src="/js/vote.js"></script>
-<script defer src="/js/jquery.downCount.js"></script>
 
 <base href="<?php echo $this->media_root ?>">
 
@@ -55,6 +54,7 @@
             <a id=vote-signup href="<?php echo base_url('vote_option/create?vote_id='.$item['vote_id']) ?>">我要报名</a>
             <?php endif ?>
 
+            <!--<p class=vote-time_start>投票开始时间<?php echo date('Y-m-d H:i:s', $item['time_start']) ?></p>-->
             <div id=counter-container class=vote-time_end>
                 <p>距离投票结束<!--（<?php echo date('Y-m-d H:i:s', $item['time_end']) ?>）--></p>
                 <ul id=down-counter class=countdown>
@@ -79,16 +79,6 @@
                     </li>
                 </ul>
             </div>
-            <script>
-                $(function(){
-                    $('#down-counter').downCount({
-                        date: '<?php echo date('m/d/Y H:i:s', $item['time_end']) ?>',
-                        offset: +8
-                    }, function(){
-                        alert('活动已结束');
-                    });
-                });
-            </script>
 
             <div id=vote-description>
                 <?php echo $item['description'] ?>
@@ -136,24 +126,9 @@
                     <img src="<?php echo $option['url_image'] ?>">
                 </figure>
             </a>
-            <div class=option-actions>
-                <?php
-                    // 通用字符串
-                    $common_params = 'vote_id='.$item['vote_id'].'&';
-                    $common_attrs = 'data-vote_id='.$item['vote_id'].' data-option_id='.$option['option_id'];
-                ?>
-                <a <?php echo $common_attrs ?> href="<?php echo base_url('vote_option/detail?'.$common_params.'id='.$option['option_id']) ?>">拉票</a>
-                <a <?php echo $common_attrs ?> href="<?php echo base_url('vote_ballot/create?'.$common_params.'option_id='.$option['option_id']) ?>">投票</a>
-            </div>
 
         </li>
         <?php endforeach ?>
     </ul>
-
-    <!--
-        <div id=loader>
-        <i class="fa fa-spin fa-refresh" aria-hidden=true></i>
-    </div>
-    -->
     <?php endif ?>
 </div>

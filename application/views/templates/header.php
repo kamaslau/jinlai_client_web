@@ -24,7 +24,6 @@
 		
 		<meta name=viewport content="width=device-width,user-scalable=0">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-			
 		
 		<?php if ($this->user_agent['is_wechat']): ?>
 		<!--<link href="<?php echo CDN_URL ?>css/muipublic.css" rel="stylesheet">
@@ -271,7 +270,6 @@
 			display: none;
 		}
 		</style>
-
 	
         <script>
             var user_agent = new Object();

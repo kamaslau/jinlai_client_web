@@ -89,8 +89,7 @@
                 <span class=item-status><?php echo $item['status'] ?></span>
                 <a href="<?php echo base_url($this->class_name.'/detail?id='.$item[$this->id_name]) ?>">
                     <p><?php echo $this->class_name_cn ?>ID <?php echo $item[$this->id_name] ?></p>
-                    <p><?php echo $item['name'] ?></p>
-                    <p><?php echo trim($item['province']. ''.$item['city']. ''.$item['county']) ?></p>
+                    <p>候选项ID <?php echo $item['option_id'] ?></p>
                 </a>
 
                 <div class=item-actions>
@@ -104,7 +103,6 @@
                         if ( in_array($current_role, $role_allowed) && ($current_level >= $level_allowed) ):
                             ?>
                         <li><a title="删除" href="<?php echo base_url($this->class_name.'/delete?ids='.$item[$this->id_name]) ?>" target=_blank>删除</a></li>
-                        <li class=color_primary><a title="编辑" href="<?php echo base_url($this->class_name.'/edit?id='.$item[$this->id_name]) ?>" target=_blank>编辑</a></li>
                         <?php endif ?>
                     </ul>
                 </div>

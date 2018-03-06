@@ -1,0 +1,74 @@
+body {color:#fff;font-size:24px;background-color:#0c0a33;font-family:"微软雅黑",sans-serif;width:750px;}
+.container {width:100%;padding:0 20px;}
+a {color:#fff;text-align:center;}
+figure {display:flex;justify-content:center;align-items:center}
+
+#audio-control {color:#c71c1c;background-color:#fff;display:block;border-radius:40px;width:80px;height:80px;line-height:80px;text-align:center;position:fixed;top:20px;right:20px;opacity:0.75;z-index:99;}
+    #audio-control:hover{opacity:1;}
+
+#vote-name {text-align:center;}
+
+#vote-url_image {margin-top:0;}
+.vote-figure {margin-top:40px;border-radius:15px;}
+
+#vote-brief {padding:0 60px;}
+
+#vote-signup {font-size:40px;color:#fff;background:url('/media/images/vote/bg-signup@3x.png') no-repeat center center;background-size:320px 90px;width:320px;height:90px;line-height:90px;display:block;margin:-90px auto 0;}
+
+#counter-container {overflow:hidden;margin-top:60px;}
+    #counter-container>* {display:block;float:left;width:auto;height:50px;line-height:50px;}
+    #counter-container>p {margin-right:20px;}
+    #down-counter {color:#fde001;font-size:24px;}
+
+#vote-description {margin-top:40px;line-height:46px;}
+
+#vote-article {font-size:22px;background:url('/media/images/vote/bg-info@3x.png') no-repeat center center;background-size:234px 68px;display:block;width:234px;height:68px;line-height:68px;margin-top:40px;}
+
+#url_video {background-color:#000;margin:40px 20px 0;}
+
+#vote-extra {background-color:#1b1b54;overflow:hidden;margin:20px 20px 0;border-radius:15px;}
+    #vote-extra section {padding:30px 20px 0;}
+    #vote-extra .strong {color:#fde001;background-color:#262662;margin-top:30px;padding:30px 20px;}
+
+#vote-searcher {color:#615ed2;border:1px solid #6d69f0;border-radius:40px;margin:40px 30px 0;padding:0;width:690px;}
+    #vote-searcher>i {font-size:36px;position:absolute;left:40px;top:20px;line-height:40px;width:40px;height:40px;line-height:40px;}
+    #vote-searcher>input {color:#fff;background-color:transparent;font-size:30px;display:block;width:100%;height:80px;line-height:80px;padding:0 96px;}
+
+#vote-options {overflow:hidden;margin-top:40px;}
+    .vote-option {color:#fff;background-color:#262662;font-size:28px;width:345px;margin-bottom:20px;border-radius:15px;padding:30px 20px;float:left;overflow:hidden;}
+        .vote-option:nth-of-type(2n+0) {margin-left:20px;}
+    .ballot-count {}
+        .ballot-count span {color:#fde001;}
+
+.option-figure {background-color:#999;display:block;margin-top:30px;}
+    .option-figure figure {width:305px;height:305px}
+
+    .option-brief>*, .option-actions>* {color:#fff;}
+    .option-brief {line-height:28px;}
+        .option-brief>*:not(:last-child) {margin-bottom:20px;}
+    .option-actions {margin-top:30px;}
+        .option-actions a {font-size:30px;background:url('/media/images/vote/bg-action@3x.png') no-repeat center center;background-size:145px 60px;font-weight:bold;display:block;width:145px;height:60px;line-height:60px;float:left;}
+            .option-actions a:last-child {color:#fde001;margin-left:15px;}
+
+#loader {color:#5250af;width:100%;text-align:center;margin:40px auto;}
+
+/* 以下为全屏容器样式 */
+.full-screen {font-family:"苹方",sans-serif;background-color:rgba(0,0,0,0.75);position:fixed;left:0;right:0;top:0;bottom:0;z-index:100;display:none;}
+    .full-screen-container {color:#3d3d3d;background:#fff url('/media/images/vote/bg-fullscreen@3x.png') no-repeat center top;background-size:590px 233px;font-size:30px;text-align:center;width:590px;max-height:80%;margin:10% auto;border-radius:30px;padding:233px 0 0;position:relative;overflow-y:scroll;}
+    .full-screen-close {color:#c9954b;font-size:26px;position:absolute;top:30px;right:30px;width:26px;height:26px;}
+    .full-screen-content {background-color:#fff;padding:55px 0;}
+        .full-screen-title {color:#c9954b;font-size:36px;margin-bottom:50px;}
+
+#form-signup .full-screen-container {background-image:none;padding-top:0;}
+    .full-screen-form {text-align:left;padding:0 32px;}
+        .full-screen-form label {margin-top:30px;margin-bottom:16px;}
+        .full-screen-form input, .full-screen-form textarea {background-color:rgb(241,241,241);width:100%;line-height:90px;border-radius:30px;}
+        .full-screen-form [type=text] {height:90px;}
+        .full-screen-form button {background:url('/media/images/vote/bg-submit@3x.png') no-repeat center center;background-size:528px 90px;width:528px;height:90px;margin-top:20px;text-indent:-9999em;}
+
+/* 以下为倒计时器样式 */
+ul.countdown {list-style:none;display:block;}
+    ul.countdown li {display:inline-block;text-align:center;}
+        ul.countdown li span {font-size:24px;display:block;width:50px;height:50px;line-height:50px;border:1px solid #fff;}
+        ul.countdown li.seperator {color:#aaa;font-size:24px;margin:0 20px;line-height:50px;vertical-align:top;}
+        ul.countdown li p {color:#aaa;font-size:14px;}

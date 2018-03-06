@@ -9,7 +9,7 @@
 	 * @copyright ICBG <www.bingshankeji.com>
 	 */
 	class Vote extends MY_Controller
-	{	
+	{
 		/**
 		 * 可作为列表筛选条件的字段名；可在具体方法中根据需要删除不需要的字段并转换为字符串进行应用，下同
 		 */
@@ -36,11 +36,12 @@
 		{
 			parent::__construct();
 
-			// （可选）未登录用户转到登录页
+            // 微信登录授权URL
             $current_url = 'https://'. $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
             $target_url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.WECHAT_APP_ID.'&redirect_uri='.urlencode($current_url).'&response_type=code&scope=snsapi_userinfo#wechat_redirect';
-			//($this->session->time_expire_login > time() || !empty($sns_info)) OR redirect( $target_url );
-			//var_dump($sns_info);
+
+            // 未获取微信用户资料的用户转到微信授权页
+			(!empty($this->session->sns_info) || !empty($this->input->get('code'))) OR redirect($target_url);
 
 			// 向类属性赋值
 			$this->class_name = strtolower(__CLASS__);
@@ -95,7 +96,7 @@
 			$data['data_to_display'] = $this->data_to_display;
 
 			// 输出视图
-			$this->load->view('templates/header', $data);
+			$this->load->view('templates/header-simple', $data);
 			$this->load->view($this->view_root.'/index', $data);
 			$this->load->view('templates/footer', $data);
 		} // end index
@@ -119,28 +120,30 @@
 			if ($result['status'] === 200):
 				$data['item'] = $result['content'];
 
-			    // 获取候选项信息（若有）
-                $params = array(
-                    'vote_id' => $id,
-                    'time_delete' => 'NULL',
-                );
-                $url = api_url('vote_option/index');
-                $result = $this->curl->go($url, $params, 'array');
-                if ($result['status'] === 200) $data['options'] = $result['content'];
-				
-				// 页面信息
-                $data['title'] = $this->class_name_cn. '"'. $data['item']['name']. '"';
+                // 页面信息
+                $data['title'] = '"'. $data['item']['name']. '"投票活动';
                 $data['class'] = $this->class_name.' detail';
+
+                // 若活动已开始，则显示活动详情页；已结束则显示活动结果页；未开始则显示活动预告页。
+                if (!empty($data['item']['time_end']) && time() > $data['item']['time_end']):
+                    $view_name = 'detail-after';
+                elseif (!empty($data['item']['time_start']) && time() < $data['item']['time_start']):
+                    $view_name = 'detail-before';
+                else:
+                    $view_name = 'detail';
+                endif;
+
+			    // 获取投票候选项信息（若有）
+                $data['options'] = $this->list_vote_option($id);
+
+                $this->load->view('templates/header-vote', $data);
+                $this->load->view($this->view_root.'/'.$view_name, $data);
+                $this->load->view('templates/footer-vote', $data);
 
 			else:
                 redirect( base_url('error/code_404') ); // 若缺少参数，转到错误提示页
 
 			endif;
-
-			// 输出视图
-			$this->load->view('templates/header', $data);
-			$this->load->view($this->view_root.'/detail', $data);
-			$this->load->view('templates/footer', $data);
 		} // end detail
 
 		/**

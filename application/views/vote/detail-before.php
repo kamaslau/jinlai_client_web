@@ -56,7 +56,7 @@
             <?php endif ?>
 
             <div id=counter-container class=vote-time_end>
-                <p>距离投票结束<!--（<?php echo date('Y-m-d H:i:s', $item['time_end']) ?>）--></p>
+                <p>距离投票开始<!--（<?php echo date('Y-m-d H:i:s', $item['time_start']) ?>）--></p>
                 <ul id=down-counter class=countdown>
                     <li>
                         <span class="days">00</span>
@@ -82,10 +82,10 @@
             <script>
                 $(function(){
                     $('#down-counter').downCount({
-                        date: '<?php echo date('m/d/Y H:i:s', $item['time_end']) ?>',
+                        date: '<?php echo date('m/d/Y H:i:s', $item['time_start']) ?>',
                         offset: +8
                     }, function(){
-                        alert('活动已结束');
+                        alert('活动已开始');
                     });
                 });
             </script>
@@ -117,43 +117,5 @@
         </div>
     </div>
 
-    <div id=vote-searcher class=container>
-        <i id=search-button class="fa fa-search" aria-hidden=true></i>
-        <input name=content type=search placeholder="可根据商家名称或序号进行搜索" required>
-    </div>
-
-    <ul id=vote-options class=container>
-        <?php foreach ($options as $option): ?>
-        <li class=vote-option data-option_id="<?php echo $option['option_id'] ?>" data-option_name="<?php echo $option['name'] ?>">
-
-            <div class=option-brief>
-                <div class=option-id># <?php echo $option['option_id'] ?></div>
-                <h2 class=option-name><?php echo $option['name'] ?></h2>
-                <div class=ballot-count><span><?php echo $option['ballot_count'] ?></span> 票</div>
-            </div>
-            <a class=option-figure href="<?php echo base_url('vote_option/detail?id='.$option['option_id']) ?>">
-                <figure>
-                    <img src="<?php echo $option['url_image'] ?>">
-                </figure>
-            </a>
-            <div class=option-actions>
-                <?php
-                    // 通用字符串
-                    $common_params = 'vote_id='.$item['vote_id'].'&';
-                    $common_attrs = 'data-vote_id='.$item['vote_id'].' data-option_id='.$option['option_id'];
-                ?>
-                <a <?php echo $common_attrs ?> href="<?php echo base_url('vote_option/detail?'.$common_params.'id='.$option['option_id']) ?>">拉票</a>
-                <a <?php echo $common_attrs ?> href="<?php echo base_url('vote_ballot/create?'.$common_params.'option_id='.$option['option_id']) ?>">投票</a>
-            </div>
-
-        </li>
-        <?php endforeach ?>
-    </ul>
-
-    <!--
-        <div id=loader>
-        <i class="fa fa-spin fa-refresh" aria-hidden=true></i>
-    </div>
-    -->
     <?php endif ?>
 </div>

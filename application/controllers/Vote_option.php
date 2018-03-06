@@ -36,8 +36,12 @@
 		{
 			parent::__construct();
 
-			// （可选）未登录用户转到登录页
-			//($this->session->time_expire_login > time()) OR redirect( base_url('login') );
+            // 微信登录授权URL
+            $current_url = 'https://'. $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+            $target_url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.WECHAT_APP_ID.'&redirect_uri='.urlencode($current_url).'&response_type=code&scope=snsapi_userinfo#wechat_redirect';
+
+            // 未获取微信用户资料的用户转到微信授权页
+            (!empty($this->session->sns_info) || !empty($this->input->get('code'))) OR redirect($target_url);
 
 			// 向类属性赋值
 			$this->class_name = strtolower(__CLASS__);
@@ -115,10 +119,13 @@
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
 				$data['item'] = $result['content'];
-				
+
 				// 页面信息
                 $data['title'] = $this->class_name_cn. '"'. $data['item']['name']. '"';
                 $data['class'] = $this->class_name.' detail';
+
+                // 获取投票信息
+                $data['vote'] = $this->get_vote($data['item']['vote_id']);
 
 			else:
                 redirect( base_url('error/code_404') ); // 若缺少参数，转到错误提示页
@@ -126,57 +133,10 @@
 			endif;
 
 			// 输出视图
-			$this->load->view('templates/header', $data);
+			$this->load->view('templates/header-vote', $data);
 			$this->load->view($this->view_root.'/detail', $data);
-			$this->load->view('templates/footer', $data);
+			$this->load->view('templates/footer-vote', $data);
 		} // end detail
-
-		/**
-		 * 回收站
-		 */
-		public function trash()
-		{
-			// 操作可能需要检查操作权限
-			$role_allowed = array('管理员', '经理'); // 角色要求
-			$min_level = 30; // 级别要求
-			$this->permission_check($role_allowed, $min_level);
-
-			// 页面信息
-			$data = array(
-				'title' => $this->class_name_cn. '回收站',
-				'class' => $this->class_name.' trash',
-			);
-
-			// 筛选条件
-			$condition['time_delete'] = 'IS NOT NULL';
-			// （可选）遍历筛选条件
-			foreach ($this->names_to_sort as $sorter):
-				if ( !empty($this->input->get_post($sorter)) )
-					$condition[$sorter] = $this->input->get_post($sorter);
-			endforeach;
-
-			// 排序条件
-			$order_by['time_delete'] = 'DESC';
-
-			// 从API服务器获取相应列表信息
-			$params = $condition;
-			$url = api_url($this->class_name. '/index');
-			$result = $this->curl->go($url, $params, 'array');
-			if ($result['status'] === 200):
-				$data['items'] = $result['content'];
-			else:
-				$data['items'] = array();
-				$data['error'] = $result['content']['error']['message'];
-			endif;
-
-			// 将需要显示的数据传到视图以备使用
-			$data['data_to_display'] = $this->data_to_display;
-
-			// 输出视图
-			$this->load->view('templates/header', $data);
-			$this->load->view($this->view_root.'/trash', $data);
-			$this->load->view('templates/footer', $data);
-		} // end trash
 
 		/**
 		 * 创建
@@ -185,8 +145,13 @@
 		{
 			// 操作可能需要检查操作权限
 			// $role_allowed = array('管理员', '经理'); // 角色要求
-// 			$min_level = 30; // 级别要求
-// 			$this->basic->permission_check($role_allowed, $min_level);
+            // $min_level = 30; // 级别要求
+            // $this->basic->permission_check($role_allowed, $min_level);
+
+            // 检查是否已传入必要参数
+            $vote_id = $this->input->get_post('vote_id')? $this->input->get_post('vote_id'): NULL;
+            if ( empty($vote_id) )
+                redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
 
 			// 页面信息
 			$data = array(
@@ -198,7 +163,6 @@
 			// 待验证的表单项
 			$this->form_validation->set_error_delimiters('', '；');
 			// 验证规则 https://www.codeigniter.com/user_guide/libraries/form_validation.html#rule-reference
-			$this->form_validation->set_rules('vote_id', '所属投票ID', 'trim|required|is_natural_no_zero');
 			$this->form_validation->set_rules('name', '名称', 'trim|required|max_length[30]');
 			$this->form_validation->set_rules('description', '描述', 'trim|max_length[100]');
 			$this->form_validation->set_rules('url_image', '形象图URL', 'trim|max_length[255]');
@@ -215,13 +179,14 @@
 				// 需要创建的数据；逐一赋值需特别处理的字段
 				$data_to_create = array(
 					'user_id' => $this->session->user_id,
+                    'vote_id' => $vote_id,
 				);
 				// 自动生成无需特别处理的数据
 				$data_need_no_prepare = array(
-					'vote_id', 'name', 'description', 'url_image',
+					'name', 'description', 'url_image',
 				);
 				foreach ($data_need_no_prepare as $name)
-					$data_to_create[$name] = $this->input->post($name);
+					$data_to_create[$name] = $this->input->post_get($name);
 
 				// 向API服务器发送待创建数据
 				$params = $data_to_create;
@@ -234,112 +199,17 @@
 					$data['operation'] = 'create';
 					$data['id'] = $result['content']['id']; // 创建后的信息ID
 
-					$this->load->view('templates/header', $data);
-					$this->load->view($this->view_root.'/result', $data);
-					$this->load->view('templates/footer', $data);
-
 				else:
 					// 若创建失败，则进行提示
 					$data['error'] = $result['content']['error']['message'];
 
-					$this->load->view('templates/header', $data);
-					$this->load->view($this->view_root.'/create', $data);
-					$this->load->view('templates/footer', $data);
-
 				endif;
+
+				// 转到投票详情页
+				redirect(base_url('vote/detail?id='.$vote_id));
 				
 			endif;
 		} // end create
-
-		/**
-		 * 编辑单行
-		 */
-		public function edit()
-		{
-			// 检查是否已传入必要参数
-			$id = $this->input->get_post('id')? $this->input->get_post('id'): NULL;
-			if ( !empty($id) ):
-				$params['id'] = $id;
-			else:
-				redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
-			endif;
-
-			// 操作可能需要检查操作权限
-			// $role_allowed = array('管理员', '经理'); // 角色要求
-// 			$min_level = 30; // 级别要求
-// 			$this->basic->permission_check($role_allowed, $min_level);
-
-			// 页面信息
-			$data = array(
-				'title' => '修改'.$this->class_name_cn,
-				'class' => $this->class_name.' edit',
-				'error' => '', // 预设错误提示
-			);
-
-			// 从API服务器获取相应详情信息
-			$url = api_url($this->class_name. '/detail');
-			$result = $this->curl->go($url, $params, 'array');
-			if ($result['status'] === 200):
-				$data['item'] = $result['content'];
-			else:
-				redirect( base_url('error/code_404') ); // 若未成功获取信息，则转到错误页
-			endif;
-
-			// 待验证的表单项
-			$this->form_validation->set_error_delimiters('', '；');
-			$this->form_validation->set_rules('name', '名称', 'trim|required|max_length[30]');
-			$this->form_validation->set_rules('description', '描述', 'trim|max_length[100]');
-			$this->form_validation->set_rules('url_image', '形象图URL', 'trim|max_length[255]');
-
-			// 若表单提交不成功
-			if ($this->form_validation->run() === FALSE):
-				$data['error'] .= validation_errors();
-
-				$this->load->view('templates/header', $data);
-				$this->load->view($this->view_root.'/edit', $data);
-				$this->load->view('templates/footer', $data);
-
-			else:
-				// 需要编辑的数据；逐一赋值需特别处理的字段
-				$data_to_edit = array(
-					'user_id' => $this->session->user_id,
-					'id' => $id,
-					//'name' => $this->input->post('name')),
-				);
-				// 自动生成无需特别处理的数据
-				$data_need_no_prepare = array(
-					'name', 'description', 'url_image',
-				);
-				foreach ($data_need_no_prepare as $name)
-					$data_to_edit[$name] = $this->input->post($name);
-
-				// 向API服务器发送待创建数据
-				$params = $data_to_edit;
-				$url = api_url($this->class_name. '/edit');
-				$result = $this->curl->go($url, $params, 'array');
-				if ($result['status'] === 200):
-					$data['title'] = $this->class_name_cn. '修改成功';
-					$data['class'] = 'success';
-					$data['content'] = $result['content']['message'];
-					$data['operation'] = 'edit';
-					$data['id'] = $result['content']['id']; // 修改后的信息ID
-
-					$this->load->view('templates/header', $data);
-					$this->load->view($this->view_root.'/result', $data);
-					$this->load->view('templates/footer', $data);
-
-				else:
-					// 若修改失败，则进行提示
-					$data['error'] = $result['content']['error']['message'];
-
-					$this->load->view('templates/header', $data);
-					$this->load->view($this->view_root.'/edit', $data);
-					$this->load->view('templates/footer', $data);
-
-				endif;
-
-			endif;
-		} // end edit
 		
 		/**
          * 删除
