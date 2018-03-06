@@ -30,16 +30,13 @@
 
 	<?php else: ?>
 
-    <?php
-        // 默认背景音乐文件URL（须为MP3）
-        $default_bgm_url = '';
-    ?>
-    <!--
-    <audio id=vote-audio class=hide autoplay loop alt="背景音乐" src="<?php echo empty($item['url_audio'])? $default_bgm_url: $item['url_audio'] ?>">
-    <a id=audio-control href="javascript:void(0);" onclick="playOrPaused(this);">
+    <!-- 背景音乐 -->
+    <?php if ( ! empty($item['url_audio'])): ?>
+    <audio id=vote-audio class=hide autoplay loop alt="背景音乐" src="<?php echo $item['url_audio'] ?>">您的浏览器不支持音频播放</audio>
+    <div id=audio-control>
         <i class="fa fa-pause"></i>
-    </a>
-    -->
+    </div>
+    <?php endif ?>
 
     <div id=vote-info>
         <?php if ( empty($item['url_image']) ): ?>
@@ -100,7 +97,7 @@
 
         <?php if ( ! empty($item['url_video']) ): ?>
         <figure id=url_video class=vote-figure>
-            <video controls alt="<?php echo $item['name'] ?>形象视频" poster="" src="<?php echo $item['url_video'] ?>">
+            <video controls alt="<?php echo $item['name'] ?>形象视频" poster="<?php echo $item['url_video_thumb'] ?>" src="<?php echo $item['url_video'] ?>">您的浏览器不支持视频播放</video>
         </figure>
         <?php endif ?>
 

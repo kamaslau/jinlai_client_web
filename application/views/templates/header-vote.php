@@ -149,35 +149,41 @@
             // 获取access_token；若已获得授权则一并获取微信用户资料
             $access_token = get_access_token();
 
+            // 若无微信公众号关注记录，则初始化为未关注
+            if ( ! isset($this->session->wechpat_subscribe)):
+                $this->session->wechat_subscribe = get_cookie('wechat_subscribe'); // 标记当前code为已使用;
+            endif;
+
             // 若未登录且从微信登录页转入，则尝试登录
             $code = $this->input->get('code');
-            if ( ! empty($code) && ($this->session->last_wechat_code_used != $code)):
-                // 若当前已登录，清除登录信息
-                if ($this->session->time_expire_login > time()):
-                    // 清除当前SESSION
-                    $this->session->sess_destroy();
-                endif;
+            $last_code_used = get_cookie('last_code_used');
+            if ( !empty($code) && ($last_code_used != $code)):
+                // 清除当前登录信息
+                $this->session->sess_destroy();
+                set_cookie('wechat_subscribe', 0);
 
                 // 获取微信用户资料
                 $sns_token = get_sns_token($code);
+                $sns_info = get_user_info($access_token, $sns_token['openid']);
+                set_cookie('last_code_used', $code); // 标记当前code为已使用
 
-                // 尝试使用微信union_id登录
-                $user_info = login_wechat($sns_token['unionid']);
-                if ($user_info !== FALSE):
-                    // 将信息键值对写入session
-                    foreach ($user_info as $key => $value):
-                        $user_data[$key] = $value;
-                    endforeach;
-                    $user_data['time_expire_login'] = time() + 60*60*24 *30; // 默认登录状态保持30天
-                    $this->session->set_userdata($user_data);
+                // 若当前用户已订阅微信公众号，尝试使用微信union_id登录本站账户
+                if ($sns_info['subscribe'] == 1 && isset($sns_token['unionid'])):
+                    // 尝试使用微信union_id登录
+                    $user_info = login_wechat($sns_token['unionid']);
+                    if ($user_info !== FALSE):
+                        // 将信息键值对写入session
+                        foreach ($user_info as $key => $value):
+                            $user_data[$key] = $value;
+                        endforeach;
+                        $user_data['time_expire_login'] = time() + 60*60*24 *30; // 默认登录状态保持30天
+                        $this->session->set_userdata($user_data);
 
-                    // 若登录成功，获取并保存微信用户资料
-                    $sns_info = get_user_info($access_token, $sns_token['openid']);
-                    $this->session->is_subscribe = $sns_info['subscribe'];
-                    $this->session->sns_info = json_encode($sns_info);
+                        set_cookie('wechat_subscribe', 1); // 标记当前已关注微信公众号
+                        $this->session->wechat_subscribe = 1;
+                        $this->session->sns_info = json_encode($sns_info);
+                    endif;
                 endif;
-
-                $this->session->last_wechat_code_used = $code;
             endif;
 
             // 生成微信网页API签名参数
@@ -191,18 +197,12 @@
         <script src="https://res.wx.qq.com/open/js/jweixin-1.3.0.js"></script>
         <script>
         $(function(){
-
             // 微信用户信息
-            var wx_userinfo = <?php echo $this->session->sns_info ?>;
-            if (wx_userinfo.subscribe != 1)
+            var wx_userinfo;
+            wx_userinfo_subscribe = <?php echo $this->session->wechat_subscribe ?>;
+            if (wx_userinfo_subscribe != 1)
             {
                 $('#follow-guide').show();
-                <?php
-                // 微信登录授权URL
-                $current_url = 'https://'. $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
-                $target_url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.WECHAT_APP_ID.'&redirect_uri='.urlencode($current_url).'&response_type=code&scope=snsapi_userinfo#wechat_redirect';
-                ?>
-                //location.href = '<?php echo $target_url ?>';
             }
 
             wx.config({

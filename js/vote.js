@@ -1,23 +1,22 @@
 /**
  * 投票相关功能
  */
-// 播放或暂停音频
-/*
-function playOrPaused(obj){
-    var audio = document.getElementById('vote-audio');
-
-    if (audio.paused)
-    {
-        audio.play();
-        obj.innerHTML = '<i class="fa fa-pause" aria-hidden=true></i>';
-        return;
-    }
-    audio.pause();
-    obj.innerHTML = '<i class="fa fa-play" aria-hidden=true></i>';
-}
-*/
-
 $(function(){
+    // 播放或暂停音频
+    $('#audio-control').click(function(){
+        var audio = document.getElementById('vote-audio');
+
+        if (audio.paused)
+        {
+            audio.play();
+            $(this).html('<i class="fa fa-pause" aria-hidden=true></i>');
+            return;
+        } else {
+            audio.pause();
+            $(this).html('<i class="fa fa-play" aria-hidden=true></i>');
+        }
+    });
+
     // 搜索
     $('[name=content]').change(function(){
         var content = $(this).val();

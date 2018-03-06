@@ -90,7 +90,7 @@
 
         <?php if ( ! empty($item['url_video']) ): ?>
         <figure id=url_video class=vote-figure>
-            <video controls alt="<?php echo $item['name'] ?>形象视频" poster="" src="<?php echo $item['url_video'] ?>">
+            <video controls alt="<?php echo $item['name'] ?>形象视频" poster="<?php echo $item['url_video_thumb'] ?>" src="<?php echo $item['url_video'] ?>">
         </figure>
         <?php endif ?>
 

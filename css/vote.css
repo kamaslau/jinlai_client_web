@@ -3,15 +3,15 @@ body {color:#fff;font-size:24px;background-color:#0c0a33;font-family:"微软雅�
 a {color:#fff;text-align:center;}
 figure {display:flex;justify-content:center;align-items:center}
 
-#audio-control {color:#c71c1c;background-color:#fff;display:block;border-radius:40px;width:80px;height:80px;line-height:80px;text-align:center;position:fixed;top:20px;right:20px;opacity:0.75;z-index:99;}
-    #audio-control:hover{opacity:1;}
+#audio-control {color:#c71c1c;background-color:rgba(255,255,255,0.8);display:block;border-radius:40px;width:80px;height:80px;line-height:80px;text-align:center;position:fixed;top:20px;right:20px;opacity:0.75;z-index:99;}
+    #audio-control:hover{background-color:rgba(255,255,255,1);}
 
 #vote-name {text-align:center;}
 
 #vote-url_image {margin-top:0;}
-.vote-figure {margin-top:40px;border-radius:15px;}
+.vote-figure {margin-top:40px;border-radius:15px;overflow:hidden;}
 
-#vote-brief {padding:0 60px;}
+#vote-brief {padding:0 60px;position:relative;}
 
 #vote-signup {font-size:40px;color:#fff;background:url('/media/images/vote/bg-signup@3x.png') no-repeat center center;background-size:320px 90px;width:320px;height:90px;line-height:90px;display:block;margin:-90px auto 0;}
 
@@ -53,11 +53,12 @@ figure {display:flex;justify-content:center;align-items:center}
 #loader {color:#5250af;width:100%;text-align:center;margin:40px auto;}
 
 /* 以下为全屏容器样式 */
-.full-screen {font-family:"苹方",sans-serif;background-color:rgba(0,0,0,0.75);position:fixed;left:0;right:0;top:0;bottom:0;z-index:100;display:none;}
-    .full-screen-container {color:#3d3d3d;background:#fff url('/media/images/vote/bg-fullscreen@3x.png') no-repeat center top;background-size:590px 233px;font-size:30px;text-align:center;width:590px;max-height:80%;margin:10% auto;border-radius:30px;padding:233px 0 0;position:relative;overflow-y:scroll;}
+.full-screen {font-family:"苹方",sans-serif;text-align:center;background-color:rgba(0,0,0,0.75);position:fixed;left:0;right:0;top:0;bottom:0;z-index:100;display:none;}
+    .full-screen-container {color:#3d3d3d;background:#fff url('/media/images/vote/bg-fullscreen@3x.png') no-repeat center top;background-size:590px 233px;font-size:30px;width:590px;max-height:80%;margin:10% auto;border-radius:30px;padding:233px 0 0;position:relative;overflow-y:scroll;}
     .full-screen-close {color:#c9954b;font-size:26px;position:absolute;top:30px;right:30px;width:26px;height:26px;}
-    .full-screen-content {background-color:#fff;padding:55px 0;}
+    .full-screen-content {background-color:#fff;padding:55px 30px;}
         .full-screen-title {color:#c9954b;font-size:36px;margin-bottom:50px;}
+        .full-screen-content p:not(:last-child) {margin-bottom:1em;}
 
 #form-signup .full-screen-container {background-image:none;padding-top:0;}
     .full-screen-form {text-align:left;padding:0 32px;}
@@ -65,6 +66,7 @@ figure {display:flex;justify-content:center;align-items:center}
         .full-screen-form input, .full-screen-form textarea {background-color:rgb(241,241,241);width:100%;line-height:90px;border-radius:30px;}
         .full-screen-form [type=text] {height:90px;}
         .full-screen-form button {background:url('/media/images/vote/bg-submit@3x.png') no-repeat center center;background-size:528px 90px;width:528px;height:90px;margin-top:20px;text-indent:-9999em;}
+#vote-article-content {text-align:left;}
 
 /* 以下为倒计时器样式 */
 ul.countdown {list-style:none;display:block;}

@@ -25,8 +25,11 @@
             $current_url = 'https://'. $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
             $target_url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.WECHAT_APP_ID.'&redirect_uri='.urlencode($current_url).'&response_type=code&scope=snsapi_userinfo#wechat_redirect';
 
-            // 未获取微信用户资料的用户转到微信授权页
-            (!empty($this->session->sns_info) || !empty($this->input->get('code'))) OR redirect($target_url);
+            // 登录已已超时，或未获取微信用户资料的用户转到微信授权页
+            (
+                ($this->session->time_expire_login > time() && !empty($this->session->sns_info))
+                || !empty($this->input->get('code'))
+            ) OR redirect($target_url);
 
 			// 向类属性赋值
 			$this->class_name = strtolower(__CLASS__);
