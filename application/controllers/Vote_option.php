@@ -14,7 +14,7 @@
 		 * 可作为列表筛选条件的字段名；可在具体方法中根据需要删除不需要的字段并转换为字符串进行应用，下同
 		 */
 		protected $names_to_sort = array(
-			'vote_id', 'name', 'description', 'url_image', 'time_create', 'time_delete', 'time_edit', 'creator_id', 'operator_id', 'status', 'time_create_min', 'time_create_max',
+			'vote_id', 'tag_id', 'name', 'description', 'url_image', 'time_create', 'time_delete', 'time_edit', 'creator_id', 'operator_id', 'status', 'time_create_min', 'time_create_max',
 		);
 
 		/**
@@ -123,12 +123,12 @@
 			if ($result['status'] === 200):
 				$data['item'] = $result['content'];
 
-				// 页面信息
-                $data['title'] = $this->class_name_cn. '"'. $data['item']['name']. '"';
-                $data['class'] = $this->class_name.' detail';
-
                 // 获取投票信息
                 $data['vote'] = $this->get_vote($data['item']['vote_id']);
+
+				// 页面信息
+                $data['title'] = '候选项"'. $data['item']['name']. '" - '. $data['vote']['name'];
+                $data['class'] = $this->class_name.' detail';
 
 			else:
                 redirect( base_url('error/code_404') ); // 若缺少参数，转到错误提示页
@@ -158,7 +158,7 @@
 
 			// 页面信息
 			$data = array(
-				'title' => '创建'.$this->class_name_cn,
+				'title' => '报名参选',
 				'class' => $this->class_name.' create',
 				'error' => '', // 预设错误提示
 			);
@@ -166,6 +166,7 @@
 			// 待验证的表单项
 			$this->form_validation->set_error_delimiters('', '；');
 			// 验证规则 https://www.codeigniter.com/user_guide/libraries/form_validation.html#rule-reference
+            $this->form_validation->set_rules('tag_id', '所属标签/分类', 'trim|is_natural_no_zero');
 			$this->form_validation->set_rules('name', '名称', 'trim|required|max_length[30]');
 			$this->form_validation->set_rules('description', '描述', 'trim|max_length[100]');
 			$this->form_validation->set_rules('url_image', '形象图URL', 'trim|max_length[255]');
@@ -174,9 +175,13 @@
 			if ($this->form_validation->run() === FALSE):
 				$data['error'] = validation_errors();
 
-				$this->load->view('templates/header', $data);
+                // 获取投票、候选项标签信息
+                $data['item'] = $this->get_vote($vote_id);
+                $data['tags'] = $this->list_vote_tag($vote_id);
+
+				$this->load->view('templates/header-vote', $data);
 				$this->load->view($this->view_root.'/create', $data);
-				$this->load->view('templates/footer', $data);
+				$this->load->view('templates/footer-vote', $data);
 
 			else:
 				// 需要创建的数据；逐一赋值需特别处理的字段
@@ -186,7 +191,7 @@
 				);
 				// 自动生成无需特别处理的数据
 				$data_need_no_prepare = array(
-					'name', 'description', 'url_image',
+                    'tag_id', 'name', 'description', 'url_image',
 				);
 				foreach ($data_need_no_prepare as $name)
 					$data_to_create[$name] = $this->input->post_get($name);
@@ -195,21 +200,17 @@
 				$params = $data_to_create;
 				$url = api_url($this->class_name. '/create');
 				$result = $this->curl->go($url, $params, 'array');
-				if ($result['status'] === 200):
-					$data['title'] = $this->class_name_cn. '创建成功';
-					$data['class'] = 'success';
-					$data['content'] = $result['content']['message'];
-					$data['operation'] = 'create';
-					$data['id'] = $result['content']['id']; // 创建后的信息ID
+
+                // 转到投票详情页
+                if ($result['status'] === 200):
+                    // 记录最后创建的选项ID
+                    $this->session->last_option_created = $result['content']['id'];
+                    redirect(base_url('vote/detail?option_create_result=succeed&id='.$vote_id));
 
 				else:
-					// 若创建失败，则进行提示
-					$data['error'] = $result['content']['error']['message'];
+                    redirect(base_url('vote/detail?option_create_result=failed&id='.$vote_id));
 
 				endif;
-
-				// 转到投票详情页
-				redirect(base_url('vote/detail?id='.$vote_id));
 				
 			endif;
 		} // end create

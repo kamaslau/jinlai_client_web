@@ -10,6 +10,19 @@
             </div>
         </div>
 
+        <div class=full-screen id=signup-succeed>
+            <div class=full-screen-container>
+                <div class=full-screen-close>
+                    <i class="far fa-times" aria-hidden=true></i>
+                </div>
+
+                <div class="full-screen-content">
+                    <h3 class="full-screen-title">报名成功</h3>
+                    <p>主办方将对被提名候选项进行审核，通过后该候选项即可参选</p>
+                </div>
+            </div>
+        </div>
+
         <div class=full-screen id=vote-succeed>
             <div class=full-screen-container>
                 <div class=full-screen-close>
@@ -17,8 +30,8 @@
                 </div>
 
                 <div class="full-screen-content">
-                    <h3 class="full-screen-title">投票成功</h3>
-                    <p>投票成功<br>点击右上角菜单分享本页面可以为我拉票</p>
+                    <h3 class="full-screen-title">选TA成功</h3>
+                    <p>选TA成功<br>点击右上角菜单分享本页面可以推荐TA</p>
                 </div>
             </div>
         </div>
@@ -30,8 +43,8 @@
                 </div>
 
                 <div class="full-screen-content">
-                    <h3 class="full-screen-title">为我拉票</h3>
-                    <p>点击右上角菜单分享本页面</p>
+                    <h3 class="full-screen-title">推荐TA</h3>
+                    <p>点击右上角菜单分享本页面即可</p>
                 </div>
             </div>
         </div>
@@ -43,34 +56,59 @@
                 </div>
 
                 <div class=full-screen-content>
-                    <h3 class=full-screen-title>报名参选</h3>
+                    <h3 class=full-screen-title>参选报名</h3>
+
                     <?php
                     $attributes = array('class' => 'form-'.$this->class_name.'-create full-screen-form', 'role' => 'form');
                     echo form_open_multipart('vote_option/create?vote_id='.$item['vote_id'], $attributes);
                     ?>
                         <fieldset>
-                            <div class=form-group>
-                                <label for=url_image>形象图</label>
-                                <?php
-                                require_once(APPPATH. 'views/templates/file-uploader.php');
-                                $name_to_upload = 'url_image';
-                                generate_html($name_to_upload, $this->class_name, FALSE);
-                                ?>
-                            </div>
-
-                            <div class=form-group>
+                            <div class=input-group>
                                 <label for=name>候选项名称</label>
-                                <input name=name type=text placeholder="最多30个字符" required value="<?php set_value('name') ?>">
+                                <div>
+                                    <input name=name type=text placeholder="最多30个字" required value="<?php set_value('name') ?>">
+                                </div>
                             </div>
 
-                            <div class=form-group>
+                            <?php if ( ! empty($tags)): ?>
+                            <div class=input-group>
+                                <label for=tag_id>参选分类</label>
+                                <div>
+                                    <select name=tag_id required>
+                                    <?php foreach($tags as $tag): ?>
+                                        <option value="<?php echo $tag['tag_id'] ?>"><?php echo $tag['name'] ?></option>
+                                    <?php endforeach ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <?php endif ?>
+
+                            <div class=input-group>
+                                <label for=url_image>形象图</label>
+                                <div>
+                                    <?php
+                                    require_once(APPPATH. 'views/templates/file-uploader.php');
+                                    $name_to_upload = 'url_image';
+                                    generate_html($name_to_upload, 'vote_option', FALSE);
+                                    ?>
+                                </div>
+                            </div>
+
+                            <div class=input-group>
                                 <label for=description>描述</label>
-                                <textarea name=description rows=3 placeholder="最多100个字符"><?php set_value('description') ?></textarea>
+                                <div>
+                                    <textarea name=description rows=3 placeholder="最多100个字"><?php set_value('description') ?></textarea>
+                                </div>
                             </div>
                         </fieldset>
 
                         <button type=submit>报名</button>
                     </form>
+
+                    <!--
+                    <hr>
+                    <p class=form-hint>报名后主办方会对被提名的候选项进行审核，审核通过后该候选项即可参选；每位用户仅可提名1个候选项，投票期间若不再关注相关公众号则视为弃权，已提名候选项及所有选票将立即失效、永久销毁。</p>
+                    -->
                 </div>
             </div>
         </div>
@@ -81,7 +119,7 @@
                     <i class="far fa-times" aria-hidden=true></i>
                 </div>
 
-                <div class="full-screen-content">
+                <div class=full-screen-content>
                     <p>【〈匠心计划〉助力政策】<br>
                         免费入住【进来】平台，Top10商家可免【进来】审核流程</p>
                     <h3>Top10资金助力：（同时可享资源助力）</h3>

@@ -1,6 +1,5 @@
 <style>
 
-
     /* 宽度在750像素以上的设备 */
     @media only screen and (min-width:751px)
     {
@@ -23,54 +22,68 @@
 <base href="<?php echo $this->media_root ?>">
 
 <div id=content class=container>
-	<?php
-		if ( !empty($error) ) echo '<div class="alert alert-warning" role=alert>'.$error.'</div>';
-		$attributes = array('class' => 'form-'.$this->class_name.'-create form-horizontal', 'role' => 'form');
-		echo form_open_multipart($this->class_name.'/create', $attributes);
-	?>
-		<p class=help-block>必填项以“※”符号标示</p>
+    <div id=form-signup>
+        <div class=full-screen-container>
+            <a class=full-screen-close href="<?php echo base_url('vote/detail?id='.$item['vote_id']) ?>">
+                <i class="far fa-times" aria-hidden=true></i>
+            </a>
 
-		<fieldset>
-			<legend>基本信息</legend>
-			
-			<div class=form-group>
-				<label for=vote_id class="col-sm-2 control-label">所属投票ID ※</label>
-				<div class=col-sm-10>
-					<input class=form-control name=vote_id type=text value="<?php echo set_value('vote_id') ?>" placeholder="所属投票ID" required>
-				</div>
-			</div>
-			
-			<div class=form-group>
-				<label for=name class="col-sm-2 control-label">名称 ※</label>
-				<div class=col-sm-10>
-					<input class=form-control name=name type=text value="<?php echo set_value('name') ?>" placeholder="名称" required>
-				</div>
-			</div>
-			
-			<div class=form-group>
-				<label for=description class="col-sm-2 control-label">描述</label>
-				<div class=col-sm-10>
-					<textarea class=form-control name=description rows=10 placeholder="详情"><?php echo set_value('description') ?></textarea>
-				</div>
-			</div>
-			
-			<div class=form-group>
-				<label for=url_image class="col-sm-2 control-label">形象图</label>
-				<div class=col-sm-10>
-                    <?php
-                    require_once(APPPATH. 'views/templates/file-uploader.php');
-                    $name_to_upload = 'url_image';
-                    generate_html($name_to_upload, $this->class_name, FALSE);
-                    ?>
-				</div>
-			</div>
-		</fieldset>
+            <div class=full-screen-content>
+                <h1 class=full-screen-title>报名参选</h1>
 
-		<div class=form-group>
-		    <div class="col-xs-12 col-sm-offset-2 col-sm-2">
-				<button class="btn btn-primary btn-lg btn-block" type=submit>确定</button>
-		    </div>
-		</div>
-	</form>
+                <?php
+                $attributes = array('class' => 'form-'.$this->class_name.'-create full-screen-form', 'role' => 'form');
+                echo form_open_multipart('vote_option/create?vote_id='.$item['vote_id'], $attributes);
+                ?>
+                <fieldset>
+                    <div class=input-group>
+                        <label for=name>候选项名称</label>
+                        <div>
+                            <input name=name type=text placeholder="最多30个字" required value="<?php set_value('name') ?>">
+                        </div>
+                    </div>
+
+                    <?php if ( ! empty($tags)): ?>
+                    <div class=input-group>
+                        <label for=tag_id>参选分类</label>
+                        <div>
+                            <select name=tag_id required>
+                                <?php foreach($tags as $tag): ?>
+                                    <option value="<?php echo $tag['tag_id'] ?>"><?php echo $tag['name'] ?></option>
+                                <?php endforeach ?>
+                            </select>
+                        </div>
+                    </div>
+                    <?php endif ?>
+
+                    <div class=input-group>
+                        <label for=url_image>形象图</label>
+                        <div>
+                            <?php
+                            require_once(APPPATH. 'views/templates/file-uploader.php');
+                            $name_to_upload = 'url_image';
+                            generate_html($name_to_upload, 'vote_option', FALSE);
+                            ?>
+                        </div>
+                    </div>
+
+                    <div class=input-group>
+                        <label for=description>描述</label>
+                        <div>
+                            <textarea name=description rows=3 placeholder="最多100个字"><?php set_value('description') ?></textarea>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <button type=submit>报名</button>
+                </form>
+
+                <!--
+                <hr>
+                <p class=form-hint>报名后主办方会对被提名的候选项进行审核，审核通过后该候选项即可参选；每位用户仅可提名1个候选项，投票期间若不再关注相关公众号则视为弃权，已提名候选项及所有选票将立即失效、永久销毁。</p>
+                -->
+            </div>
+        </div>
+    </div>
 
 </div>

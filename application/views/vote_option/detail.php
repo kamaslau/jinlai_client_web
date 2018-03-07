@@ -34,13 +34,19 @@
 	}
 </style>
 
-<?php if ($class == 'success'): ?>
+<?php
+    // 若为投票成功后进入的页面，提示已成功投票，并清除最近投票ID信息以避免重复提示
+    if ($this->input->get('ballot_create_result') === 'succeed' && $this->session->last_ballot_created == $item['option_id']):
+?>
 <script>
-    $(function(){
-        $('#vote-succeed').show();
-    });
+    window.onload = function(){
+        document.getElementById('vote-succeed').style.display = 'block';
+    }
 </script>
-<?php endif ?>
+<?php
+    $this->session->last_ballot_created = NULL;
+    endif;
+?>
 
 <base href="<?php echo $this->media_root ?>">
 
@@ -79,18 +85,19 @@
             </div>
         </div>
 
+        <!-- 候选项描述（若有） -->
+        <?php if ( ! empty($item['description'])): ?>
         <div class=option-description>
-            <section>
-                <p>这里需要显示候选项的介绍文字（若有），最多会有100个字符（暂定），因此有可能显示多行文字。</p>
-            </section>
+            <section><?php echo $item['description'] ?></section>
         </div>
+        <?php endif ?>
 
+        <!-- 候选项形象图 -->
         <div class=option-figure>
             <figure>
-                <img src="<?php echo MEDIA_URL.'vote/'.$item['url_image'] ?>">
+                <img src="<?php echo !empty($item['url_image'])? MEDIA_URL.'vote_option/'.$item['url_image']: MEDIA_URL.'vote/'.$vote['url_default_option_image'] ?>">
             </figure>
         </div>
-
     </div>
 
 	<?php endif ?>

@@ -17,7 +17,7 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20180307">
+		<meta name=version content="revision20180308">
 		<meta name=author content="刘亚杰Kamas,青岛意帮网络科技有限公司产品部&amp;技术部">
 		<meta name=copyright content="进来商城,青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
@@ -152,6 +152,9 @@
             // 获取access_token；若已获得授权则一并获取微信用户资料
             $access_token = get_access_token();
 
+            if (empty( get_cookie('wechat_subscribe') ))
+                set_cookie('wechat_subscribe', 0);
+
             // 若无微信公众号关注记录，则初始化为未关注
             if ( ! isset($this->session->wechpat_subscribe)):
                 $this->session->wechat_subscribe = get_cookie('wechat_subscribe'); // 标记当前code为已使用;
@@ -202,7 +205,7 @@
         $(function(){
             // 微信用户信息
             var wx_userinfo;
-            wx_userinfo_subscribe = <?php echo $this->session->wechat_subscribe ?>;
+            wx_userinfo_subscribe = <?php echo get_cookie('wechat_subscribe') ?>;
             if (wx_userinfo_subscribe != 1)
             {
                 $('#follow-guide').show();
@@ -308,12 +311,13 @@
 		<!--清除浏览器默认样式css-->
 		<link rel=stylesheet media=all href="<?php echo CDN_URL ?>css/reset.css">
 		<!--公用部分css-->
-        <link rel=stylesheet media=all href="/css/vote.css">
-
-        <?php if (isset($this->session->time_expire_login) ): ?>
+        <?php if ($this->session->time_expire_login > time()): ?>
         <script defer src="/js/file-upload.js"></script>
         <link rel=stylesheet media=all href="/css/file-upload.css">
         <?php endif ?>
+
+        <link rel=stylesheet media=all href="/css/vote.css">
+
 
         <link rel=canonical href="<?php echo current_url() ?>">
         <link rel="shortcut icon" href="<?php echo CDN_URL ?>icon/jinlai_client/icon28@3x.png">

@@ -182,11 +182,14 @@
 				'error' => '', // 预设错误提示
 			);
 
+			$vote_id = $this->input->get('vote_id');
+            $option_id = $this->input->get('option_id');
+
 			// 待验证的表单项
 			$this->form_validation->set_error_delimiters('', '；');
 			// 验证规则 https://www.codeigniter.com/user_guide/libraries/form_validation.html#rule-reference
-            $data_to_validate['vote_id'] = $this->input->get('vote_id');
-            $data_to_validate['option_id'] = $this->input->get('option_id');
+            $data_to_validate['vote_id'] = $vote_id;
+            $data_to_validate['option_id'] = $option_id;
             $this->form_validation->set_data($data_to_validate);
 			$this->form_validation->set_rules('vote_id', '所属投票ID', 'trim|required|is_natural_no_zero');
 			$this->form_validation->set_rules('option_id', '候选项ID', 'trim|required|is_natural_no_zero');
@@ -216,26 +219,14 @@
 				$url = api_url($this->class_name. '/create');
 				$result = $this->curl->go($url, $params, 'array');
 				if ($result['status'] === 200):
-					$data['title'] = '投票成功';
-					$data['class'] = 'success';
-					$data['content'] = $result['content']['message'];
-					$data['operation'] = 'create';
-					$data['id'] = $result['content']['id']; // 创建后的信息ID
+                    // 记录最后投票的候选项信息
+                    $this->session->last_ballot_created = $option_id;
+                    redirect('vote_option/detail?ballot_create_result=succeed&id='.$option_id);
 
 				else:
-					// 若创建失败，则进行提示
-					$data['error'] = $result['content']['error']['message'];
+                    redirect('vote_option/detail?ballot_create_result=failed&id='.$option_id);
 
 				endif;
-
-                // 获取投票候选项信息
-                $data['item'] = $this->get_vote_option($this->input->get('option_id'));
-                // 获取投票信息
-                $data['vote'] = $this->get_vote($this->input->get('vote_id'));
-
-                $this->load->view('templates/header-vote', $data);
-                $this->load->view('vote_option/detail', $data);
-                $this->load->view('templates/footer-vote', $data);
 				
 			endif;
 		} // end create

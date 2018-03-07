@@ -19,6 +19,20 @@
 	}
 </style>
 
+<?php
+// 若为报名成功后进入的页面，提示已成功报名，并清除最近报名候选项ID信息以避免重复提示
+if ($this->input->get('option_create_result') === 'succeed' && !empty($this->session->last_option_created)):
+    ?>
+    <script>
+        window.onload = function(){
+            document.getElementById('signup-succeed').style.display = 'block';
+        }
+    </script>
+    <?php
+    $this->session->last_option_created = NULL;
+endif;
+?>
+
 <base href="<?php echo $this->media_root ?>">
 
 <div id=content>
@@ -46,6 +60,17 @@
         <div id=vote-brief>
             <?php if ($item['signup_allowed'] === '是'): ?>
             <a id=vote-signup href="<?php echo base_url('vote_option/create?vote_id='.$item['vote_id']) ?>">我要报名</a>
+                <?php if ( ! $this->user_agent['is_ios']): ?>
+                <script>
+                    $(function() {
+                        // 点击报名按钮
+                        $('#vote-signup').click(function () {
+                            $('#form-signup').show();
+                            return false;
+                        });
+                    });
+                </script>
+                <?php endif ?>
             <?php endif ?>
 
             <div id=counter-container class=vote-time_end>
@@ -134,7 +159,7 @@
     <!-- 投票候选项列表 -->
     <ul id=vote-options class=container>
         <?php
-            // 选项占位图
+            // 候选项默认占位图
             $default_option_image = $item['url_default_option_image'];
 
             foreach ($options as $option):
@@ -153,7 +178,7 @@
             </div>
             <a class=option-figure href="<?php echo base_url('vote_option/detail?id='.$option['option_id']) ?>">
                 <figure>
-                    <img src="<?php echo !empty($option['url_image'])? $option['url_image']: $default_option_image ?>">
+                    <img src="<?php echo !empty($option['url_image'])? MEDIA_URL.'vote_option/'.$option['url_image']: $default_option_image ?>">
                 </figure>
             </a>
             <div class=option-actions>
