@@ -21,15 +21,13 @@
 		{
 			parent::__construct();
 
-            // 微信登录授权URL
-            $current_url = 'https://'. $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
-            $target_url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.WECHAT_APP_ID.'&redirect_uri='.urlencode($current_url).'&response_type=code&scope=snsapi_userinfo#wechat_redirect';
-
-            // 登录已已超时，或未获取微信用户资料的用户转到微信授权页
+            $code = $this->input->get('code');
+            // 已关注微信公众号且登录未超时，或传入了code参数时无需跳转
             (
-                ($this->session->time_expire_login > time() && !empty($this->session->sns_info))
-                || !empty($this->input->get('code'))
-            ) OR redirect($target_url);
+                ( (get_cookie('wechat_subscribe') == 1) && ($this->session->time_expire_login > time()) )
+                ||
+                ( !empty($code) && ($code <> get_cookie('last_code_used')) )
+            ) OR redirect(WECHAT_AUTH_URL);
 
 			// 向类属性赋值
 			$this->class_name = strtolower(__CLASS__);

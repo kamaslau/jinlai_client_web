@@ -32,180 +32,178 @@
             user_agent.is_android = <?php echo ($this->user_agent['is_android'])? 'true': 'false' ?>;
         </script>
         <script src="<?php echo CDN_URL ?>js/jquery-3.3.1.min.js"></script>
+        <script src="https://res.wx.qq.com/open/js/jweixin-1.3.0.js"></script>
         <script defer src="<?php echo CDN_URL ?>font-awesome/v5.0.8/fontawesome-all.min.js"></script>
         <script defer src="/js/vote.js"></script>
         <script defer src="/js/jquery.downCount.js"></script>
 
-		<?php
-            if ($this->user_agent['is_wechat']):
+        <?php
+        // 使修改的COOKIE即时生效
+        function instant_cookie($var, $value = '', $time = 0, $path = '', $domain = '', $s = false)
+        {
+            $_COOKIE[$var] = $value;
+            setcookie($var, $value, $time, $path, $domain, $s);
+        }
 
-            function curl($url, $params = NULL, $return = 'array', $method = 'get')
-            {
-                $curl = curl_init();
-                curl_setopt($curl, CURLOPT_URL, $url);
+        function curl($url, $params = NULL, $return = 'array', $method = 'get')
+        {
+            $curl = curl_init();
+            curl_setopt($curl, CURLOPT_URL, $url);
 
-                // 设置cURL参数，要求结果保存到字符串中还是输出到屏幕上。
-                curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($curl, CURLOPT_ENCODING, 'UTF-8');
+            // 设置cURL参数，要求结果保存到字符串中还是输出到屏幕上。
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_ENCODING, 'UTF-8');
 
-                // 需要通过POST方式发送的数据
-                if ($method === 'post'):
-                    $params['app_type'] = 'biz'; // 应用类型默认为biz
-                    curl_setopt($curl, CURLOPT_POST, count($params));
-                    curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
-                endif;
-
-                // 运行cURL，请求API
-                $result = curl_exec($curl);
-
-                // 输出CURL请求头以便调试
-                //var_dump(curl_getinfo($curl));
-
-                // 关闭URL请求
-                curl_close($curl);
-
-                // 转换返回的json数据为相应格式并返回
-                if ($return === 'object'):
-                    $result = json_decode($result);
-                elseif ($return === 'array'):
-                    $result = json_decode($result, TRUE);
-                endif;
-
-                return $result;
-            }
-
-            // 获取access_token
-            function get_access_token()
-            {
-                $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.WECHAT_APP_ID.'&secret='.WECHAT_APP_SECRET;
-                $result = curl($url);
-                //var_dump($result);
-                return $result['access_token'];
-            }
-
-            // 获取jsapi_ticket
-            function get_jsapi_ticket($access_token)
-            {
-                $url = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='.$access_token.'&type=jsapi';
-                $result = curl($url);
-                return $result['ticket'];
-            }
-
-            // 微信JSAPI签名过程
-            function wechat_sign_generate($params)
-            {
-                // 对参与签名的参数进行排序
-                ksort($params);
-
-                // 拼接字符串
-                $param_string = '';
-                foreach ($params as $key => $value)
-                    $param_string .= '&'. $key.'='.$value;
-                $param_string = trim($param_string, '&'); // 清除开头的“&”
-
-                // 计算字符串SHA1值
-                $sign = SHA1($param_string);
-                return $sign;
-            }
-
-            // 获取sns_token
-            function get_sns_token($code)
-            {
-                $url =  'https://api.weixin.qq.com/sns/oauth2/access_token?grant_type=authorization_code&appid='.WECHAT_APP_ID.'&secret='.WECHAT_APP_SECRET.'&code='.$code;
-                $result = curl($url);
-                return $result;
-            }
-
-            // 重新获取sns_token
-            function refresh_sns_token($refresh_token)
-            {
-                $url = 'https://api.weixin.qq.com/sns/oauth2/refresh_token?grant_type=refresh_token&appid='.WECHAT_APP_ID.'&refresh_token='.$refresh_token;
-                $result = curl($url);
-                return $result;
-            }
-
-            // 获取用户资料
-            function get_user_info($access_token, $openid)
-            {
-                $url = 'https://api.weixin.qq.com/cgi-bin/user/info?lang=zh_CN&access_token='.$access_token.'&openid='.$openid;
-                $result = curl($url);
-                return $result;
-            }
-
-            // 使用微信union_id登录
-            function login_wechat($union_id)
-            {
-                $params = array(
-                    'wechat_union_id' => $union_id
-                );
-                $url = api_url('account/login_wechat');
-                $result = curl($url, $params, 'array', 'post');
-                if ($result['status'] !== 200):
-                    return FALSE;
-
-                else:
-                    return $result['content'];
-
-                endif;
-            }
-
-            // 获取access_token；若已获得授权则一并获取微信用户资料
-            $access_token = get_access_token();
-
-            if (empty( get_cookie('wechat_subscribe') ))
-                set_cookie('wechat_subscribe', 0);
-
-            // 若无微信公众号关注记录，则初始化为未关注
-            if ( ! isset($this->session->wechpat_subscribe)):
-                $this->session->wechat_subscribe = get_cookie('wechat_subscribe'); // 标记当前code为已使用;
+            // 需要通过POST方式发送的数据
+            if ($method === 'post'):
+                $params['app_type'] = 'biz'; // 应用类型默认为biz
+                curl_setopt($curl, CURLOPT_POST, count($params));
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
             endif;
 
-            // 若未登录且从微信登录页转入，则尝试登录
-            $code = $this->input->get('code');
-            $last_code_used = get_cookie('last_code_used');
-            if ( !empty($code) && ($last_code_used != $code)):
-                // 清除当前登录信息
-                //$this->session->sess_destroy();
-                set_cookie('wechat_subscribe', 0);
+            // 运行cURL，请求API
+            $result = curl_exec($curl);
 
-                // 获取微信用户资料
-                $sns_token = get_sns_token($code);
-                $sns_info = get_user_info($access_token, $sns_token['openid']);
-                set_cookie('last_code_used', $code); // 标记当前code为已使用
+            // 输出CURL请求头以便调试
+            //var_dump(curl_getinfo($curl));
 
-                // 若当前用户已订阅微信公众号，尝试使用微信union_id登录本站账户
-                if ($sns_info['subscribe'] == 1 && isset($sns_token['unionid'])):
-                    // 尝试使用微信union_id登录
-                    $user_info = login_wechat($sns_token['unionid']);
-                    if ($user_info !== FALSE):
-                        // 将信息键值对写入session
-                        foreach ($user_info as $key => $value):
-                            $user_data[$key] = $value;
-                        endforeach;
-                        $user_data['time_expire_login'] = time() + 60*60*24 *30; // 默认登录状态保持30天
-                        $this->session->set_userdata($user_data);
+            // 关闭URL请求
+            curl_close($curl);
 
-                        set_cookie('wechat_subscribe', 1); // 标记当前已关注微信公众号
-                        $this->session->wechat_subscribe = 1;
-                        $this->session->sns_info = json_encode($sns_info);
-                    endif;
-                endif;
+            // 转换返回的json数据为相应格式并返回
+            if ($return === 'object'):
+                $result = json_decode($result);
+            elseif ($return === 'array'):
+                $result = json_decode($result, TRUE);
             endif;
 
-            // 生成微信网页API签名参数
-            $wesign['timestamp'] = time();
-            $wesign['noncestr'] = 'Wm3WZYTPz0wzccnW';
-            $wesign['jsapi_ticket'] = get_jsapi_ticket($access_token);
-            $current_url = 'https://'. $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
-            if (strpos($current_url, '#') !== FALSE) $current_url = substr($current_url, 0, strpos($current_url, '#'));
-            $wesign['url'] = $current_url;
+            return $result;
+        }
+
+        // 获取access_token
+        function get_access_token()
+        {
+            $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.WECHAT_APP_ID.'&secret='.WECHAT_APP_SECRET;
+            $result = curl($url);
+            return $result['access_token'];
+        }
+
+        // 获取jsapi_ticket
+        function get_jsapi_ticket($access_token)
+        {
+            $url = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token='.$access_token;
+            $result = curl($url);
+            return $result['ticket'];
+        }
+
+        // 微信JSAPI签名过程
+        function wechat_sign_generate($params)
+        {
+            // 对参与签名的参数进行排序
+            ksort($params);
+
+            // 拼接字符串
+            $param_string = '';
+            foreach ($params as $key => $value)
+                $param_string .= '&'. $key.'='.$value;
+            $param_string = trim($param_string, '&'); // 清除开头的“&”
+
+            // 计算字符串SHA1值
+            $sign = SHA1($param_string);
+            return $sign;
+        }
+
+        // 获取sns_token
+        function get_sns_token($code)
+        {
+            $url =  'https://api.weixin.qq.com/sns/oauth2/access_token?grant_type=authorization_code&appid='.WECHAT_APP_ID.'&secret='.WECHAT_APP_SECRET.'&code='.$code;
+            $result = curl($url);
+            return $result;
+        }
+
+        // 重新获取sns_token
+        function refresh_sns_token($refresh_token)
+        {
+            $url = 'https://api.weixin.qq.com/sns/oauth2/refresh_token?grant_type=refresh_token&appid='.WECHAT_APP_ID.'&refresh_token='.$refresh_token;
+            $result = curl($url);
+            return $result;
+        }
+
+        // 获取用户资料
+        function get_user_info($access_token, $openid)
+        {
+            $url = 'https://api.weixin.qq.com/cgi-bin/user/info?lang=zh_CN&access_token='.$access_token.'&openid='.$openid;
+            $result = curl($url);
+            return $result;
+        }
+
+        // 使用微信union_id登录
+        function login_wechat($union_id)
+        {
+            $params = array(
+                'wechat_union_id' => $union_id
+            );
+            $url = api_url('account/login_wechat');
+            $result = curl($url, $params, 'array', 'post');
+            return ($result['status'] === 200)? $result['content']: FALSE;
+        }
+
+        // 获取access_token；若已获得授权则一并获取微信用户资料
+        $access_token = get_access_token();
+
+        // 若未登录且从微信登录页转入，则尝试登录
+        $code = $this->input->get('code');
+        $last_code_used = get_cookie('last_code_used');
+        if ( !empty($code) && ($last_code_used <> $code)):
+            // 清除当前登录信息
+            $this->session->sess_destroy();
+
+            // 获取微信用户资料
+            $sns_token = get_sns_token($code);
+            if ($this->input->get('test_mode') === 'on') var_dump($sns_token);
+            $sns_info = get_user_info($access_token, $sns_token['openid']);
+            if ($this->input->get('test_mode') === 'on') var_dump($sns_info);
+            set_cookie('last_code_used', $code); // 标记当前code为已使用
+            instant_cookie('last_code_used', $code);
+
+            // 若当前用户已订阅微信公众号，尝试使用微信union_id登录本站账户
+            if ($sns_info['subscribe'] == 1 && !empty($sns_token['unionid'])):
+                // 尝试使用微信union_id登录
+                $user_info = login_wechat($sns_token['unionid']);
+                if ($this->input->get('test_mode') === 'on') var_dump($user_info);
+                if ($user_info !== FALSE):
+                    // 将信息键值对写入session
+                    foreach ($user_info as $key => $value):
+                        $user_data[$key] = $value;
+                    endforeach;
+                    $user_data['time_expire_login'] = time() + 60*60*24 *30; // 默认登录状态保持30天
+                    $this->session->set_userdata($user_data);
+                    $this->session->sns_info = json_encode($sns_info);
+
+                    set_cookie('wechat_subscribe', 1); // 标记当前已关注微信公众号
+                    instant_cookie('wechat_subscribe', 1);
+                endif;
+            else:
+                set_cookie('wechat_subscribe', 0); // 标记当前未关注微信公众号
+                instant_cookie('wechat_subscribe', 0);
+            endif;
+        endif;
+
+        // 生成微信网页API签名参数
+        $wesign['timestamp'] = time();
+        $wesign['noncestr'] = 'Wm3WZYTPz0wzccnW';
+        $wesign['jsapi_ticket'] = get_jsapi_ticket($access_token);
+        $current_url = 'https://'. $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+        if (strpos($current_url, '#') !== FALSE)
+            $current_url = substr($current_url, 0, strpos($current_url, '#'));
+        $wesign['url'] = $current_url;
         ?>
-        <script src="https://res.wx.qq.com/open/js/jweixin-1.3.0.js"></script>
+
         <script>
         $(function(){
             // 微信用户信息
             var wx_userinfo;
-            wx_userinfo_subscribe = <?php echo get_cookie('wechat_subscribe') ?>;
+            wx_userinfo_subscribe = <?php echo empty(get_cookie('wechat_subscribe'))? 0: get_cookie('wechat_subscribe') ?>;
             if (wx_userinfo_subscribe != 1)
             {
                 $('#follow-guide').show();
@@ -306,7 +304,6 @@
             }); // end wx.ready
         });
         </script>
-        <?php endif ?>
 
 		<!--清除浏览器默认样式css-->
 		<link rel=stylesheet media=all href="<?php echo CDN_URL ?>css/reset.css">

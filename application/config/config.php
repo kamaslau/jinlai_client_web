@@ -55,6 +55,7 @@ define('WECHAT_APP_ID', 'wxba173a67df14c087');
 define('WECHAT_APP_SECRET', '1b1bf0c279a0d9eb0ec7288787ccb20a');
 define('WECHAT_TOKEN', '');
 define('AES_KEY', '');
+define('WECHAT_AUTH_URL', 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.WECHAT_APP_ID.'&redirect_uri='.urlencode('https://'. $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']).'&response_type=code&scope=snsapi_userinfo#wechat_redirect');
 
 // 微信支付参数（常用JS调起支付方式及被扫支付方式根路径）
 define('WEPAY_URL_JSAPI', BASE_URL.'/payment/wepay/example/jsapi.php?showwxpaytitle=1&');

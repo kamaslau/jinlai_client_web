@@ -6,6 +6,8 @@
                 <div class="full-screen-content">
                     <p>关注"进来商城"微信公众号即可参与投票</p>
                     <img alt="进来商城微信公众号" src="<?php echo base_url('/media/images/vote/qrcode_wechat_jinlai_client.png') ?>">
+
+                    <a style="color:#333" href="<?php echo 'https://'. $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] ?>">我已关注</a>
                 </div>
             </div>
         </div>
