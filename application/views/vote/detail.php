@@ -19,9 +19,6 @@
 	}
 </style>
 
-<script defer src="/js/vote.js"></script>
-<script defer src="/js/jquery.downCount.js"></script>
-
 <base href="<?php echo $this->media_root ?>">
 
 <div id=content>
@@ -33,11 +30,10 @@
     <!-- 背景音乐 -->
     <?php if ( ! empty($item['url_audio'])): ?>
     <audio id=vote-audio class=hide autoplay loop alt="背景音乐" src="<?php echo $item['url_audio'] ?>">您的浏览器不支持音频播放</audio>
-    <div id=audio-control>
-        <i class="fa fa-pause"></i>
-    </div>
+    <div id=audio-control><i class="far fa-pause"></i></div>
     <?php endif ?>
 
+    <!-- 投票活动信息 -->
     <div id=vote-info>
         <?php if ( empty($item['url_image']) ): ?>
         <h1 id=vote-name><?php echo $item['name'] ?></h1>
@@ -114,14 +110,41 @@
         </div>
     </div>
 
+    <!-- 投票候选项搜索 -->
     <div id=vote-searcher class=container>
-        <i id=search-button class="fa fa-search" aria-hidden=true></i>
-        <input name=content type=search placeholder="可根据商家名称或序号进行搜索" required>
+        <div id=search-button>
+            <i class="far fa-search" aria-hidden=true></i>
+        </div>
+        <input name=content type=search placeholder="可根据候选项名称或序号进行搜索">
     </div>
 
+    <?php if ( ! empty($tags)): ?>
+    <!-- 投票候选项导航 -->
+    <div id=options-naver class=container>
+        <ul class=horizontal>
+            <li><a href="#" data-tag_id=all>全部</a></li>
+
+            <?php foreach ($tags as $tag): ?>
+            <li><a href="#" data-tag_id="<?php echo $tag['tag_id'] ?>"><?php echo $tag['name'] ?></a></li>
+            <?php endforeach ?>
+        </ul>
+    </div>
+    <?php endif ?>
+
+    <!-- 投票候选项列表 -->
     <ul id=vote-options class=container>
-        <?php foreach ($options as $option): ?>
-        <li class=vote-option data-option_id="<?php echo $option['option_id'] ?>" data-option_name="<?php echo $option['name'] ?>">
+        <?php
+            // 选项占位图
+            $default_option_image = $item['url_default_option_image'];
+
+            foreach ($options as $option):
+        ?>
+        <li
+            class=vote-option
+            data-option_id="<?php echo $option['option_id'] ?>"
+            data-option_name="<?php echo $option['name'] ?>"
+            data-tag_id="<?php echo $option['tag_id'] ?>"
+        >
 
             <div class=option-brief>
                 <div class=option-id># <?php echo $option['option_id'] ?></div>
@@ -130,7 +153,7 @@
             </div>
             <a class=option-figure href="<?php echo base_url('vote_option/detail?id='.$option['option_id']) ?>">
                 <figure>
-                    <img src="<?php echo $option['url_image'] ?>">
+                    <img src="<?php echo !empty($option['url_image'])? $option['url_image']: $default_option_image ?>">
                 </figure>
             </a>
             <div class=option-actions>
@@ -139,8 +162,8 @@
                     $common_params = 'vote_id='.$item['vote_id'].'&';
                     $common_attrs = 'data-vote_id='.$item['vote_id'].' data-option_id='.$option['option_id'];
                 ?>
-                <a <?php echo $common_attrs ?> href="<?php echo base_url('vote_option/detail?'.$common_params.'id='.$option['option_id']) ?>">拉票</a>
-                <a <?php echo $common_attrs ?> href="<?php echo base_url('vote_ballot/create?'.$common_params.'option_id='.$option['option_id']) ?>">投票</a>
+                <a <?php echo $common_attrs ?> href="<?php echo base_url('vote_option/detail?'.$common_params.'id='.$option['option_id']) ?>">推荐</a>
+                <a <?php echo $common_attrs ?> href="<?php echo base_url('vote_ballot/create?'.$common_params.'option_id='.$option['option_id']) ?>">选TA</a>
             </div>
 
         </li>
@@ -148,8 +171,8 @@
     </ul>
 
     <!--
-        <div id=loader>
-        <i class="fa fa-spin fa-refresh" aria-hidden=true></i>
+    <div id=loader>
+        <i class="far fa-spin fa-refresh" aria-hidden=true></i>
     </div>
     -->
     <?php endif ?>

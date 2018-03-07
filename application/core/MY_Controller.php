@@ -780,6 +780,25 @@
             return $data['items'];
         } // end list_vote_option
 
+        // 获取投票选项标签列表
+        protected function list_vote_tag($vote_id)
+        {
+            // 从API服务器获取相应列表信息
+            $params['vote_id'] = $vote_id;
+            $params['user_id'] = 'NULL'; // 可获取不属于当前用户的数据
+            $params['time_delete'] = 'NULL';
+
+            $url = api_url('vote_tag/index');
+            $result = $this->curl->go($url, $params, 'array');
+            if ($result['status'] === 200):
+                $data['items'] = $result['content'];
+            else:
+                $data['items'] = NULL;
+            endif;
+
+            return $data['items'];
+        } // end list_vote_tag
+
     } // end class MY_Controller
 
 /* End of file MY_Controller.php */

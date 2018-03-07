@@ -124,6 +124,9 @@
 			    // 获取投票候选项信息（若有）
                 $data['options'] = $this->list_vote_option($id);
 
+                // 获取投票候选项标签（若有）
+                $data['tags'] = $this->list_vote_tag($id);
+
                 $this->load->view('templates/header-vote', $data);
                 $this->load->view($this->view_root.'/'.$view_name, $data);
                 $this->load->view('templates/footer-vote', $data);

@@ -1,6 +1,5 @@
-<link rel=stylesheet media=all href="/css/vote.css">
 <style>
-    #content {margin-top:-60px;padding:0 95px 90px;}
+    #content {margin-top:-80px;padding:0 95px 90px;}
 
     .vote-option {width:560px;margin:0 auto;overflow:hidden;}
 
@@ -10,6 +9,9 @@
     .option-actions {margin-top:0;}
         .option-actions>a {float:right;clear:both;}
             .option-actions>a:not(:first-child) {margin-left:0;margin-top:30px;}
+
+    .option-description {font-size:26px;line-height:46px;margin-top:26px;padding:1px;background-image:linear-gradient(#5250af,#2d2d8f);border-radius:20px;overflow:hidden;}
+        .option-description section {background-color:#2b2971;border-radius:20px;padding:16px 26px;}
 
     .option-figure {padding:0;}
         .option-figure figure {width:520px;height:520px}
@@ -32,8 +34,6 @@
 	}
 </style>
 
-<script defer src="/js/vote.js"></script>
-
 <?php if ($class == 'success'): ?>
 <script>
     $(function(){
@@ -49,7 +49,7 @@
 <?php else: ?>
     <figure id=vote-url_image class=vote-figure>
         <a href="<?php echo base_url('vote/detail?id='.$vote['vote_id']) ?>">
-            <img alt="<?php echo $vote['name'] ?>形象图" src="<?php echo $vote['url_image'] ?>">
+            <img alt="<?php echo $vote['name'] ?>形象图" src="<?php echo MEDIA_URL.'vote/'.$vote['url_image'] ?>">
         </a>
     </figure>
 <?php endif ?>
@@ -74,9 +74,15 @@
                 $common_params = 'vote_id='.$item['vote_id'].'&option_id='.$item['option_id'];
                 $common_attrs = 'data-vote_id='.$item['vote_id'].' data-option_id='.$item['option_id'];
                 ?>
-                <a class=option-detail <?php echo $common_attrs ?> href="#share-guide">拉票</a>
-                <a class=_ballot-create <?php echo $common_attrs ?> href="<?php echo base_url('vote_ballot/create?'.$common_params) ?>">投票</a>
+                <a class=option-detail <?php echo $common_attrs ?> href="#share-guide">推荐</a>
+                <a class=_ballot-create <?php echo $common_attrs ?> href="<?php echo base_url('vote_ballot/create?'.$common_params) ?>">选TA</a>
             </div>
+        </div>
+
+        <div class=option-description>
+            <section>
+                <p>这里需要显示候选项的介绍文字（若有），最多会有100个字符（暂定），因此有可能显示多行文字。</p>
+            </section>
         </div>
 
         <div class=option-figure>

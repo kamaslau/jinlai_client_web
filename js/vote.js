@@ -9,11 +9,11 @@ $(function(){
         if (audio.paused)
         {
             audio.play();
-            $(this).html('<i class="fa fa-pause" aria-hidden=true></i>');
+            $(this).html('<i class="far fa-pause" aria-hidden=true></i>');
             return;
         } else {
             audio.pause();
-            $(this).html('<i class="fa fa-play" aria-hidden=true></i>');
+            $(this).html('<i class="far fa-play" aria-hidden=true></i>');
         }
     });
 

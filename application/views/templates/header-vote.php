@@ -17,7 +17,7 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20180306">
+		<meta name=version content="revision20180307">
 		<meta name=author content="刘亚杰Kamas,青岛意帮网络科技有限公司产品部&amp;技术部">
 		<meta name=copyright content="进来商城,青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
@@ -32,6 +32,9 @@
             user_agent.is_android = <?php echo ($this->user_agent['is_android'])? 'true': 'false' ?>;
         </script>
         <script src="<?php echo CDN_URL ?>js/jquery-3.3.1.min.js"></script>
+        <script defer src="<?php echo CDN_URL ?>font-awesome/v5.0.8/fontawesome-all.min.js"></script>
+        <script defer src="/js/vote.js"></script>
+        <script defer src="/js/jquery.downCount.js"></script>
 
 		<?php
             if ($this->user_agent['is_wechat']):
@@ -159,7 +162,7 @@
             $last_code_used = get_cookie('last_code_used');
             if ( !empty($code) && ($last_code_used != $code)):
                 // 清除当前登录信息
-                $this->session->sess_destroy();
+                //$this->session->sess_destroy();
                 set_cookie('wechat_subscribe', 0);
 
                 // 获取微信用户资料
@@ -305,7 +308,6 @@
 		<!--清除浏览器默认样式css-->
 		<link rel=stylesheet media=all href="<?php echo CDN_URL ?>css/reset.css">
 		<!--公用部分css-->
-        <link rel=stylesheet media=all href="<?php echo CDN_URL ?>font-awesome/css/font-awesome.min.css">
         <link rel=stylesheet media=all href="/css/vote.css">
 
         <?php if (isset($this->session->time_expire_login) ): ?>

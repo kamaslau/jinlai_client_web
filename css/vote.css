@@ -30,9 +30,14 @@ figure {display:flex;justify-content:center;align-items:center}
     #vote-extra section {padding:30px 20px 0;}
     #vote-extra .strong {color:#fde001;background-color:#262662;margin-top:30px;padding:30px 20px;}
 
-#vote-searcher {color:#615ed2;border:1px solid #6d69f0;border-radius:40px;margin:40px 30px 0;padding:0;width:690px;}
-    #vote-searcher>i {font-size:36px;position:absolute;left:40px;top:20px;line-height:40px;width:40px;height:40px;line-height:40px;}
-    #vote-searcher>input {color:#fff;background-color:transparent;font-size:30px;display:block;width:100%;height:80px;line-height:80px;padding:0 96px;}
+#vote-searcher {color:#9d9aff;border:1px solid #9d9aff;width:710px;margin:40px auto 0;border-radius:15px;padding:0;overflow:hidden;}
+    #search-button {font-size:36px;position:absolute;left:40px;top:20px;line-height:40px;width:40px;height:40px;line-height:40px;}
+    #vote-searcher>input {color:#9d9aff;background-color:transparent;font-size:30px;display:block;width:100%;height:80px;line-height:80px;padding:0 96px;}
+
+#options-naver {background-color:#1f1f5c;width:710px;margin:20px auto 0;border:1px solid #9d9aff;border-radius:15px;overflow:hidden;z-index:98;}
+    #options-naver ul {padding:40px 20px 10px;overflow:hidden;}
+    #options-naver li {background-color:#3a3a8f;height:50px;line-height:50px;margin-right:20px;margin-bottom:30px;border-radius:25px;padding:0 25px;}
+    #options-naver a {color:#9d9aff;text-align:center;display:block;width:100%;height:100%;}
 
 #vote-options {overflow:hidden;margin-top:40px;}
     .vote-option {color:#fff;background-color:#262662;font-size:28px;width:345px;margin-bottom:20px;border-radius:15px;padding:30px 20px;float:left;overflow:hidden;}
@@ -40,7 +45,7 @@ figure {display:flex;justify-content:center;align-items:center}
     .ballot-count {}
         .ballot-count span {color:#fde001;}
 
-.option-figure {background-color:#999;display:block;margin-top:30px;}
+.option-figure {background-color:#333;display:block;margin-top:30px;}
     .option-figure figure {width:305px;height:305px}
 
     .option-brief>*, .option-actions>* {color:#fff;}
