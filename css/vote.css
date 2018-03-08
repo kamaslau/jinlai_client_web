@@ -11,7 +11,7 @@ figure {display:flex;justify-content:center;align-items:center}
 #vote-url_image {margin-top:0;}
 .vote-figure {margin-top:40px;border-radius:15px;overflow:hidden;}
 
-#vote-brief {padding:0 60px;position:relative;top:-60px}
+#vote-brief {padding:0 60px;position:relative;top:-20px}
 
 #vote-signup {font-size:40px;color:#fff;background:url('/media/images/vote/bg-signup@3x.png') no-repeat center center;background-size:320px 90px;width:320px;height:90px;line-height:90px;display:block;margin:-90px auto 0;}
 

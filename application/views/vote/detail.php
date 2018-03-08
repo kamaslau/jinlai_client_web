@@ -110,7 +110,7 @@ endif;
 
             <div id=vote-description>
                 <?php echo $item['description'] ?>
-                <p><?php echo ($item['max_user_total'] == 0)? NULL: '总共可投'.$item['max_user_total'].'票 / ' ?>每日<?php echo $item['max_user_daily'] ?>票（每选项限投<?php echo $item['max_user_daily_each'] ?>票）</p>
+                <!--<p><?php echo ($item['max_user_total'] == 0)? NULL: '总共可投'.$item['max_user_total'].'票 / ' ?>每日<?php echo $item['max_user_daily'] ?>票（每选项限投<?php echo $item['max_user_daily_each'] ?>票）</p>-->
             </div>
 
             <a id=vote-article href="#vote-article-content" style="text-indent:-0.5em /*调整由于书名号引起的视觉上未居中问题*/">《匠心计划》助力政策</a>
@@ -124,11 +124,10 @@ endif;
 
         <div id=vote-extra>
             <section>
-                <p>【主办单位】 进来平台</p>
                 <p>【参选对象】 青岛市范围内的优质商家</p>
                 <p>【参评方式】 全网投放，线上线下征集商家，全民投票评选。</p>
-                <p>【公开颁奖】 3月31日「进来」平台招商运营峰会，共同见证揭晓结果（15:00投票通道关闭），盛大仪式隆重颁奖。</p>
-                <p>【投票规则】 每人每天10张选票，其中同一商家每天限投1次。</p>
+                <p>【公开颁奖】 （暂定）3月30日「进来」平台招商运营峰会，共同见证揭晓结果（15:00投票通道关闭），盛大仪式隆重颁奖。</p>
+                <p>【投票规则】 每人每天10张选票，同一商家每天限投1次。</p>
             </section>
 
             <p class=strong>消费者可以根据参评商家的品牌、品质、服务、口碑、匠心、稀缺性等6个维度进行综合评选。</p>
@@ -157,6 +156,12 @@ endif;
     <?php endif ?>
 
     <!-- 投票候选项列表 -->
+    <?php if (empty($options)): ?>
+    <div class=container>
+        <p>正在审核候选项，投票将稍后开放，敬请关注！</p>
+    </div>
+
+    <?php else: ?>
     <ul id=vote-options class=container>
         <?php
             // 候选项默认占位图
@@ -194,6 +199,7 @@ endif;
         </li>
         <?php endforeach ?>
     </ul>
+    <?php endif ?>
 
     <!--
     <div id=loader>
