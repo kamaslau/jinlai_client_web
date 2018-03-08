@@ -85,19 +85,19 @@
             </div>
         </div>
 
-        <!-- 候选项描述（若有） -->
-        <?php if ( ! empty($item['description'])): ?>
-        <div class=option-description>
-            <section><?php echo $item['description'] ?></section>
-        </div>
-        <?php endif ?>
-
         <!-- 候选项形象图 -->
         <div class=option-figure>
             <figure>
                 <img src="<?php echo !empty($item['url_image'])? MEDIA_URL.'vote_option/'.$item['url_image']: MEDIA_URL.'vote/'.$vote['url_default_option_image'] ?>">
             </figure>
         </div>
+
+        <!-- 候选项描述（若有） -->
+        <?php if ( ! empty($item['description'])): ?>
+            <div class=option-description>
+                <section><?php echo $item['description'] ?></section>
+            </div>
+        <?php endif ?>
     </div>
 
 	<?php endif ?>

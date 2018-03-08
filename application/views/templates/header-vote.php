@@ -156,7 +156,7 @@
         $last_code_used = get_cookie('last_code_used');
         if ( !empty($code) && ($last_code_used <> $code)):
             // 清除当前登录信息
-            $this->session->sess_destroy();
+            //$this->session->sess_destroy();
 
             // 获取微信用户资料
             $sns_token = get_sns_token($code);
@@ -231,11 +231,13 @@
                     ] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
                 });
 
+                <?php $url_page_figure = empty($item['url_image'])? MEDIA_URL.'/icon/jinlai_client/64x64.png': $this->media_root.$item['url_image'] ?>
+
                 // 分享到朋友圈
                 wx.onMenuShareTimeline({
                     title: '<?php echo $title ?>', // 分享标题
                     link: '<?php echo 'https://'. $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] ?>', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                    imgUrl: '<?php echo base_url('/media/icon120@3x.png') ?>', // 分享图标
+                    imgUrl: '<?php echo $url_page_figure ?>', // 分享图标
                     success: function () {
                         // 用户确认分享后执行的回调函数
                         alert('分享成功');
@@ -251,7 +253,7 @@
                     title: '<?php echo $title ?>', // 分享标题
                     desc: '<?php echo $description ?>', // 分享描述
                     link: '<?php echo 'https://'. $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'] ?>', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-                    imgUrl: '<?php echo base_url('/media/icon120@3x.png') ?>', // 分享图标
+                    imgUrl: '<?php echo $url_page_figure ?>', // 分享图标
                     type: '', // 分享类型,music、video或link，不填默认为link
                     dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
                     success: function () {
