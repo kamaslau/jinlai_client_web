@@ -2,6 +2,7 @@ body {color:#fff;font-size:24px;background-color:#0c0a33;font-family:"微软雅�
 .container {width:100%;padding:0 20px;}
 a {color:#fff;text-align:center;}
 figure {display:flex;justify-content:center;align-items:center}
+img {width:auto;}
 
 #audio-control {color:#c71c1c;background-color:rgba(255,255,255,0.8);display:block;border-radius:40px;width:80px;height:80px;line-height:80px;text-align:center;position:fixed;top:20px;right:20px;opacity:0.75;z-index:99;}
     #audio-control:hover{background-color:rgba(255,255,255,1);}
@@ -81,6 +82,7 @@ figure {display:flex;justify-content:center;align-items:center}
     .selector_zone {width:190px;height:168px;}
     .file_selector {color:#c6c6c6;background-color:#f2f2f2;line-height:168px;border:1px solid #e7e7e7;}
 
+#follow-guide img {width:100%;}
 
 /* 以下为倒计时器样式 */
 ul.countdown {list-style:none;display:block;}

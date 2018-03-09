@@ -1,10 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+// 根域名及URL
+define('ROOT_DOMAIN', '.517ybang.com');
+define('ROOT_URL', ROOT_DOMAIN.'/');
+
 // 允许响应指定URL的跨域请求
 $origin = isset($_SERVER['HTTP_ORIGIN'])? $_SERVER['HTTP_ORIGIN']: NULL;
 $allow_origin = array(
-    'https://www.517ybang.com',
+    'https://www'.ROOT_DOMAIN,
 );
 if ( in_array($origin, $allow_origin) ):
     header('Access-Control-Allow-Origin:'.$origin);
@@ -21,19 +25,18 @@ define('SITE_DESCRIPTION', '「进来」是首款需要严苛标准认证的品�
 define('ICP_NUMBER', NULL); // ICP备案号码，没有请留空
 
 define('BASE_URL', 'https://'. $_SERVER['SERVER_NAME']); // 可对外使用的站点URL；在本地测试时须替换为类似“localhost/BasicCodeigniter”形式
-define('BIZ_URL', 'https://biz.517bang.com/'); // 商家管理中心URL
+define('BIZ_URL', 'https://biz'.ROOT_URL); // 商家端URL
 
 // （可选）JS、CSS等非当前站点特有资源所在URL，可用于配合又拍云等第三方存储
-//define('CDN_URL', 'http://cdn-remote.ybslux.com/'); // 生产环境
-define('CDN_URL', 'https://cdn-remote.517ybang.com/'); // 测试环境
+define('CDN_URL', 'https://cdn-remote'.ROOT_URL); // 生产环境
 
  // （可选）媒体文件，即非样式图片、视频、音频存储的根目录所在URL，可用于配合又拍云等第三方存储
 define('DEFAULT_IMAGE', NULL); // 默认图片URL
-//define('MEDIA_URL', 'https://medias.517ybang.com/'); // 生产环境
+//define('MEDIA_URL', 'https://medias'.ROOT_URL); // 生产环境
 define('MEDIA_URL', 'https://jinlaisandbox-images.b0.upaiyun.com/'); // 测试环境
 
 // COOKIE & SESSION相关
-define('COOKIE_DOMAIN', '.517ybang.com'); // cookie存储路径；方便起见可让所有子域共享，若需分离可自行配置
+define('COOKIE_DOMAIN', ROOT_DOMAIN); // cookie存储路径；方便起见可让所有子域共享，若需分离可自行配置
 define('SESSION_COOKIE_NAME', 'ci_sessions_web'); // 用于cookie存储的session名（设置此值后，前后台session互不影响）
 define('SESSION_TABLE', 'ci_sessions_web'); // 用于session存储的数据库表名
 define('SESSION_PERIOD', 2592000); // session有效期秒数，此处设为30天，即60秒*60分*24小时*30天
@@ -41,7 +44,7 @@ define('ENCRYPTION_KEY', ''); // 秘钥用于加密相关功能，可为空
 
 // RESTful API
 define('API_TOKEN', '7C4l7JLaM3Fq5biQurtmk9nFS');
-define('API_URL', 'https://api.517ybang.com/');
+define('API_URL', 'https://api'.ROOT_URL);
 function api_url($api_name)
 {
 	return API_URL. $api_name;
@@ -49,6 +52,9 @@ function api_url($api_name)
 
 // 原生应用scheme
 define('APP_SCHEME', 'jinlaiclient');
+
+// APPLE开发平台参数
+define('IOS_APP_ID', '1066224229');
 
 // 微信公众平台参数
 define('WECHAT_APP_ID', 'wxba173a67df14c087');
@@ -63,6 +69,15 @@ define('WEPAY_URL_NATIVE', BASE_URL.'/payment/wepay/example/native.php?showwxpay
 
 // 支付宝参数
 define('ALIPAY_URL', BASE_URL.'/payment/alipay/alipayapi.php?');
+
+// 又拍云参数
+define('UPYUN_BUCKETNAME', 'jinlaisandbox-images');
+define('UPYUN_USERNAME', 'jinlaisandbox');
+define('UPYUN_USERPASSWORD', 'jinlaisandbox');
+// 生产环境
+// define('UPYUN_BUCKETNAME', 'medias-jinlai');
+// define('UPYUN_USERNAME', 'jinlaiclient');
+// define('UPYUN_USERPASSWORD', 'jinlai2017');
 
 /*
 |--------------------------------------------------------------------------

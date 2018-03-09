@@ -115,6 +115,7 @@
                 $data['class'] = $this->class_name.' detail';
 
                 // 若活动已开始，则显示活动详情页；已结束则显示活动结果页；未开始则显示活动预告页。
+                /*
                 if (!empty($data['item']['time_end']) && time() > $data['item']['time_end']):
                     $view_name = 'detail-after';
                 elseif (!empty($data['item']['time_start']) && time() < $data['item']['time_start']):
@@ -122,6 +123,8 @@
                 else:
                     $view_name = 'detail';
                 endif;
+                */
+                $view_name = 'detail';
 
 			    // 获取投票候选项、候选项标签信息
                 $data['options'] = $this->list_vote_option($id);

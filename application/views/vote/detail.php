@@ -64,7 +64,7 @@ endif;
                 <script>
                     $(function() {
                         // 点击报名按钮
-                        $('#vote-signup').click(function () {
+                        $('#vote-signup').click(function (){
                             $('#form-signup').show();
                             return false;
                         });
@@ -74,7 +74,12 @@ endif;
             <?php endif ?>
 
             <div id=counter-container class=vote-time_end>
-                <p>距离投票结束<!--（<?php echo date('Y-m-d H:i:s', $item['time_end']) ?>）--></p>
+                <?php
+                    // 根据当前时间判断以活动开始时间还是活动结束时间作为倒计时目标时间
+                    $time_countdown_ends = (time() >= $item['time_start'])? $item['time_end']: $item['time_start'];
+                    $countdown_text = (time() >= $item['time_start'])? '活动结束': '活动开始';
+                ?>
+                <p>距离<?php echo $countdown_text ?></p>
                 <ul id=down-counter class=countdown>
                     <li>
                         <span class="days">00</span>
@@ -97,20 +102,20 @@ endif;
                     </li>
                 </ul>
             </div>
+
             <script>
                 $(function(){
                     $('#down-counter').downCount({
-                        date: '<?php echo date('m/d/Y H:i:s', $item['time_end']) ?>',
+                        date: '<?php echo date('m/d/Y H:i:s', $time_countdown_ends) ?>',
                         offset: +8
                     }, function(){
-                        alert('活动已结束');
+                        alert('倒计时已结束，请刷新页面');
                     });
                 });
             </script>
 
             <div id=vote-description>
                 <?php echo $item['description'] ?>
-                <!--<p><?php echo ($item['max_user_total'] == 0)? NULL: '总共可投'.$item['max_user_total'].'票 / ' ?>每日<?php echo $item['max_user_daily'] ?>票（每选项限投<?php echo $item['max_user_daily_each'] ?>票）</p>-->
             </div>
 
             <a id=vote-article href="#vote-article-content" style="text-indent:-0.5em /*调整由于书名号引起的视觉上未居中问题*/">《匠心计划》助力政策</a>
@@ -126,33 +131,35 @@ endif;
             <section>
                 <p>【参选对象】 青岛市范围内的优质商家</p>
                 <p>【参评方式】 全网投放，线上线下征集商家，全民投票评选。</p>
-                <p>【公开颁奖】 （暂定）3月30日「进来」平台招商运营峰会，共同见证揭晓结果（15:00投票通道关闭），盛大仪式隆重颁奖。</p>
-                <p>【投票规则】 每人每天10张选票，同一商家每天限投1次。</p>
+                <p>【公开颁奖】 3月30日「进来」平台商家运营峰会，共同见证揭晓结果（15:00投票通道关闭），盛大仪式隆重颁奖。</p>
+                <p>【投票规则】 <?php echo ($item['max_user_total'] == 0)? NULL: '总共可投'.$item['max_user_total'].'票，' ?>每人每天<?php echo $item['max_user_daily'] ?>张选票，同一商家每天限投<?php echo $item['max_user_daily_each'] ?>次。</p>
             </section>
 
             <p class=strong>消费者可以根据参评商家的品牌、品质、服务、口碑、匠心、稀缺性等6个维度进行综合评选。</p>
         </div>
     </div>
 
-    <!-- 投票候选项搜索 -->
-    <div id=vote-searcher class=container>
-        <div id=search-button>
-            <i class="far fa-search" aria-hidden=true></i>
+    <?php if ( ! empty($options)): ?>
+        <!-- 投票候选项搜索 -->
+        <div id=vote-searcher class=container>
+            <div id=search-button>
+                <i class="far fa-search" aria-hidden=true></i>
+            </div>
+            <input name=content type=search placeholder="可根据候选项名称或序号进行搜索">
         </div>
-        <input name=content type=search placeholder="可根据候选项名称或序号进行搜索">
-    </div>
 
-    <?php if ( ! empty($tags)): ?>
-    <!-- 投票候选项导航 -->
-    <div id=options-naver class=container>
-        <ul class=horizontal>
-            <li><a href="#" data-tag_id=all>全部</a></li>
+        <?php if ( ! empty($tags)): ?>
+        <!-- 投票候选项导航 -->
+        <div id=options-naver class=container>
+            <ul class=horizontal>
+                <li><a href="#" data-tag_id=all>全部</a></li>
 
-            <?php foreach ($tags as $tag): ?>
-            <li><a href="#" data-tag_id="<?php echo $tag['tag_id'] ?>"><?php echo $tag['name'] ?></a></li>
-            <?php endforeach ?>
-        </ul>
-    </div>
+                <?php foreach ($tags as $tag): ?>
+                <li><a href="#" data-tag_id="<?php echo $tag['tag_id'] ?>"><?php echo $tag['name'] ?></a></li>
+                <?php endforeach ?>
+            </ul>
+        </div>
+        <?php endif ?>
     <?php endif ?>
 
     <!-- 投票候选项列表 -->

@@ -57,7 +57,7 @@
                     <?php endif ?>
 
                     <div class=input-group>
-                        <label for=url_image>形象图</label>
+                        <label for=url_image>形象图（正方形图片视觉效果最佳）</label>
                         <div>
                             <?php
                             require_once(APPPATH. 'views/templates/file-uploader.php');
