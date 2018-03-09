@@ -180,8 +180,11 @@
 				'error' => '', // 预设错误提示
 			);
 
-			$vote_id = $this->input->get('vote_id');
-            $option_id = $this->input->get('option_id');
+			// 检查是否已传入必要参数
+			$vote_id = $this->input->get_post('vote_id');
+            $option_id = $this->input->get_post('option_id');
+            if (empty($vote_id) || empty($option_id))
+                redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
 
 			// 待验证的表单项
 			$this->form_validation->set_error_delimiters('', '；');
@@ -204,13 +207,9 @@
 				// 需要创建的数据；逐一赋值需特别处理的字段
 				$data_to_create = array(
 					'user_id' => $this->session->user_id,
+					'vote_id' => $vote_id,
+					'option_id' => $option_id,
 				);
-				// 自动生成无需特别处理的数据
-				$data_need_no_prepare = array(
-					'vote_id', 'option_id',
-				);
-				foreach ($data_need_no_prepare as $name)
-					$data_to_create[$name] = $this->input->get_post($name);
 
 				// 向API服务器发送待创建数据
 				$params = $data_to_create;
