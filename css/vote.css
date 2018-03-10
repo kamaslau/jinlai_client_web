@@ -52,6 +52,7 @@ img {width:auto;}
     .option-brief>*, .option-actions>* {color:#fff;}
     .option-brief {line-height:28px;}
         .option-brief>*:not(:last-child) {margin-bottom:20px;}
+        .option-name {height:28px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .option-actions {margin-top:30px;}
         .option-actions a {font-size:30px;background:url('/media/images/vote/bg-action@3x.png') no-repeat center center;background-size:145px 60px;font-weight:bold;display:block;width:145px;height:60px;line-height:60px;float:left;}
             .option-actions a:last-child {color:#fde001;margin-left:15px;}

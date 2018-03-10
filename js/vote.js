@@ -96,9 +96,11 @@ $(function(){
 
     // 点击投票按钮
     $('.ballot-create').click(function(){
-        var vote_id = $(this).attr('data-vote_id');
-        var option_id = $(this).attr('data-option_id');
-        ballot_create(vote_id, option_id);
+        // var vote_id = $(this).attr('data-vote_id');
+        // var option_id = $(this).attr('data-option_id');
+        // ballot_create(vote_id, option_id);
+
+        alert('投票尚未开始，敬请期待！');
 
         return false;
     });
@@ -109,10 +111,10 @@ $(function(){
         var option_id = $(this).attr('data-option_id');
         option_detail(vote_id, option_id);
 
+        alert('投票尚未开始，敬请期待！');
+
         return false;
     });
-
-
 
     // 关闭全屏
     $('.full-screen-close').click(function(){

@@ -200,7 +200,7 @@ endif;
                     $common_attrs = 'data-vote_id='.$item['vote_id'].' data-option_id='.$option['option_id'];
                 ?>
                 <a <?php echo $common_attrs ?> href="<?php echo base_url('vote_option/detail?'.$common_params.'id='.$option['option_id']) ?>">推荐</a>
-                <a <?php echo $common_attrs ?> href="<?php echo base_url('vote_ballot/create?'.$common_params.'option_id='.$option['option_id']) ?>">选TA</a>
+                <a class=ballot-create <?php echo $common_attrs ?> href="<?php echo base_url('vote_ballot/create?'.$common_params.'option_id='.$option['option_id']) ?>">选TA</a>
             </div>
 
         </li>
