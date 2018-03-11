@@ -190,7 +190,11 @@ endif;
             </div>
             <a class=option-figure href="<?php echo base_url('vote_option/detail?id='.$option['option_id']) ?>">
                 <figure>
-                    <img src="<?php echo !empty($option['url_image'])? MEDIA_URL.'vote_option/'.$option['url_image']: $default_option_image ?>">
+                    <img
+                            class="lazyload"
+                            src="<?php echo $default_option_image ?>"
+                            data-original="<?php echo !empty($option['url_image'])? MEDIA_URL.'vote_option/'.$option['url_image']: $default_option_image ?>"
+                    >
                 </figure>
             </a>
             <div class=option-actions>

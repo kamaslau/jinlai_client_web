@@ -2,6 +2,12 @@
  * 投票相关功能
  */
 $(function(){
+    // 图片延迟加载
+    $('img.lazyload').lazyload({
+        threshold : 200,
+        effect : "fadeIn"
+    });
+
     // 播放或暂停音频
     $('#audio-control').click(function(){
         var audio = document.getElementById('vote-audio');

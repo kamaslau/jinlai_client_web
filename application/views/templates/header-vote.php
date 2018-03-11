@@ -17,7 +17,7 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20180310">
+		<meta name=version content="revision20180312">
 		<meta name=author content="刘亚杰Kamas,青岛意帮网络科技有限公司产品部&amp;技术部">
 		<meta name=copyright content="进来商城,青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
@@ -34,8 +34,9 @@
         <script src="<?php echo CDN_URL ?>js/jquery-3.3.1.min.js"></script>
         <script src="https://res.wx.qq.com/open/js/jweixin-1.3.0.js"></script>
         <script defer src="<?php echo CDN_URL ?>font-awesome/v5.0.8/fontawesome-all.min.js"></script>
+        <script defer src="<?php echo CDN_URL ?>jquery/jquery.downCount.js"></script>
+        <script defer src="<?php echo CDN_URL ?>jquery/jquery.lazyload.min.js"></script>
         <script defer src="/js/vote.js"></script>
-        <script defer src="/js/jquery.downCount.js"></script>
 
         <?php
         // 使修改的COOKIE即时生效

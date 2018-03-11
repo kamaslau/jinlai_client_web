@@ -37,7 +37,7 @@ img {width:auto;}
 
 #options-naver {background-color:#1f1f5c;width:710px;margin:20px auto 0;border:1px solid #9d9aff;border-radius:15px;overflow:hidden;z-index:98;}
     #options-naver ul {padding:40px 20px 10px;overflow:hidden;}
-    #options-naver li {background-color:#3a3a8f;height:50px;line-height:50px;margin-right:20px;margin-bottom:30px;border-radius:25px;padding:0 25px;}
+    #options-naver li {background-color:#3a3a8f;height:50px;line-height:50px;margin-right:20px;margin-bottom:30px;border-radius:25px;padding:0 20px;}
     #options-naver a {color:#9d9aff;text-align:center;display:block;width:100%;height:100%;}
 
 #vote-options {overflow:hidden;margin-top:40px;}
