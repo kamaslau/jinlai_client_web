@@ -111,7 +111,7 @@
 				$data['item'] = $result['content'];
 
                 // 页面信息
-                $data['title'] = '"'. $data['item']['name']. '"投票活动';
+                $data['title'] = '"'. $data['item']['name']. '"全民评选活动';
                 $data['class'] = $this->class_name.' detail';
 
                 // 若活动已开始，则显示活动详情页；已结束则显示活动结果页；未开始则显示活动预告页。

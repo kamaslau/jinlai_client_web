@@ -132,7 +132,7 @@ endif;
                 <p>【参选对象】 青岛市范围内的优质商家</p>
                 <p>【参评方式】 全网投放，线上线下征集商家，全民投票评选。</p>
                 <p>【公开颁奖】 3月30日「进来」平台商家运营峰会，共同见证揭晓结果（15:00投票通道关闭），盛大仪式隆重颁奖。</p>
-                <p>【投票规则】 <?php echo ($item['max_user_total'] == 0)? NULL: '总共可投'.$item['max_user_total'].'票，' ?>每人每天<?php echo $item['max_user_daily'] ?>张选票，同一商家每天限投<?php echo $item['max_user_daily_each'] ?>次。</p>
+                <p>【投票规则】 <?php echo ($item['max_user_total'] == 0)? NULL: '总共可投'.$item['max_user_total'].'票，' ?>每人每天<?php echo $item['max_user_daily'] ?>张选票，同一商家每天限投<?php echo $item['max_user_daily_each'] ?>票。</p>
             </section>
 
             <p class=strong>消费者可以根据参评商家的品牌、品质、服务、口碑、匠心、稀缺性等6个维度进行综合评选。</p>
@@ -178,9 +178,9 @@ endif;
         ?>
         <li
             class=vote-option
+            data-tag_id="<?php echo $option['tag_id'] ?>"
             data-option_id="<?php echo $option['option_id'] ?>"
             data-option_name="<?php echo $option['name'] ?>"
-            data-tag_id="<?php echo $option['tag_id'] ?>"
         >
 
             <div class=option-brief>
@@ -191,7 +191,7 @@ endif;
             <a class=option-figure href="<?php echo base_url('vote_option/detail?id='.$option['option_id']) ?>">
                 <figure>
                     <img
-                            class="lazyload"
+                            class=lazyload
                             src="<?php echo $default_option_image ?>"
                             data-original="<?php echo !empty($option['url_image'])? MEDIA_URL.'vote_option/'.$option['url_image']: $default_option_image ?>"
                     >
