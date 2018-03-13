@@ -91,3 +91,8 @@ ul.countdown {list-style:none;display:block;}
         ul.countdown li span {font-size:24px;display:block;width:50px;height:50px;line-height:50px;border:1px solid #fff;}
         ul.countdown li.seperator {color:#aaa;font-size:24px;margin:0 20px;line-height:50px;vertical-align:top;}
         ul.countdown li p {color:#aaa;font-size:14px;}
+
+#naver-inpage {width:80px;height:auto;position:fixed;bottom:70px;right:64px;z-index:99;}
+    #naver-inpage li {text-align:center;border-radius:40px;width:80px;height:80px;line-height:80px;opacity:0.75;overflow:hidden;}
+        #naver-inpage li:not(:first-child) {margin-top:28px;}
+        #naver-inpage a {color:#999;font-size:34px;background-color:#fff;display:block;width:100%;height:100%;}

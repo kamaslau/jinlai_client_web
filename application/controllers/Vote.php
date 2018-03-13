@@ -21,10 +21,6 @@
 		{
 			parent::__construct();
 
-            // 微信登录授权URL
-//            $current_url = 'https://'. $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
-//            $target_url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.WECHAT_APP_ID.'&redirect_uri='.urlencode($current_url).'&response_type=code&scope=snsapi_userinfo#wechat_redirect';
-
             $code = $this->input->get('code');
             // 已关注微信公众号且登录未超时，或传入了code参数时无需跳转
 			(
@@ -40,12 +36,6 @@
 			$this->id_name = 'vote_id'; // 还有这里，OK，这就可以了
 			$this->view_root = $this->class_name; // 视图文件所在目录
 			$this->media_root = MEDIA_URL. $this->class_name.'/'; // 媒体文件所在目录
-
-            // 设置需要自动在视图文件中生成显示的字段
-			$this->data_to_display = array(
-				'name' => '名称',
-				'description' => '描述',
-			);
 		} // end __construct
 
 		/**
@@ -82,9 +72,6 @@
 				$data['error'] = $result['content']['error']['message'];
 			endif;
 
-			// 将需要显示的数据传到视图以备使用
-			$data['data_to_display'] = $this->data_to_display;
-
 			// 输出视图
 			$this->load->view('templates/header-simple', $data);
 			$this->load->view($this->view_root.'/index', $data);
@@ -114,22 +101,13 @@
                 $data['title'] = '"'. $data['item']['name']. '"全民评选活动';
                 $data['class'] = $this->class_name.' detail';
 
-                // 若活动已开始，则显示活动详情页；已结束则显示活动结果页；未开始则显示活动预告页。
-                /*
-                if (!empty($data['item']['time_end']) && time() > $data['item']['time_end']):
-                    $view_name = 'detail-after';
-                elseif (!empty($data['item']['time_start']) && time() < $data['item']['time_start']):
-                    $view_name = 'detail-before';
-                else:
-                    $view_name = 'detail';
-                endif;
-                */
-                $view_name = 'detail';
-
 			    // 获取投票候选项、候选项标签信息
                 $data['options'] = $this->list_vote_option($id);
                 $data['tags'] = $this->list_vote_tag($id);
 
+                // 若活动已开始则显示活动详情页；已结束则显示活动结果页。
+                $view_name = (time() < $data['item']['time_end'])? 'detail': 'detail-result';
+                
                 $this->load->view('templates/header-vote', $data);
                 $this->load->view($this->view_root.'/'.$view_name, $data);
                 $this->load->view('templates/footer-vote', $data);

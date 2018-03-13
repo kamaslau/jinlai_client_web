@@ -17,7 +17,7 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20180312">
+		<meta name=version content="revision20180313">
 		<meta name=author content="刘亚杰Kamas,青岛意帮网络科技有限公司产品部&amp;技术部">
 		<meta name=copyright content="进来商城,青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
@@ -309,14 +309,14 @@
         </script>
 
 		<!--清除浏览器默认样式css-->
-		<link rel=stylesheet media=all href="<?php echo CDN_URL ?>css/reset.css">
+		<link rel=stylesheet media=all href="<?php echo CDN_URL ?>css/reset.css?<?php echo time() ?>">
 		<!--公用部分css-->
         <?php if ($this->session->time_expire_login > time()): ?>
         <script defer src="/js/file-upload.js"></script>
         <link rel=stylesheet media=all href="/css/file-upload.css">
         <?php endif ?>
 
-        <link rel=stylesheet media=all href="/css/vote.css">
+        <link rel=stylesheet media=all href="/css/vote.css?<?php echo time() ?>">
 
 
         <link rel=canonical href="<?php echo current_url() ?>">

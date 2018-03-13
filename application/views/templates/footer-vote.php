@@ -148,16 +148,5 @@
                 </div>
             </div>
         </div>
-
-		<script>
-			$(function(){
-				// 回到页首按钮
-				$('a#totop').click(function()
-				{
-					$('body,html').stop(false, false).animate({scrollTop:0}, 800);
-					return false;
-				});
-			});
-		</script>
 	</body>
 </html>

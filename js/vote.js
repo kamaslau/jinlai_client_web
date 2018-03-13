@@ -24,12 +24,13 @@ $(function(){
     });
 
     // 搜索
-    $('[name=content]').change(function(){
+    $('[name=content]').focus(function(){
         // 显示所有候选项并重置部分样式（以避免通过标签筛选后仅可显示部分候选项的情况）
         $('.vote-option').show();
         $('.vote-option:visible:odd').css('margin-left', '20px');
         $('.vote-option:visible:even').css('margin-left', '0');
-
+    });
+    $('[name=content]').change(function(){
         var content = $(this).val();
         search_in_page(content);
         $('[name=content]').val('');
@@ -48,7 +49,7 @@ $(function(){
         // 获取目标元素
         if (isNaN(content))
         {
-            target = $('[data-option_name='+content+']');
+            target = $('[data-option_name^='+content+'], [data-option_name*='+content+'], [data-option_name$='+content+']');
         } else {
             target = $('[data-option_id='+content+']');
         }
@@ -57,8 +58,9 @@ $(function(){
         {
             alert('没有对应的候选项');
         } else {
+            console.log(target);
             // 获取目标元素相对于网页顶端的位置
-            var target_height = $(target).offset().top;
+            var target_height = $(target[0]).offset().top - 20; // 顶端留出20像素的空间
 
             // 页面滚动到该位置
             $('body,html').stop(false, false).animate({scrollTop:target_height}, 400);
@@ -90,8 +92,8 @@ $(function(){
         $('.vote-option:visible:odd').css('margin-left', '20px');
         $('.vote-option:visible:even').css('margin-left', '0');
 
-        // 获取搜索框相对于网页顶端的位置
-        var target = $('#vote-searcher');
+        // 获取标签导航栏相对于网页顶端的位置
+        var target = $('#options-naver');
         var target_height = target.offset().top - 20; // 顶端留出20像素的空间
 
         // 页面滚动到该位置
