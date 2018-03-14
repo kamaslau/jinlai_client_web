@@ -469,13 +469,8 @@
 
 			$url = api_url('biz/index');
 			$result = $this->curl->go($url, $params, 'array');
-			if ($result['status'] === 200):
-				$data['items'] = $result['content'];
-			else:
-				$data['items'] = NULL;
-			endif;
 
-			return $data['items'];
+            return ($result['status'] === 200)? $result['content']: NULL;
 		} // end list_biz
 		
 		// 获取特定商家信息
@@ -488,13 +483,8 @@
 
 			$url = api_url('biz/detail');
 			$result = $this->curl->go($url, $params, 'array');
-			if ($result['status'] === 200):
-				$data['item'] = $result['content'];
-			else:
-				$data['item'] = NULL;
-			endif;
 
-			return $data['item'];
+            return ($result['status'] === 200)? $result['content']: NULL;
 		} // end get_biz
 
 		// 获取特定商品信息
@@ -507,13 +497,8 @@
 
 			$url = api_url('item/detail');
 			$result = $this->curl->go($url, $params, 'array');
-			if ($result['status'] === 200):
-				$data['item'] = $result['content'];
-			else:
-				$data['item'] = NULL;
-			endif;
-			
-			return $data['item'];
+
+            return ($result['status'] === 200)? $result['content']: NULL;
 		} // end get_item
 		
 		// 获取商品列表
@@ -527,13 +512,8 @@
 			// 从API服务器获取相应列表信息
 			$url = api_url('sku/index');
 			$result = $this->curl->go($url, $params, 'array');
-			if ($result['status'] === 200):
-				$data['items'] = $result['content'];
-			else:
-				$data['items'] = NULL;
-			endif;
-			
-			return $data['items'];
+
+            return ($result['status'] === 200)? $result['content']: NULL;
 		} // end list_sku
 
 		// 获取特定商品信息
@@ -546,13 +526,8 @@
 
 			$url = api_url('sku/detail');
 			$result = $this->curl->go($url, $params, 'array');
-			if ($result['status'] === 200):
-				$data['item'] = $result['content'];
-			else:
-				$data['item'] = NULL;
-			endif;
-			
-			return $data['item'];
+
+            return ($result['status'] === 200)? $result['content']: NULL;
 		} // end get_sku
 		
 		// 获取品牌列表
@@ -564,13 +539,8 @@
 
 			$url = api_url('brand/index');
 			$result = $this->curl->go($url, $params, 'array');
-			if ($result['status'] === 200):
-				$data['items'] = $result['content'];
-			else:
-				$data['items'] = NULL;
-			endif;
 
-			return $data['items'];
+            return ($result['status'] === 200)? $result['content']: NULL;
 		} // end list_brand
 		
 		// 获取特定品牌信息
@@ -583,13 +553,8 @@
 
 			$url = api_url('brand/detail');
 			$result = $this->curl->go($url, $params, 'array');
-			if ($result['status'] === 200):
-				$data['item'] = $result['content'];
-			else:
-				$data['item'] = NULL;
-			endif;
-			
-			return $data['item'];
+
+            return ($result['status'] === 200)? $result['content']: NULL;
 		} // end get_brand
 
         // 获取系统分类列表
@@ -602,13 +567,8 @@
             // 从API服务器获取相应列表信息
             $url = api_url('item_category/index');
             $result = $this->curl->go($url, $params, 'array');
-            if ($result['status'] === 200):
-                $data['items'] = $result['content'];
-            else:
-                $data['items'] = NULL;
-            endif;
 
-            return $data['items'];
+            return ($result['status'] === 200)? $result['content']: NULL;
         } // end list_category
 		
 		// 获取特定系统分类信息
@@ -621,13 +581,8 @@
 			
 			$url = api_url('item_category/detail');
 			$result = $this->curl->go($url, $params, 'array');
-			if ($result['status'] === 200):
-				$data['item'] = $result['content'];
-			else:
-				$data['item'] = NULL;
-			endif;
-			
-			return $data['item'];
+
+            return ($result['status'] === 200)? $result['content']: NULL;
 		} // end get_category
 		
 		// 获取商家分类列表
@@ -640,13 +595,8 @@
 			// 从API服务器获取相应列表信息
 			$url = api_url('item_category_biz/index');
 			$result = $this->curl->go($url, $params, 'array');
-			if ($result['status'] === 200):
-				$data['items'] = $result['content'];
-			else:
-				$data['items'] = NULL;
-			endif;
-			
-			return $data['items'];
+
+            return ($result['status'] === 200)? $result['content']: NULL;
 		} // end list_category_biz
 		
 		// 获取特定商家分类信息
@@ -659,13 +609,8 @@
 
 			$url = api_url('item_category_biz/detail');
 			$result = $this->curl->go($url, $params, 'array');
-			if ($result['status'] === 200):
-				$data['item'] = $result['content'];
-			else:
-				$data['item'] = NULL;
-			endif;
-			
-			return $data['item'];
+
+            return ($result['status'] === 200)? $result['content']: NULL;
 		} // end get_category_biz
 		
 		// 获取店内活动详情
@@ -678,13 +623,8 @@
 
 			$url = api_url('promotion_biz/detail');
 			$result = $this->curl->go($url, $params, 'array');
-			if ($result['status'] === 200):
-				$data['item'] = $result['content'];
-			else:
-				$data['item'] = NULL;
-			endif;
-			
-			return $data['item'];
+
+            return ($result['status'] === 200)? $result['content']: NULL;
 		} // end get_promotion_biz
 		
 		// 获取特定商家运费模板详情
@@ -697,13 +637,8 @@
 
 			$url = api_url('freight_template_biz/detail');
 			$result = $this->curl->go($url, $params, 'array');
-			if ($result['status'] === 200):
-				$data['item'] = $result['content'];
-			else:
-				$data['item'] = NULL;
-			endif;
-			
-			return $data['item'];
+
+            return ($result['status'] === 200)? $result['content']: NULL;
 		} // end get_freight_template_biz
 
 		// 获取当前用户可用地址列表
@@ -714,13 +649,8 @@
 
 			$url = api_url('address/index');
 			$result = $this->curl->go($url, $params, 'array');
-			if ($result['status'] === 200):
-				$data['items'] = $result['content'];
-			else:
-				$data['items'] = NULL;
-			endif;
 
-			return $data['items'];
+            return ($result['status'] === 200)? $result['content']: NULL;
 		} // end list_address
 
         // 获取特定投票信息
@@ -733,13 +663,8 @@
 
             $url = api_url('vote/detail');
             $result = $this->curl->go($url, $params, 'array');
-            if ($result['status'] === 200):
-                $data['item'] = $result['content'];
-            else:
-                $data['item'] = NULL;
-            endif;
 
-            return $data['item'];
+            return ($result['status'] === 200)? $result['content']: NULL;
         } // end get_vote
 
         // 获取特定投票候选项信息
@@ -749,38 +674,31 @@
             $params['id'] = $id;
             $params['user_id'] = 'NULL'; // 可获取不属于当前用户的数据
             $params['time_delete'] = 'NULL';
+            $params['status'] = '正常';
 
             $url = api_url('vote_option/detail');
             $result = $this->curl->go($url, $params, 'array');
-            if ($result['status'] === 200):
-                $data['item'] = $result['content'];
-            else:
-                $data['item'] = NULL;
-            endif;
 
-            return $data['item'];
+            return ($result['status'] === 200)? $result['content']: NULL;
         } // end get_vote_option
 
         // 获取投票选项列表
-        protected function list_vote_option($vote_id)
+        protected function list_vote_option($vote_id, $status = NULL)
         {
+            $params['user_id'] = 'NULL'; // 可获取不属于当前用户的数据
+
             // 从API服务器获取相应列表信息
             $params['vote_id'] = $vote_id;
-            $params['user_id'] = 'NULL'; // 可获取不属于当前用户的数据
             $params['time_delete'] = 'NULL';
+            if ($status !== NULL) $params['status'] = $status;
 
             // 默认按索引序号降序排序
             $params['orderby_index_id'] = 'DESC';
 
             $url = api_url('vote_option/index');
             $result = $this->curl->go($url, $params, 'array');
-            if ($result['status'] === 200):
-                $data['items'] = $result['content'];
-            else:
-                $data['items'] = NULL;
-            endif;
 
-            return $data['items'];
+            return ($result['status'] === 200)? $result['content']: NULL;
         } // end list_vote_option
 
         // 获取投票选项标签列表
@@ -793,13 +711,8 @@
 
             $url = api_url('vote_tag/index');
             $result = $this->curl->go($url, $params, 'array');
-            if ($result['status'] === 200):
-                $data['items'] = $result['content'];
-            else:
-                $data['items'] = NULL;
-            endif;
 
-            return $data['items'];
+            return ($result['status'] === 200)? $result['content']: NULL;
         } // end list_vote_tag
 
     } // end class MY_Controller

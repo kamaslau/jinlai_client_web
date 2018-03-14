@@ -39,6 +39,20 @@
             </div>
         </div>
 
+        <div class=full-screen id=vote-failed>
+            <div class=full-screen-container>
+                <div class=full-screen-close>
+                    <i class="far fa-times" aria-hidden=true></i>
+                </div>
+
+                <div class=full-screen-content>
+                    <h3 class="full-screen-title">选TA……不成功</h3>
+                    <p>点击右上角菜单分享本页面可以推荐TA</p>
+                    <p>点击右上角菜单分享本页面可以推荐TA</p>
+                </div>
+            </div>
+        </div>
+
         <div class=full-screen id=share-guide>
             <div class=full-screen-container>
                 <div class=full-screen-close>

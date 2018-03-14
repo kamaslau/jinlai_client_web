@@ -206,7 +206,7 @@
                     redirect(base_url('vote/detail?option_create_result=succeed&id='.$vote_id));
 
 				else:
-                    redirect(base_url('vote/detail?option_create_result=failed&id='.$vote_id));
+                    redirect(base_url('vote/detail?option_create_result=failed&id='.$vote_id.'&error='.$result['content']['error']['message']));
 
 				endif;
 				

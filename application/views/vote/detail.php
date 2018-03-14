@@ -19,6 +19,28 @@
 	}
 </style>
 
+<?php if (time() <= $item['time_start']): ?>
+<script>
+    $(function(){
+        // 点击投票按钮
+        $('.ballot-create').click(function(){
+            // var vote_id = $(this).attr('data-vote_id');
+            // var option_id = $(this).attr('data-option_id');
+            // ballot_create(vote_id, option_id);
+
+            alert('投票尚未开始，敬请期待！');
+
+            return false;
+        });
+        // 投票
+        function ballot_create(vote_id, option_id)
+        {
+            $('#vote-succeed').show();
+        } // end ballot_create
+    });
+</script>
+<?php endif ?>
+
 <?php
 // 若为报名成功后进入的页面，提示已成功报名，并清除最近报名候选项ID信息以避免重复提示
 if ($this->input->get('option_create_result') === 'succeed' && !empty($this->session->last_option_created)):
@@ -28,10 +50,17 @@ if ($this->input->get('option_create_result') === 'succeed' && !empty($this->ses
             document.getElementById('signup-succeed').style.display = 'block';
         }
     </script>
-    <?php
+<?php
     $this->session->last_option_created = NULL;
-endif;
+
+elseif ($this->input->get('ballot_create_result') === 'failed'):
 ?>
+    <script>
+        window.onload = function(){
+            alert('<?php echo $this->input->get('error') ?>');
+        }
+    </script>
+<?php endif ?>
 
 <base href="<?php echo $this->media_root ?>">
 
@@ -131,7 +160,7 @@ endif;
             <section>
                 <p>【参选对象】 青岛市范围内的优质商家</p>
                 <p>【参评方式】 全网投放，线上线下征集商家，全民投票评选。</p>
-                <p>【公开颁奖】 3月30日「进来」平台商家运营峰会，共同见证揭晓结果（15:00投票通道关闭），盛大仪式隆重颁奖。</p>
+                <p>【公开颁奖】 3月27日「进来」平台商家运营峰会，共同见证揭晓结果（15:00投票通道关闭），盛大仪式隆重颁奖。</p>
                 <p>【投票规则】 <?php echo ($item['max_user_total'] == 0)? NULL: '总共可投'.$item['max_user_total'].'票，' ?>每人每天<?php echo $item['max_user_daily'] ?>张选票，同一商家每天限投<?php echo $item['max_user_daily_each'] ?>票。</p>
             </section>
 

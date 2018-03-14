@@ -1,5 +1,5 @@
 <style>
-    #content {margin-top:-80px;padding:0 95px 90px;}
+    #content {padding:0 95px 90px;}
 
     .vote-option {width:560px;margin:0 auto;overflow:hidden;}
 
@@ -10,8 +10,8 @@
         .option-actions>a {float:right;clear:both;}
             .option-actions>a:not(:first-child) {margin-left:0;margin-top:30px;}
 
-    .option-description {font-size:26px;line-height:46px;margin-top:26px;padding:1px;background-image:linear-gradient(#5250af,#2d2d8f);border-radius:20px;overflow:hidden;}
-        .option-description section {background-color:#2b2971;border-radius:20px;padding:16px 26px;}
+    .option-description {font-size:26px;line-height:46px;margin-top:26px;padding:1px;background-image:linear-gradient(#81131c,#901824);border-radius:20px;overflow:hidden;}
+        .option-description section {background-color:#a02232;border-radius:20px;padding:16px 26px;}
 
     .option-figure {padding:0;}
         .option-figure figure {width:520px;height:520px}
@@ -34,6 +34,42 @@
 	}
 </style>
 
+<script>
+    $(function(){
+        // 点击拉票按钮
+        $('.option-detail').click(function(){
+            var vote_id = $(this).attr('data-vote_id');
+            var option_id = $(this).attr('data-option_id');
+            option_detail(vote_id, option_id);
+
+            return false;
+        });
+        // 拉票
+        function option_detail(vote_id, option_id)
+        {
+            $('#share-guide').show();
+        } // end option_detail
+
+        <?php if (time() <= $vote['time_start']): ?>
+        // 点击投票按钮
+        $('.ballot-create').click(function(){
+            // var vote_id = $(this).attr('data-vote_id');
+            // var option_id = $(this).attr('data-option_id');
+            // ballot_create(vote_id, option_id);
+
+            alert('投票尚未开始，敬请期待！');
+
+            return false;
+        });
+        // 投票
+        function ballot_create(vote_id, option_id)
+        {
+            $('#vote-succeed').show();
+        } // end ballot_create
+        <?php endif ?>
+    });
+</script>
+
 <?php
     // 若为投票成功后进入的页面，提示已成功投票，并清除最近投票ID信息以避免重复提示
     if ($this->input->get('ballot_create_result') === 'succeed' && $this->session->last_ballot_created == $item['option_id']):
@@ -45,8 +81,15 @@
 </script>
 <?php
     $this->session->last_ballot_created = NULL;
-    endif;
+
+    elseif ($this->input->get('ballot_create_result') === 'failed'):
 ?>
+<script>
+    window.onload = function(){
+        alert('<?php echo $this->input->get('error') ?>');
+    }
+</script>
+<?php endif ?>
 
 <base href="<?php echo $this->media_root ?>">
 

@@ -102,44 +102,10 @@ $(function(){
         return false
     });
 
-    // 点击投票按钮
-    $('.ballot-create').click(function(){
-        // var vote_id = $(this).attr('data-vote_id');
-        // var option_id = $(this).attr('data-option_id');
-        // ballot_create(vote_id, option_id);
-
-        alert('投票尚未开始，敬请期待！');
-
-        return false;
-    });
-
-    // 点击拉票按钮
-    $('.option-detail').click(function(){
-        var vote_id = $(this).attr('data-vote_id');
-        var option_id = $(this).attr('data-option_id');
-        option_detail(vote_id, option_id);
-
-        alert('投票尚未开始，敬请期待！');
-
-        return false;
-    });
-
     // 关闭全屏
     $('.full-screen-close').click(function(){
         $(this).closest('.full-screen').hide();
     });
-
-    // 投票
-    function ballot_create(vote_id, option_id)
-    {
-        $('#vote-succeed').show();
-    } // end ballot_create
-
-    // 拉票
-    function option_detail(vote_id, option_id)
-    {
-        $('#share-guide').show();
-    } // end option_detail
 
     // 加载更多
     function load_more()

@@ -221,7 +221,7 @@
                     redirect('vote_option/detail?ballot_create_result=succeed&id='.$option_id);
 
 				else:
-                    redirect('vote_option/detail?ballot_create_result=failed&id='.$option_id);
+                    redirect('vote_option/detail?ballot_create_result=failed&id='.$option_id.'&error='.$result['content']['error']['message']);
 
 				endif;
 				

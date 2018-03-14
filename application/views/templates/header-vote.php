@@ -17,7 +17,7 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20180313">
+		<meta name=version content="revision20180314">
 		<meta name=author content="刘亚杰Kamas,青岛意帮网络科技有限公司产品部&amp;技术部">
 		<meta name=copyright content="进来商城,青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
@@ -171,7 +171,7 @@
             if ($sns_info['subscribe'] == 1 && !empty($sns_token['unionid'])):
                 // 尝试使用微信union_id登录
                 $user_info = login_wechat($sns_token['unionid']);
-                if ($this->input->get('test_mode') === 'on') var_dump($user_info);
+                //if ($this->input->get('test_mode') === 'on') var_dump($user_info);
                 if ($user_info !== FALSE):
                     // 将信息键值对写入session
                     foreach ($user_info as $key => $value):

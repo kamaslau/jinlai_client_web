@@ -102,7 +102,7 @@
                 $data['class'] = $this->class_name.' detail';
 
 			    // 获取投票候选项、候选项标签信息
-                $data['options'] = $this->list_vote_option($id);
+                $data['options'] = $this->list_vote_option($id, '正常');
                 $data['tags'] = $this->list_vote_tag($id);
 
                 // 若活动已开始则显示活动详情页；已结束则显示活动结果页。
