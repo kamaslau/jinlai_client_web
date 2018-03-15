@@ -14,16 +14,23 @@ img {width:auto;}
 
 #vote-brief {padding:0 60px;}
 
-#vote-signup {font-size:40px;color:#fff;background:url('/media/images/vote/bg-signup@3x.png') no-repeat center center;background-size:320px 90px;width:320px;height:90px;line-height:90px;display:block;margin:0 auto;}
+#vote-signup {font-size:40px;color:#fff;background-color:#c32c3f;display:block;width:320px;height:90px;line-height:90px;margin:0 auto;border-radius:45px;box-shadow:0 0 8px #81131c;}
 
+/* 倒计时器 */
 #counter-container {overflow:hidden;margin-top:60px;}
     #counter-container>* {display:block;float:left;width:auto;height:50px;line-height:50px;}
     #counter-container>p {margin-right:20px;}
     #down-counter {color:#e9c387;font-size:24px;}
+    /* 倒计时显示 */
+    ul.countdown {list-style:none;display:block;}
+    ul.countdown li {display:inline-block;text-align:center;}
+        ul.countdown li span {font-size:24px;display:block;width:50px;height:50px;line-height:50px;border:1px solid #fff;}
+        ul.countdown li p {color:#fff;font-size:14px;}
+        ul.countdown li.seperator {color:#fff;font-size:24px;margin:0 20px;line-height:50px;vertical-align:top;}
 
 #vote-description {margin-top:40px;line-height:46px;}
 
-#vote-article {font-size:22px;color:#8b360d;background:url('/media/images/vote/bg-info@3x.png') no-repeat center center;background-size:234px 68px;display:block;width:234px;height:68px;line-height:68px;margin-top:40px;}
+#vote-article {font-size:22px;color:#8b360d;background-color:#e9c387;display:block;width:234px;height:68px;line-height:68px;margin-top:40px;border-radius:10px;box-shadow:0 0 8px #81131c;}
 
 #url_video {background-color:#000;margin:40px 20px 0;}
 
@@ -32,17 +39,18 @@ img {width:auto;}
     #vote-extra .strong {color:#e9c387;background-color:#ad2637;margin-top:30px;padding:30px 20px;}
 
 #vote-searcher {color:#fe596d;border:1px solid #fe596d;width:710px;margin:40px auto 0;border-radius:15px;padding:0;overflow:hidden;}
+    #vote-searcher ::-webkit-input-placeholder {color:#fe596d;}
     #search-button {font-size:36px;position:absolute;left:40px;top:20px;line-height:40px;width:40px;height:40px;line-height:40px;}
     #vote-searcher>input {color:#fe596d;background-color:transparent;font-size:30px;display:block;width:100%;height:80px;line-height:80px;padding:0 96px;}
 
 #options-naver {background-color:#a42535;width:710px;margin:20px auto 0;border:1px solid #fe596d;border-radius:15px;overflow:hidden;z-index:98;}
     #options-naver ul {padding:40px 20px 10px;overflow:hidden;}
     #options-naver li {height:50px;line-height:50px;margin-right:20px;margin-bottom:30px;border-radius:24px;}
-    #options-naver a {color:#fe596d;background-color:#901824;text-align:center;display:block;width:100%;height:100%;padding:0 20px;}
+    #options-naver a {color:#fff;background-color:#901824;text-align:center;display:block;width:100%;height:100%;padding:0 20px;}
         #options-naver a:hover, #options-naver a:active {color:#901824;background-color:#e9c387;}
 
 #vote-options {overflow:hidden;margin-top:40px;}
-    .vote-option {color:#fff;background-color:#a42535;font-size:28px;width:345px;margin-bottom:20px;border:1px solid #b12839;border-radius:15px;padding:28px 18px;box-shadow:0 0 8px #81131c;float:left;overflow:hidden;}
+    .vote-option {color:#fff;background-color:#a42535;font-size:28px;width:345px;margin-bottom:20px;border:1px solid #b12839;border-radius:15px;padding:28px 20px;box-shadow:0 0 8px #81131c;float:left;overflow:hidden;}
         .vote-option:nth-of-type(2n+0) {margin-left:20px;}
     .ballot-count {}
         .ballot-count span {color:#e9c387;font-weight:bold;}
@@ -54,9 +62,9 @@ img {width:auto;}
     .option-brief {line-height:28px;}
         .option-brief>*:not(:last-child) {margin-bottom:20px;}
         .option-name {height:28px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .option-actions {margin-top:30px;}
+    .option-actions {margin-top:30px;overflow:hidden;}
         .option-actions a {font-size:30px;color:#8b360d;background:url('/media/images/vote/bg-action@3x.png') no-repeat center center;background-size:145px 60px;font-weight:bold;display:block;width:145px;height:60px;line-height:60px;float:left;}
-            .option-actions a:last-child {color:#c32c3f;margin-left:15px;}
+            .option-actions a:last-child {color:#c32c3f;margin-left:13px;}
 
 #loader {color:#901824;width:100%;text-align:center;margin:40px auto;}
 
@@ -86,13 +94,8 @@ img {width:auto;}
 
 #follow-guide img {width:100%;}
 
-/* 以下为倒计时器样式 */
-ul.countdown {list-style:none;display:block;}
-    ul.countdown li {display:inline-block;text-align:center;}
-        ul.countdown li span {font-size:24px;display:block;width:50px;height:50px;line-height:50px;border:1px solid #fff;}
-        ul.countdown li.seperator {color:#aaa;font-size:24px;margin:0 20px;line-height:50px;vertical-align:top;}
-        ul.countdown li p {color:#aaa;font-size:14px;}
 
+/* 右下角页面内导航工具 */
 #naver-inpage {width:80px;height:auto;position:fixed;bottom:70px;right:64px;z-index:99;}
     #naver-inpage li {text-align:center;border-radius:40px;width:80px;height:80px;line-height:80px;opacity:0.75;overflow:hidden;}
         #naver-inpage li:not(:first-child) {margin-top:28px;}

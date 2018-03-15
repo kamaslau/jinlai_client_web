@@ -9,7 +9,7 @@
     $description .= SITE_DESCRIPTION;
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang=zh-cn>
 	<head>
 		<meta charset=utf-8>
 		<meta http-equiv=x-dns-prefetch-control content=on>
@@ -17,7 +17,7 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20180314">
+		<meta name=version content="revision20180315">
 		<meta name=author content="刘亚杰Kamas,青岛意帮网络科技有限公司产品部&amp;技术部">
 		<meta name=copyright content="进来商城,青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
@@ -201,6 +201,15 @@
         ?>
 
         <script>
+        // 百度统计
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?7c5231bd92955bfd7dfd7dc3be1a0206";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+
         $(function(){
             // 微信用户信息
             var wx_userinfo;
