@@ -347,11 +347,11 @@
 
             endif;
 
-            return $ids;
+            return array_unique($ids); // 清除重复项
         } // end parse_ids_array
 
         /**
-         * TODO 微信登录
+         * 微信登录
          *
          * 使用手机号及密码进行账户登录
          *
@@ -364,6 +364,7 @@
 
             $data_to_search = array(
                 'wechat_union_id' => $wechat_union_id,
+                'user_ip' => $this->input->ip_address(),
             );
 
             // 从API服务器获取相应详情信息

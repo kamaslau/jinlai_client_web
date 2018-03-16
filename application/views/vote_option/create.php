@@ -73,6 +73,13 @@
                             <textarea name=description rows=3 placeholder="最多100个字"><?php set_value('description') ?></textarea>
                         </div>
                     </div>
+
+                    <div class=input-group>
+                        <label for=mobile>审核联系手机号</label>
+                        <div>
+                            <input name=mobile type=tel placeholder="我们将会通过此号码核实参选信息" required value="<?php set_value('mobile') ?>">
+                        </div>
+                    </div>
                 </fieldset>
 
                 <button type=submit>报名</button>

@@ -117,6 +117,46 @@
 
 			endif;
 		} // end detail
+
+        /**
+         * 详情结果页
+         */
+        public function detail_result()
+        {
+            // 检查是否已传入必要参数
+            $id = $this->input->get_post('id')? $this->input->get_post('id'): NULL;
+            if ( !empty($id) ):
+                $params['id'] = $id;
+            else:
+                redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
+            endif;
+
+            // 从API服务器获取相应详情信息
+            $url = api_url($this->class_name. '/detail');
+            $result = $this->curl->go($url, $params, 'array');
+            if ($result['status'] === 200):
+                $data['item'] = $result['content'];
+
+                // 页面信息
+                $data['title'] = '"'. $data['item']['name']. '"全民评选活动';
+                $data['class'] = $this->class_name.' detail';
+
+                // 获取投票候选项、候选项标签信息
+                $data['options'] = $this->list_vote_option($id, '正常');
+                $data['tags'] = $this->list_vote_tag($id);
+
+                // 若活动已开始则显示活动详情页；已结束则显示活动结果页。
+                $view_name = 'detail-result';
+
+                $this->load->view('templates/header-vote', $data);
+                $this->load->view($this->view_root.'/'.$view_name, $data);
+                $this->load->view('templates/footer-vote', $data);
+
+            else:
+                redirect( base_url('error/code_404') ); // 若缺少参数，转到错误提示页
+
+            endif;
+        } // end detail_result
 		
 		/**
          * 删除

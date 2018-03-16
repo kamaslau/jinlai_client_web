@@ -17,21 +17,6 @@
 			'vote_id', 'tag_id', 'name', 'description', 'url_image', 'time_create', 'time_delete', 'time_edit', 'creator_id', 'operator_id', 'status', 'time_create_min', 'time_create_max',
 		);
 
-		/**
-		 * 可被编辑的字段名
-		 */
-		protected $names_edit_allowed = array(
-			'name', 'description', 'url_image',
-		);
-
-		/**
-		 * 完整编辑单行时必要的字段名
-		 */
-		protected $names_edit_required = array(
-			'id',
-			'name',
-		);
-
 		public function __construct()
 		{
 			parent::__construct();
@@ -168,6 +153,7 @@
 			$this->form_validation->set_rules('name', '名称', 'trim|required|max_length[30]');
 			$this->form_validation->set_rules('description', '描述', 'trim|max_length[100]');
 			$this->form_validation->set_rules('url_image', '形象图URL', 'trim|max_length[255]');
+            $this->form_validation->set_rules('mobile', '审核联系手机号', 'trim|required|exact_length[11]|is_natural_no_zero');
 
 			// 若表单提交不成功
 			if ($this->form_validation->run() === FALSE):
@@ -189,7 +175,7 @@
 				);
 				// 自动生成无需特别处理的数据
 				$data_need_no_prepare = array(
-                    'tag_id', 'name', 'description', 'url_image',
+                    'tag_id', 'name', 'description', 'url_image', 'mobile',
 				);
 				foreach ($data_need_no_prepare as $name)
 					$data_to_create[$name] = $this->input->post_get($name);
