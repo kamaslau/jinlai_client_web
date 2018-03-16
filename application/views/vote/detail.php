@@ -53,7 +53,7 @@ if ($this->input->get('option_create_result') === 'succeed' && !empty($this->ses
 <?php
     $this->session->last_option_created = NULL;
 
-elseif ($this->input->get('ballot_create_result') === 'failed'):
+elseif ($this->input->get('option_create_result') === 'failed'):
 ?>
     <script>
         window.onload = function(){

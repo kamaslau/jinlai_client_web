@@ -1,4 +1,7 @@
 <style>
+    #maincontainer {position:relative;}
+    #tohome {color:#e9c387;background-color:transparent;font-size:24px;display:block;width:140px;height:60px;line-height:60px;border:1px solid #e9c387;border-radius:25px;position:absolute;top:232px;right:95px;z-index:2;}
+
     #content {padding:0 95px 90px;}
 
     .vote-option {width:560px;margin:0 auto;overflow:hidden;}
@@ -92,6 +95,8 @@
 <?php endif ?>
 
 <base href="<?php echo $this->media_root ?>">
+
+<a id=tohome href="<?php echo base_url('vote/detail?id='.$vote['vote_id']) ?>">返回首页</a>
 
 <?php if ( empty($vote['url_image']) ): ?>
     <h1 id=vote-name><?php echo $vote['name'] ?></h1>
