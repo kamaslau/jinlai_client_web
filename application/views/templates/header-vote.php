@@ -17,7 +17,7 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20180316">
+		<meta name=version content="revision20180318">
 		<meta name=author content="刘亚杰Kamas,青岛意帮网络科技有限公司产品部&amp;技术部">
 		<meta name=copyright content="进来商城,青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
@@ -337,8 +337,6 @@
     </head>
 
 <?php
-    // 将head内容立即输出，让用户浏览器立即开始请求head中各项资源，提高页面加载速度
-    ob_flush();flush();
 
     // 生成body的class
     $body_class = ( isset($class) )? $class: NULL;

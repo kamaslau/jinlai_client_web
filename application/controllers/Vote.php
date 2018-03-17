@@ -107,6 +107,8 @@
 
                 // 若活动已开始则显示活动详情页；已结束则显示活动结果页。
                 $view_name = (time() < $data['item']['time_end'])? 'detail': 'detail-result';
+
+                $this->output->cache(0.5); // 缓存30秒
                 
                 $this->load->view('templates/header-vote', $data);
                 $this->load->view($this->view_root.'/'.$view_name, $data);
@@ -147,6 +149,8 @@
 
                 // 若活动已开始则显示活动详情页；已结束则显示活动结果页。
                 $view_name = 'detail-result';
+
+                $this->output->cache(1); // 缓存1分钟
 
                 $this->load->view('templates/header-vote', $data);
                 $this->load->view($this->view_root.'/'.$view_name, $data);

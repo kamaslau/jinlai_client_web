@@ -119,7 +119,7 @@
             <div class=option-brief>
                 <div class=option-id># <?php echo $item['option_id'] ?></div>
                 <h2 class=option-name><?php echo $item['name'] ?></h2>
-                <div class=ballot-count><span><?php echo $item['ballot_count'] ?></span> 票</div>
+                <div class=ballot-count><span><?php echo $item['ballot_overall'] ?></span> 票</div>
             </div>
 
             <div class=option-actions>
