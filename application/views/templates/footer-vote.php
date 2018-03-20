@@ -66,6 +66,16 @@
             </div>
         </div>
 
+        <div class=full-screen id=media-list>
+            <div class=full-screen-container>
+                <div class=full-screen-close>
+                    <i class="far fa-times" aria-hidden=true></i>
+                </div>
+
+                <img src="<?php echo base_url('media/images/vote/media-list_id1.jpg') ?>">
+            </div>
+        </div>
+
         <div class=full-screen id=form-signup>
             <div class=full-screen-container>
                 <div class=full-screen-close>

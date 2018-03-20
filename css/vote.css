@@ -30,7 +30,10 @@ img {width:auto;}
 
 #vote-description {margin-top:40px;line-height:46px;}
 
-#vote-article {font-size:22px;color:#8b360d;background-color:#e9c387;display:block;width:234px;height:68px;line-height:68px;margin-top:40px;border-radius:10px;box-shadow:0 0 8px #81131c;}
+#info-actions {margin-top:40px;overflow:hidden;}
+    #info-actions a {font-size:22px;border-radius:10px;box-shadow:0 0 8px #81131c;float:left;display:block;width:234px;height:68px;line-height:68px;}
+#vote-article {color:#8b360d;background-color:#e9c387;}
+#media-board {color:#fff;background-color:#c32c3f;margin-left:30px;}
 
 #url_video {background-color:#000;margin:40px 20px 0;}
 
@@ -87,13 +90,15 @@ img {width:auto;}
         .full-screen-form textarea {height:224px;}
         .full-screen-form button {background:url('/media/images/vote/bg-submit@3x.png') no-repeat center center;background-size:528px 90px;width:528px;height:90px;margin-top:20px;text-indent:-9999em;}
 #vote-article-content {text-align:left;}
-    /* 图片上传器样式 */
-    .upload_preview li {height:168px;}
-    .selector_zone {width:190px;height:168px;}
-    .file_selector {color:#c6c6c6;background-color:#f2f2f2;line-height:168px;border:1px solid #e7e7e7;}
+
+/* 图片上传器样式 */
+.upload_preview li {height:168px;}
+.selector_zone {width:190px;height:168px;}
+.file_selector {color:#c6c6c6;background-color:#f2f2f2;line-height:168px;border:1px solid #e7e7e7;}
 
 #follow-guide img {width:100%;}
 
+#media-list .full-screen-container {width:100%;background-color:#ae2125;background-image:none;padding:26px 30px 32px;}
 
 /* 右下角页面内导航工具 */
 #naver-inpage {width:80px;height:auto;position:fixed;bottom:70px;right:64px;z-index:99;}

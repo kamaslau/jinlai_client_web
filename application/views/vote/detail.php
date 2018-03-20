@@ -147,7 +147,11 @@ elseif ($this->input->get('option_create_result') === 'failed'):
                 <?php echo $item['description'] ?>
             </div>
 
-            <a id=vote-article href="#vote-article-content" style="text-indent:-0.5em /*调整由于书名号引起的视觉上未居中问题*/">《匠心计划》助力政策</a>
+
+            <div id=info-actions>
+                <a id=vote-article href="#vote-article-content" style="text-indent:-0.5em /*调整由于书名号引起的视觉上未居中问题*/">《匠心计划》助力政策</a>
+                <a id=media-board href="#media-list">媒体矩阵</a>
+            </div>
         </div>
 
         <?php if ( ! empty($item['url_video']) ): ?>

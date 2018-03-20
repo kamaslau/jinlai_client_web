@@ -73,6 +73,12 @@ $(function(){
         return false;
     });
 
+    // 点击媒体矩阵按钮
+    $('#media-board').click(function(){
+        $('#media-list').show();
+        return false;
+    });
+
     // 点击标签导航栏内某标签
     $('#options-naver a').click(function(){
         var tag_id = $(this).attr('data-tag_id');
