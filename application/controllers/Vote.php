@@ -101,9 +101,9 @@
                 $data['title'] = '"'. $data['item']['name']. '"全民评选活动';
                 $data['class'] = $this->class_name.' detail';
 
-			    // 获取投票候选项、候选项标签信息
-                $data['options'] = $this->list_vote_option($id, '正常');
-                $data['tags'] = $this->list_vote_tag($id);
+                // 获取候选项标签、投票候选项
+                $data['tags'] = $result['content']['tags'];
+                $data['options'] = $result['content']['options'];
 
                 // 若活动已开始则显示活动详情页；已结束则显示活动结果页。
                 $view_name = (time() < $data['item']['time_end'])? 'detail': 'detail-result';
@@ -133,6 +133,9 @@
                 redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
             endif;
 
+            // 将候选项按票数从多到少排序
+            $params['orderby_ballot_overall'] = 'DESC';
+
             // 从API服务器获取相应详情信息
             $url = api_url($this->class_name. '/detail');
             $result = $this->curl->go($url, $params, 'array');
@@ -143,14 +146,14 @@
                 $data['title'] = '"'. $data['item']['name']. '"全民评选活动';
                 $data['class'] = $this->class_name.' detail';
 
-                // 获取投票候选项、候选项标签信息
-                $data['options'] = $this->list_vote_option($id, '正常');
-                $data['tags'] = $this->list_vote_tag($id);
+                // 获取候选项标签、投票候选项
+                $data['tags'] = $result['content']['tags'];
+                $data['options'] = $result['content']['options'];
 
                 // 若活动已开始则显示活动详情页；已结束则显示活动结果页。
                 $view_name = 'detail-result';
 
-                $this->output->cache(1); // 缓存1分钟
+                //$this->output->cache(1); // 缓存1分钟
 
                 $this->load->view('templates/header-vote', $data);
                 $this->load->view($this->view_root.'/'.$view_name, $data);

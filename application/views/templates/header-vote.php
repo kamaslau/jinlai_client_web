@@ -17,7 +17,7 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20180320">
+		<meta name=version content="revision20180322">
 		<meta name=author content="刘亚杰Kamas,青岛意帮网络科技有限公司产品部&amp;技术部">
 		<meta name=copyright content="进来商城,青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
@@ -25,16 +25,9 @@
         <meta name=viewport content="width=750,user-scalable=0">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-		<script>
-            var user_agent = new Object();
-            user_agent.is_wechat = <?php echo ($this->user_agent['is_wechat'])? 'true': 'false' ?>;
-            user_agent.is_ios = <?php echo ($this->user_agent['is_ios'])? 'true': 'false' ?>;
-            user_agent.is_android = <?php echo ($this->user_agent['is_android'])? 'true': 'false' ?>;
-        </script>
         <script src="<?php echo CDN_URL ?>js/jquery-3.3.1.min.js"></script>
         <script src="https://res.wx.qq.com/open/js/jweixin-1.3.0.js"></script>
         <script defer src="<?php echo CDN_URL ?>font-awesome/v5.0.8/fontawesome-all.min.js"></script>
-        <script defer src="<?php echo CDN_URL ?>jquery/jquery.downCount.js"></script>
         <script defer src="<?php echo CDN_URL ?>jquery/jquery.lazyload.min.js"></script>
         <script defer src="/js/vote.js"></script>
 
@@ -149,6 +142,9 @@
             return ($result['status'] === 200)? $result['content']: FALSE;
         }
 
+        // 判断是否打开测试模式
+        $test_mode = $this->input->get('test_mode');
+
         // 获取access_token；若已获得授权则一并获取微信用户资料
         $access_token = get_access_token();
 
@@ -161,17 +157,17 @@
 
             // 获取微信用户资料
             $sns_token = get_sns_token($code);
-            if ($this->input->get('test_mode') === 'on') var_dump($sns_token);
+            if ($test_mode === 'on') var_dump($sns_token);
             $sns_info = get_user_info($access_token, $sns_token['openid']);
-            if ($this->input->get('test_mode') === 'on') var_dump($sns_info);
-            set_cookie('last_code_used', $code); // 标记当前code为已使用
-            instant_cookie('last_code_used', $code);
+            if ($test_mode === 'on') var_dump($sns_info);
+            //set_cookie('last_code_used', $code);
+            instant_cookie('last_code_used', $code); // 标记当前code为已使用
 
             // 若当前用户已订阅微信公众号，尝试使用微信union_id登录本站账户
             if ($sns_info['subscribe'] == 1 && !empty($sns_token['unionid'])):
                 // 尝试使用微信union_id登录
                 $user_info = login_wechat($sns_token['unionid']);
-                //if ($this->input->get('test_mode') === 'on') var_dump($user_info);
+                if ($test_mode === 'on') var_dump($user_info);
                 if ($user_info !== FALSE):
                     // 将信息键值对写入session
                     foreach ($user_info as $key => $value):
@@ -181,12 +177,12 @@
                     $this->session->set_userdata($user_data);
                     $this->session->sns_info = json_encode($sns_info);
 
-                    set_cookie('wechat_subscribe', 1); // 标记当前已关注微信公众号
-                    instant_cookie('wechat_subscribe', 1);
+                    //set_cookie('wechat_subscribe', 1);
+                    instant_cookie('wechat_subscribe', 1); // 标记当前已关注微信公众号
                 endif;
             else:
-                set_cookie('wechat_subscribe', 0); // 标记当前未关注微信公众号
-                instant_cookie('wechat_subscribe', 0);
+                //set_cookie('wechat_subscribe', 0);
+                instant_cookie('wechat_subscribe', 0); // 标记当前未关注微信公众号
             endif;
         endif;
 
@@ -201,6 +197,7 @@
         ?>
 
         <script>
+        <?php if ($test_mode != 'on'): ?>
         // 百度统计
         var _hmt = _hmt || [];
         (function() {
@@ -209,6 +206,7 @@
             var s = document.getElementsByTagName("script")[0];
             s.parentNode.insertBefore(hm, s);
         })();
+        <?php endif ?>
 
         $(function(){
             // 微信用户信息
@@ -229,7 +227,6 @@
                     'onMenuShareTimeline',
                     'onMenuShareAppMessage',
                     'hideMenuItems',
-                    'scanQRCode',
                 ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
             });
 
@@ -237,7 +234,7 @@
                 // 隐藏部分按钮
                 wx.hideMenuItems({
                     menuList:[
-                        'menuItem:share:qq', 'menuItem:share:QZone', 'menuItem:share:facebook', /*'menuItem:copyUrl',*/ 'menuItem:readMode', 'menuItem:openWithQQBrowser', 'menuItem:openWithSafari', 'menuItem:share:email',
+                        'menuItem:share:qq', 'menuItem:share:QZone', 'menuItem:share:facebook', 'menuItem:copyUrl', 'menuItem:readMode', 'menuItem:openWithQQBrowser', 'menuItem:openWithSafari', 'menuItem:share:email',
                     ] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
                 });
 
@@ -272,47 +269,9 @@
                     },
                     cancel: function () {
                         // 用户取消分享后执行的回调函数
-                        alert('您未完成分享');
+                        alert('未完成分享');
                     }
                 });
-
-                // 调起扫一扫
-                document.getElementById('wechat-scan').onclick = function (){
-
-                    wx.scanQRCode({
-                        needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
-                        scanType: ['qrCode','barCode'], // 可以指定扫二维码还是一维码，默认二者都有
-                        success: function (res){
-                            var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
-                            //TODO 若为条形码，输出条码；若为二维码，转到URL
-                            alert(JSON.stringify(res));
-                        }
-                    });
-
-                    return false;
-                };
-
-                // 获取地理位置及网络类型
-                document.getElementById('locate').onclick = function (){
-                    wx.getLocation({
-                        type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-                        success: function (res) {
-                            var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-                            var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-                            alert(longitude + ',' +latitude);
-                            //var speed = res.speed; // 速度，以米/每秒计
-                            //var accuracy = res.accuracy; // 位置精度
-                        }
-                    });
-                    wx.getNetworkType({
-                        success: function (res) {
-                            var networkType = res.networkType; // 返回网络类型2g，3g，4g，wifi
-                            alert(networkType);
-                        }
-                    });
-
-                    return false;
-                };
             }); // end wx.ready
         });
         </script>
@@ -320,20 +279,9 @@
 		<!--清除浏览器默认样式css-->
 		<link rel=stylesheet media=all href="<?php echo CDN_URL ?>css/reset.css?<?php echo time() ?>">
 		<!--公用部分css-->
-        <?php if ($this->session->time_expire_login > time()): ?>
-        <script defer src="/js/file-upload.js"></script>
-        <link rel=stylesheet media=all href="/css/file-upload.css">
-        <?php endif ?>
-
         <link rel=stylesheet media=all href="/css/vote.css?<?php echo time() ?>">
 
-
-        <link rel=canonical href="<?php echo current_url() ?>">
-        <link rel="shortcut icon" href="<?php echo CDN_URL ?>icon/jinlai_client/icon28@3x.png">
-
-        <?php if ($this->user_agent['is_mobile']): ?>
         <meta name=format-detection content="telephone=yes, address=no, email=no">
-        <?php endif ?>
     </head>
 
 <?php

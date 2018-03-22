@@ -2,6 +2,25 @@
  * 投票相关功能
  */
 $(function(){
+    // 页面内跳转
+    scroll_to_dom = function scroll_to_dom(attr_value, attr_name, margin_top)
+    {
+        // 默认通过DOM的ID属性值获取需跳转到的DOM
+        var attr_name = attr_name || 'id'
+        var margin_top = margin_top || 0
+
+        // 获取DOM
+        var target = $('[' + attr_name + '=' + attr_value + ']')
+
+        if (target != undefined){
+            // 获取目标元素相对于网页顶端的位置
+            var target_height = target.offset().top - margin_top; // 顶端留出指定数值的空间
+
+            // 页面滚动到该位置
+            $('body,html').stop(false, false).animate({scrollTop:target_height + 20}, 400).animate({scrollTop:target_height}, 400);
+        }
+    }
+
     // 图片延迟加载
     $('img.lazyload').lazyload({
         threshold : 200,
@@ -58,7 +77,6 @@ $(function(){
         {
             alert('没有对应的候选项');
         } else {
-            console.log(target);
             // 获取目标元素相对于网页顶端的位置
             var target_height = $(target[0]).offset().top - 20; // 顶端留出20像素的空间
 
@@ -98,12 +116,7 @@ $(function(){
         $('.vote-option:visible:odd').css('margin-left', '20px');
         $('.vote-option:visible:even').css('margin-left', '0');
 
-        // 获取标签导航栏相对于网页顶端的位置
-        var target = $('#options-naver');
-        var target_height = target.offset().top - 20; // 顶端留出20像素的空间
-
-        // 页面滚动到该位置
-        $('body,html').stop(false, false).animate({scrollTop:target_height}, 400);
+        scroll_to_dom('options-naver', 'id', 20)
 
         return false
     });
@@ -113,9 +126,4 @@ $(function(){
         $(this).closest('.full-screen').hide();
     });
 
-    // 加载更多
-    function load_more()
-    {
-
-    } // end load_more
 });

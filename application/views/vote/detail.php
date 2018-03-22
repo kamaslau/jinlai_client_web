@@ -172,14 +172,19 @@ elseif ($this->input->get('option_create_result') === 'failed'):
         </div>
     </div>
 
-    <?php if ( ! empty($options)): ?>
-        <!-- 投票候选项搜索 -->
-        <div id=vote-searcher class=container>
-            <div id=search-button>
-                <i class="fal fa-search" aria-hidden=true></i>
-            </div>
-            <input name=content type=search placeholder="可根据候选项名称或序号进行搜索">
+    <?php if (empty($options)): ?>
+    <div class=container>
+        <p>正在审核候选项，投票将稍后开放，敬请关注！</p>
+    </div>
+
+    <?php else: ?>
+    <!-- 投票候选项搜索 -->
+    <div id=vote-searcher class=container>
+        <div id=search-button>
+            <i class="fal fa-search" aria-hidden=true></i>
         </div>
+        <input name=content type=search placeholder="可根据候选项名称或序号进行搜索">
+    </div>
 
         <?php if ( ! empty($tags)): ?>
         <!-- 投票候选项导航 -->
@@ -193,15 +198,8 @@ elseif ($this->input->get('option_create_result') === 'failed'):
             </ul>
         </div>
         <?php endif ?>
-    <?php endif ?>
 
     <!-- 投票候选项列表 -->
-    <?php if (empty($options)): ?>
-    <div class=container>
-        <p>正在审核候选项，投票将稍后开放，敬请关注！</p>
-    </div>
-
-    <?php else: ?>
     <ul id=vote-options class=container>
         <?php
             // 候选项默认占位图
@@ -224,20 +222,19 @@ elseif ($this->input->get('option_create_result') === 'failed'):
             <a class=option-figure href="<?php echo base_url('vote_option/detail?id='.$option['option_id']) ?>">
                 <figure>
                     <img
-                            class=lazyload
-                            src="<?php echo $default_option_image ?>"
-                            data-original="<?php echo !empty($option['url_image'])? MEDIA_URL.'vote_option/'.$option['url_image']: $default_option_image ?>"
+                        class=lazyload
+                        src="<?php echo $default_option_image ?>"
+                        data-original="<?php echo !empty($option['url_image'])? MEDIA_URL.'vote_option/'.$option['url_image']: $default_option_image ?>"
                     >
                 </figure>
             </a>
             <div class=option-actions>
                 <?php
                     // 通用字符串
-                    $common_params = 'vote_id='.$item['vote_id'].'&';
                     $common_attrs = 'data-vote_id='.$item['vote_id'].' data-option_id='.$option['option_id'];
                 ?>
-                <a <?php echo $common_attrs ?> href="<?php echo base_url('vote_option/detail?'.$common_params.'id='.$option['option_id']) ?>">推荐</a>
-                <a class=ballot-create <?php echo $common_attrs ?> href="<?php echo base_url('vote_ballot/create?'.$common_params.'option_id='.$option['option_id']) ?>">选TA</a>
+                <a <?php echo $common_attrs ?> href="<?php echo base_url('vote_option/detail?id='.$option['option_id']) ?>">推荐</a>
+                <a class=ballot-create <?php echo $common_attrs ?> href="<?php echo base_url('vote_ballot/create?vote_id='.$item['vote_id'].'&option_id='.$option['option_id']) ?>">选TA</a>
             </div>
 
         </li>
@@ -266,20 +263,25 @@ elseif ($this->input->get('option_create_result') === 'failed'):
     </li>
 </ul>
 
+<!-- 文件上传相关功能仅登录后可用 -->
+<?php if ($this->session->time_expire_login > time()): ?>
+<script defer src="<?php echo base_url('js/file-upload.js') ?>"></script>
+<link rel=stylesheet media=all href="<?php echo base_url('css/file-upload.css') ?>">
+<?php endif ?>
+
+<script defer src="<?php echo CDN_URL ?>jquery/jquery.downCount.js"></script>
 <script>
     $(function(){
-        // 回到页首按钮
+        // 页面内跳转
         $('#naver-inpage a').click(function()
         {
             var target_id = $(this).attr('data-target_dom_id');
-            var target = $('#' + target_id);
 
-            if (target != undefined){
-                // 获取目标元素相对于网页顶端的位置
-                var target_height = target.offset().top - 20; // 顶端留出20像素的空间
+            scroll_to_dom(target_id, 'id', 20)
 
-                // 页面滚动到该位置
-                $('body,html').stop(false, false).animate({scrollTop:target_height}, 400);
+            // 若导航到的是搜索框，则将焦点移入搜索框
+            if (target_id === 'vote-searcher'){
+                $('#vote-searcher [type=search]').focus();
             }
 
             return false;

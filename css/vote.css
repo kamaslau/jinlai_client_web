@@ -59,12 +59,12 @@ img {width:auto;}
         .ballot-count span {color:#e9c387;font-weight:bold;}
 
 .option-figure {background-color:#333;display:block;margin-top:30px;}
-    .option-figure figure {width:305px;height:305px}
+    .option-figure figure {width:305px;height:305px;overflow:hidden;}
 
     .option-brief>*, .option-actions>* {color:#fff;}
     .option-brief {line-height:28px;}
         .option-brief>*:not(:last-child) {margin-bottom:20px;}
-        .option-name {height:28px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+        .option-name {height:32px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .option-actions {margin-top:30px;overflow:hidden;}
         .option-actions a {font-size:30px;color:#8b360d;background:url('/media/images/vote/bg-action@3x.png') no-repeat center center;background-size:145px 60px;font-weight:bold;display:block;width:145px;height:60px;line-height:60px;float:left;}
             .option-actions a:last-child {color:#c32c3f;margin-left:13px;}
