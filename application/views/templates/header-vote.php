@@ -17,12 +17,16 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20180322">
+		<meta name=version content="revision20180323">
 		<meta name=author content="刘亚杰Kamas,青岛意帮网络科技有限公司产品部&amp;技术部">
 		<meta name=copyright content="进来商城,青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
 
+        <?php if ($this->user_agent['is_wechat']): ?>
         <meta name=viewport content="width=750,user-scalable=0">
+        <?php else: ?>
+        <meta name=viewport content="width=device-width,user-scalable=0">
+        <?php endif ?>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
         <script src="<?php echo CDN_URL ?>js/jquery-3.3.1.min.js"></script>
@@ -31,7 +35,12 @@
         <script defer src="<?php echo CDN_URL ?>jquery/jquery.lazyload.min.js"></script>
         <script defer src="/js/vote.js"></script>
 
-        <?php
+    <?php
+    if ($this->user_agent['is_wechat']):
+
+        // 判断是否打开测试模式
+        $test_mode = $this->input->get('test_mode');
+
         // 使修改的COOKIE即时生效
         function instant_cookie($var, $value = '', $time = 0, $path = '', $domain = '', $s = false)
         {
@@ -50,7 +59,7 @@
 
             // 需要通过POST方式发送的数据
             if ($method === 'post'):
-                $params['app_type'] = 'biz'; // 应用类型默认为biz
+                $params['app_type'] = 'client'; // 应用类型默认为biz
                 curl_setopt($curl, CURLOPT_POST, count($params));
                 curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
             endif;
@@ -135,15 +144,12 @@
         function login_wechat($union_id)
         {
             $params = array(
-                'wechat_union_id' => $union_id
+                'wechat_union_id' => $union_id,
             );
             $url = api_url('account/login_wechat');
             $result = curl($url, $params, 'array', 'post');
             return ($result['status'] === 200)? $result['content']: FALSE;
         }
-
-        // 判断是否打开测试模式
-        $test_mode = $this->input->get('test_mode');
 
         // 获取access_token；若已获得授权则一并获取微信用户资料
         $access_token = get_access_token();
@@ -167,6 +173,7 @@
             if ($sns_info['subscribe'] == 1 && !empty($sns_token['unionid'])):
                 // 尝试使用微信union_id登录
                 $user_info = login_wechat($sns_token['unionid']);
+
                 if ($test_mode === 'on') var_dump($user_info);
                 if ($user_info !== FALSE):
                     // 将信息键值对写入session
@@ -275,6 +282,7 @@
             }); // end wx.ready
         });
         </script>
+    <?php endif ?>
 
 		<!--清除浏览器默认样式css-->
 		<link rel=stylesheet media=all href="<?php echo CDN_URL ?>css/reset.css?<?php echo time() ?>">
@@ -285,7 +293,6 @@
     </head>
 
 <?php
-
     // 生成body的class
     $body_class = ( isset($class) )? $class: NULL;
     $body_class .= ($this->user_agent['is_wechat'] === TRUE)? ' is_wechat': NULL;

@@ -129,7 +129,9 @@
                 $common_attrs = 'data-vote_id='.$item['vote_id'].' data-option_id='.$item['option_id'];
                 ?>
                 <a class=option-detail <?php echo $common_attrs ?> href="#share-guide">推荐</a>
+                <?php if ( empty($this->input->get('ballot_create_result')) ): ?>
                 <a class=ballot-create <?php echo $common_attrs ?> href="<?php echo base_url('vote_ballot/create?'.$common_params) ?>">选TA</a>
+                <?php endif ?>
             </div>
         </div>
 

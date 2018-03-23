@@ -21,14 +21,6 @@
 		{
 			parent::__construct();
 
-            $code = $this->input->get('code');
-            // 已关注微信公众号且登录未超时，或传入了code参数时无需跳转
-			(
-			    ( (get_cookie('wechat_subscribe') == 1) && ($this->session->time_expire_login > time()) )
-                ||
-                ( !empty($code) && ($code <> get_cookie('last_code_used')) )
-            ) OR redirect(WECHAT_AUTH_URL);
-
 			// 向类属性赋值
 			$this->class_name = strtolower(__CLASS__);
 			$this->class_name_cn = '投票'; // 改这里……
@@ -91,24 +83,28 @@
 				redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
 			endif;
 
+            // 已关注微信公众号且登录未超时，或传入了code参数时无需跳转
+            $code = $this->input->get('code');
+            (
+                ( (get_cookie('wechat_subscribe') == 1) && ($this->session->time_expire_login > time()) )
+                ||
+                ( !empty($code) && ($code <> get_cookie('last_code_used')) )
+            ) OR redirect(WECHAT_AUTH_URL);
+
 			// 从API服务器获取相应详情信息
 			$url = api_url($this->class_name. '/detail');
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
-				$data['item'] = $result['content'];
-
-                // 页面信息
-                $data['title'] = '"'. $data['item']['name']. '"全民评选活动';
-                $data['class'] = $this->class_name.' detail';
-
                 // 获取候选项标签、投票候选项
                 $data['tags'] = $result['content']['tags'];
+                unset($result['content']['tags']);
                 $data['options'] = $result['content']['options'];
+                unset($result['content']['options']);
+
+                $data['item'] = $result['content'];
 
                 // 若活动已开始则显示活动详情页；已结束则显示活动结果页。
                 $view_name = (time() < $data['item']['time_end'])? 'detail': 'detail-result';
-
-                $this->output->cache(0.5); // 缓存30秒
                 
                 $this->load->view('templates/header-vote', $data);
                 $this->load->view($this->view_root.'/'.$view_name, $data);
@@ -129,34 +125,31 @@
             $id = $this->input->get_post('id')? $this->input->get_post('id'): NULL;
             if ( !empty($id) ):
                 $params['id'] = $id;
+                $params['orderby_ballot_overall'] = 'DESC';// 将候选项按票数从多到少排序
             else:
                 redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
             endif;
-
-            // 将候选项按票数从多到少排序
-            $params['orderby_ballot_overall'] = 'DESC';
 
             // 从API服务器获取相应详情信息
             $url = api_url($this->class_name. '/detail');
             $result = $this->curl->go($url, $params, 'array');
             if ($result['status'] === 200):
+                // 获取候选项标签、投票候选项
+                $data['tags'] = $result['content']['tags'];
+                unset($result['content']['tags']);
+                $data['options'] = $result['content']['options'];
+                unset($result['content']['options']);
+
                 $data['item'] = $result['content'];
 
                 // 页面信息
-                $data['title'] = '"'. $data['item']['name']. '"全民评选活动';
+                $data['title'] = '"'. $data['item']['name']. '"全民评选结果';
                 $data['class'] = $this->class_name.' detail';
-
-                // 获取候选项标签、投票候选项
-                $data['tags'] = $result['content']['tags'];
-                $data['options'] = $result['content']['options'];
-
-                // 若活动已开始则显示活动详情页；已结束则显示活动结果页。
-                $view_name = 'detail-result';
 
                 //$this->output->cache(1); // 缓存1分钟
 
                 $this->load->view('templates/header-vote', $data);
-                $this->load->view($this->view_root.'/'.$view_name, $data);
+                $this->load->view($this->view_root.'/detail-result', $data);
                 $this->load->view('templates/footer-vote', $data);
 
             else:
