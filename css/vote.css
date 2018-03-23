@@ -69,7 +69,6 @@ img {width:auto;}
         .option-actions a {font-size:30px;color:#8b360d;background:url('/media/images/vote/bg-action@3x.png') no-repeat center center;background-size:145px 60px;font-weight:bold;display:block;width:145px;height:60px;line-height:60px;float:left;}
             .option-actions a:last-child {color:#c32c3f;margin-left:13px;}
 
-#loader {color:#901824;width:100%;text-align:center;margin:40px auto;}
 
 /* 以下为全屏容器样式 */
 .full-screen {font-family:"苹方",sans-serif;text-align:center;background-color:rgba(0,0,0,0.75);position:fixed;left:0;right:0;top:0;bottom:0;z-index:100;display:none;overflow-y:scroll;}

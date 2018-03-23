@@ -17,7 +17,7 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20180323">
+		<meta name=version content="revision20180324">
 		<meta name=author content="刘亚杰Kamas,青岛意帮网络科技有限公司产品部&amp;技术部">
 		<meta name=copyright content="进来商城,青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
@@ -30,7 +30,9 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
         <script src="<?php echo CDN_URL ?>js/jquery-3.3.1.min.js"></script>
+        <?php if ($this->user_agent['is_wechat']): ?>
         <script src="https://res.wx.qq.com/open/js/jweixin-1.3.0.js"></script>
+        <?php endif ?>
         <script defer src="<?php echo CDN_URL ?>font-awesome/v5.0.8/fontawesome-all.min.js"></script>
         <script defer src="<?php echo CDN_URL ?>jquery/jquery.lazyload.min.js"></script>
         <script defer src="/js/vote.js"></script>
