@@ -31,46 +31,6 @@
 		} // end __construct
 
 		/**
-		 * 列表页
-		 */
-		public function index()
-		{
-			// 页面信息
-			$data = array(
-				'title' => $this->class_name_cn. '列表',
-				'class' => $this->class_name.' index',
-			);
-
-			// 筛选条件
-			$condition['time_delete'] = 'NULL';
-			// （可选）遍历筛选条件
-			foreach ($this->names_to_sort as $sorter):
-				if ( !empty($this->input->get_post($sorter)) )
-					$condition[$sorter] = $this->input->get_post($sorter);
-			endforeach;
-
-			// 排序条件
-			$order_by = NULL;
-			//$order_by['name'] = 'value';
-
-			// 从API服务器获取相应列表信息
-			$params = $condition;
-			$url = api_url($this->class_name. '/index');
-			$result = $this->curl->go($url, $params, 'array');
-			if ($result['status'] === 200):
-				$data['items'] = $result['content'];
-			else:
-				$data['items'] = array();
-				$data['error'] = $result['content']['error']['message'];
-			endif;
-
-			// 输出视图
-			$this->load->view('templates/header-simple', $data);
-			$this->load->view($this->view_root.'/index', $data);
-			$this->load->view('templates/footer', $data);
-		} // end index
-
-		/**
 		 * 详情页
 		 */
 		public function detail()

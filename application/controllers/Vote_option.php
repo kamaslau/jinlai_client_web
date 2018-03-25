@@ -36,56 +36,7 @@
 			$this->id_name = 'option_id'; // 还有这里，OK，这就可以了
 			$this->view_root = $this->class_name; // 视图文件所在目录
 			$this->media_root = MEDIA_URL. $this->class_name.'/'; // 媒体文件所在目录
-
-			// 设置需要自动在视图文件中生成显示的字段
-			$this->data_to_display = array(
-				'name' => '名称',
-				'description' => '描述',
-			);
 		} // end __construct
-
-		/**
-		 * 列表页
-		 */
-		public function index()
-		{
-			// 页面信息
-			$data = array(
-				'title' => $this->class_name_cn. '列表',
-				'class' => $this->class_name.' index',
-			);
-
-			// 筛选条件
-			$condition['time_delete'] = 'NULL';
-			// （可选）遍历筛选条件
-			foreach ($this->names_to_sort as $sorter):
-				if ( !empty($this->input->get_post($sorter)) )
-					$condition[$sorter] = $this->input->get_post($sorter);
-			endforeach;
-
-			// 排序条件
-			$order_by = NULL;
-			//$order_by['name'] = 'value';
-
-			// 从API服务器获取相应列表信息
-			$params = $condition;
-			$url = api_url($this->class_name. '/index');
-			$result = $this->curl->go($url, $params, 'array');
-			if ($result['status'] === 200):
-				$data['items'] = $result['content'];
-			else:
-				$data['items'] = array();
-				$data['error'] = $result['content']['error']['message'];
-			endif;
-
-			// 将需要显示的数据传到视图以备使用
-			$data['data_to_display'] = $this->data_to_display;
-
-			// 输出视图
-			$this->load->view('templates/header', $data);
-			$this->load->view($this->view_root.'/index', $data);
-			$this->load->view('templates/footer', $data);
-		} // end index
 
 		/**
 		 * 详情页
