@@ -106,7 +106,8 @@
                 $data['title'] = '"'. $data['item']['name']. '"全民评选结果';
                 $data['class'] = $this->class_name.' detail';
 
-                //$this->output->cache(1); // 缓存1分钟
+                // 若活动已结束，则将页面缓存1分钟
+                if (time() > $data['item']['time_end']) $this->output->cache(1);
 
                 $this->load->view('templates/header-vote', $data);
                 $this->load->view($this->view_root.'/detail-result', $data);

@@ -17,7 +17,7 @@
 		<title><?php echo $title ?></title>
 		<meta name=description content="<?php echo $description ?>">
 		<meta name=keywords content="<?php echo $keywords ?>">
-		<meta name=version content="revision20180325">
+		<meta name=version content="revision20180326">
 		<meta name=author content="刘亚杰Kamas,青岛意帮网络科技有限公司产品部&amp;技术部">
 		<meta name=copyright content="进来商城,青岛意帮网络科技有限公司">
 		<meta name=contact content="kamaslau@dingtalk.com">
@@ -37,11 +37,11 @@
         <script defer src="<?php echo CDN_URL ?>jquery/jquery.lazyload.min.js"></script>
         <script defer src="/js/vote.js"></script>
 
-    <?php
-    if ($this->user_agent['is_wechat']):
+<?php
+    // 判断是否打开测试模式
+    $test_mode = $this->input->get('test_mode');
 
-        // 判断是否打开测试模式
-        $test_mode = $this->input->get('test_mode');
+    if ($this->user_agent['is_wechat']):
 
         // 使修改的COOKIE即时生效
         function instant_cookie($var, $value = '', $time = 0, $path = '', $domain = '', $s = false)
@@ -221,10 +221,12 @@
             // 微信用户信息
             var wx_userinfo;
             wx_userinfo_subscribe = <?php echo empty(get_cookie('wechat_subscribe'))? 0: get_cookie('wechat_subscribe') ?>;
+            <?php if ($this->method_name !== 'detail_result'): ?>
             if (wx_userinfo_subscribe != 1)
             {
                 $('#follow-guide').show();
             }
+            <?php endif ?>
 
             wx.config({
                 debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。

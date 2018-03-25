@@ -32,6 +32,9 @@
 		/* 类名称中文，应用于多处动态生成内容 */
 		public $class_name_cn;
 
+		/* 当前类方法名称 */
+		public $method_name;
+
 		/* 主要相关表名 */
 		public $table_name;
 
@@ -78,6 +81,7 @@
 			$this->app_version = '0.0.1';
 			$this->device_platform = 'web';
 			$this->device_number = '';
+            $this->method_name = $this->router->method;
 
             // 检查当前设备信息
             $this->user_agent_determine();
