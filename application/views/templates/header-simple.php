@@ -3,10 +3,8 @@
 
     // 生成SEO相关变量，一般为页面特定信息与在config/config.php中设置的站点通用信息拼接
     $title = isset($title)? $title: SITE_NAME.' - '.SITE_SLOGAN;
-    $keywords = isset($keywords)? $keywords.',': NULL;
-    $keywords .= SITE_KEYWORDS;
-    $description = isset($description)? $description: NULL;
-    $description .= SITE_DESCRIPTION;
+    $keywords = (isset($keywords)? $keywords.',': NULL). SITE_KEYWORDS;
+    $description = (isset($description)? $description: NULL). SITE_DESCRIPTION;
 ?>
 <!DOCTYPE html>
 <html lang="en">

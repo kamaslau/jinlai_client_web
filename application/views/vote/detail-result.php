@@ -66,7 +66,10 @@
         <!-- 投票活动信息 -->
         <div id=vote-info>
             <?php if ($this->user_agent['is_desktop']): ?>
-                <h1>投票结果<span>VOTING RESULTS</span></h1>
+                <h1>
+                    “<?php echo $item['name'] ?>”　投票结果
+                    <span>VOTING RESULTS</span>
+                </h1>
             <?php else: ?>
                 <figure id=vote-url_image class=vote-figure>
                     <img alt="<?php echo $item['name'] ?>形象图" src="<?php echo $item['url_image'] ?>">
@@ -104,17 +107,6 @@
                         </li>
                     </ul>
                 </div>
-
-                <script>
-                    $(function(){
-                        $('#down-counter').downCount({
-                            date: '<?php echo date('m/d/Y H:i:s', $time_countdown_ends) ?>',
-                            offset: +8
-                        }, function(){
-                            window.location.reload()
-                        });
-                    });
-                </script>
                 <?php endif ?>
             </div>
         </div>
@@ -185,23 +177,34 @@
 </div>
 
 <?php if (time() < $item['time_end']): ?>
-    <script defer src="<?php echo CDN_URL ?>jquery/jquery.downCount.js"></script>
+<script defer src="<?php echo CDN_URL ?>jquery/jquery.downCount.js"></script>
+<script>
+    $(function(){
+        $('#down-counter').downCount({
+            date: '<?php echo date('m/d/Y H:i:s', $time_countdown_ends) ?>',
+            offset: +8
+        }, function(){
+            window.location.reload()
+        });
+    });
+</script>
 
 <?php elseif ($this->user_agent['is_desktop'] && time() > $item['time_end']): ?>
-    <link rel=stylesheet media=all href="<?php echo CDN_URL ?>jquery/swiper.min.css">
-    <script defer src="<?php echo CDN_URL ?>jquery/swiper.min.js"></script>
-    <script>
-        window.onload = function() {
-            var swiper = new Swiper('.swiper-container', {
-                //loop: true,
-                direction: 'vertical',
-                //slidesPerView: 6,
-                slidesPerGroup: 3,
-                autoplay: {
-                    delay: 4500,
-                    disableOnInteraction: true,
-                }
-            });
-        }
-    </script>
+<link rel=stylesheet media=all href="<?php echo CDN_URL ?>jquery/swiper.min.css">
+<script defer src="<?php echo CDN_URL ?>jquery/swiper.min.js"></script>
+<script>
+    window.onload = function() {
+        var swiper = new Swiper('.swiper-container', {
+            //loop: true,
+            direction: 'vertical',
+            slidesPerView: 6,
+            slidesPerGroup: 3,
+            //autoHeight: true,
+            autoplay: {
+                delay: 3800,
+                disableOnInteraction: true,
+            }
+        });
+    }
+</script>
 <?php endif ?>

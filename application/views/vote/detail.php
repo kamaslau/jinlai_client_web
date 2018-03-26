@@ -102,6 +102,7 @@ elseif ($this->input->get('option_create_result') === 'failed'):
                 <?php endif ?>
             <?php endif ?>
 
+            <?php if (time() < $item['time_end']): ?>
             <div id=counter-container class=vote-time_end>
                 <?php
                     // 根据当前时间判断以活动开始时间还是活动结束时间作为倒计时目标时间
@@ -131,22 +132,11 @@ elseif ($this->input->get('option_create_result') === 'failed'):
                     </li>
                 </ul>
             </div>
-
-            <script>
-                $(function(){
-                    $('#down-counter').downCount({
-                        date: '<?php echo date('m/d/Y H:i:s', $time_countdown_ends) ?>',
-                        offset: +8
-                    }, function(){
-                        alert('倒计时已结束，请刷新页面');
-                    });
-                });
-            </script>
+            <?php endif ?>
 
             <div id=vote-description>
                 <?php echo $item['description'] ?>
             </div>
-
 
             <div id=info-actions>
                 <a id=vote-article href="#vote-article-content" style="text-indent:-0.5em /*调整由于书名号引起的视觉上未居中问题*/">《匠心计划》助力政策</a>
@@ -235,7 +225,10 @@ elseif ($this->input->get('option_create_result') === 'failed'):
                     $common_attrs = 'data-vote_id='.$item['vote_id'].' data-option_id='.$option['option_id'];
                 ?>
                 <a <?php echo $common_attrs ?> href="<?php echo base_url('vote_option/detail?id='.$option['option_id']) ?>">推荐</a>
+
+                <?php if ($item['time_start'] < time() && time() < $item['time_end']): ?>
                 <a class=ballot-create <?php echo $common_attrs ?> href="<?php echo base_url('vote_ballot/create?vote_id='.$item['vote_id'].'&option_id='.$option['option_id']) ?>">选TA</a>
+                <?php endif ?>
             </div>
 
         </li>
@@ -270,7 +263,19 @@ elseif ($this->input->get('option_create_result') === 'failed'):
 <link rel=stylesheet media=all href="<?php echo base_url('css/file-upload.css') ?>">
 <?php endif ?>
 
+<?php if (time() < $item['time_end']): ?>
 <script defer src="<?php echo CDN_URL ?>jquery/jquery.downCount.js"></script>
+<script>
+    $(function(){
+        $('#down-counter').downCount({
+            date: '<?php echo date('m/d/Y H:i:s', $time_countdown_ends) ?>',
+            offset: +8
+        }, function(){
+            window.location.href = '<?php echo base_url('vote/detail_result?id='.$item['vote_id']) ?>'
+        });
+    });
+</script>
+<?php endif ?>
 <script>
     $(function(){
         // 页面内跳转
