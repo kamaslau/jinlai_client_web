@@ -63,11 +63,11 @@
 
                 $data['item'] = $result['content'];
 
-                // 若活动已开始则显示活动详情页；已结束则显示活动结果页。
-                $view_name = (time() < $data['item']['time_end'])? 'detail': 'detail-result';
+                // 若活动已开始则显示活动详情页；已结束则转到活动结果页。
+                if (time() > $data['item']['time_end']) redirect('vote/detail_result?id='.$id);
                 
                 $this->load->view('templates/header-vote', $data);
-                $this->load->view($this->view_root.'/'.$view_name, $data);
+                $this->load->view($this->view_root.'/detail', $data);
                 $this->load->view('templates/footer-vote', $data);
 
 			else:

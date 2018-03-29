@@ -179,6 +179,8 @@
 <?php if (time() < $item['time_end']): ?>
 <script defer src="<?php echo CDN_URL ?>jquery/jquery.downCount.js"></script>
 <script>
+    setTimeout("self.location.reload();", 1000 * 60);
+
     $(function(){
         $('#down-counter').downCount({
             date: '<?php echo date('m/d/Y H:i:s', $time_countdown_ends) ?>',
@@ -195,7 +197,7 @@
 <script>
     window.onload = function() {
         var swiper = new Swiper('.swiper-container', {
-            //loop: true,
+            loop: true,
             direction: 'vertical',
             slidesPerView: 6,
             slidesPerGroup: 3,
