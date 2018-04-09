@@ -68,21 +68,17 @@
 		/**
 		 * 详情页
 		 */
-		public function detail()
-		{
-			// 检查是否已传入必要参数
-			$id = $this->input->get_post('id')? $this->input->get_post('id'): NULL;
-			if ( !empty($id) ):
-                // 以下if内为Teambition中337任务解决前的临时代码
-                if (strpos($id, 'Optional(') > -1):
-                    $id = strstr($id, '")', TRUE);
-                    $id = substr($id, strpos($id, '(')+2);
-                endif;
-
-				$params['id'] = $id;
-			else:
-				redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
-			endif;
+        public function detail($url_name = NULL)
+        {
+            // 检查是否已传入必要参数
+            $id = $this->input->get_post('id')? $this->input->get_post('id'): NULL;
+            if ( !empty($id) ):
+                $params['id'] = $id;
+            elseif ( !empty($url_name) ):
+                $params['url_name'] = $url_name;
+            else:
+                redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
+            endif;
 
 			// 从API服务器获取相应详情信息
 			$url = api_url($this->class_name. '/detail');

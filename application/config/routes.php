@@ -68,16 +68,26 @@ $route['account/edit'] = 'account/edit'; // 编辑账户资料
 $route['mine'] = 'account/mine'; // 个人中心（仅限登录后）
 
 /* 以下按控制器类名称字母降序排列 */
-/* Article 文章 */
+/* Article 平台文章 */
 $route['article/detail'] = 'article/detail';
 $route['article/(:any)'] = 'article/detail/$1';
+$route['article'] = 'article/index';
+/* Article 商家文章 */
+$route['article_biz/detail'] = 'article_biz/detail';
 $route['article'] = 'article/index';
 
 /* 商品分类 */
 $route['item/category'] = 'item_category/index';
+$route['item_category/(:any)'] = 'item_category/detail/$1';
+$route['item_category'] = 'item_category/index';
 
 /* 商品 */
 $route['item/detail'] = 'item/detail';
+
+/* 商家 */
+$route['item/detail'] = 'item/detail';
+$route['item/(:any)'] = 'item/detail/$1';
+$route['item'] = 'item/index';
 
 $route['default_controller'] = 'home/index';
 $route['404_override'] = '';
