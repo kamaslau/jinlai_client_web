@@ -84,7 +84,7 @@
 			$url = api_url($this->class_name. '/detail');
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] !== 200):
-				$data['error'] = $result['content']['error']['message'];
+                redirect( base_url('error/code_404') ); // 若缺少参数，转到错误提示页
 
 			else:
 				$data['item'] = $result['content'];
@@ -107,9 +107,7 @@
 
                     // 获取顶部模块装修商品；忽略是否下架或删除
                     if ( !empty( $ornament['home_m0_ids'] ) ):
-                        $params['biz_id'] = $id;
                         $params['ids'] = $ornament['home_m0_ids'];
-                        $url = api_url('item/index');
                         $result = $this->curl->go($url, $params, 'array');
                         if ($result['status'] === 200):
                             $data['item']['m0_items'] = $result['content'];
@@ -120,9 +118,7 @@
 
 					// 获取模块一装修商品；忽略是否下架或删除
 					if ( !empty( $ornament['home_m1_ids'] ) ):
-						$params['biz_id'] = $id;
 						$params['ids'] = $ornament['home_m1_ids'];
-						$url = api_url('item/index');
 						$result = $this->curl->go($url, $params, 'array');
 						if ($result['status'] === 200):
 							$data['item']['m1_items'] = $result['content'];
@@ -133,9 +129,7 @@
 					
 					// 获取模块二装修商品；忽略是否下架或删除
 					if ( !empty( $ornament['home_m2_ids'] ) ):
-						$params['biz_id'] = $id;
 						$params['ids'] = $ornament['home_m2_ids'];
-						$url = api_url('item/index');
 						$result = $this->curl->go($url, $params, 'array');
 						if ($result['status'] === 200):
 							$data['item']['m2_items'] = $result['content'];
@@ -157,17 +151,17 @@
 						endif;
 					endif;
 				endif;
+
+                // 页面信息
+                $data['title'] = isset($data['item'])? $data['item']['brief_name']: $this->class_name_cn. '详情';
+                $data['class'] = $this->class_name.' detail';
+
+                // 输出视图
+                $this->load->view('templates/header', $data);
+                $this->load->view($this->view_root.'/detail', $data);
+                $this->load->view('templates/footer', $data);
 				
 			endif;
-
-			// 页面信息
-			$data['title'] = isset($data['item'])? $data['item']['brief_name']: $this->class_name_cn. '详情';
-			$data['class'] = $this->class_name.' detail';
-
-			// 输出视图
-			$this->load->view('templates/header', $data);
-			$this->load->view($this->view_root.'/detail', $data);
-			$this->load->view('templates/footer', $data);
 		} // end detail
 
 	} // end class Biz

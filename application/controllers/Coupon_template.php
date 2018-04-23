@@ -100,19 +100,19 @@
 					$data['category_biz'] = $this->get_category_biz($data['item']['category_biz_id']);
 				endif;
 
+                // 页面信息
+                $data['title'] = isset($data['item'])? $data['item']['name']: $this->class_name_cn. '详情';
+                $data['class'] = $this->class_name.' detail';
+
+                // 输出视图
+                $this->load->view('templates/header', $data);
+                $this->load->view($this->view_root.'/detail', $data);
+                $this->load->view('templates/footer', $data);
+
 			else:
+                redirect( base_url('error/code_404') ); // 若缺少参数，转到错误提示页
 
-				$data['error'] = $result['content']['error']['message'];
 			endif;
-
-			// 页面信息
-			$data['title'] = $data['item']['name'];
-			$data['class'] = $this->class_name.' detail';
-
-			// 输出视图
-			$this->load->view('templates/header', $data);
-			$this->load->view($this->view_root.'/detail', $data);
-			$this->load->view('templates/footer', $data);
 		} // end detail
 
 		/**

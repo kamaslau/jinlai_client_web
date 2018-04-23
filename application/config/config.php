@@ -1,14 +1,21 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+// 当前版本号，仅适用于生产环境
+define('CURRENT_VERSION', '0.0.1');
+define('CURRENT_VERSION_MAJOR', 0); // 主版本号
+define('CURRENT_VERSION_UPDATE', 0); // 副版本号，功能新增
+define('CURRENT_VERSION_SUPPORT', 1); // 支持版本号，功能调整
+
 // 根域名及URL
 define('ROOT_DOMAIN', '.517ybang.com');
+//define('ROOT_DOMAIN', '.jinlaimall.com'); // 生产环境
 define('ROOT_URL', ROOT_DOMAIN.'/');
 
 // 允许响应指定URL的跨域请求
 $origin = isset($_SERVER['HTTP_ORIGIN'])? $_SERVER['HTTP_ORIGIN']: NULL;
 $allow_origin = array(
-    'https://www'.ROOT_DOMAIN,
+    'https://'. $_SERVER['SERVER_NAME'],
 );
 if ( in_array($origin, $allow_origin) ):
     header('Access-Control-Allow-Origin:'.$origin);
@@ -17,15 +24,21 @@ if ( in_array($origin, $allow_origin) ):
 endif;
 
 // 需要自定义的常量
-define('DEVELOPER_MOBILES', ',17664073966,13668865673,13698673572,15153282151,'); // 开发者手机号组，用于特定位置输出调试信息
 define('SITE_NAME', '进来商城'); // 站点名称
 define('SITE_SLOGAN', '进来，是你想要的'); // 站点广告语
 define('SITE_KEYWORDS', '进来,进来商城,品控,网购,网购平台,网上商城'); // 站点关键词
 define('SITE_DESCRIPTION', '「进来」是本地商家严选平台，构建严选商圈生态、共享超级用户圈，深度服务本地商家。 '); // 站点描述
-define('ICP_NUMBER', NULL); // ICP备案号码，没有请留空
+define('ICP_NUMBER', '鲁ICP备15023233号-7'); // ICP备案号码，没有请留空
 
 define('BASE_URL', 'https://'. $_SERVER['SERVER_NAME']); // 可对外使用的站点URL；在本地测试时须替换为类似“localhost/BasicCodeigniter”形式
-define('BIZ_URL', 'https://biz'.ROOT_URL); // 商家端URL
+define('API_URL', 'https://api'.ROOT_URL); // API URL
+define('WEB_URL', 'https://www'.ROOT_URL); // 客户端 URL
+define('BIZ_URL', 'https://biz'.ROOT_URL); // 商家端 URL
+define('ADMIN_URL', 'https://admin'.ROOT_URL); // 管理端 URL
+function api_url($api_name)
+{
+    return API_URL. $api_name;
+}
 
 // （可选）JS、CSS等非当前站点特有资源所在URL，可用于配合又拍云等第三方存储
 define('CDN_URL', 'https://cdn-remote'.ROOT_URL); // 生产环境
@@ -36,19 +49,11 @@ define('DEFAULT_IMAGE', NULL); // 默认图片URL
 define('MEDIA_URL', 'https://jinlaisandbox-images.b0.upaiyun.com/'); // 测试环境
 
 // COOKIE & SESSION相关
-define('COOKIE_DOMAIN', ROOT_DOMAIN); // cookie存储路径；方便起见可让所有子域共享，若需分离可自行配置
+define('COOKIE_DOMAIN', $_SERVER['SERVER_NAME']); // cookie存储路径；方便起见可让所有子域共享，若需分离可自行配置
 define('SESSION_COOKIE_NAME', 'ci_sessions_web'); // 用于cookie存储的session名（设置此值后，前后台session互不影响）
 define('SESSION_TABLE', 'ci_sessions_web'); // 用于session存储的数据库表名
 define('SESSION_PERIOD', 2592000); // session有效期秒数，此处设为30天，即60秒*60分*24小时*30天
 define('ENCRYPTION_KEY', ''); // 秘钥用于加密相关功能，可为空
-
-// RESTful API
-define('API_TOKEN', '7C4l7JLaM3Fq5biQurtmk9nFS');
-define('API_URL', 'https://api'.ROOT_URL);
-function api_url($api_name)
-{
-	return API_URL. $api_name;
-}
 
 // 原生应用scheme
 define('APP_SCHEME', 'jinlaiclient');

@@ -39,6 +39,7 @@
 			$data = array(
 				'title' => $this->class_name_cn. '列表',
 				'class' => $this->class_name.' index',
+                'items' => array(),
 			);
 
 			// 筛选条件
@@ -68,40 +69,42 @@
 			$this->load->view('templates/footer', $data);
 		} // end index
 
-		/**
-		 * 详情页
-		 */
-		public function detail($url_name = NULL)
-		{
-			// 检查是否已传入必要参数
-			$id = $this->input->get_post('id')? $this->input->get_post('id'): NULL;
-			if ( !empty($id) ):
-				$params['id'] = $id;
-			elseif ( !empty($url_name) ):
-				$params['url_name'] = $url_name;
-			else:
-				redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
-			endif;
+        /**
+         * 详情页
+         */
+        public function detail($url_name = NULL)
+        {
+            // 检查是否已传入必要参数
+            $id = $this->input->get_post('id')? $this->input->get_post('id'): NULL;
+            if ( !empty($id) ):
+                $params['id'] = $id;
+            elseif ( !empty($url_name) ):
+                $params['url_name'] = $url_name;
+            else:
+                redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
+            endif;
 
-			// 从API服务器获取相应详情信息
-			$url = api_url($this->class_name. '/detail');
-			$result = $this->curl->go($url, $params, 'array');
-			if ($result['status'] === 200):
-				$data['item'] = $result['content'];
-				$data['description'] = $this->class_name.','. $data['item']['excerpt'];
-			else:
-				$data['error'] = $result['content']['error']['message'];
-			endif;
+            // 从API服务器获取相应详情信息
+            $url = api_url($this->class_name. '/detail');
+            $result = $this->curl->go($url, $params, 'array');
+            if ($result['status'] === 200):
+                $data['item'] = $result['content'];
 
-			// 页面信息
-			$data['title'] = isset($data['item'])? $data['item']['title']: $this->class_name_cn. '详情';
-			$data['class'] = $this->class_name.' detail';
+                // 页面信息
+                $data['title'] = $this->class_name_cn. ' "'.$data['item']['title']. '"';
+                $data['class'] = $this->class_name.' detail';
+                $data['description'] = $this->class_name.','. $data['item']['excerpt'];
 
-			// 输出视图
-			$this->load->view('templates/header', $data);
-			$this->load->view($this->view_root.'/detail', $data);
-			$this->load->view('templates/footer', $data);
-		} // end detail
+                // 输出视图
+                $this->load->view('templates/header', $data);
+                $this->load->view($this->view_root.'/detail', $data);
+                $this->load->view('templates/footer', $data);
+
+            else:
+                redirect( base_url('error/code_404') ); // 若缺少参数，转到错误提示页
+
+            endif;
+        } // end detail
 
 	} // end class Article
 

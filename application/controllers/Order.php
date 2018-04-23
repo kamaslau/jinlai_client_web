@@ -115,18 +115,20 @@
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
 				$data['item'] = $result['content'];
+
+                // 页面信息
+                $data['title'] = $this->class_name_cn. '详情';
+                $data['class'] = $this->class_name.' detail';
+
+                // 输出视图
+                $this->load->view('templates/header', $data);
+                $this->load->view($this->view_root.'/detail', $data);
+                $this->load->view('templates/footer', $data);
+
 			else:
-				$data['error'] = $result['content']['error']['message'];
+                redirect( base_url('error/code_404') ); // 若缺少参数，转到错误提示页
+
 			endif;
-
-			// 页面信息
-			$data['title'] = $this->class_name_cn. '详情';
-			$data['class'] = $this->class_name.' detail';
-
-			// 输出视图
-			$this->load->view('templates/header', $data);
-			$this->load->view($this->view_root.'/detail', $data);
-			$this->load->view('templates/footer', $data);
 		} // end detail
 
 		/**
