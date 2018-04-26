@@ -45,8 +45,7 @@ define('CDN_URL', 'https://cdn-remote'.ROOT_URL); // 生产环境
 
  // （可选）媒体文件，即非样式图片、视频、音频存储的根目录所在URL，可用于配合又拍云等第三方存储
 define('DEFAULT_IMAGE', NULL); // 默认图片URL
-//define('MEDIA_URL', 'https://medias'.ROOT_URL); // 生产环境
-define('MEDIA_URL', 'https://jinlaisandbox-images.b0.upaiyun.com/'); // 测试环境
+define('MEDIA_URL', 'https://medias'.ROOT_URL);
 
 // COOKIE & SESSION相关
 define('COOKIE_DOMAIN', $_SERVER['SERVER_NAME']); // cookie存储路径；方便起见可让所有子域共享，若需分离可自行配置
