@@ -4,7 +4,7 @@ header('Cache-Control:no-cache');
 
 $content = array(
     array('type' => 'text', 'content' => '测试一下前端是否可以正常接收'."<br>".'并解析JSON格式返回的EventStream信息'), // 文字
-    array('type' => 'image', 'url_image' => 'https://jinlaisandbox-images.b0.upaiyun.com/user/avatar/201801/0129/1407221.jpg'), // 图片
+    array('type' => 'image', 'url_image' => 'https://media.517ybang.com/user/avatar/201801/0129/1407221.jpg'), // 图片
     array('type' => 'url', 'url_page' => 'https://www.517ybang.com/', 'title' => '进来商城', 'url_image' => NULL), // 网页
     array('type' => 'item', 'item_id' => 3), // 商品
     array('type' => 'order', 'order_id' => 1, 'content' => array()), // 订单
