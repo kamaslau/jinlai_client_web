@@ -2,7 +2,7 @@
 	defined('BASEPATH') OR exit('此文件不可被直接访问');
 
 	/**
-	 * Article_biz 平台文章类
+	 * Article_biz 商家文章类
 	 *
 	 * @version 1.0.0
 	 * @author Kamas 'Iceberg' Lau <kamaslau@outlook.com>
@@ -37,7 +37,7 @@
 		{
 			// 页面信息
 			$data = array(
-				'title' => $this->class_name_cn. '列表',
+				'title' => $this->class_name_cn,
 				'class' => $this->class_name.' index',
                 'items' => array(),
 			);
@@ -91,7 +91,7 @@
                 $data['item'] = $result['content'];
 
                 // 页面信息
-                $data['title'] = $this->class_name_cn. ' "'.$data['item']['title']. '"';
+                $data['title'] = $data['item']['title'];
                 $data['class'] = $this->class_name.' detail';
                 $data['description'] = $this->class_name.','. $data['item']['excerpt'];
 
