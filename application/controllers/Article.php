@@ -14,7 +14,8 @@
 		 * 可作为列表筛选条件的字段名；可在具体方法中根据需要删除不需要的字段并转换为字符串进行应用，下同
 		 */
 		protected $names_to_sort = array(
-			'category_id', 'title', 'excerpt', 'content', 'url_name', 'url_images', 'time_create', 'time_delete', 'time_edit', 'creator_id', 'operator_id',
+			'category_id', 'title', 'excerpt', 'content', 'url_name', 'url_images',
+            'time_create', 'time_delete', 'time_edit', 'creator_id', 'operator_id',
 		);
 
 		public function __construct()
@@ -91,7 +92,7 @@
                 $data['item'] = $result['content'];
 
                 // 页面信息
-                $data['title'] = $this->class_name_cn. ' "'.$data['item']['title']. '"';
+                $data['title'] = $data['item']['title'];
                 $data['class'] = $this->class_name.' detail';
                 $data['description'] = $this->class_name.','. $data['item']['excerpt'];
 
