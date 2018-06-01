@@ -74,7 +74,7 @@ $route['article/(:any)'] = 'article/detail/$1';
 $route['article'] = 'article/index';
 /* Article 商家文章 */
 $route['article_biz/detail'] = 'article_biz/detail';
-$route['article'] = 'article/index';
+$route['article_biz'] = 'article_biz/index';
 
 /* 商品分类 */
 $route['item/category'] = 'item_category/index';
@@ -83,11 +83,13 @@ $route['item_category'] = 'item_category/index';
 
 /* 商品 */
 $route['item/detail'] = 'item/detail';
-
-/* 商家 */
-$route['item/detail'] = 'item/detail';
 $route['item/(:any)'] = 'item/detail/$1';
 $route['item'] = 'item/index';
+
+/* 商家 */
+$route['biz/detail'] = 'biz/detail';
+$route['biz/(:any)'] = 'biz/detail/$1';
+$route['biz'] = 'biz/index';
 
 $route['default_controller'] = 'home/index';
 $route['404_override'] = '';

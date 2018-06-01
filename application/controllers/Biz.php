@@ -51,6 +51,8 @@
 
 			// 从API服务器获取相应列表信息
 			$params = $condition;
+            $data['limit'] = $params['limit'] = empty($this->input->get_post('limit'))? 10: $this->input->get_post('limit');
+            $data['offset'] = $params['offset'] = empty($this->input->get_post('offset'))? 0: $this->input->get_post('offset');
 			$url = api_url($this->class_name. '/index');
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
@@ -84,14 +86,16 @@
 			$url = api_url($this->class_name. '/detail');
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] !== 200):
-                redirect( base_url('error/code_404') ); // 若缺少参数，转到错误提示页
+                redirect( base_url('error/code_404') ); // 若获取失败，转到错误提示页
 
 			else:
 				$data['item'] = $result['content'];
 
-				// 获取该商家商品未删除商品
-				$params['time_delete'] = 'NULL';
-				$params['biz_id'] = $id;
+				// 获取该商家商品未删除商品，默认获取前10条
+                $params['biz_id'] = $id;
+                $data['limit'] = $params['limit'] = empty($this->input->get_post('limit'))? 10: $this->input->get_post('limit');
+                $data['offset'] = $params['offset'] = empty($this->input->get_post('offset'))? 0: $this->input->get_post('offset');
+
 				$url = api_url('item/index');
 				$result = $this->curl->go($url, $params, 'array');
 				if ($result['status'] === 200):
@@ -101,7 +105,7 @@
 					$data['error'] = $result['content']['error']['message'];
 				endif;
 				
-				// 获取该商家店铺装修方案
+				// 获取该商家店铺装修方案（及商品）
 				if ( !empty($data['item']['ornament']) ):
                     $ornament = $data['item']['ornament'];
 
@@ -153,7 +157,7 @@
 				endif;
 
                 // 页面信息
-                $data['title'] = isset($data['item'])? $data['item']['brief_name']: $this->class_name_cn. '详情';
+                $data['title'] = !empty($data['item'])? $data['item']['brief_name']: $this->class_name_cn. '详情';
                 $data['class'] = $this->class_name.' detail';
 
                 // 输出视图

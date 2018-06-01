@@ -52,7 +52,7 @@
 
 			// 筛选条件
 			$condition['time_delete'] = 'NULL';
-			// （可选）遍历筛选条件
+			// 遍历筛选条件
 			foreach ($this->names_to_sort as $sorter):
 				if ( !empty($this->input->post($sorter)) )
 					$condition[$sorter] = $this->input->post($sorter);
@@ -60,6 +60,8 @@
 
 			// 从API服务器获取相应列表信息
 			$params = $condition;
+            $data['limit'] = $params['limit'] = empty($this->input->get_post('limit'))? 10: $this->input->get_post('limit');
+            $data['offset'] = $params['offset'] = empty($this->input->get_post('offset'))? 0: $this->input->get_post('offset');
 			$url = api_url($this->class_name. '/index');
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):

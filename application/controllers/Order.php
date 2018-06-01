@@ -83,6 +83,8 @@
 
 			// 从API服务器获取相应列表信息
 			$params = $condition;
+            $data['limit'] = $params['limit'] = empty($this->input->get_post('limit'))? 10: $this->input->get_post('limit');
+            $data['offset'] = $params['offset'] = empty($this->input->get_post('offset'))? 0: $this->input->get_post('offset');
 			$url = api_url($this->class_name. '/index');
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):

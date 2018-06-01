@@ -50,7 +50,7 @@
 		{
 			parent::__construct();
 
-			// （可选）未登录用户转到登录页
+			// 未登录用户转到登录页
 			($this->session->time_expire_login > time()) OR redirect( base_url('login') );
 
 			// 向类属性赋值
@@ -80,6 +80,8 @@
 
 			// 从API服务器获取相应列表信息
 			$params = $condition;
+            $data['limit'] = $params['limit'] = empty($this->input->get_post('limit'))? 10: $this->input->get_post('limit');
+            $data['offset'] = $params['offset'] = empty($this->input->get_post('offset'))? 0: $this->input->get_post('offset');
 			$url = api_url($this->class_name. '/index');
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):

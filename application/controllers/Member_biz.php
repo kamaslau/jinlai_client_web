@@ -49,8 +49,8 @@
 		{
 			parent::__construct();
 
-            // （可选）未登录用户转到登录页
-            //($this->session->time_expire_login > time()) OR redirect( base_url('login') );
+            // 未登录用户转到登录页
+            ($this->session->time_expire_login > time()) OR redirect( base_url('login') );
 
 			// 向类属性赋值
 			$this->class_name = strtolower(__CLASS__);
@@ -85,6 +85,8 @@
 
             // 从API服务器获取商家列表信息（及装修信息）
             $params = $condition;
+            $data['limit'] = $params['limit'] = empty($this->input->get_post('limit'))? 10: $this->input->get_post('limit');
+            $data['offset'] = $params['offset'] = empty($this->input->get_post('offset'))? 0: $this->input->get_post('offset');
             $url = api_url($this->class_name.'/index');
             $result = $this->curl->go($url, $params, 'array');
             if ($result['status'] === 200):
@@ -124,6 +126,8 @@
 			
 			// 从API服务器获取商家列表信息（及装修信息）
 			$params = $condition;
+            $data['limit'] = $params['limit'] = empty($this->input->get_post('limit'))? 10: $this->input->get_post('limit');
+            $data['offset'] = $params['offset'] = empty($this->input->get_post('offset'))? 0: $this->input->get_post('offset');
 			$url = api_url('biz/index');
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
