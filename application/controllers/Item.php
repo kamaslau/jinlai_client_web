@@ -89,6 +89,7 @@
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
 				$data['item'] = $result['content'];
+                $data['biz'] = $result['content']['biz'];
 				$data['item_in_json'] = json_encode($result['content']);
 
 				// TODO 检查是否已在购物车内
@@ -123,9 +124,6 @@
 
 				// 获取系统分类信息
 				$data['category'] = $this->get_category($data['item']['category_id']);
-				
-				// 获取商家信息
-				$data['biz'] = $this->get_biz($data['item']['biz_id']);
 
 				// 获取商家分类信息
 				if ( !empty($data['item']['category_biz_id']) ):
