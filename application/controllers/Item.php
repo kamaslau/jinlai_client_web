@@ -75,9 +75,12 @@
 		{
             // 检查是否已传入必要参数
             $id = $this->input->get_post('id')? $this->input->get_post('id'): NULL;
+            $code_biz = $this->input->get_post('code_biz')? $this->input->get_post('code_biz'): NULL;
             $barcode = $this->input->get_post('barcode')? $this->input->get_post('barcode'): NULL;
             if ( ! empty($id) ):
                 $params['id'] = $id;
+            elseif ( ! empty($code_biz)):
+                $params['code_biz'] = $code_biz;
             elseif ( ! empty($barcode)):
                 $params['barcode'] = $barcode;
             else:
