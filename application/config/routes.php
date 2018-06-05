@@ -69,6 +69,8 @@ $route['mine'] = 'account/mine'; // 个人中心（仅限登录后）
 
 /* 以下按控制器类名称字母降序排列 */
 /* Article 平台文章 */
+$route['contact-us'] = 'article/detail/contact-us'; // 联系我们
+$route['policy-privacy'] = 'article/detail/policy-privacy'; // 协议-隐私协议
 $route['article/detail'] = 'article/detail';
 $route['article/(:any)'] = 'article/detail/$1';
 $route['article'] = 'article/index';
