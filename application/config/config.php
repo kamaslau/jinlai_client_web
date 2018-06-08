@@ -12,15 +12,26 @@ define('ROOT_DOMAIN', '.517ybang.com');
 //define('ROOT_DOMAIN', '.jinlaimall.com'); // 生产环境
 define('ROOT_URL', ROOT_DOMAIN.'/');
 
-// 允许响应指定URL的跨域请求
-$origin = isset($_SERVER['HTTP_ORIGIN'])? $_SERVER['HTTP_ORIGIN']: NULL;
-$allow_origin = array(
-    'https://'. $_SERVER['SERVER_NAME'],
-);
-if ( in_array($origin, $allow_origin) ):
-    header('Access-Control-Allow-Origin:'.$origin);
-    header('Access-Control-Allow-Methods:POST,GET');
-	header('Access-Control-Allow-Credentials:TRUE'); // 允许将Cookie包含在请求中
+// 对AJAX请求做安全性方面的特殊处理
+if ( isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json,') !== FALSE):
+    header('X-Content-Type-Options:nosniff'); // 防止IE8+自行推测数据格式
+    header('X-Frame-Options:deny'); // 禁止在FRAME中读取数据
+    header("Content-Security-Policy:default-src 'none'"); // 检测和防御XSS（通过设置资源路径）
+    header('X-XSS-Protection:1;mode=block'); // 部分旧浏览器中检测和防御XSS
+    header('Strict-Transport-Security:max-age=3600;includeSubDomains'); // 只允许通过HTTPS进行访问（一小时内）
+
+    // 允许响应指定URL的跨域请求
+    $origin = isset($_SERVER['HTTP_ORIGIN'])? $_SERVER['HTTP_ORIGIN']: NULL;
+    $allow_origin = array(
+        'https://www'.ROOT_DOMAIN,
+        'https://biz'.ROOT_DOMAIN,
+        'https://admin'.ROOT_DOMAIN,
+    );
+    if ( in_array($origin, $allow_origin) ):
+        header('Access-Control-Allow-Origin:'.$origin);
+        header('Access-Control-Allow-Methods:POST');
+        header('Access-Control-Allow-Credentials:TRUE'); // 允许将Cookie包含在请求中
+    endif;
 endif;
 
 // 需要自定义的常量

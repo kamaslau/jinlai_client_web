@@ -55,7 +55,7 @@
 
 			// 输出视图
 			$this->load->view('templates/header', $data);
-			$this->load->view($this->view_root.'/mine', $data);
+			$this->load->view('user/mine', $data);
 			$this->load->view('templates/nav-main', $data);
 			$this->load->view('templates/footer', $data);
 		} // end mine
@@ -70,7 +70,7 @@
 		public function login()
 		{
 			// 若已登录，转到首页
-			!isset($this->session->time_expire_login) OR redirect( base_url() );
+            ($this->session->time_expire_login < time()) OR redirect( base_url() );
 
 			// 页面信息
 			$data = array(
@@ -78,7 +78,7 @@
 				'class' => $this->class_name.' login',
 			);
 
-			$this->form_validation->set_rules('captcha_verify', '图片验证码', 'trim|required|exact_length[4]|callback_verify_captcha');
+			//$this->form_validation->set_rules('captcha_verify', '图片验证码', 'trim|required|exact_length[4]|callback_verify_captcha');
 			$this->form_validation->set_rules('mobile', '手机号', 'trim|required|exact_length[11]|is_natural_no_zero');
 			$this->form_validation->set_rules('password', '密码', 'trim|min_length[6]|max_length[20]');
 			$this->form_validation->set_rules('sms_id', '短信ID', 'trim|is_natural_no_zero');
@@ -153,8 +153,10 @@
 		 */
 		public function login_sms()
 		{
-			// 若已登录，转到首页
-			!isset($this->session->time_expire_login) OR redirect( base_url() );
+            // 若已登录，转到首页
+            ($this->session->time_expire_login < time()) OR redirect( base_url() );
+
+            // TODO 若是从微信端获取用户资料，则获取相应数据
 
 			// 页面信息
 			$data = array(
@@ -162,10 +164,11 @@
 				'class' => $this->class_name.' login-sms',
 			);
 
-			$this->form_validation->set_rules('captcha_verify', '图片验证码', 'trim|required|exact_length[4]|callback_verify_captcha');
+			//$this->form_validation->set_rules('captcha_verify', '图片验证码', 'trim|required|exact_length[4]|callback_verify_captcha');
 			$this->form_validation->set_rules('mobile', '手机号', 'trim|required|exact_length[11]');
 			$this->form_validation->set_rules('sms_id', '短信ID', 'trim|required|is_natural_no_zero');
 			$this->form_validation->set_rules('captcha', '短信验证码', 'trim|required|exact_length[6]|is_natural_no_zero');
+            $this->form_validation->set_rules('wechat_union_id', '微信UnionID', 'trim|max_length[29]');
 
 			if ($this->form_validation->run() === FALSE):
 				$data['error'] = validation_errors();
@@ -201,7 +204,7 @@
 
 					// 若用户已设置密码则转到首页，否则转到密码设置页
 					if ( !empty($data['item']['password']) ):
-						redirect( base_url() );
+                        redirect( base_url() );
 					else:
 						redirect( base_url('password_set') );
 					endif;
@@ -226,7 +229,7 @@
 		public function password_set()
 		{
 			// 若未登录，转到密码重置页
-			( $this->session->time_expire_login > time() ) OR redirect( base_url('password_reset') );
+			($this->session->time_expire_login > time()) OR redirect( base_url('password_reset') );
 
 			// 若当前用户已设置密码，转到密码修改页
 			if ( !empty($this->session->password) )
@@ -367,9 +370,6 @@
 		 */
 		public function password_reset()
 		{
-			//DECREPTAED 若已登录，转到密码修改页
-			//!isset($this->session->time_expire_login) OR redirect( base_url('password_change') );
-
 			// 清除当前SESSION
 			$this->session->sess_destroy();
 
@@ -457,7 +457,7 @@
 			else:
 				return TRUE;
 			endif;
-		}
+		} // end verify_captcha
 
 		/**
 		 * TODO 邮箱注册；暂不开放此功能
@@ -468,8 +468,8 @@
 		 */
 		public function register()
 		{
-			// 若已登录，转到首页
-			!isset($this->session->time_expire_login) OR redirect( base_url() );
+            // 若已登录，转到首页
+            ($this->session->time_expire_login < time()) OR redirect( base_url() );
 
 			// 页面信息
 			$data = array(
@@ -567,7 +567,7 @@
 			endif;
 		} // end user_exist
 
-	} // end class Acount
+	} // end class Account
 
 /* End of file Account.php */
 /* Location: ./application/controllers/Account.php */
