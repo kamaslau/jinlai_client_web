@@ -115,7 +115,7 @@
 				$data['item'] = $result['content'];
 
 				// 页面信息
-				$data['title'] = '我的资料';
+				$data['title'] = '我的';
 				$data['class'] = $this->class_name.' mine';
 
 				// 输出视图

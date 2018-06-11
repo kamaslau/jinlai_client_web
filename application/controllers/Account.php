@@ -24,43 +24,6 @@
 		} // end __construct
 
 		/**
-		 * 我的
-		 *
-		 * 个人中心页
-		 */
-		public function mine()
-		{
-			// 若未登录，转到密码登录页
-			($this->session->time_expire_login > time()) OR redirect( base_url('login') );
-
-			// 若当前用户未设置密码，转到密码设置页
-			if ( empty($this->session->password) )
-				redirect( base_url('password_set') );
-
-			// 页面信息
-			$data = array(
-				'title' => '我的', // 页面标题
-				'class' => $this->class_name.' mine', // 页面body标签的class属性值
-			);
-
-			// 从API服务器获取当前用户资料
-			$params['id'] = $this->session->user_id;
-			$url = api_url('user/detail');
-			$result = $this->curl->go($url, $params, 'array');
-			if ($result['status'] === 200):
-				$data['user'] = $result['content'];
-			else:
-				$this->logout(); // 若获取用户资料失败，退出账户
-			endif;
-
-			// 输出视图
-			$this->load->view('templates/header', $data);
-			$this->load->view('user/mine', $data);
-			$this->load->view('templates/nav-main', $data);
-			$this->load->view('templates/footer', $data);
-		} // end mine
-
-		/**
 		 * 密码登录
 		 *
 		 * 使用手机号及密码进行账户登录
@@ -157,6 +120,7 @@
             ($this->session->time_expire_login < time()) OR redirect( base_url() );
 
             // TODO 若是从微信端获取用户资料，则获取相应数据
+            $wechat_info = $this->get_wechat_info();
 
 			// 页面信息
 			$data = array(

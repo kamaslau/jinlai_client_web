@@ -65,7 +65,7 @@ $route['password_change'] = 'account/password_change'; // 修改密码（仅限�
 $route['email_reset'] = 'account/email_reset'; // 换绑Email（仅限登录后）
 $route['mobile_reset'] = 'account/mobile_reset'; // 换绑手机号（仅限登录后）
 $route['account/edit'] = 'account/edit'; // 编辑账户资料
-$route['mine'] = 'account/mine'; // 个人中心（仅限登录后）
+$route['mine'] = 'user/mine'; // 个人中心（仅限登录后）
 
 /* 以下按控制器类名称字母降序排列 */
 /* Article 平台文章 */
