@@ -212,6 +212,11 @@
 		{
 			// 检查是否已传入必要参数
 			$id = $this->input->get_post('id')? $this->input->get_post('id'): NULL;
+			// 如果已经登录，使用当前的userid
+            if ($this->session->time_expire_login < time()):
+            	$id = $this->session->user_id;
+            endif;
+
 			if ( !empty($id) ):
 				$params['id'] = $id;
 			else:
