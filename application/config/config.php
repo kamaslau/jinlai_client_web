@@ -56,9 +56,9 @@ function api_url($api_name)
 
 // JS、CSS等非当前站点特有资源所在URL，可用于配合又拍云等第三方存储
 define('CDN_URL', 'https://cdn-remote'.ROOT_URL); // 生产环境
+define('DEFAULT_IMAGE', CDN_URL.'default_avatar.png'); // 默认图片URL
 
 // 媒体文件，即非样式图片、视频、音频存储的根目录所在URL，可用于配合又拍云等第三方存储
-define('DEFAULT_IMAGE', NULL); // 默认图片URL
 define('MEDIA_URL', 'https://medias'.ROOT_URL);
 
 // COOKIE & SESSION相关
