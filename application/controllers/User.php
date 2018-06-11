@@ -212,13 +212,12 @@
 		{
 			// 检查是否已传入必要参数
 			$id = $this->input->get_post('id')? $this->input->get_post('id'): NULL;
-			// 如果已经登录，使用当前的userid
-            if ($this->session->time_expire_login < time()):
-            	$id = $this->session->user_id;
-            endif;
-
+          
+            // 如果已经登录，使用当前的userid
 			if ( !empty($id) ):
 				$params['id'] = $id;
+			elseif ($this->session->time_expire_login < time()):
+				$params['id'] = $id = $this->session->user_id;
 			else:
 				redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
 			endif;
