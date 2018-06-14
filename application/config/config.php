@@ -44,7 +44,7 @@ define('SITE_KEYWORDS', '进来,进来商城,品控,网购,网购平台,网上�
 define('SITE_DESCRIPTION', '「进来」是本地商家严选平台，构建严选商圈生态、共享超级用户圈，深度服务本地商家。 '); // 站点描述
 define('ICP_NUMBER', '鲁ICP备15023233号-7'); // ICP备案号码，没有请留空
 
-define('BASE_URL', 'https://'. $_SERVER['SERVER_NAME']); // 可对外使用的站点URL；在本地测试时须替换为类似“localhost/BasicCodeigniter”形式
+define('BASE_URL', 'https://'. $_SERVER['SERVER_NAME'].'/'); // 可对外使用的站点URL；在本地测试时须替换为类似“localhost/BasicCodeigniter”形式
 define('API_URL', 'https://api'.ROOT_URL); // API URL
 define('WEB_URL', 'https://www'.ROOT_URL); // 客户端 URL
 define('BIZ_URL', 'https://biz'.ROOT_URL); // 商家端 URL
@@ -82,11 +82,11 @@ define('AES_KEY', '');
 define('WECHAT_AUTH_URL', 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.WECHAT_APP_ID.'&redirect_uri='.urlencode('https://'. $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']).'&response_type=code&scope=snsapi_userinfo#wechat_redirect');
 
 // 微信支付参数（常用JS调起支付方式及被扫支付方式根路径）
-define('WEPAY_URL_JSAPI', BASE_URL.'/payment/wepay/example/jsapi.php?showwxpaytitle=1&');
-define('WEPAY_URL_NATIVE', BASE_URL.'/payment/wepay/example/native.php?showwxpaytitle=1&');
+define('WEPAY_URL_JSAPI', BASE_URL.'payment/wepay/example/jsapi.php?showwxpaytitle=1&');
+define('WEPAY_URL_NATIVE', BASE_URL.'payment/wepay/example/native.php?showwxpaytitle=1&');
 
 // 支付宝参数
-define('ALIPAY_URL', BASE_URL.'/payment/alipay/alipayapi.php?');
+define('ALIPAY_URL', BASE_URL.'payment/alipay/alipayapi.php?');
 
 // 又拍云
 if (ENVIRONMENT !== 'production'): // 测试环境

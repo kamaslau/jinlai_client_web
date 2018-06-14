@@ -14,7 +14,8 @@
 		 * 可作为列表筛选条件的字段名；可在具体方法中根据需要删除不需要的字段并转换为字符串进行应用，下同
 		 */
 		protected $names_to_sort = array(
-			'address_id', 'user_id', 'brief', 'fullname', 'mobile', 'nation', 'province', 'city', 'county', 'street', 'longitude', 'latitude', 'zipcode', 'time_create', 'time_delete', 'time_edit', 'creator_id', 'operator_id',
+			'mobile', 'nation', 'province', 'city', 'county', 'longitude', 'latitude', 'zipcode',
+            'time_create', 'time_delete', 'time_edit', 'creator_id', 'operator_id',
 		);
 
 		/**
@@ -55,7 +56,7 @@
 
 			// 向类属性赋值
 			$this->class_name = strtolower(__CLASS__);
-			$this->class_name_cn = '地址'; // 改这里……
+			$this->class_name_cn = '收货地址'; // 改这里……
 			$this->table_name = 'address'; // 和这里……
 			$this->id_name = 'address_id'; // 还有这里，OK，这就可以了
 			$this->view_root = $this->class_name;
@@ -68,7 +69,7 @@
 		{
 			// 页面信息
 			$data = array(
-				'title' => $this->class_name_cn. '列表',
+				'title' => $this->class_name_cn,
 				'class' => $this->class_name.' index',
 			);
 
@@ -80,8 +81,6 @@
 
 			// 从API服务器获取相应列表信息
 			$params = $condition;
-            $data['limit'] = $params['limit'] = empty($this->input->get_post('limit'))? 10: $this->input->get_post('limit');
-            $data['offset'] = $params['offset'] = empty($this->input->get_post('offset'))? 0: $this->input->get_post('offset');
 			$url = api_url($this->class_name. '/index');
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
@@ -117,13 +116,13 @@
 			$this->form_validation->set_error_delimiters('', '；');
 			// 验证规则 https://www.codeigniter.com/user_guide/libraries/form_validation.html#rule-reference
 			$this->form_validation->set_rules('brief', '简称', 'trim|max_length[10]');
-			$this->form_validation->set_rules('fullname', '姓名', 'trim|required|max_length[15]');
+			$this->form_validation->set_rules('fullname', '姓名', 'trim|required|min_length[2]|max_length[15]');
 			$this->form_validation->set_rules('mobile', '手机号', 'trim|required|exact_length[11]|is_natural');
 			$this->form_validation->set_rules('nation', '国别', 'trim');
 			$this->form_validation->set_rules('province', '省', 'trim|required|max_length[10]');
 			$this->form_validation->set_rules('city', '市', 'trim|required|max_length[10]');
 			$this->form_validation->set_rules('county', '区/县', 'trim|max_length[10]');
-			$this->form_validation->set_rules('street', '具体地址；小区名、路名、门牌号等', 'trim|required|max_length[50]');
+			$this->form_validation->set_rules('street', '具体地址；小区名、路名、门牌号等', 'trim|required|min_length[5]|max_length[50]');
 			$this->form_validation->set_rules('longitude', '经度', 'trim|min_length[7]|max_length[10]|decimal');
 			$this->form_validation->set_rules('latitude', '纬度', 'trim|min_length[7]|max_length[10]|decimal');
 			$this->form_validation->set_rules('zipcode', '邮政编码', 'trim|integer|max_length[6]');
@@ -433,6 +432,7 @@
 			// 需要编辑的数据
 			$data_to_edit = array(
 				'id' => $this->session->user_id,
+
 				'name' => 'address_id',
 				'value' => $id,
 			);

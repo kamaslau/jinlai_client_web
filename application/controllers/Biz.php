@@ -37,7 +37,7 @@
 		{
 			// 页面信息
 			$data = array(
-				'title' => $this->class_name_cn. '列表',
+				'title' => $this->class_name_cn,
 				'class' => $this->class_name.' index',
 			);
 

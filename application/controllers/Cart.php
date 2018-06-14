@@ -45,7 +45,6 @@
 
 			$this->load->view('templates/header', $data);
 			$this->load->view($this->class_name. '/index', $data);
-			$this->load->view('templates/nav-main', $data);
 			$this->load->view('templates/footer', $data);
 		} // end index
 
@@ -256,6 +255,10 @@
 
 			redirect('cart');
 		} // end clear
+
+        /**
+         * 以下为工具类方法
+         */
 
 		// 向数据库上传用户购物车数据
 		private function sync_up()

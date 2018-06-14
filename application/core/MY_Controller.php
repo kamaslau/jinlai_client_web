@@ -322,7 +322,7 @@
             $text = trim($text, $seperator);
 
             // 拆分文本为数组并清理可被转换为布尔型FALSE的数组元素（空数组、空字符、NULL、0、’0‘等）
-            $array = array_filter( explode(',', $text) );
+            $array = array_filter( explode($seperator, $text) );
 
             return $array;
         } // end explode_csv
@@ -340,7 +340,7 @@
 
                 // 将字符串格式转换为数组格式
                 if ( !is_array($ids) ):
-                    $ids = explode(',', $ids);
+                    $ids = explode_csv($ids);
                 endif;
 
             elseif ( !empty($this->input->post('ids[]')) ):
@@ -395,37 +395,25 @@
         } // end login_wechat
 
 		// 解析购物车
-		protected function cart_decode()
+		protected function cart_decode($cart_string = NULL)
 		{
-			// 初始化商家及购物车项数组
-			$data['bizs'] = $data['items'] = array();
+		    // 待生成购物车信息的购物车内容字符串
+            $cart_string = empty($cart_string)? $this->session->cart: $cart_string;
 
 			// 检查购物车是否为空，若空则直接返回相应提示，否则显示购物车详情
-			if ( !empty($this->session->cart) ):
-				// 拆分现购物车数组中各项，并获取商品信息
-				$current_cart = $this->explode_csv($this->session->cart);
+			if ( ! empty($cart_string)):
+                $params = array(
+                    'cart_string' => $cart_string,
+                );
+                $url = api_url('cart/parse');
+                $result = $this->curl->go($url, $params, 'array');
 
-				// 获取各商品信息
-				foreach ($current_cart as $cart_item):
-					// 分解出item_id、sku_id、count等
-					list($biz_id, $item_id, $sku_id, $count) = explode('|', $cart_item);
+                return $result;
 
-					// 获取商家信息
-					$data['bizs']['biz_'.$biz_id] = $this->get_biz($biz_id);
-
-					// 获取商品信息
-					$item = $this->get_item($item_id);
-
-					// 获取SKU信息（若有）
-					if ($sku_id != 0) $item['sku'] = $this->get_sku($sku_id);
-
-					$item['count'] = $count; // 数量保持原状
-					$data['items'][] = $item; // 推入商品信息数组
-				endforeach;
+            else:
+                return false;
 
 			endif;
-
-			return $data;
 		} // end cart_decode
 
 		// 检查商品是否已在购物车中
@@ -438,7 +426,7 @@
 
 			// 检查当前商品是否在购物车中
 			else:
-				$start_from = strpos(','.$current_cart, ','.$item_to_check);
+				$start_from = strpos(','.$current_cart.',', ','.$item_to_check);
 				if ( $start_from === FALSE ):
 					return FALSE;
 

@@ -69,7 +69,7 @@
 		{
 			// 页面信息
 			$data = array(
-				'title' => $this->class_name_cn. '列表',
+				'title' => $this->class_name_cn,
 				'class' => $this->class_name.' index',
 			);
 
@@ -182,38 +182,21 @@
 				'error' => '', // 预设错误提示
 			);
 
-			// 获取当前用户可用的收货地址列表
-			$data['addresses'] = $this->list_address();
-
-			// 若是单商品订单，获取相应商家、商品信息
-			if ( !empty($this->input->get_post('item_id')) ):
-				$data['item'] = $this->get_item($this->input->get_post('item_id'));
-
-				// 获取相应商家信息
-				if ( !empty($data['item']) ):
-					$data['biz'] = $this->get_biz($data['item']['biz_id']);
-				endif;
-				
-				// 若已指定规格，获取相应规格信息
-				if ( !empty($this->input->get_post('sku_id')) ):
-					$data['sku'] = $this->get_sku($this->input->get_post('sku_id'));
-				endif;
-
-			// 若为购物车订单，解析购物车
-			elseif ( !empty($this->session->cart) ):
-				$data['cart_data'] = $this->cart_decode();
-
-			endif;
+            // 生成购物车格式的字符串
+            $cart_string = empty( $this->input->get_post('cart_string') )? $this->session->cart: $this->input->get_post('cart_string');
+            if ( ! empty($cart_string)):
+                // 预生成订单信息
+                $data['item'] = $this->prepare($cart_string);
+            else:
+                redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
+            endif;
 
 			// 待验证的表单项
 			$this->form_validation->set_error_delimiters('', '；');
 			// 验证规则 https://www.codeigniter.com/user_guide/libraries/form_validation.html#rule-reference
 			$this->form_validation->set_rules('address_id', '收件地址', 'trim|required|is_natural_no_zero');
 			$this->form_validation->set_rules('note_user', '用户留言', 'trim|max_length[255]');
-			// 仅单品订单涉及以下字段
-			$this->form_validation->set_rules('item_id', '商品ID', 'trim|is_natural_no_zero');
-			$this->form_validation->set_rules('sku_id', '规格ID', 'trim|is_natural_no_zero');
-			$this->form_validation->set_rules('count', '份数', 'trim|is_natural_no_zero|less_than_equal_to[]');
+            $this->form_validation->set_rules('cart_string', '购物车信息', 'trim|max_length[255]');
 
 			// 若表单提交不成功
 			if ($this->form_validation->run() === FALSE):
@@ -227,32 +210,25 @@
 				// 需要创建的数据；逐一赋值需特别处理的字段
 				$data_to_create = array(
 					'user_ip' => $this->input->ip_address(),
-					'cart_string' => $this->session->cart, // 仅购物车订单涉及该项
 				);
 				// 自动生成无需特别处理的数据
 				$data_need_no_prepare = array(
-					'address_id', 'note_user', 'item_id', 'sku_id', 'count',
+					'address_id', 'cart_string', 'note_user'
 				);
 				foreach ($data_need_no_prepare as $name)
 					$data_to_create[$name] = $this->input->post($name);
 
 				// 向API服务器发送待创建数据
-				$params = $data_to_create; // 清理空参数，并按键名升序对数组排序
-				//$params = array_filter($data_to_create); // 清理空参数，并按键名升序对数组排序
-				ksort($params);
+				$params = $data_to_create;
 				$this->key_value($params);exit(); // 测试
 				$url = api_url($this->class_name. '/create');
 				$result = $this->curl->go($url, $params, 'array');
 				if ($result['status'] === 200):
-					$data['title'] = $this->class_name_cn. '创建成功';
-					$data['class'] = 'success';
-					$data['content'] = $result['content']['message'];
-					$data['operation'] = 'create';
-					$data['id'] = $result['content']['id']; // 创建后的信息ID
+					// 生成订单支付URL
+					$payment_url = base_url($this->class_name.'/pay?id='.$result['content']['id']);
 
-					$this->load->view('templates/header', $data);
-					$this->load->view($this->view_root.'/result_create', $data);
-					$this->load->view('templates/footer', $data);
+					// 转到支付页
+					redirect($payment_url);
 
 				else:
 					// 若创建失败，则进行提示
@@ -301,6 +277,22 @@
 		} // end detail
 
         // TODO 取消、删除、确认、再来一单
+
+        /**
+         * 以下为工具类方法
+         */
+
+        // 预生成订单信息
+        private function prepare($cart_string)
+        {
+            $params = array(
+                'cart_string' => $cart_string,
+            );
+            $url = api_url('order/prepare');
+            $result = $this->curl->go($url, $params, 'array');
+
+            return $result['content'];
+        } // end prepare
 
 	} // end class Order
 
