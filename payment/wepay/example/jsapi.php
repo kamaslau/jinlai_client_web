@@ -54,7 +54,7 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
 	require_once 'header.php';
 ?>
 	<style>
-		#total_fee {color:#585858;border-top:3px solid #e0e3eb;border-bottom:1px solid #d0d8e4;font-size:60px;font-weight:400;line-height:68px;padding-bottom:20px;padding-top:50px;_margin-top:60px;}
+		#total_fee {color:#585858;border-top:3px solid #e0e3eb;border-bottom:1px solid #d0d8e4;font-size:60px;font-weight:400;line-height:68px;padding-bottom:20px;padding-top:50px;}
 		#detail {padding:18px 0 40px;}
 			h1 {color:#4a4a4a;font-size:20px;line-height:24px;padding-bottom:16px;border-bottom: 1px solid #e5e7ea;}
 			#info {color:#8e8e8e;line-height:26px;padding-top:10px;overflow:hidden;}
@@ -109,6 +109,9 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
 		    jsApiCall();
 		}
 	}
+
+    // 立即调起支付
+	callpay();
 	</script>
 
 	<body class=wepay>

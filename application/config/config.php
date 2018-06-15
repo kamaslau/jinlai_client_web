@@ -45,6 +45,7 @@ define('SITE_DESCRIPTION', '「进来」是本地商家严选平台，构建严�
 define('ICP_NUMBER', '鲁ICP备15023233号-7'); // ICP备案号码，没有请留空
 
 define('BASE_URL', 'https://'. $_SERVER['SERVER_NAME'].'/'); // 可对外使用的站点URL；在本地测试时须替换为类似“localhost/BasicCodeigniter”形式
+define('CURRENT_URL', 'https://'. $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
 define('API_URL', 'https://api'.ROOT_URL); // API URL
 define('WEB_URL', 'https://www'.ROOT_URL); // 客户端 URL
 define('BIZ_URL', 'https://biz'.ROOT_URL); // 商家端 URL

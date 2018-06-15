@@ -85,6 +85,7 @@ img {width:auto;}
         .full-screen-form .input-group {overflow:hidden;}
             .full-screen-form .input-group div {overflow:hidden;padding:1px;}
         .full-screen-form input, .full-screen-form textarea {background-color:rgb(241,241,241);display:block;width:100%;height:90px;line-height:90px;padding:0 25px;border:1px solid #e7e7e7;border-radius:30px;}
+            .full-screen-form textarea {line-height:40px;}
         .full-screen-form [type=text] {}
         .full-screen-form textarea {height:224px;}
         .full-screen-form button {background:url('/media/images/vote/bg-submit@3x.png') no-repeat center center;background-size:528px 90px;width:528px;height:90px;margin-top:20px;text-indent:-9999em;}

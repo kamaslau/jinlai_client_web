@@ -31,10 +31,6 @@
 		 */
 		public function index()
 		{
-			// 若当前用户未设置密码，转到密码设置页
-			if ( empty($this->session->password) )
-				redirect( base_url('password_set') );
-
 			// 页面信息
 			$data = array(
 				'title' => '设置中心', // 页面标题

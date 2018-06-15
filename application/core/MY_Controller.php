@@ -71,6 +71,9 @@
 		// 请求签名
 		private $sign;
 
+		// 调试模式
+		public $test_mode;
+
 		public function __construct()
 	    {
 	        parent::__construct();
@@ -82,9 +85,13 @@
 			$this->device_platform = 'web';
 			$this->device_number = '';
             $this->method_name = $this->router->method;
+            $this->test_mode = $this->input->get_post('test_mode');
 
             // 检查当前设备信息
             $this->user_agent_determine();
+
+            // 如果已经打开测试模式，则输出调试信息
+            $this->output->enable_profiler($this->test_mode === 'on');
 
             // 若为桌面端，且不是路由页，则转到路由页
 //            if (($this->user_agent['is_desktop'] === TRUE) && (($_REQUEST['test_mode'] !== 'on') || ($this->router->method !== 'gateway'))):
@@ -97,10 +104,17 @@
          */
         public function __destruct()
         {
-            // 如果已经打开测试模式，则输出调试信息
-            if ($this->input->post_get('test_mode') === 'on')
-                $this->output->enable_profiler(TRUE);
+
         } // end __destruct
+
+        /**
+         * 列表页通用方法
+         */
+        public function index()
+        {
+            $this->limit = empty($this->input->get_post('limit')) ? 0 : $this->input->get_post('limit');
+            $this->offset = empty($this->input->get_post('offset')) ? 0 : $this->input->get_post('offset');
+        }
 
         /**
          * 检查访问设备类型
