@@ -54,6 +54,7 @@ function api_url($api_name)
 {
     return API_URL. $api_name;
 }
+define('VIEWS_PATH', APPPATH.'views/'); // 视图文件夹路径
 
 // JS、CSS等非当前站点特有资源所在URL，可用于配合又拍云等第三方存储
 define('CDN_URL', 'https://cdn-remote'.ROOT_URL); // 生产环境
@@ -80,7 +81,7 @@ define('WECHAT_APP_ID', 'wxba173a67df14c087');
 define('WECHAT_APP_SECRET', '1b1bf0c279a0d9eb0ec7288787ccb20a');
 define('WECHAT_TOKEN', '');
 define('AES_KEY', '');
-define('WECHAT_AUTH_URL', 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.WECHAT_APP_ID.'&redirect_uri='.urlencode('https://'. $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']).'&response_type=code&scope=snsapi_userinfo#wechat_redirect');
+define('WECHAT_AUTH_URL', 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.WECHAT_APP_ID.'&redirect_uri='.urlencode(CURRENT_URL).'&response_type=code&scope=snsapi_userinfo#wechat_redirect');
 
 // 微信支付参数（常用JS调起支付方式及被扫支付方式根路径）
 define('WEPAY_URL_JSAPI', BASE_URL.'payment/wepay/example/jsapi.php?showwxpaytitle=1&');
