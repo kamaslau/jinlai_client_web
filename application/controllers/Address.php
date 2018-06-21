@@ -32,20 +32,6 @@
 			'user_id', 'id',
 			'fullname', 'mobile', 'province', 'city', 'street',
 		);
-		
-		/**
-		 * 编辑单行特定字段时必要的字段名
-		 */
-		protected $names_edit_certain_required = array(
-			'id', 'name', 'value',
-		);
-
-		/**
-		 * 编辑多行特定字段时必要的字段名
-		 */
-		protected $names_edit_bulk_required = array(
-			'ids', 'password',
-		);
 
 		public function __construct()
 		{
@@ -67,6 +53,10 @@
 		 */
 		public function index()
 		{
+            // 检查必要参数
+            if (empty( $this->input->get_post('user_id') ))
+                redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
+
 			// 页面信息
 			$data = array(
 				'title' => $this->class_name_cn,

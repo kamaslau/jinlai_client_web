@@ -98,6 +98,8 @@
 			if ($result['status'] === 200):
 				$data['item'] = $result['content'];
 
+			    $data['meta'] = $this->list_meta(); // 获取系统参数
+
                 // 页面信息
                 $data['title'] = $this->class_name_cn. '详情';
                 $data['class'] = $this->class_name.' detail';

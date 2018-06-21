@@ -122,7 +122,7 @@
         protected function user_agent_determine()
         {
             // 获取当前设备信息
-            $user_agent = $_SERVER['HTTP_USER_AGENT'];
+            $this->user_agent['full'] = $user_agent = $_SERVER['HTTP_USER_AGENT'];
 
             // 判断是否为移动端
             $this->user_agent['is_wechat'] = strpos($user_agent, 'MicroMessenger/')? TRUE: FALSE;
@@ -466,6 +466,19 @@
 
 			endif;
 		} // end in_cart
+
+        // 获取系统参数列表
+        protected function list_meta()
+        {
+            // 从API服务器获取相应列表信息
+            $params['user_id'] = 'NULL'; // 可获取不属于当前用户的数据
+            $params['time_delete'] = 'NULL';
+
+            $url = api_url('meta/index');
+            $result = $this->curl->go($url, $params, 'array');
+
+            return ($result['status'] === 200)? $result['content']: NULL;
+        } // end list_meta
 
 		// 获取商家列表
 		protected function list_biz()

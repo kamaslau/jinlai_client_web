@@ -30,12 +30,12 @@
 		{
 			// 页面信息
 			$data = array(
-				'title' => $this->class_name_cn. '列表',
+				'title' => $this->class_name_cn. '记录',
 				'class' => $this->class_name.' index',
 			);
 
 			$code = $this->encode($this->session->user_id);
-			
+
 			// 筛选条件
 			//$condition['promoter_id'] = $this->session->user_id;
             $condition['promoter_id'] = 1;
@@ -58,7 +58,7 @@
 		} // end index
 
 		/**
-		 * 确认邀请
+		 * @DEPRECATED 确认邀请
          *
          * 输入邀请码
 		 */
@@ -83,12 +83,39 @@
 		} // end verify
 
         /**
+         * 发送邀请
+         *
+         * 输入邀请码
+         */
+        public function send()
+        {
+            // 若未登录，则转到接受邀请页
+            ($this->session->time_expire_login > time()) OR redirect(base_url('invite/accept'));
+
+            // 页面信息
+            $data = array(
+                'title' => '发送'. $this->class_name_cn,
+                'class' => $this->class_name.' send',
+            );
+
+            $data['url'] = base_url('invite/accept?form=qrcode&promoter_id='.$this->session->user_id);
+
+            // 输出视图
+            $this->load->view('templates/header-simple', $data);
+            $this->load->view($this->view_root.'/send', $data);
+            $this->load->view('templates/footer', $data);
+        } // end verify
+
+        /**
          * 接受邀请
          *
          * 直接点击
          */
         public function accept()
         {
+            // 若已登录，则转到发送邀请页
+            ($this->session->time_expire_login < time()) OR redirect(base_url('invite/send'));
+
             // 页面信息
             $data = array(
                 'title' => '接受'. $this->class_name_cn,
@@ -104,7 +131,7 @@
         /**
          * TODO 领取成功
          *
-         * 仅供测试，需删除
+         * 仅供测试，生产环境需移除此方法
          */
         public function result()
         {
@@ -123,7 +150,6 @@
         /**
          * 以下为工具方法
          */
-
 
         /**
          * 对明码参数进行加密
