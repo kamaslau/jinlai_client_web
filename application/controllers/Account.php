@@ -120,7 +120,15 @@
             ($this->session->time_expire_login < time()) OR redirect( base_url() );
 
             // TODO 若是从微信端获取用户资料，则获取相应数据
-            $wechat_info = $this->get_wechat_info();
+            //$wechat_info = $this->get_wechat_info();
+
+            // 已关注微信公众号且登录未超时，或传入了code参数时无需跳转
+            $code = $this->input->get('code');
+            (
+                ( (get_cookie('wechat_subscribe') == 1) && ($this->session->time_expire_login > time()) )
+                ||
+                ( !empty($code) && ($code <> get_cookie('last_code_used')) )
+            ) OR redirect(WECHAT_AUTH_URL);
 
 			// 页面信息
 			$data = array(
