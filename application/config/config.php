@@ -78,7 +78,7 @@ define('IOS_APP_ID', '1304204060');
 
 // 微信公众平台参数
 define('WECHAT_APP_ID', 'wxba173a67df14c087');
-define('WECHAT_APP_SECRET', '1b1bf0c279a0d9eb0ec7288787ccb20a');
+define('WECHAT_APP_SECRET', '1b7e4e04423db974a4eb988d84368152');
 define('WECHAT_TOKEN', '');
 define('AES_KEY', '');
 define('WECHAT_AUTH_URL', 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.WECHAT_APP_ID.'&redirect_uri='.urlencode(CURRENT_URL).'&response_type=code&scope=snsapi_userinfo#wechat_redirect');

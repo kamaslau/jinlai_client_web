@@ -8,4 +8,4 @@
 
 .idea/jinlai_client_web.iml
 
-application/views/*
+/application/views/*
