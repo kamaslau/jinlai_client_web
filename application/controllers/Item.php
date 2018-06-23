@@ -58,6 +58,7 @@
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
 				$data['items'] = $result['content'];
+			    $data['condition'] = empty($condition)? NULL: $condition; // 传递筛选参数到视图
 			else:
 				$data['error'] = $result['content']['error']['message'];
 			endif;

@@ -109,7 +109,34 @@
 			$this->load->view('templates/footer', $data);
 		} // end login
 
-		/**
+        /**
+         * TODO 微信登录
+         *
+         * 获取微信用户信息成功后应转到绑定页，询问是否需绑定手机号，若提供手机号则调用ACT1（需传入wechat_union_id等参数，头像等参数亦可一并传入），不提供手机号则调用ACT7
+         * @param $wechat_union_id
+         */
+        public function todo_login_wechat()
+        {
+            $sns_info = $this->session->sns_info;
+
+            // 生成可用于生成/更新的用户信息
+            $data_to_search = array(
+                'user_ip' => $this->input->ip_address(),
+                'nickname' => $sns_info['nickname'],
+                'gender' => $sns_info['sex'] == 1? '男': '女',
+                'avatar' => @$this->get_wechat_largest_avatar($sns_info['headimgurl']),
+            );
+
+            $data_to_search = array_filter($data_to_search); // 清理空项
+
+            // 询问是否提供手机号
+
+            // 若传入了手机号则调用ACT1
+
+            // 否则调用ACT7
+        } // end login_wechat
+
+        /**
 		 * 短信登录/注册
          *
          * @return void
@@ -538,6 +565,39 @@
 				$this->output_json();
 			endif;
 		} // end user_exist
+
+        /**
+         * 以下为工具方法
+         */
+
+        /**
+         * 测试方法
+         */
+        public function test()
+        {
+
+        } // end test
+
+        /**
+         * 获取最大尺寸的微信用户头像
+         * 相关方法调试完成后应移到API，先判断当前用户头像是否为内部资源文件，若否则使用本方法获取最大尺寸的微信头像并更新用户资料
+         *
+         * @param string $avatar 微信用户头像，例如"http://thirdwx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/46"；最后一个数值代表正方形头像大小（有0、46、64、96、132数值可选，0代表640*640正方形头像）
+         * @return string 最大尺寸的头像文件URL
+         */
+        private function get_wechat_largest_avatar($avatar)
+        {
+            if (empty($avatar)):
+                return NULL;
+
+            else:
+                // 截取当前头像URL至最后一次出现"/"符号的位置，并拼上表示最大尺寸的"0"作为新头像URL
+                $base_url = substr($avatar, 0, (strripos($avatar, '/') + 1));
+                $largest_avatar_url = $base_url.'0';
+                return $largest_avatar_url;
+
+            endif;
+        } // end get_wechat_largest_avatar
 
 	} // end class Account
 
