@@ -2,7 +2,7 @@
 	defined('BASEPATH') OR exit('此文件不可被直接访问');
 
 	/**
-	 * XX类
+	 * Class_name 类
 	 *
 	 * 创建新类时可用的模板
 	 *
@@ -13,7 +13,7 @@
 	class Class_name
 	{
 		// 类属性
-		public $some_property
+		public $some_property;
 
 		// （可选）原始CodeIgniter对象
 		private $CI;

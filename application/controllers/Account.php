@@ -10,6 +10,9 @@
 	 */
 	class Account extends MY_Controller
 	{
+        // 登录后跳转的目标页面BASE_URL之后部分
+        public $url_after_login = 'mine';
+
 		public function __construct()
 		{
 			parent::__construct();
@@ -21,6 +24,11 @@
 			$this->id_name = 'user_id';  // 还有这里，OK，这就可以了
 			$this->view_root = $this->class_name; // 视图文件所在目录
 			$this->media_root = MEDIA_URL. 'user/'; // 媒体文件所在目录
+
+            // 若传入了登录后跳转页面值，覆盖默认类属性值
+            $url_after_login = $this->input->get_post('url_after_login');
+            if ( ! empty($url_after_login))
+                $this->url_after_login = $url_after_login;
 		} // end __construct
 
 		/**
@@ -92,9 +100,9 @@
 					// 将用户手机号写入cookie并保存30天
 					$this->input->set_cookie('mobile', $data['item']['mobile'], 60*60*24 *30, COOKIE_DOMAIN);
 
-					// 若用户已设置密码则转到首页，否则转到密码设置页
+					// 若用户已设置密码则转到登录后页面，否则转到密码设置页
 					if ( !empty($data['item']['password']) ):
-						redirect( base_url() );
+						redirect( base_url($this->url_after_login) );
 					else:
 						redirect( base_url('password_set') );
 					endif;
@@ -110,30 +118,69 @@
 		} // end login
 
         /**
-         * TODO 微信登录
+         * 微信登录
          *
          * 获取微信用户信息成功后应转到绑定页，询问是否需绑定手机号，若提供手机号则调用ACT1（需传入wechat_union_id等参数，头像等参数亦可一并传入），不提供手机号则调用ACT7
-         * @param $wechat_union_id
          */
-        public function todo_login_wechat()
+        public function login_wechat()
         {
-            $sns_info = $this->session->sns_info;
-
-            // 生成可用于生成/更新的用户信息
-            $data_to_search = array(
-                'user_ip' => $this->input->ip_address(),
-                'nickname' => $sns_info['nickname'],
-                'gender' => $sns_info['sex'] == 1? '男': '女',
-                'avatar' => @$this->get_wechat_largest_avatar($sns_info['headimgurl']),
-            );
-
-            $data_to_search = array_filter($data_to_search); // 清理空项
-
             // 询问是否提供手机号
 
             // 若传入了手机号则调用ACT1
 
             // 否则调用ACT7
+
+            $code = $this->input->get('code');
+
+            // 若已关注微信公众号且已登录，或未传入微信授权CODE，或CODE已使用过，则无需登录，直接转到需登录后跳转的目标页面
+            if (
+                (get_cookie('wechat_subscribe') == 1) && $this->session->time_expire_login > time()
+                || empty($code)
+                || $code === get_cookie('last_code_used')
+            ):
+                redirect( base_url($this->url_after_login));
+            endif;
+
+            $this->wechat->grab_user();
+            $sns_info = $this->wechat->sns_info;
+
+            $data_to_search = array(
+                'user_ip' => $this->input->ip_address(),
+
+                'wechat_union_id' => $sns_info['unionid'],
+                'sns_info' => json_encode($sns_info),
+            );
+
+            // 从API服务器获取相应详情信息
+            $params = array_filter($data_to_search); // 清理空项
+            $url = api_url($this->class_name. '/login_wechat');
+            $result = $this->curl->go($url, $params, 'array');
+
+            if ($result['status'] !== 200):
+                $data['error'] = $result['content']['error']['message'];
+
+            else:
+                // 获取用户信息
+                $data['item'] = $result['content'];
+                $data['item']['wechat_subscribe'] = $sns_info['subscribe']; // TODO 微信公众号关注情况；应抽空改为写入数据库相应字段
+                // 将信息键值对写入session
+                foreach ($data['item'] as $key => $value):
+                    $user_data[$key] = $value;
+                endforeach;
+                $user_data['time_expire_login'] = time() + 60*60*24 *30; // 默认登录状态保持30天
+                $this->session->set_userdata($user_data);
+
+                // 将用户手机号写入cookie并保存30天
+                $this->input->set_cookie('mobile', $data['item']['mobile'], 60*60*24 *30, COOKIE_DOMAIN);
+
+                // 若用户已设置密码则转到登录后页面，否则转到密码设置页
+                if ( !empty($data['item']['password']) ):
+                    redirect( base_url($this->url_after_login) );
+                else:
+                    redirect( base_url('password_set') );
+                endif;
+
+            endif;
         } // end login_wechat
 
         /**
@@ -148,14 +195,6 @@
 
             // TODO 若是从微信端获取用户资料，则获取相应数据
             //$wechat_info = $this->get_wechat_info();
-
-            // 已关注微信公众号且登录未超时，或传入了code参数时无需跳转
-            $code = $this->input->get('code');
-            (
-                ( (get_cookie('wechat_subscribe') == 1) && ($this->session->time_expire_login > time()) )
-                ||
-                ( !empty($code) && ($code <> get_cookie('last_code_used')) )
-            ) OR redirect(WECHAT_AUTH_URL);
 
 			// 页面信息
 			$data = array(
@@ -201,9 +240,9 @@
 					// 将用户手机号写入cookie并保存30天
 					$this->input->set_cookie('mobile', $data['item']['mobile'], 60*60*24 *30, COOKIE_DOMAIN);
 
-					// 若用户已设置密码则转到首页，否则转到密码设置页
+					// 若用户已设置密码则转到登录后页面，否则转到密码设置页
 					if ( !empty($data['item']['password']) ):
-                        redirect( base_url() );
+                        redirect( base_url($this->url_after_login) );
 					else:
 						redirect( base_url('password_set') );
 					endif;
@@ -252,6 +291,7 @@
 			else:
 				$data_to_search = array(
 					'user_id' => $this->session->user_id,
+
 					'password' => $this->input->post('password'),
 					'password_confirm' => $this->input->post('password_confirm'),
 				);
@@ -577,27 +617,6 @@
         {
 
         } // end test
-
-        /**
-         * 获取最大尺寸的微信用户头像
-         * 相关方法调试完成后应移到API，先判断当前用户头像是否为内部资源文件，若否则使用本方法获取最大尺寸的微信头像并更新用户资料
-         *
-         * @param string $avatar 微信用户头像，例如"http://thirdwx.qlogo.cn/mmopen/g3MonUZtNHkdmzicIlibx6iaFqAc56vxLSUfpb6n5WKSYVY0ChQKkiaJSgQ1dZuTOgvLLrhJbERQQ4eMsv84eavHiaiceqxibJxCfHe/46"；最后一个数值代表正方形头像大小（有0、46、64、96、132数值可选，0代表640*640正方形头像）
-         * @return string 最大尺寸的头像文件URL
-         */
-        private function get_wechat_largest_avatar($avatar)
-        {
-            if (empty($avatar)):
-                return NULL;
-
-            else:
-                // 截取当前头像URL至最后一次出现"/"符号的位置，并拼上表示最大尺寸的"0"作为新头像URL
-                $base_url = substr($avatar, 0, (strripos($avatar, '/') + 1));
-                $largest_avatar_url = $base_url.'0';
-                return $largest_avatar_url;
-
-            endif;
-        } // end get_wechat_largest_avatar
 
 	} // end class Account
 

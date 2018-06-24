@@ -57,6 +57,8 @@ $route['home'] = 'home/index'; // 首页
 /* Account 账号 */
 $route['login'] = 'account/login'; // 密码登录
 $route['login_sms'] = 'account/login_sms'; // 短信登录/注册
+$route['login_wechat'] = 'account/login_wechat'; // 微信登录
+
 $route['register'] = 'account/register'; // 邮箱注册
 $route['logout'] = 'account/logout'; // 退出当前账号
 $route['password_set'] = 'account/password_set'; // 设置密码（仅限登录后）

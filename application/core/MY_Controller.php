@@ -87,11 +87,16 @@
             $this->method_name = $this->router->method;
             $this->test_mode = $this->input->get_post('test_mode');
 
+            // 如果已经打开测试模式，则输出调试信息
+            $this->output->enable_profiler($this->test_mode === 'on');
+
             // 检查当前设备信息
             $this->user_agent_determine();
 
-            // 如果已经打开测试模式，则输出调试信息
-            $this->output->enable_profiler($this->test_mode === 'on');
+            // 若为微信端，载入微信相关功能
+            if ($this->user_agent['is_wechat']):
+                $this->load->library('wechat');
+            endif;
 
             // 若为桌面端，且不是路由页，则转到路由页
 //            if (($this->user_agent['is_desktop'] === TRUE) && (($_REQUEST['test_mode'] !== 'on') || ($this->router->method !== 'gateway'))):
@@ -367,46 +372,6 @@
 
             return array_unique($ids); // 清除重复项
         } // end parse_ids_array
-
-        /**
-         * TODO 微信登录
-         *
-         * 使用手机号及密码进行账户登录
-         *
-         * @return void
-         */
-        protected function login_wechat($wechat_union_id)
-        {
-            // 若已登录，转到首页
-            !isset($this->session->time_expire_login) OR redirect( base_url() );
-
-            $data_to_search = array(
-                'wechat_union_id' => $wechat_union_id,
-                'user_ip' => $this->input->ip_address(),
-            );
-
-            // 从API服务器获取相应详情信息
-            $params = $data_to_search;
-            $result = $this->curl->go($url, $params, 'array');
-
-            if ($result['status'] !== 200):
-                $data['error'] = $result['content']['error']['message'];
-
-            else:
-                // 获取用户信息
-                $data['item'] = $result['content'];
-                // 将信息键值对写入session
-                foreach ($data['item'] as $key => $value):
-                    $user_data[$key] = $value;
-                endforeach;
-                $user_data['time_expire_login'] = time() + 60*60*24 *30; // 默认登录状态保持30天
-                $this->session->set_userdata($user_data);
-
-                // 将用户手机号写入cookie并保存30天
-                $this->input->set_cookie('mobile', $data['item']['mobile'], 60*60*24 *30, COOKIE_DOMAIN);
-
-            endif;
-        } // end login_wechat
 
 		// 解析购物车
 		protected function cart_decode($cart_string = NULL)
