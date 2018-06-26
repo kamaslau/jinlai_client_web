@@ -80,6 +80,11 @@ $route['article'] = 'article/index';
 $route['article_biz/detail'] = 'article_biz/detail';
 $route['article_biz'] = 'article_biz/index';
 
+/* 营销页面 */
+$route['page/detail'] = 'page/detail';
+$route['page/(:any)'] = 'page/detail/$1';
+$route['page'] = 'page/index';
+
 /* 商品分类 */
 $route['item/category'] = 'item_category/index';
 $route['item_category/(:any)'] = 'item_category/detail/$1';
