@@ -284,6 +284,7 @@
 
 			if ($this->form_validation->run() === FALSE):
 				$data['error'] = validation_errors();
+
 				$this->load->view('templates/header', $data);
 				$this->load->view($this->view_root.'/password_set', $data);
 				$this->load->view('templates/footer', $data);
@@ -303,6 +304,7 @@
 
 				if ($result['status'] !== 200):
 					$data['error'] = $result['content']['error']['message'];
+
 					$this->load->view('templates/header', $data);
 					$this->load->view($this->view_root.'/password_set', $data);
 					$this->load->view('templates/footer', $data);
@@ -311,14 +313,8 @@
 					// 更新本地用户密码字段
 					$this->session->password = 'set';
 
-					$data['title'] = '密码操作结果';
-					$data['class'] = 'success';
-					$data['content'] = '成功设置密码';
-					
-					$this->load->view('templates/header', $data);
-					$this->load->view($this->view_root.'/result', $data);
-					$this->load->view('templates/footer', $data);
-
+				    // 转到个人中心页
+				    redirect(base_url('mine'));
 				endif;
 
 			endif;
@@ -387,13 +383,8 @@
 					$this->load->view('templates/footer', $data);
 
 				else:
-					$data['title'] = '密码操作结果';
-					$data['class'] = 'success';
-					$data['content'] = '成功修改密码';
-					
-					$this->load->view('templates/header', $data);
-					$this->load->view($this->view_root.'/result', $data);
-					$this->load->view('templates/footer', $data);
+                    // 转到个人中心页
+                    redirect(base_url('mine'));
 
 				endif;
 

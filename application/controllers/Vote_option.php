@@ -71,7 +71,7 @@
 
 			// 输出视图
 			$this->load->view('templates/header-vote', $data);
-			$this->load->view($this->view_root.'/detail', $data);
+            $this->load->view($this->view_root.'/detail_id'.$data['vote']['vote_id'], $data);
 			$this->load->view('templates/footer-vote', $data);
 		} // end detail
 

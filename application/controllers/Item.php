@@ -9,7 +9,7 @@
 	 * @copyright ICBG <www.bingshankeji.com>
 	 */
 	class Item extends MY_Controller
-	{	
+	{
 		/**
 		 * 可作为列表筛选条件的字段名；可在具体方法中根据需要删除不需要的字段并转换为字符串进行应用，下同
 		 */
@@ -32,7 +32,9 @@
 		} // __construct
 
 		/**
-		 * 列表页
+		 * 列表页（搜索结果页）
+         *
+         * 若传入了biz_id，则为店内商品类别，否则为平台商品类别
 		 */
 		public function index()
 		{
@@ -59,13 +61,22 @@
 			if ($result['status'] === 200):
 				$data['items'] = $result['content'];
 			    $data['condition'] = empty($condition)? NULL: $condition; // 传递筛选参数到视图
+
+                // 若传入了商家ID，则获取商家信息
+                $biz_id = $this->input->get_post('biz_id');
+                $data['biz'] = $this->get_biz($biz_id);
 			else:
 				$data['error'] = $result['content']['error']['message'];
 			endif;
 
 			// 输出视图
 			$this->load->view('templates/header', $data);
-			$this->load->view($this->view_root.'/index', $data);
+			if (empty($biz_id)):
+                $this->load->view($this->view_root.'/index', $data);
+            else:
+                $this->load->view($this->view_root.'/index_biz', $data);
+            endif;
+
 			$this->load->view('templates/footer', $data);
 		} // end index
 
