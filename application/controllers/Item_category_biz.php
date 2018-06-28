@@ -36,14 +36,16 @@
 		 */
 		public function index()
 		{
-		    // 检查必要参数
-		    if (empty( $this->input->get_post('biz_id') ))
-		        redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
+            // 检查必要参数
+            $biz_id = $this->input->get_post('biz_id');
+            if ( empty($biz_id) )
+                redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
 
 			// 页面信息
 			$data = array(
 				'title' => $this->class_name_cn,
 				'class' => $this->class_name.' index',
+                'biz_id' => $biz_id,
 			);
 
 			// 筛选条件
@@ -64,7 +66,6 @@
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
 				$data['items'] = $result['content'];
-			    $data['biz_id'] = $this->input->get_post('biz_id');
 			else:
                 $data['items'] = array();
 				$data['error'] = $result['content']['error']['message'];

@@ -64,7 +64,7 @@
 
                 // 若传入了商家ID，则获取商家信息
                 $biz_id = $this->input->get_post('biz_id');
-                $data['biz'] = $this->get_biz($biz_id);
+                $data['biz'] = $this->get_biz($this->input->get_post('biz_id'));
 			else:
 				$data['error'] = $result['content']['error']['message'];
 			endif;

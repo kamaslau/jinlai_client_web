@@ -97,7 +97,12 @@
                 $data['class'] = $this->class_name.' detail';
 
                 // 输出视图
-                $this->load->view('templates/header', $data);
+                if ($data['item']['page_id'] == 7):
+                    $this->load->view('templates/header-page', $data);
+                else:
+                    $this->load->view('templates/header', $data);
+                endif;
+
                 $this->load->view($this->view_root.'/'.$data['item']['content_file'], $data);
                 $this->load->view('templates/footer', $data);
 

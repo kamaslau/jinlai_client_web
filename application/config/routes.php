@@ -91,6 +91,7 @@ $route['item_category/(:any)'] = 'item_category/detail/$1';
 $route['item_category'] = 'item_category/index';
 
 /* 商品 */
+$route['item/index'] = 'item/index';
 $route['item/detail'] = 'item/detail';
 $route['item/(:any)'] = 'item/detail/$1';
 $route['item'] = 'item/index';

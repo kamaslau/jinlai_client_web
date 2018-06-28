@@ -53,10 +53,6 @@
 		 */
 		public function index()
 		{
-            // 检查必要参数
-            if (empty( $this->input->get_post('user_id') ))
-                redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
-
 			// 页面信息
 			$data = array(
 				'title' => $this->class_name_cn,
