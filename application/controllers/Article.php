@@ -100,8 +100,14 @@
 
                 // 输出视图
                 $this->load->view('templates/header', $data);
-                $this->load->view($this->view_root.'/detail', $data);
+                // 为部分页面载入特有视图
+                if ($data['item']['article_id'] == 3): // 关于我们
+                    $this->load->view($this->view_root.'/about-us', $data);
+                else:
+                    $this->load->view($this->view_root.'/detail', $data);
+                endif;
                 $this->load->view('templates/footer', $data);
+
 
             else:
                 redirect( base_url('error/code_404') ); // 若缺少参数，转到错误提示页

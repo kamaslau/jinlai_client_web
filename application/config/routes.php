@@ -101,6 +101,10 @@ $route['biz/detail'] = 'biz/detail';
 $route['biz/(:any)'] = 'biz/detail/$1';
 $route['biz'] = 'biz/index';
 
+/* 邀请好友 */
+$route['invite/(:any)'] = 'article/detail/about-us';
+$route['invite'] = 'article/detail/about-us';
+
 $route['default_controller'] = 'home/index';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = TRUE; // 将路径中的“-”解析为“_”，兼顾SEO需要与类命名规范
