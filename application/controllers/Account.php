@@ -27,8 +27,7 @@
 
             // 若传入了登录后跳转页面值，覆盖默认类属性值
             $url_after_login = $this->input->get_post('url_after_login');
-            if ( ! empty($url_after_login))
-                $this->url_after_login = $url_after_login;
+                $this->url_after_login = empty($url_after_login)? base_url('mine'): base_url($url_after_login);
 		} // end __construct
 
 		/**
@@ -41,7 +40,7 @@
 		public function login()
 		{
 			// 若已登录，转到首页
-            ($this->session->time_expire_login < time()) OR redirect( base_url() );
+            ($this->session->time_expire_login < time()) OR redirect( $this->url_after_login );
 
 			// 页面信息
 			$data = array(
@@ -102,7 +101,7 @@
 
 					// 若用户已设置密码则转到登录后页面，否则转到密码设置页
 					if ( !empty($data['item']['password']) ):
-						redirect( base_url($this->url_after_login) );
+						redirect( $this->url_after_login );
 					else:
 						redirect( base_url('password_set') );
 					endif;
@@ -138,7 +137,7 @@
                 || empty($code)
                 || $code === get_cookie('last_code_used')
             ):
-                redirect( base_url($this->url_after_login));
+                redirect( $this->url_after_login );
             endif;
 
             $this->wechat->grab_user();
@@ -175,7 +174,7 @@
 
                 // 若用户已设置密码则转到登录后页面，否则转到密码设置页
                 if ( !empty($data['item']['password']) ):
-                    redirect( base_url($this->url_after_login) );
+                    redirect( $this->url_after_login );
                 else:
                     redirect( base_url('password_set') );
                 endif;
@@ -191,7 +190,7 @@
 		public function login_sms()
 		{
             // 若已登录，转到首页
-            ($this->session->time_expire_login < time()) OR redirect( base_url() );
+            ($this->session->time_expire_login < time()) OR redirect( $this->url_after_login );
 
             // TODO 若是从微信端获取用户资料，则获取相应数据
             //$wechat_info = $this->get_wechat_info();
@@ -242,7 +241,7 @@
 
 					// 若用户已设置密码则转到登录后页面，否则转到密码设置页
 					if ( !empty($data['item']['password']) ):
-                        redirect( base_url($this->url_after_login) );
+                        redirect( $this->url_after_login );
 					else:
 						redirect( base_url('password_set') );
 					endif;
@@ -499,7 +498,7 @@
 		public function register()
 		{
             // 若已登录，转到首页
-            ($this->session->time_expire_login < time()) OR redirect( base_url() );
+            ($this->session->time_expire_login < time()) OR redirect( $this->url_after_login );
 
 			// 页面信息
 			$data = array(
@@ -520,7 +519,7 @@
 					'password' => sha1($this->input->post('password')),
 				);
 
-				// 从API服务器获取相应详情信息
+				// 从API服务器获取相应详情信
 				$params = $data_to_create;
 				$url = api_url($this->class_name. '/register');
 				$result = $this->curl->go($url, $params, 'array');
