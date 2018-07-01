@@ -202,7 +202,6 @@
 
 				// 向API服务器发送待创建数据
 				$params = $data_to_create;
-				$this->key_value($params);exit(); // 测试
 				$url = api_url($this->class_name. '/create');
 				$result = $this->curl->go($url, $params, 'array');
 				if ($result['status'] === 200):

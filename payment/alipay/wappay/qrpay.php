@@ -52,7 +52,7 @@ if ( !empty($_POST['WIDout_trade_no']) && trim($_POST['WIDout_trade_no']) != '')
     <link rel=dns-prefetch href="<?php echo CDN_URL ?>">
     <title><?php echo $page_title ?></title>
     <meta name=robots content="noindex, nofollow">
-    <meta name=version content="revision20180614">
+    <meta name=version content="revision20180701">
     <meta name=author content="刘亚杰Kamas,青岛意帮网络科技有限公司产品部&amp;技术部">
     <meta name=copyright content="进来商城,青岛意帮网络科技有限公司">
     <meta name=contact content="kamaslau@dingtalk.com">

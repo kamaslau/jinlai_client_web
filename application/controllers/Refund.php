@@ -125,6 +125,70 @@
 		} // end detail
 
         /**
+         * 创建
+         */
+        public function create()
+        {
+            // 页面信息
+            $data = array(
+                'title' => '创建'.$this->class_name_cn,
+                'class' => $this->class_name.' create',
+                'error' => '', // 预设错误提示
+            );
+
+            // 待验证的表单项
+            $this->form_validation->set_error_delimiters('', '；');
+            // 验证规则 https://www.codeigniter.com/user_guide/libraries/form_validation.html#rule-reference
+            $this->form_validation->set_rules('record_id', '订单商品ID', 'trim|required|is_natural_no_zero');
+            $this->form_validation->set_rules('type', '类型', 'trim|required');
+            $this->form_validation->set_rules('cargo_status', '货物状态', 'trim|required');
+            $this->form_validation->set_rules('reason', '原因', 'trim|required|in_list[无理由,退运费,未收到,不开发票]');
+            $this->form_validation->set_rules('description', '补充说明', 'trim|max_length[255]');
+            $this->form_validation->set_rules('url_images', '相关图片URL', 'trim|max_length[255]');
+
+            // 若表单提交不成功
+            if ($this->form_validation->run() === FALSE):
+                $data['error'] = validation_errors();
+
+                $this->load->view('templates/header', $data);
+                $this->load->view($this->view_root.'/create', $data);
+                $this->load->view('templates/footer', $data);
+
+            else:
+                // 需要创建的数据；逐一赋值需特别处理的字段
+                $data_to_create = array(
+                    'user_ip' => $this->input->ip_address(),
+                );
+                // 自动生成无需特别处理的数据
+                $data_need_no_prepare = array(
+                    'record_id', 'type', 'cargo_status', 'reason', 'description', 'url_images',
+                );
+                foreach ($data_need_no_prepare as $name)
+                    $data_to_create[$name] = $this->input->post($name);
+
+                // 向API服务器发送待创建数据
+                $params = $data_to_create;
+                //$this->key_value($params);exit(); // 测试
+                $url = api_url($this->class_name. '/create');
+                $result = $this->curl->go($url, $params, 'array');
+                if ($result['status'] === 200):
+                    // 转到退款列表页
+                    redirect( base_url('refund/index') );
+
+                else:
+                    // 若创建失败，则进行提示
+                    $data['error'] = $result['content']['error']['message'];
+
+                    $this->load->view('templates/header', $data);
+                    $this->load->view($this->view_root.'/create', $data);
+                    $this->load->view('templates/footer', $data);
+
+                endif;
+
+            endif;
+        } // end create
+
+        /**
          * 删除
          *
          * 不可删除

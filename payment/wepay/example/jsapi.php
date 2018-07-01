@@ -2,6 +2,8 @@
 require_once '../lib/WxPay.Api.php';
 require_once 'WxPay.JsApiPay.php';
 
+ //&& strpos(CURRENT_URL, 'payment/wepay') != FALSE
+
 // ①、获取用户openid
 /*
 $type = $_GET['type'];
@@ -18,6 +20,8 @@ endforeach;
 $tools = new JsApiPay();
 $openId = $tools->GetOpenid();
 //var_dump($openId);
+//var_dump('没事儿');
+//exit();
 
 // ②、统一下单
 $input = new WxPayUnifiedOrder();
@@ -128,7 +132,7 @@ $jsApiParameters = $tools->GetJsApiParameters($order);
 				</dl>
 			</div>
 
-			<p id=close_tip>完成支付后，您可以到 <a title="订单中心" href="<?php echo WxPayConfig::CLIENT_URL.'mine' ?>">个人中心</a> 查看订单信息</p>
+			<p id=close_tip>完成支付后，您可以到 <a title="订单中心" href="<?php echo WxPayConfig::CLIENT_URL.'order' ?>">订单中心</a> 查看订单信息</p>
 
 			<button type=button onclick="callpay()" class="btn btn-primary btn-block btn-lg">确定</button>
 		</div>

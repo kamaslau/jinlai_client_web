@@ -96,6 +96,8 @@
             // 若为微信端，载入微信相关功能
             if ($this->user_agent['is_wechat']):
                 $this->load->library('wechat');
+            //var_dump($this->user_agent['is_wechat']);
+            //exit();
             endif;
 
             // 若为桌面端，且不是路由页，则转到路由页

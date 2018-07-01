@@ -39,7 +39,7 @@ endif;
 
 // 需要自定义的常量
 define('SITE_NAME', '进来商城'); // 站点名称
-define('SITE_SLOGAN', '本地生活严选平台'); // 站点广告语
+define('SITE_SLOGAN', '进来，与精良为伍！'); // 站点广告语
 define('SITE_KEYWORDS', '进来,进来商城,品控,网购,网购平台,网上商城'); // 站点关键词
 define('SITE_DESCRIPTION', '「进来」是本地商家严选平台，构建严选商圈生态、共享超级用户圈，深度服务本地商家。 '); // 站点描述
 define('ICP_NUMBER', '鲁ICP备15023233号-7'); // ICP备案号码，没有请留空

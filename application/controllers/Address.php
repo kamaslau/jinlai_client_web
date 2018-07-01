@@ -72,6 +72,7 @@
 			if ($result['status'] === 200):
 				$data['items'] = $result['content'];
 			else:
+                $data['items'] = array();
 				$data['error'] = $result['content']['error']['message'];
 			endif;
 
@@ -92,7 +93,7 @@
 				'class' => $this->class_name.' create',
 				'error' => '', // 预设错误提示
 			);
-			
+
 			// 检查是否传入了回调跳转URL
 			if ( !empty($this->input->get_post('return_to')) ):
 				$data['return_to'] = $this->input->get_post('return_to');
@@ -151,9 +152,7 @@
 						redirect( $this->input->post('return_to') );
 						
 					else:
-						$this->load->view('templates/header', $data);
-						$this->load->view($this->view_root.'/result', $data);
-						$this->load->view('templates/footer', $data);
+                        redirect( base_url('address') );
 
 					endif;
 

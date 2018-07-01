@@ -7,7 +7,7 @@
 		<link rel=dns-prefetch href="<?php echo CDN_URL ?>">
 	    <title><?php echo $page_title ?></title>
 		<meta name=robots content="noindex, nofollow">
-		<meta name=version content="revision20180130">
+		<meta name=version content="revision20180701">
         <meta name=author content="刘亚杰Kamas,青岛意帮网络科技有限公司产品部&amp;技术部">
         <meta name=copyright content="进来商城,青岛意帮网络科技有限公司">
         <meta name=contact content="kamaslau@dingtalk.com">
@@ -15,7 +15,7 @@
 		<meta name=viewport content="width=750,user-scalable=0">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-        <script src="<?php echo CDN_URL ?>js/jquery-3.2.1.min.js"></script>
+        <script src="<?php echo CDN_URL ?>js/jquery-3.3.1.min.js"></script>
         <script defer src="<?php echo CDN_URL ?>js/jquery.qrcode.min.js"></script>
         <script>
         $(function(){
@@ -60,12 +60,6 @@
         </script>
 
         <link rel=stylesheet media=all href="<?php echo CDN_URL ?>css/reset.css">
-		<!--
-        <link rel=stylesheet media=all href="https://cdn-remote.517ybang.com/bootstrap/css/bootstrap.min.css">
-		<link rel=stylesheet media=all href="https://cdn.key2all.com/flat-ui/css/flat-ui.min.css">
-		<link rel=stylesheet media=all href="https://cdn-remote.517ybang.com/font-awesome/css/font-awesome.min.css">
-		<link rel=stylesheet media=all href="/css/style.css">
-		-->
 
 		<link rel="shortcut icon" href="<?php echo CDN_URL ?>icon/jinlai_client/icon28@3x.png">
 		<link rel=apple-touch-icon href="<?php echo CDN_URL ?>icon/jinlai_client/icon120@3x.png">
