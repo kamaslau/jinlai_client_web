@@ -74,6 +74,10 @@
 		// 调试模式
 		public $test_mode;
 
+		// 需跳转到的页面URL部分
+        // 例如商品详情页，即'item/detail?id=1'
+		public $url_to_go = '';
+
 		public function __construct()
 	    {
 	        parent::__construct();
