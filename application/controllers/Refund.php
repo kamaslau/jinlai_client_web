@@ -189,6 +189,52 @@
         } // end create
 
         /**
+         * 创建并预选退款类型
+         */
+        public function create_type()
+        {
+            $type = $this->input->post_get('type');
+            $record_id = $this->input->post_get('record_id');
+
+            // 页面信息
+            $data = array(
+                'title' => '创建'.$this->class_name_cn,
+                'class' => $this->class_name.' create',
+                'error' => '', // 预设错误提示
+            );
+
+            // 待验证的表单项
+            $this->form_validation->set_error_delimiters('', '；');
+            // 验证规则 https://www.codeigniter.com/user_guide/libraries/form_validation.html#rule-reference
+            $this->form_validation->set_rules('record_id', '订单商品ID', 'trim|required|is_natural_no_zero');
+
+            // 若表单提交不成功
+            if ($this->form_validation->run() === FALSE):
+                $data['error'] = validation_errors();
+
+                $this->load->view('templates/header', $data);
+                $this->load->view($this->view_root.'/create_type', $data);
+                $this->load->view('templates/footer', $data);
+
+            else:
+                if ($result['status'] === 200):
+                    // 转到退款创建页
+                    redirect( base_url('refund/create?type='.$type.'&record_id='.$record_id) );
+
+                else:
+                    // 若创建失败，则进行提示
+                    $data['error'] = $result['content']['error']['message'];
+
+                    $this->load->view('templates/header', $data);
+                    $this->load->view($this->view_root.'/create_type', $data);
+                    $this->load->view('templates/footer', $data);
+
+                endif;
+
+            endif;
+        } // end create_type
+
+        /**
          * 删除
          *
          * 不可删除
