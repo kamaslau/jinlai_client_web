@@ -68,13 +68,15 @@ $route['email_reset'] = 'account/email_reset'; // 换绑Email（仅限登录后�
 $route['mobile_reset'] = 'account/mobile_reset'; // 换绑手机号（仅限登录后）
 $route['account/edit'] = 'account/edit'; // 编辑账户资料
 $route['mine'] = 'user/mine'; // 个人中心（仅限登录后）
-
 /* 以下按控制器类名称字母降序排列 */
 /* Article 平台文章 */
 $route['contact-us'] = 'article/detail/contact-us'; // 联系我们
 $route['about-us'] = 'article/detail/about-us'; // 关于我们
 $route['policy-privacy'] = 'article/detail/policy-privacy'; // 协议-隐私协议
 $route['article/detail'] = 'article/detail';
+//$route['article/bizcooperation'] = 'article/bizcooperation';
+$route['article/biz-cooperation'] = 'article/bizcooperation';
+$route['article/bizcooperation'] = 'article/bizcooperation';
 $route['article/(:any)'] = 'article/detail/$1';
 $route['article'] = 'article/index';
 /* Article 商家文章 */
@@ -83,6 +85,7 @@ $route['article_biz'] = 'article_biz/index';
 
 /* 营销页面 */
 $route['page/detail'] = 'page/detail';
+$route['page/newdetail'] = 'page/newdetail';
 $route['page/(:any)'] = 'page/detail/$1';
 $route['page'] = 'page/index';
 
