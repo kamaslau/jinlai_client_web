@@ -67,8 +67,13 @@
             $data['offset'] = $params['offset'] = empty($this->input->get_post('offset'))? 0: $this->input->get_post('offset');
 			$url = api_url($this->class_name. '/index');
 			$result = $this->curl->go($url, $params, 'array');
-			if ($result['status'] === 200):
+			// if (isset($_GET['debug'])) {
+			// 	var_dump($result);
+			// }
+			if ($result['status'] === 200) :
 				$data['items'] = $result['content'];
+			elseif ($result['status'] == 414) :
+				$data['items'] = [];
 			else:
 				$data['error'] = $result['content']['error']['message'];
 			endif;
@@ -156,7 +161,8 @@
 		 * 创建
 		 */
 		public function create()
-		{
+		{	
+
 			// 页面信息
 			$data = array(
 				'title' => '创建'.$this->class_name_cn,
@@ -202,8 +208,12 @@
 
 				// 向API服务器发送待创建数据
 				$params = $data_to_create;
+				//区分微信支付来源
+				
+				$params['wepay_from'] = '公众号';
 				$url = api_url($this->class_name. '/create');
 				$result = $this->curl->go($url, $params, 'array');
+
 				if ($result['status'] === 200):
 					// 生成订单支付URL
 					$payment_url = base_url($this->class_name.'/pay?id='.$result['content']['id']);
@@ -245,8 +255,26 @@
 			// 从API服务器获取相应详情信息
 			$url = api_url($this->class_name. '/detail');
 			$result = $this->curl->go($url, $params, 'array');
+
+			//多订单的时候 只有连续的才能统一算上金额
+			$res = '';
+			$ids = explode(',', $id);
+			$mark = $id;
+			if (count($ids) >= 2){
+				$first = intval(current($ids)) - 1;
+				$last = intval(end($ids));
+				if ($first + count($ids) == $last) {
+					$pricetotalurl = api_url($this->class_name. '/price_total');
+					$res = $this->curl->go($pricetotalurl , ['order_ids'=>$id], 'array');
+					$mark = $first . '|' . $last;
+				}
+			}
 			if ($result['status'] === 200):
 				$data['item'] = $result['content'];
+				if (is_array($res) && $res['status'] === 200 && $res['content']['total'] >= $data['item']['total']) :
+					$data['item']['total'] = $res['content']['total'];
+					$data['item']['order_id'] = $mark;
+				endif;
 			else:
 				$data['error'] = $result['content']['error']['message'];
 			endif;

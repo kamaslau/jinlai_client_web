@@ -126,8 +126,10 @@
 			
 			// 从API服务器获取商家列表信息（及装修信息）
 			$params = $condition;
-            $data['limit'] = $params['limit'] = empty($this->input->get_post('limit'))? 10: $this->input->get_post('limit');
-            $data['offset'] = $params['offset'] = empty($this->input->get_post('offset'))? 0: $this->input->get_post('offset');
+            // $data['limit'] = $params['limit'] = empty($this->input->get_post('limit'))? 10: $this->input->get_post('limit');
+            // $data['offset'] = $params['offset'] = empty($this->input->get_post('offset'))? 0: $this->input->get_post('offset');
+            $data['limit'] = $params['limit'] = 0;
+            $data['offset'] = $params['offset'] = 0;
 			$url = api_url('biz/index');
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):

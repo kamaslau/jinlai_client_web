@@ -53,9 +53,10 @@
 			$this->form_validation->set_rules('password', '密码', 'trim|min_length[6]|max_length[20]');
 			$this->form_validation->set_rules('sms_id', '短信ID', 'trim|is_natural_no_zero');
 			$this->form_validation->set_rules('captcha', '短信验证码', 'trim|exact_length[6]|is_natural_no_zero');
-
+			
 			if ($this->form_validation->run() === FALSE):
 				$data['error'] = validation_errors();
+				
 
 			else:
 				$mobile = $this->input->post('mobile');
