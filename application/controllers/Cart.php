@@ -17,6 +17,9 @@
 		{
 			parent::__construct();
 
+			// 若未登录，转到密码登录页
+			($this->session->time_expire_login > time()) OR redirect( base_url('login') );
+			
 			// 向类属性赋值
 			$this->class_name = strtolower(__CLASS__);
 			$this->class_name_cn = '购物车'; // 改这里……
