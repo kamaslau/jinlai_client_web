@@ -167,10 +167,10 @@
             endif;
 
             // 从API服务器获取相应详情信息
-            $url = api_url($this->class_name. '/detail');
-            $result = $this->curl->go($url, $params, 'array');
+            //$url = api_url($this->class_name. '/detail');
+            $result = ['status'=>200];//$this->curl->go($url, $params, 'array');
             if ($result['status'] === 200):
-                $data['item'] = $result['content'];
+                //$data['item'] = $result['content'];
                 // 页面信息
                 $data['title'] = isset($data['item'])? $data['item']['name']: $this->class_name_cn. '详情';
                 $data['class'] = $this->class_name.' detail';
@@ -191,6 +191,14 @@
 
             endif;
 		} // end detail
+
+		public function festival(){
+			$data = [];
+			// 输出视图
+            $this->load->view('templates/header', $data);
+            $this->load->view('page/festival', $data);
+            $this->load->view('templates/footer', $data);
+		}
 	} // end class Page
 
 /* End of file Page.php */

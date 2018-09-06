@@ -29,7 +29,15 @@
             $url_after_login = $this->input->get_post('url_after_login');
                 $this->url_after_login = empty($url_after_login)? base_url('mine'): base_url($url_after_login);
 		} // end __construct
-
+		public function toavt(){
+			if (isset($this->session->back_to_order) && !empty($this->session->back_to_order)) {
+				$url = urldecode($this->session->back_to_order);
+				$this->session->unset_userdata('back_to_order');
+				redirect($url);
+				exit;
+			}
+			
+		}
 		/**
 		 * 密码登录
 		 *
@@ -38,16 +46,17 @@
 		 * @return void
 		 */
 		public function login()
-		{
+		{	
+            
 			// 若已登录，转到首页
             ($this->session->time_expire_login < time()) OR redirect( $this->url_after_login );
-
 			// 页面信息
 			$data = array(
 				'title' => '登录',
 				'class' => $this->class_name.' login',
 			);
-
+			$data['message'] = isset($_GET['focus']) ? "<script>alert('请关注【进来商城】公众号后重试！')</script>" : "";
+			
 			//$this->form_validation->set_rules('captcha_verify', '图片验证码', 'trim|required|exact_length[4]|callback_verify_captcha');
 			$this->form_validation->set_rules('mobile', '手机号', 'trim|required|exact_length[11]|is_natural_no_zero');
 			$this->form_validation->set_rules('password', '密码', 'trim|min_length[6]|max_length[20]');
@@ -100,12 +109,16 @@
 					// 将用户手机号写入cookie并保存30天
 					$this->input->set_cookie('mobile', $data['item']['mobile'], 60*60*24 *30, COOKIE_DOMAIN);
 
+					//参与活动的回跳
+					$this->toavt();
+
 					// 若用户已设置密码则转到登录后页面，否则转到密码设置页
 					if ( !empty($data['item']['password']) ):
 						redirect( $this->url_after_login );
 					else:
 						redirect( base_url('password_set') );
 					endif;
+					// redirect(base_url("home/index"));
 
 				endif;
 
@@ -143,7 +156,10 @@
 
             $this->wechat->grab_user();
             $sns_info = $this->wechat->sns_info;
-
+            if (!isset($sns_info['unionid'])) {
+            	redirect(base_url('login?focus=1'));
+            	exit;
+            }
             $data_to_search = array(
                 'user_ip' => $this->input->ip_address(),
 
@@ -173,12 +189,15 @@
                 // 将用户手机号写入cookie并保存30天
                 $this->input->set_cookie('mobile', $data['item']['mobile'], 60*60*24 *30, COOKIE_DOMAIN);
 
+                //参与活动的回跳
+				$this->toavt();
+
                 // 若用户已设置密码则转到登录后页面，否则转到密码设置页
-                if ( !empty($data['item']['password']) ):
+                // if ( !empty($data['item']['password']) ):
                     redirect( $this->url_after_login );
-                else:
-                    redirect( base_url('password_set') );
-                endif;
+                // else:
+                //     redirect( base_url('password_set') );
+                // endif;
 
             endif;
         } // end login_wechat

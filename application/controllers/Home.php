@@ -28,6 +28,7 @@
             $data = array(
                 'title' => NULL, // 直接使用默认标题
                 'class' => $this->class_name, // 页面body标签的class属性值
+                'message' => isset($_GET['message']) && $_GET['message'] == 'none' ? '商品已经被抢光啦' : ''
             );
             
             // 获取商家列表
@@ -47,8 +48,12 @@
               $data['part6'] = $xmldata['partlist']['part'][6];
               $data['part7'] = $xmldata['partlist']['part'][7];
               $data['part8'] = $xmldata['partlist']['part'][8];
+              if (isset($xmldata['partlist']['part'][9])) {
+                  $data['part9'] = $xmldata['partlist']['part'][9];  
+                }
 
             // 载入视图
+            
             $this->load->view('templates/header', $data);
             $this->load->view('newhome', $data);
             $this->load->view('templates/nav-main', $data);

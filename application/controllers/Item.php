@@ -48,8 +48,8 @@
 			$condition['time_delete'] = 'NULL';
 			// （可选）遍历筛选条件
 			foreach ($this->names_to_sort as $sorter):
-				if ( !empty($this->input->post($sorter)) )
-					$condition[$sorter] = $this->input->post($sorter);
+				if ( !empty($this->input->get($sorter)) )
+					$condition[$sorter] = $this->input->get($sorter);
 			endforeach;
 
 			// 从API服务器获取相应列表信息
@@ -57,6 +57,7 @@
             $data['limit'] = $params['limit'] = empty($this->input->get_post('limit'))? 10: $this->input->get_post('limit');
             $data['offset'] = $params['offset'] = empty($this->input->get_post('offset'))? 0: $this->input->get_post('offset');
 			$url = api_url($this->class_name. '/index');
+		
 			$result = ['status'=>200, 'content'=>[]];//$this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
 				$data['items'] = $result['content'];
@@ -98,12 +99,17 @@
             else:
                 redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
             endif;
+            $data['id'] = $id;
+            $data['fromavt'] = isset($_GET['fromavt']) ? '&fromavt=yes' : '';
 
 			// 从API服务器获取相应详情信息
 			$url = api_url($this->class_name. '/detail');
 			$result = $this->curl->go($url, $params, 'array');
 			if ($result['status'] === 200):
 				$data['item'] = $result['content'];
+				if (strpos($data['item']['description'], 'kindeditor') !== FALSE) {
+					$data['item']['description'] = str_replace(['<base href="https://www.ybslux.com">', '/kindeditor/asp.net/..'], ['', 'http://www.ybslux.com/kindeditor'], $data['item']['description']);
+				}				
                 $data['biz'] = $result['content']['biz'];
 				$data['item_in_json'] = json_encode($result['content']);
 

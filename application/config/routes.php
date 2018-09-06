@@ -87,6 +87,7 @@ $route['article_biz'] = 'article_biz/index';
 $route['page/detail'] = 'page/detail';
 $route['page/newdetail'] = 'page/newdetail';
 $route['page/tabdetail'] = 'page/tabdetail';
+$route['page/festival'] = 'page/festival';
 $route['page/(:any)'] = 'page/detail/$1';
 $route['page'] = 'page/index';
 
