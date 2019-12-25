@@ -143,6 +143,9 @@
 					$data['operation'] = 'create';
 					$data['id'] = $result['content']['id']; // 创建后的信息ID
 					
+					// 检查是否需要更新本地默认地址
+					if ( isset($result['content']['address_id']) )
+						$this->session->address_id = $result['content']['address_id'];
 
 					// 检查是否已指定回调跳转URL
 					if ( !empty($this->input->post('return_to')) ):
@@ -169,11 +172,6 @@
 		public function addtosession(){
 			$address_id = $this->input->get('address_id');
 			$this->session->set_userdata('address_id', $address_id);
-			$url = api_url('user/edit_certain');
-			$params['id'] = $this->session->user_id;
-			$params['value']   = $address_id;
-			$params['name']    = 'address_id';
-			$result = $this->curl->go($url, $params, 'array');
 			echo 123;
 		}
 		/**

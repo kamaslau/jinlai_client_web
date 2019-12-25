@@ -111,7 +111,6 @@
 			// 从API服务器获取相应详情信息
 			$url = api_url($this->class_name. '/detail');
 			$result = $this->curl->go($url, $params, 'array');
-			
 			if ($result['status'] === 200):
 				$data['item'] = $result['content'];
 

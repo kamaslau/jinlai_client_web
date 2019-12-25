@@ -41,7 +41,7 @@
 		 * 列表页
 		 */
 		public function index()
-		{	
+		{
 			// 页面信息
 			$data = array(
 				'title' => $this->class_name_cn,

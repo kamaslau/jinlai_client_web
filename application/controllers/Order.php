@@ -28,11 +28,6 @@
 		{
 			parent::__construct();
 
-			if (isset($_GET['fromavt']) && $_GET['fromavt'] == 'yes') {
-				$url = urlencode('https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
-				$this->session->set_userdata('back_to_order', $url);
-			}
-
 			// 未登录用户转到登录页
 			($this->session->time_expire_login > time()) OR redirect( base_url('login') );
 
@@ -105,7 +100,6 @@
 			// 从API服务器获取相应详情信息
 			$url = api_url($this->class_name. '/detail');
 			$result = $this->curl->go($url, $params, 'array');
-
 			if ($result['status'] === 200):
 				$data['item'] = $result['content'];
 
@@ -168,6 +162,7 @@
 		 */
 		public function create()
 		{	
+
 			// 页面信息
 			$data = array(
 				'title' => '创建'.$this->class_name_cn,
@@ -304,9 +299,7 @@
             );
             $url = api_url('order/prepare');
             $result = $this->curl->go($url, $params, 'array');
-            if ($result['status'] != 200) {
-            	redirect(base_url('home?message=none'));
-            }
+
             return $result['content'];
         } // end prepare
 

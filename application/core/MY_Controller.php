@@ -81,7 +81,7 @@
 		public function __construct()
 	    {
 	        parent::__construct();
-	        //header('Access-Control-Allow-Origin:*'); 
+
 			// 向类属性赋值
 			$this->timestamp = time();
 			$this->app_type = 'client';
