@@ -86,7 +86,6 @@ $route['article_biz'] = 'article_biz/index';
 /* 营销页面 */
 $route['page/detail'] = 'page/detail';
 $route['page/newdetail'] = 'page/newdetail';
-$route['page/tabdetail'] = 'page/tabdetail';
 $route['page/(:any)'] = 'page/detail/$1';
 $route['page'] = 'page/index';
 

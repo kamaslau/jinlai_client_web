@@ -75,6 +75,7 @@
                 $data['items'] = array();
 				$data['error'] = $result['content']['error']['message'];
 			endif;
+
 			// 输出视图
 			$this->load->view('templates/header', $data);
 			$this->load->view($this->view_root.'/index', $data);
@@ -91,7 +92,6 @@
 				'title' => '创建'.$this->class_name_cn,
 				'class' => $this->class_name.' create',
 				'error' => '', // 预设错误提示
-				'fromorder' => isset($_GET['fromorder']) ? true : false
 			);
 
 			// 检查是否传入了回调跳转URL
@@ -169,11 +169,6 @@
 			endif;
 		} // end create
 
-		public function addtosession(){
-			$address_id = $this->input->get('address_id');
-			$this->session->set_userdata('address_id', $address_id);
-			echo 123;
-		}
 		/**
 		 * 编辑单行
 		 */

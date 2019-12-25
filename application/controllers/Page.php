@@ -115,8 +115,7 @@
 		 * 测试详情页
 		 */
 		public function newdetail($url_name = NULL)
-		{	
-			
+		{
             // 检查是否已传入必要参数
             $id = $this->input->get_post('id')? $this->input->get_post('id'): NULL;
             if ( !empty($id) ):
@@ -144,46 +143,6 @@
                 // 输出视图
                 $this->load->view('templates/header', $data);
                 $this->load->view('page/newclasspage', $data);
-                $this->load->view('templates/footer', $data);
-
-            else:
-                redirect( base_url('error/code_404') ); // 若缺少参数，转到错误提示页
-
-            endif;
-		} // end detail
-
-		/**
-		 * 测试详情页
-		 */
-		public function tabdetail($url_name = NULL)
-		{	
-            // 检查是否已传入必要参数
-            $id = $this->input->get_post('id')? $this->input->get_post('id'): NULL;
-            if ( !empty($id) ):
-                $params['id'] = $id;
-                $data['classtype'] = $id;
-            else:
-                redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
-            endif;
-
-            // 从API服务器获取相应详情信息
-            $url = api_url($this->class_name. '/detail');
-            $result = $this->curl->go($url, $params, 'array');
-            if ($result['status'] === 200):
-                $data['item'] = $result['content'];
-                // 页面信息
-                $data['title'] = isset($data['item'])? $data['item']['name']: $this->class_name_cn. '详情';
-                $data['class'] = $this->class_name.' detail';
-                 $redis = new Redis();  
-	             $redis->connect('47.100.19.150',6379);
-	             if($redis->exists('classpage_'. $id)){
-	             $data['xmldata'] = unserialize($redis->get('classpage_'. $id));
-	         }else{
-	         	  redirect( base_url('error/code_400') ); // 若缺少参数，转到错误提示页
-	         }
-                // 输出视图
-                $this->load->view('templates/header', $data);
-                $this->load->view('page/tabclass', $data);
                 $this->load->view('templates/footer', $data);
 
             else:
