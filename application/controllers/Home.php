@@ -24,69 +24,21 @@
          */
 		public function index()
 		{
-           // 页面信息
-            $data = array(
-                'title' => NULL, // 直接使用默认标题
-                'class' => $this->class_name, // 页面body标签的class属性值
-            );
-            
-            // 获取商家列表
-              $data['bizs'] = $this->list_biz();
-              $redis = new Redis();  
-              $redis->connect('47.100.19.150',6379);
-              $xmldata = unserialize($redis->get('homepage'));
-              //轮播图数据
-              $data['broadcastlist'] = $xmldata['broadcastlist']['broadcast'];
-              //第一部分
-              $data['part0'] = $xmldata['partlist']['part'][0];
-              $data['part1'] = $xmldata['partlist']['part'][1];
-              $data['part2'] = $xmldata['partlist']['part'][2];
-              $data['part3'] = $xmldata['partlist']['part'][3];
-              $data['part4'] = $xmldata['partlist']['part'][4];
-              $data['part5'] = $xmldata['partlist']['part'][5];
-              $data['part6'] = $xmldata['partlist']['part'][6];
-              $data['part7'] = $xmldata['partlist']['part'][7];
-              $data['part8'] = $xmldata['partlist']['part'][8];
-
-            // 载入视图
-            $this->load->view('templates/header', $data);
-            $this->load->view('newhome', $data);
-            $this->load->view('templates/nav-main', $data);
-            $this->load->view('templates/footer', $data);
+			// 页面信息
+			$data = array(
+				'title' => NULL, // 直接使用默认标题
+				'class' => $this->class_name, // 页面body标签的class属性值
+			);
+			
+			// 获取商家列表
+			$data['bizs'] = $this->list_biz();
+			
+			// 载入视图
+			$this->load->view('templates/header', $data);
+			$this->load->view('home', $data);
+			$this->load->view('templates/nav-main', $data);
+			$this->load->view('templates/footer', $data);
 		} // end index
-        public function testindex()
-        {
-
-            // 页面信息
-            $data = array(
-                'title' => NULL, // 直接使用默认标题
-                'class' => $this->class_name, // 页面body标签的class属性值
-            );
-            
-            // 获取商家列表
-              $data['bizs'] = $this->list_biz();
-              $redis = new Redis();  
-              $redis->connect('47.100.19.150',6379);
-              $xmldata = unserialize($redis->get('homepage'));
-              //轮播图数据
-              $data['broadcastlist'] = $xmldata['broadcastlist']['broadcast'];
-              //第一部分
-              $data['part0'] = $xmldata['partlist']['part'][0];
-              $data['part1'] = $xmldata['partlist']['part'][1];
-              $data['part2'] = $xmldata['partlist']['part'][2];
-              $data['part3'] = $xmldata['partlist']['part'][3];
-              $data['part4'] = $xmldata['partlist']['part'][4];
-              $data['part5'] = $xmldata['partlist']['part'][5];
-              $data['part6'] = $xmldata['partlist']['part'][6];
-              $data['part7'] = $xmldata['partlist']['part'][7];
-              $data['part8'] = $xmldata['partlist']['part'][8];
-
-            // 载入视图
-            $this->load->view('templates/header', $data);
-            $this->load->view('newhome', $data);
-            $this->load->view('templates/nav-main', $data);
-            $this->load->view('templates/footer', $data);
-        } // end index
 
         /**
          * 路由页

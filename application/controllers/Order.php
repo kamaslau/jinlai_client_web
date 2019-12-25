@@ -275,20 +275,6 @@
             return $result['content'];
         } // end prepare
 
-        public function order_service(){
-        	$data = [];
-        	// 输出视图
-			$this->load->view('templates/header', $data);
-			$this->load->view($this->view_root.'/order_service', $data);
-			$this->load->view('templates/footer', $data);
-        }
-        public function service_detail(){
-        	$data = [];
-        	// 输出视图
-			$this->load->view('templates/header', $data);
-			$this->load->view($this->view_root.'/service_detail', $data);
-			$this->load->view('templates/footer', $data);
-        }
 	} // end class Order
 
 /* End of file Order.php */
