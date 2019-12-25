@@ -115,9 +115,6 @@
             endif;
         } // end detail
 
-        public function bizcooperation(){
-        	$this->load->view($this->view_root . '/bizcooperation');
-        }
 	} // end class Article
 
 /* End of file Article.php */
