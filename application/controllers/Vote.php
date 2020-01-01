@@ -45,12 +45,14 @@
 			endif;
 
             // 已关注微信公众号且登录未超时，或传入了code参数时无需跳转
+            /*
             $code = $this->input->get('code');
             (
                 ( (get_cookie('wechat_subscribe') == 1) && ($this->session->time_expire_login > time()) )
                 ||
                 ( !empty($code) && ($code <> get_cookie('last_code_used')) )
             ) OR redirect(WECHAT_AUTH_URL);
+            */
 
 			// 从API服务器获取相应详情信息
 			$url = api_url($this->class_name. '/detail');
@@ -65,7 +67,7 @@
                 $data['item'] = $result['content'];
 
                 // 若活动已开始则显示活动详情页；已结束则转到活动结果页。
-                //if (time() > $data['item']['time_end']) redirect('vote/detail_result?id='.$id);
+                // if (time() > $data['item']['time_end']) redirect('vote/detail_result?id='.$id);
                 
                 $this->load->view('templates/header-vote', $data);
                 $this->load->view($this->view_root.'/detail_id'.$id, $data);

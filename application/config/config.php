@@ -9,7 +9,7 @@ define('CURRENT_VERSION_SUPPORT', 1); // 支持版本号，功能调整
 
 // 根域名及URL
 if (ENVIRONMENT !== 'production'): // 测试环境
-    define('ROOT_DOMAIN', '.517ybang.com');
+    define('ROOT_DOMAIN', '.jinlai.liuyajie.com');
 else: // 生产环境
     define('ROOT_DOMAIN', '.jinlaimall.com');
 endif;
@@ -44,8 +44,8 @@ define('SITE_KEYWORDS', '进来,进来商城,品控,网购,网购平台,网上�
 define('SITE_DESCRIPTION', '「进来」是本地商家严选平台，构建严选商圈生态、共享超级用户圈，深度服务本地商家。 '); // 站点描述
 define('ICP_NUMBER', '鲁ICP备15023233号-7'); // ICP备案号码，没有请留空
 
-define('BASE_URL', 'https://'. $_SERVER['SERVER_NAME'].'/'); // 可对外使用的站点URL；在本地测试时须替换为类似“localhost/BasicCodeigniter”形式
-define('CURRENT_URL', 'https://'. $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
+define('BASE_URL', 'https://www.'. $_SERVER['SERVER_NAME'].'/'); // 可对外使用的站点URL；在本地测试时须替换为类似“localhost/BasicCodeigniter”形式
+define('CURRENT_URL', 'https://www.'. $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI']);
 define('API_URL', 'https://api'.ROOT_URL); // API URL
 define('WEB_URL', 'https://www'.ROOT_URL); // 客户端 URL
 define('BIZ_URL', 'https://biz'.ROOT_URL); // 商家端 URL
@@ -57,7 +57,8 @@ function api_url($api_name)
 define('VIEWS_PATH', APPPATH.'views/'); // 视图文件夹路径
 
 // JS、CSS等非当前站点特有资源所在URL，可用于配合又拍云等第三方存储
-define('CDN_URL', 'https://cdn-remote'.ROOT_URL); // 生产环境
+// define('CDN_URL', 'https://cdn-remote'.ROOT_URL); // 生产环境
+define('CDN_URL', 'https://cdn.liuyajie.com/');
 define('DEFAULT_IMAGE', CDN_URL.'default_avatar.png'); // 默认图片URL
 
 // 媒体文件，即非样式图片、视频、音频存储的根目录所在URL，可用于配合又拍云等第三方存储
@@ -77,8 +78,8 @@ define('APP_SCHEME', 'jinlaiclient');
 define('IOS_APP_ID', '1304204060');
 
 // 微信公众平台参数
-define('WECHAT_APP_ID', 'wxba173a67df14c087');
-define('WECHAT_APP_SECRET', '1b7e4e04423db974a4eb988d84368152');
+define('WECHAT_APP_ID', 'wx4cf6b0935558c1ce');
+define('WECHAT_APP_SECRET', '2875cd1ae0c30ab1cc252580b7b1523a');
 define('WECHAT_TOKEN', '');
 define('AES_KEY', '');
 define('WECHAT_AUTH_URL', 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.WECHAT_APP_ID.'&redirect_uri='.urlencode(CURRENT_URL).'&response_type=code&scope=snsapi_userinfo#wechat_redirect');
